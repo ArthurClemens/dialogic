@@ -1,5 +1,6 @@
-export * from "./dialogic";
 import * as notification from "./notification";
-export { notification };
 import * as dialog from "./dialog";
+
+export * from "./dialogic";
+export { notification };
 export { dialog };
