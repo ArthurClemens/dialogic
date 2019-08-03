@@ -6,12 +6,12 @@ export const ns = "dialog";
 export const defaultId = `default_${ns}`;
 export const defaultSpawn = `default_${ns}`;
 
-const defaultSpawnOptions: Dialogic.TDefaultSpawnOptions = {
+const defaultSpawnOptions: Dialogic.DefaultSpawnOptions = {
   id: defaultId,
   spawn: defaultSpawn,
 };
 
-const defaultTransitionOptions: Dialogic.TDefaultTransitionOptions = {};
+const defaultTransitionOptions: Dialogic.DefaultTransitionOptions = {};
 
 export const show = _show(ns, defaultTransitionOptions, defaultSpawnOptions);
 export const hide = _hide(ns, defaultSpawnOptions);

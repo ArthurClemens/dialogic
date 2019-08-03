@@ -1,7 +1,7 @@
 import Stream from "mithril/Stream";
 import { Dialogic } from "..";
 
-type TPatchFn = (state: Dialogic.TState) => Dialogic.TState;
+type TPatchFn = (state: Dialogic.State) => Dialogic.State;
 
 const findItem = (id: string, items: any[]) => {
   return items.find(item => item.id === id);
@@ -20,7 +20,7 @@ const removeItem = (id: string, items: any[]) => {
   return items;
 };
 
-export const createId = (spawnOptions: Dialogic.TSpawnOptions, ns: string) =>
+export const createId = (spawnOptions: Dialogic.SpawnOptions, ns: string) =>
   [ns, spawnOptions.id, spawnOptions.spawn].filter(Boolean).join("-");
 
 const store = {
@@ -33,8 +33,8 @@ const store = {
       /**
        * Add an item to the end of the list.
        */
-      add: (item: Dialogic.TItem, ns: string) => {
-        update((state: Dialogic.TState) => {
+      add: (item: Dialogic.Item, ns: string) => {
+        update((state: Dialogic.State) => {
           const items = state.store[ns] || [];
           state.store[ns] = [...items, item];
           return state;
@@ -45,7 +45,7 @@ const store = {
        * Removes the first item with a match on `id`.
        */
       remove: (id: string, ns: string) => {
-        update((state: Dialogic.TState) => {
+        update((state: Dialogic.State) => {
           const items = state.store[ns] || [];
           const remaining = removeItem(id, items);
           state.store[ns] = remaining;
@@ -56,8 +56,8 @@ const store = {
       /**
        * Replaces the first item with a match on `id` with a newItem.
        */
-      replace: (id: string, newItem: Dialogic.TItem, ns: string) => {
-        update((state: Dialogic.TState) => {
+      replace: (id: string, newItem: Dialogic.Item, ns: string) => {
+        update((state: Dialogic.State) => {
           const items = state.store[ns] || [];
           if (items) {
             const index = itemIndex(id, items);
@@ -74,7 +74,7 @@ const store = {
        * Removes all items within a namespace.
        */
       removeAll: (ns: string) => {
-        update((state: Dialogic.TState) => {
+        update((state: Dialogic.State) => {
           state.store[ns] = [];
           return state;
         });
@@ -83,8 +83,8 @@ const store = {
       /**
        * Replaces all items within a namespace.
        */
-      store: (newItems: Dialogic.TItem[], ns: string) => {
-        update((state: Dialogic.TState) => {
+      store: (newItems: Dialogic.Item[], ns: string) => {
+        update((state: Dialogic.State) => {
           state.store[ns] = [...newItems];
           return state;
         });
@@ -92,14 +92,14 @@ const store = {
 
     };
   },
-  selectors: (states: Stream<Dialogic.TState>) => {
+  selectors: (states: Stream<Dialogic.State>) => {
     return {
 
-      find: (spawnOptions: Dialogic.TSpawnOptions, ns: string) => {
+      find: (spawnOptions: Dialogic.SpawnOptions, ns: string) => {
         const state = states();
         const items = state.store[ns] || [];
         const id = createId(spawnOptions, ns);
-        const item = items.find((item: Dialogic.TItem) => item.id === id);
+        const item = items.find((item: Dialogic.Item) => item.id === id);
         return item
           ? { just: item }
           : { nothing: undefined }
@@ -121,8 +121,8 @@ const store = {
 
 const update: Stream<TPatchFn> = Stream<TPatchFn>();
 
-export const states: Dialogic.TStates = Stream.scan(
-  (state: Dialogic.TState, patch: TPatchFn) => patch(state),
+export const states: Dialogic.States = Stream.scan(
+  (state: Dialogic.State, patch: TPatchFn) => patch(state),
   {
     ...store.initialState,
   },
@@ -133,7 +133,7 @@ export const actions = {
   ...store.actions(update),
 };
 
-export const selectors: Dialogic.TSelectors = {
+export const selectors: Dialogic.StateSelectors = {
   ...store.selectors(states),
 };
 

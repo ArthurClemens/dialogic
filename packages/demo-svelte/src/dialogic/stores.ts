@@ -5,7 +5,7 @@ import { states, selectors } from "dialogic";
 import { Writable } from "svelte/types/runtime/store";
 import { Dialogic } from "dialogic";
 
-type TAppState = {} & Writable<Dialogic.TStates|Dialogic.TSelectors>;
+type TAppState = {} & Writable<Dialogic.States|Dialogic.StateSelectors>;
 
 export const appState: TAppState = {
   ...writable(states),

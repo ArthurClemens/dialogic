@@ -6,13 +6,13 @@ export const ns = "notification";
 export const defaultId = `default_${ns}`;
 export const defaultSpawn = `default_${ns}`;
 
-const defaultSpawnOptions: Dialogic.TDefaultSpawnOptions = {
+const defaultSpawnOptions: Dialogic.DefaultSpawnOptions = {
   id: defaultId,
   queued: true,
   spawn: defaultSpawn,
 };
 
-const defaultTransitionOptions: Dialogic.TDefaultTransitionOptions = {
+const defaultTransitionOptions: Dialogic.DefaultTransitionOptions = {
   timeout: 3000,
 };
 

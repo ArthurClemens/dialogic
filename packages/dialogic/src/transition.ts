@@ -7,11 +7,11 @@ export const MODE = {
 	HIDE: "hide"
 };
 
-type TTransitionOptionKeys = {
+type TransitionOptionKeys = {
 	[key: string]: boolean;
 }
 
-export const transitionOptionKeys: TTransitionOptionKeys = {
+export const transitionOptionKeys: TransitionOptionKeys = {
 	showDuration: true,
 	showDelay: true,
 	showTimingFunction: true,
@@ -26,25 +26,25 @@ export const transitionOptionKeys: TTransitionOptionKeys = {
 	timeout: true,
 };
 
-type TGetTransitionProps = {
+type GetTransitionProps = {
 	showDuration?: number;
 	showDelay?: number;
 	showTimingFunction?: string;
 	hideDuration?: number;
 	hideDelay?: number;
 	hideTimingFunction?: string;
-	transitions?: Dialogic.TTransitions;
-	domElements?: Dialogic.TDomElements;
+	transitions?: Dialogic.Transitions;
+	domElements?: Dialogic.DomElements;
 }
 
-type TTransitionProps = {
-	domElements?: Dialogic.TDomElements;
+type TransitionProps = {
+	domElements?: Dialogic.DomElements;
 	transitionClass?: string;
 	showClass?: string;
 	showClassElement?: HTMLElement;
-} & TGetTransitionProps;
+} & GetTransitionProps;
 
-export const transition = (props: TTransitionProps, mode?: string) => {
+export const transition = (props: TransitionProps, mode?: string) => {
 	const domElement = props.domElements
 		? props.domElements.domElement
 		: null;
@@ -143,7 +143,7 @@ const styleDurationToMs = (durationStr: string) => {
 		: parsed;
 };
 
-const getTransitionProps = (props: TGetTransitionProps, isShow: boolean) => {
+const getTransitionProps = (props: GetTransitionProps, isShow: boolean) => {
 	const [duration, delay, timingFunction, transition] = isShow
 		? [props.showDuration, props.showDelay, props.showTimingFunction, props.transitions ? props.transitions.show : undefined]
 		: [props.hideDuration, props.hideDelay, props.hideTimingFunction, props.transitions ? props.transitions.hide : undefined]

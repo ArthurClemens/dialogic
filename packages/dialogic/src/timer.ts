@@ -2,7 +2,7 @@ import { isClient } from "./iso";
 
 import { Dialogic } from "../index";
 
-type TTimerFn = () => Dialogic.TTimer;
+type TTimerFn = () => Dialogic.Timer;
 type TOnFinishFn = () => void;
 
 export const Timer: TTimerFn = () => {
@@ -10,7 +10,7 @@ export const Timer: TTimerFn = () => {
   let timerId: number;
   let startTime: number;
   let remaining: number;
-  let cb: Dialogic.TCallback;
+  let cb: Dialogic.TimerCallback;
   let onDone: TOnFinishFn; 
   let onAbort: TOnFinishFn;
 
@@ -42,7 +42,7 @@ export const Timer: TTimerFn = () => {
     }
   };
 
-  const start = (callback: Dialogic.TCallback, duration: number) => {
+  const start = (callback: Dialogic.TimerCallback, duration: number) => {
     cb = callback;
     remaining = duration;
     return new Promise((resolve, reject) => {

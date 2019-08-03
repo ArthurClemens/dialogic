@@ -1052,7 +1052,6 @@ var app = (function () {
         }, initial);
     };
     const createInstance = (ns, defaultTransitionOptions, defaultSpawnOptions) => (options, instanceSpawnOptions) => {
-        console.log("createInstance", ns);
         return new Promise((resolve) => {
             const spawnOptions = {
                 ...defaultSpawnOptions,
@@ -1262,7 +1261,6 @@ var app = (function () {
     	hideAll: hideAll$2,
     	count: count$2
     });
-    //# sourceMappingURL=dialogic.mjs.map
 
     /**
      * Creates a `Readable` store that allows reading by subscription.
