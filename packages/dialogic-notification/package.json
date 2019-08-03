@@ -1,0 +1,24 @@
+{
+  "name": "dialogic-notification",
+  "version": "0.0.1",
+  "description": "Logic for notifications",
+  "main": "dist/dialogic-notification",
+  "module": "dist/dialogic-notification.mjs",
+  "scripts": {
+    "clean": "rm -rf dist/*",
+    "rollup": "MODULE=1 ../../node_modules/rollup/bin/rollup -c ../../scripts/rollup.config.js && ../../node_modules/rollup/bin/rollup -c ../../scripts/rollup.config.js ",
+    "build": "npm run clean && npm run rollup && npm run size",
+    "size": "gzip -c dist/dialogic-notification.js | wc -c"
+  },
+  "dependencies": {
+    "dialogic": "0.0.1"
+  },
+  "files": [
+    "dist",
+    "index.d.ts",
+    "README.md"
+  ],
+  "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
+  "homepage": "https://github.com/ArthurClemens/dialogic",
+  "license": "MIT"
+}

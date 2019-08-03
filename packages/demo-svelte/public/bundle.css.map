@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "../src/notification/NotificationInstance.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\n  import { onMount, createEventDispatcher } from \"svelte\";\n\n  const dispatch = createEventDispatcher();\n\n  // DOM bindings\n  let domElement;\n\n  export let id = undefined;\n  export let title = \"\";\n  export let spawnOptions = undefined;\n  export let instanceOptions = undefined;\n  export let className = \"\";\n  export let showClass = \"xxx--visible\";\n  \n  $: R_classNames = [\n    \"xxx\",\n    className\n\t].join(\" \");\n\n  const dispatchTransition = name =>\n    dispatch(name, {\n      spawnOptions,\n      transitionOptions: {\n        showClass,\n        domElements: {\n          domElement\n        }\n      },\n    });\n\n  const show = e => {\n    dispatchTransition(\"show\");\n  };\n\n  const hide = e => {\n    dispatchTransition(\"hide\");\n  };\n\n  onMount(() => {\n    dispatchTransition(\"mount\");\n  });\n\n  $: elementProps = {\n    class: R_classNames,\n  };\n</script>\n\n<style>\n  :global(.xxx) {\n    background-color: #f0f0f0;\n    padding: 10px;\n    opacity: 0;\n    border: 5px solid #fff;\n    transition-property: opacity, background-color, transform;\n    transition-duration: 220ms;\n    transition-delay: 0ms;\n    transition-timing-function: ease-in-out;\n  }\n  :global(.xxx--visible) {\n    opacity: 1;\n  }\n</style>\n\n<div \n  class={R_classNames}\n  bind:this={domElement}\n  {...elementProps}\n>\n  Notification\n  {title}\n  <button on:click={hide}>hide from instance</button>\n</div>\n\n"
+  ],
+  "names": [],
+  "mappings": "AAiDU,IAAI,AAAE,CAAC,AACb,gBAAgB,CAAE,OAAO,CACzB,OAAO,CAAE,IAAI,CACb,OAAO,CAAE,CAAC,CACV,MAAM,CAAE,GAAG,CAAC,KAAK,CAAC,IAAI,CACtB,mBAAmB,CAAE,OAAO,CAAC,CAAC,gBAAgB,CAAC,CAAC,SAAS,CACzD,mBAAmB,CAAE,KAAK,CAC1B,gBAAgB,CAAE,GAAG,CACrB,0BAA0B,CAAE,WAAW,AACzC,CAAC,AACO,aAAa,AAAE,CAAC,AACtB,OAAO,CAAE,CAAC,AACZ,CAAC"
+}
