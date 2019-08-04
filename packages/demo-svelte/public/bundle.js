@@ -73,6 +73,25 @@ var app = (function () {
         node.addEventListener(event, handler, options);
         return () => node.removeEventListener(event, handler, options);
     }
+    function attr(node, attribute, value) {
+        if (value == null)
+            node.removeAttribute(attribute);
+        else
+            node.setAttribute(attribute, value);
+    }
+    function set_attributes(node, attributes) {
+        for (const key in attributes) {
+            if (key === 'style') {
+                node.style.cssText = attributes[key];
+            }
+            else if (key in node) {
+                node[key] = attributes[key];
+            }
+            else {
+                attr(node, key, attributes[key]);
+            }
+        }
+    }
     function children(element) {
         return Array.from(element.childNodes);
     }
@@ -80,6 +99,11 @@ var app = (function () {
         data = '' + data;
         if (text.data !== data)
             text.data = data;
+    }
+    function custom_event(type, detail) {
+        const e = document.createEvent('CustomEvent');
+        e.initCustomEvent(type, false, false, detail);
+        return e;
     }
 
     let current_component;
@@ -91,8 +115,25 @@ var app = (function () {
             throw new Error(`Function called outside component initialization`);
         return current_component;
     }
+    function onMount(fn) {
+        get_current_component().$$.on_mount.push(fn);
+    }
     function onDestroy(fn) {
         get_current_component().$$.on_destroy.push(fn);
+    }
+    function createEventDispatcher() {
+        const component = current_component;
+        return (type, detail) => {
+            const callbacks = component.$$.callbacks[type];
+            if (callbacks) {
+                // TODO are there situations where events could be dispatched
+                // in a server (non-DOM) environment?
+                const event = custom_event(type, detail);
+                callbacks.slice().forEach(fn => {
+                    fn.call(component, event);
+                });
+            }
+        };
     }
 
     const dirty_components = [];
@@ -185,6 +226,120 @@ var app = (function () {
             });
             block.o(local);
         }
+    }
+    function outro_and_destroy_block(block, lookup) {
+        transition_out(block, 1, 1, () => {
+            lookup.delete(block.key);
+        });
+    }
+    function update_keyed_each(old_blocks, changed, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block, next, get_context) {
+        let o = old_blocks.length;
+        let n = list.length;
+        let i = o;
+        const old_indexes = {};
+        while (i--)
+            old_indexes[old_blocks[i].key] = i;
+        const new_blocks = [];
+        const new_lookup = new Map();
+        const deltas = new Map();
+        i = n;
+        while (i--) {
+            const child_ctx = get_context(ctx, list, i);
+            const key = get_key(child_ctx);
+            let block = lookup.get(key);
+            if (!block) {
+                block = create_each_block(key, child_ctx);
+                block.c();
+            }
+            else if (dynamic) {
+                block.p(changed, child_ctx);
+            }
+            new_lookup.set(key, new_blocks[i] = block);
+            if (key in old_indexes)
+                deltas.set(key, Math.abs(i - old_indexes[key]));
+        }
+        const will_move = new Set();
+        const did_move = new Set();
+        function insert(block) {
+            transition_in(block, 1);
+            block.m(node, next);
+            lookup.set(block.key, block);
+            next = block.first;
+            n--;
+        }
+        while (o && n) {
+            const new_block = new_blocks[n - 1];
+            const old_block = old_blocks[o - 1];
+            const new_key = new_block.key;
+            const old_key = old_block.key;
+            if (new_block === old_block) {
+                // do nothing
+                next = new_block.first;
+                o--;
+                n--;
+            }
+            else if (!new_lookup.has(old_key)) {
+                // remove old block
+                destroy(old_block, lookup);
+                o--;
+            }
+            else if (!lookup.has(new_key) || will_move.has(new_key)) {
+                insert(new_block);
+            }
+            else if (did_move.has(old_key)) {
+                o--;
+            }
+            else if (deltas.get(new_key) > deltas.get(old_key)) {
+                did_move.add(new_key);
+                insert(new_block);
+            }
+            else {
+                will_move.add(old_key);
+                o--;
+            }
+        }
+        while (o--) {
+            const old_block = old_blocks[o];
+            if (!new_lookup.has(old_block.key))
+                destroy(old_block, lookup);
+        }
+        while (n)
+            insert(new_blocks[n - 1]);
+        return new_blocks;
+    }
+
+    function get_spread_update(levels, updates) {
+        const update = {};
+        const to_null_out = {};
+        const accounted_for = { $$scope: 1 };
+        let i = levels.length;
+        while (i--) {
+            const o = levels[i];
+            const n = updates[i];
+            if (n) {
+                for (const key in o) {
+                    if (!(key in n))
+                        to_null_out[key] = 1;
+                }
+                for (const key in n) {
+                    if (!accounted_for[key]) {
+                        update[key] = n[key];
+                        accounted_for[key] = 1;
+                    }
+                }
+                levels[i] = n;
+            }
+            else {
+                for (const key in o) {
+                    accounted_for[key] = 1;
+                }
+            }
+        }
+        for (const key in to_null_out) {
+            if (!(key in update))
+                update[key] = undefined;
+        }
+        return update;
     }
     function mount_component(component, target, anchor) {
         const { fragment, on_mount, on_destroy, after_update } = component.$$;
@@ -1117,442 +1272,6 @@ var app = (function () {
     	count: count$2
     });
 
-    function noop$1() { }
-    function assign$1(tar, src) {
-        // @ts-ignore
-        for (const k in src)
-            tar[k] = src[k];
-        return tar;
-    }
-    function add_location$1(element, file, line, column, char) {
-        element.__svelte_meta = {
-            loc: { file, line, column, char }
-        };
-    }
-    function run$1(fn) {
-        return fn();
-    }
-    function blank_object$1() {
-        return Object.create(null);
-    }
-    function run_all$1(fns) {
-        fns.forEach(run$1);
-    }
-    function is_function$1(thing) {
-        return typeof thing === 'function';
-    }
-    function safe_not_equal$1(a, b) {
-        return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
-    }
-    function validate_store$1(store, name) {
-        if (!store || typeof store.subscribe !== 'function') {
-            throw new Error(`'${name}' is not a store with a 'subscribe' method`);
-        }
-    }
-    function subscribe$1(store, callback) {
-        const unsub = store.subscribe(callback);
-        return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
-    }
-    function component_subscribe$1(component, store, callback) {
-        component.$$.on_destroy.push(subscribe$1(store, callback));
-    }
-    function insert$1(target, node, anchor) {
-        target.insertBefore(node, anchor || null);
-    }
-    function detach$1(node) {
-        node.parentNode.removeChild(node);
-    }
-    function element$1(name) {
-        return document.createElement(name);
-    }
-    function text$1(data) {
-        return document.createTextNode(data);
-    }
-    function empty$1() {
-        return text$1('');
-    }
-    function attr(node, attribute, value) {
-        if (value == null)
-            node.removeAttribute(attribute);
-        else
-            node.setAttribute(attribute, value);
-    }
-    function set_attributes(node, attributes) {
-        for (const key in attributes) {
-            if (key === 'style') {
-                node.style.cssText = attributes[key];
-            }
-            else if (key in node) {
-                node[key] = attributes[key];
-            }
-            else {
-                attr(node, key, attributes[key]);
-            }
-        }
-    }
-    function children$1(element) {
-        return Array.from(element.childNodes);
-    }
-    function custom_event(type, detail) {
-        const e = document.createEvent('CustomEvent');
-        e.initCustomEvent(type, false, false, detail);
-        return e;
-    }
-
-    let current_component$1;
-    function set_current_component$1(component) {
-        current_component$1 = component;
-    }
-    function get_current_component$1() {
-        if (!current_component$1)
-            throw new Error(`Function called outside component initialization`);
-        return current_component$1;
-    }
-    function onMount(fn) {
-        get_current_component$1().$$.on_mount.push(fn);
-    }
-    function createEventDispatcher() {
-        const component = current_component$1;
-        return (type, detail) => {
-            const callbacks = component.$$.callbacks[type];
-            if (callbacks) {
-                // TODO are there situations where events could be dispatched
-                // in a server (non-DOM) environment?
-                const event = custom_event(type, detail);
-                callbacks.slice().forEach(fn => {
-                    fn.call(component, event);
-                });
-            }
-        };
-    }
-
-    const dirty_components$1 = [];
-    const binding_callbacks$1 = [];
-    const render_callbacks$1 = [];
-    const flush_callbacks$1 = [];
-    const resolved_promise$1 = Promise.resolve();
-    let update_scheduled$1 = false;
-    function schedule_update$1() {
-        if (!update_scheduled$1) {
-            update_scheduled$1 = true;
-            resolved_promise$1.then(flush$1);
-        }
-    }
-    function add_render_callback$1(fn) {
-        render_callbacks$1.push(fn);
-    }
-    function flush$1() {
-        const seen_callbacks = new Set();
-        do {
-            // first, call beforeUpdate functions
-            // and update components
-            while (dirty_components$1.length) {
-                const component = dirty_components$1.shift();
-                set_current_component$1(component);
-                update$2(component.$$);
-            }
-            while (binding_callbacks$1.length)
-                binding_callbacks$1.pop()();
-            // then, once components are updated, call
-            // afterUpdate functions. This may cause
-            // subsequent updates...
-            for (let i = 0; i < render_callbacks$1.length; i += 1) {
-                const callback = render_callbacks$1[i];
-                if (!seen_callbacks.has(callback)) {
-                    callback();
-                    // ...so guard against infinite loops
-                    seen_callbacks.add(callback);
-                }
-            }
-            render_callbacks$1.length = 0;
-        } while (dirty_components$1.length);
-        while (flush_callbacks$1.length) {
-            flush_callbacks$1.pop()();
-        }
-        update_scheduled$1 = false;
-    }
-    function update$2($$) {
-        if ($$.fragment) {
-            $$.update($$.dirty);
-            run_all$1($$.before_update);
-            $$.fragment.p($$.dirty, $$.ctx);
-            $$.dirty = null;
-            $$.after_update.forEach(add_render_callback$1);
-        }
-    }
-    const outroing$1 = new Set();
-    let outros$1;
-    function group_outros$1() {
-        outros$1 = {
-            r: 0,
-            c: [],
-            p: outros$1 // parent group
-        };
-    }
-    function check_outros$1() {
-        if (!outros$1.r) {
-            run_all$1(outros$1.c);
-        }
-        outros$1 = outros$1.p;
-    }
-    function transition_in$1(block, local) {
-        if (block && block.i) {
-            outroing$1.delete(block);
-            block.i(local);
-        }
-    }
-    function transition_out$1(block, local, detach, callback) {
-        if (block && block.o) {
-            if (outroing$1.has(block))
-                return;
-            outroing$1.add(block);
-            outros$1.c.push(() => {
-                outroing$1.delete(block);
-                if (callback) {
-                    if (detach)
-                        block.d(1);
-                    callback();
-                }
-            });
-            block.o(local);
-        }
-    }
-    function outro_and_destroy_block(block, lookup) {
-        transition_out$1(block, 1, 1, () => {
-            lookup.delete(block.key);
-        });
-    }
-    function update_keyed_each(old_blocks, changed, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block, next, get_context) {
-        let o = old_blocks.length;
-        let n = list.length;
-        let i = o;
-        const old_indexes = {};
-        while (i--)
-            old_indexes[old_blocks[i].key] = i;
-        const new_blocks = [];
-        const new_lookup = new Map();
-        const deltas = new Map();
-        i = n;
-        while (i--) {
-            const child_ctx = get_context(ctx, list, i);
-            const key = get_key(child_ctx);
-            let block = lookup.get(key);
-            if (!block) {
-                block = create_each_block(key, child_ctx);
-                block.c();
-            }
-            else if (dynamic) {
-                block.p(changed, child_ctx);
-            }
-            new_lookup.set(key, new_blocks[i] = block);
-            if (key in old_indexes)
-                deltas.set(key, Math.abs(i - old_indexes[key]));
-        }
-        const will_move = new Set();
-        const did_move = new Set();
-        function insert(block) {
-            transition_in$1(block, 1);
-            block.m(node, next);
-            lookup.set(block.key, block);
-            next = block.first;
-            n--;
-        }
-        while (o && n) {
-            const new_block = new_blocks[n - 1];
-            const old_block = old_blocks[o - 1];
-            const new_key = new_block.key;
-            const old_key = old_block.key;
-            if (new_block === old_block) {
-                // do nothing
-                next = new_block.first;
-                o--;
-                n--;
-            }
-            else if (!new_lookup.has(old_key)) {
-                // remove old block
-                destroy(old_block, lookup);
-                o--;
-            }
-            else if (!lookup.has(new_key) || will_move.has(new_key)) {
-                insert(new_block);
-            }
-            else if (did_move.has(old_key)) {
-                o--;
-            }
-            else if (deltas.get(new_key) > deltas.get(old_key)) {
-                did_move.add(new_key);
-                insert(new_block);
-            }
-            else {
-                will_move.add(old_key);
-                o--;
-            }
-        }
-        while (o--) {
-            const old_block = old_blocks[o];
-            if (!new_lookup.has(old_block.key))
-                destroy(old_block, lookup);
-        }
-        while (n)
-            insert(new_blocks[n - 1]);
-        return new_blocks;
-    }
-
-    function get_spread_update(levels, updates) {
-        const update = {};
-        const to_null_out = {};
-        const accounted_for = { $$scope: 1 };
-        let i = levels.length;
-        while (i--) {
-            const o = levels[i];
-            const n = updates[i];
-            if (n) {
-                for (const key in o) {
-                    if (!(key in n))
-                        to_null_out[key] = 1;
-                }
-                for (const key in n) {
-                    if (!accounted_for[key]) {
-                        update[key] = n[key];
-                        accounted_for[key] = 1;
-                    }
-                }
-                levels[i] = n;
-            }
-            else {
-                for (const key in o) {
-                    accounted_for[key] = 1;
-                }
-            }
-        }
-        for (const key in to_null_out) {
-            if (!(key in update))
-                update[key] = undefined;
-        }
-        return update;
-    }
-    function mount_component$1(component, target, anchor) {
-        const { fragment, on_mount, on_destroy, after_update } = component.$$;
-        fragment.m(target, anchor);
-        // onMount happens before the initial afterUpdate
-        add_render_callback$1(() => {
-            const new_on_destroy = on_mount.map(run$1).filter(is_function$1);
-            if (on_destroy) {
-                on_destroy.push(...new_on_destroy);
-            }
-            else {
-                // Edge case - component was destroyed immediately,
-                // most likely as a result of a binding initialising
-                run_all$1(new_on_destroy);
-            }
-            component.$$.on_mount = [];
-        });
-        after_update.forEach(add_render_callback$1);
-    }
-    function destroy_component$1(component, detaching) {
-        if (component.$$.fragment) {
-            run_all$1(component.$$.on_destroy);
-            component.$$.fragment.d(detaching);
-            // TODO null out other refs, including component.$$ (but need to
-            // preserve final state?)
-            component.$$.on_destroy = component.$$.fragment = null;
-            component.$$.ctx = {};
-        }
-    }
-    function make_dirty$1(component, key) {
-        if (!component.$$.dirty) {
-            dirty_components$1.push(component);
-            schedule_update$1();
-            component.$$.dirty = blank_object$1();
-        }
-        component.$$.dirty[key] = true;
-    }
-    function init$1(component, options, instance, create_fragment, not_equal, prop_names) {
-        const parent_component = current_component$1;
-        set_current_component$1(component);
-        const props = options.props || {};
-        const $$ = component.$$ = {
-            fragment: null,
-            ctx: null,
-            // state
-            props: prop_names,
-            update: noop$1,
-            not_equal,
-            bound: blank_object$1(),
-            // lifecycle
-            on_mount: [],
-            on_destroy: [],
-            before_update: [],
-            after_update: [],
-            context: new Map(parent_component ? parent_component.$$.context : []),
-            // everything else
-            callbacks: blank_object$1(),
-            dirty: null
-        };
-        let ready = false;
-        $$.ctx = instance
-            ? instance(component, props, (key, value) => {
-                if ($$.ctx && not_equal($$.ctx[key], $$.ctx[key] = value)) {
-                    if ($$.bound[key])
-                        $$.bound[key](value);
-                    if (ready)
-                        make_dirty$1(component, key);
-                }
-            })
-            : props;
-        $$.update();
-        ready = true;
-        run_all$1($$.before_update);
-        $$.fragment = create_fragment($$.ctx);
-        if (options.target) {
-            if (options.hydrate) {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                $$.fragment.l(children$1(options.target));
-            }
-            else {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                $$.fragment.c();
-            }
-            if (options.intro)
-                transition_in$1(component.$$.fragment);
-            mount_component$1(component, options.target, options.anchor);
-            flush$1();
-        }
-        set_current_component$1(parent_component);
-    }
-    class SvelteComponent$1 {
-        $destroy() {
-            destroy_component$1(this, 1);
-            this.$destroy = noop$1;
-        }
-        $on(type, callback) {
-            const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
-            callbacks.push(callback);
-            return () => {
-                const index = callbacks.indexOf(callback);
-                if (index !== -1)
-                    callbacks.splice(index, 1);
-            };
-        }
-        $set() {
-            // overridden by instance, if it has props
-        }
-    }
-    class SvelteComponentDev$1 extends SvelteComponent$1 {
-        constructor(options) {
-            if (!options || (!options.target && !options.$$inline)) {
-                throw new Error(`'target' is a required option`);
-            }
-            super();
-        }
-        $destroy() {
-            super.$destroy();
-            this.$destroy = () => {
-                console.warn(`Component was already destroyed`); // eslint-disable-line no-console
-            };
-        }
-    }
-
     const subscriber_queue = [];
     /**
      * Creates a `Readable` store that allows reading by subscription.
@@ -1569,11 +1288,11 @@ var app = (function () {
      * @param {*=}value initial value
      * @param {StartStopNotifier=}start start and stop notifications for subscriptions
      */
-    function writable(value, start = noop$1) {
+    function writable(value, start = noop) {
         let stop;
         const subscribers = [];
         function set(new_value) {
-            if (safe_not_equal$1(value, new_value)) {
+            if (safe_not_equal(value, new_value)) {
                 value = new_value;
                 if (stop) { // store is ready
                     const run_queue = !subscriber_queue.length;
@@ -1594,11 +1313,11 @@ var app = (function () {
         function update(fn) {
             set(fn(value));
         }
-        function subscribe(run, invalidate = noop$1) {
+        function subscribe(run, invalidate = noop) {
             const subscriber = [run, invalidate];
             subscribers.push(subscriber);
             if (subscribers.length === 1) {
-                stop = start(set) || noop$1;
+                stop = start(set) || noop;
             }
             run(value);
             return () => {
@@ -1631,7 +1350,7 @@ var app = (function () {
             let inited = false;
             const values = [];
             let pending = 0;
-            let cleanup = noop$1;
+            let cleanup = noop;
             const sync = () => {
                 if (pending) {
                     return;
@@ -1642,7 +1361,7 @@ var app = (function () {
                     set(result);
                 }
                 else {
-                    cleanup = is_function$1(result) ? result : noop$1;
+                    cleanup = is_function(result) ? result : noop;
                 }
             };
             const unsubscribers = stores_array.map((store, i) => store.subscribe((value) => {
@@ -1657,7 +1376,7 @@ var app = (function () {
             inited = true;
             sync();
             return function stop() {
-                run_all$1(unsubscribers);
+                run_all(unsubscribers);
                 cleanup();
             };
         });
@@ -1734,7 +1453,7 @@ var app = (function () {
 
     	let instance_props = {};
     	for (var i = 0; i < instance_spread_levels.length; i += 1) {
-    		instance_props = assign$1(instance_props, instance_spread_levels[i]);
+    		instance_props = assign(instance_props, instance_spread_levels[i]);
     	}
     	var instance = new ctx.Instance({ props: instance_props, $$inline: true });
     	instance.$on("mount", ctx.nsOnInstanceMounted);
@@ -1747,14 +1466,14 @@ var app = (function () {
     		first: null,
 
     		c: function create() {
-    			first = empty$1();
+    			first = empty();
     			instance.$$.fragment.c();
     			this.first = first;
     		},
 
     		m: function mount(target, anchor) {
-    			insert$1(target, first, anchor);
-    			mount_component$1(instance, target, anchor);
+    			insert(target, first, anchor);
+    			mount_component(instance, target, anchor);
     			current = true;
     		},
 
@@ -1768,22 +1487,22 @@ var app = (function () {
 
     		i: function intro(local) {
     			if (current) return;
-    			transition_in$1(instance.$$.fragment, local);
+    			transition_in(instance.$$.fragment, local);
 
     			current = true;
     		},
 
     		o: function outro(local) {
-    			transition_out$1(instance.$$.fragment, local);
+    			transition_out(instance.$$.fragment, local);
     			current = false;
     		},
 
     		d: function destroy(detaching) {
     			if (detaching) {
-    				detach$1(first);
+    				detach(first);
     			}
 
-    			destroy_component$1(instance, detaching);
+    			destroy_component(instance, detaching);
     		}
     	};
     }
@@ -1805,7 +1524,7 @@ var app = (function () {
     		c: function create() {
     			for (i = 0; i < each_blocks.length; i += 1) each_blocks[i].c();
 
-    			each_1_anchor = empty$1();
+    			each_1_anchor = empty();
     		},
 
     		l: function claim(nodes) {
@@ -1815,27 +1534,27 @@ var app = (function () {
     		m: function mount(target, anchor) {
     			for (i = 0; i < each_blocks.length; i += 1) each_blocks[i].m(target, anchor);
 
-    			insert$1(target, each_1_anchor, anchor);
+    			insert(target, each_1_anchor, anchor);
     			current = true;
     		},
 
     		p: function update(changed, ctx) {
     			const each_value = filter(ctx.$appState.store, ctx.spawnOptions.spawn, ctx.ns);
 
-    			group_outros$1();
+    			group_outros();
     			each_blocks = update_keyed_each(each_blocks, changed, get_key, 1, ctx, each_value, each_1_lookup, each_1_anchor.parentNode, outro_and_destroy_block, create_each_block, each_1_anchor, get_each_context);
-    			check_outros$1();
+    			check_outros();
     		},
 
     		i: function intro(local) {
     			if (current) return;
-    			for (var i = 0; i < each_value.length; i += 1) transition_in$1(each_blocks[i]);
+    			for (var i = 0; i < each_value.length; i += 1) transition_in(each_blocks[i]);
 
     			current = true;
     		},
 
     		o: function outro(local) {
-    			for (i = 0; i < each_blocks.length; i += 1) transition_out$1(each_blocks[i]);
+    			for (i = 0; i < each_blocks.length; i += 1) transition_out(each_blocks[i]);
 
     			current = false;
     		},
@@ -1844,7 +1563,7 @@ var app = (function () {
     			for (i = 0; i < each_blocks.length; i += 1) each_blocks[i].d(detaching);
 
     			if (detaching) {
-    				detach$1(each_1_anchor);
+    				detach(each_1_anchor);
     			}
     		}
     	};
@@ -1853,8 +1572,8 @@ var app = (function () {
     function instance_1($$self, $$props, $$invalidate) {
     	let $appState;
 
-    	validate_store$1(appState, 'appState');
-    	component_subscribe$1($$self, appState, $$value => { $appState = $$value; $$invalidate('$appState', $appState); });
+    	validate_store(appState, 'appState');
+    	component_subscribe($$self, appState, $$value => { $appState = $$value; $$invalidate('$appState', $appState); });
 
     	
 
@@ -1886,10 +1605,10 @@ var app = (function () {
     	};
     }
 
-    class Dialogic extends SvelteComponentDev$1 {
+    class Dialogic extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$1(this, options, instance_1, create_fragment, safe_not_equal$1, ["spawnOptions", "Instance", "ns"]);
+    		init(this, options, instance_1, create_fragment, safe_not_equal, ["spawnOptions", "Instance", "ns"]);
 
     		const { ctx } = this.$$;
     		const props = options.props || {};
@@ -1946,7 +1665,7 @@ var app = (function () {
     	function switch_props(ctx) {
     		let switch_instance_props = {};
     		for (var i = 0; i < switch_instance_spread_levels.length; i += 1) {
-    			switch_instance_props = assign$1(switch_instance_props, switch_instance_spread_levels[i]);
+    			switch_instance_props = assign(switch_instance_props, switch_instance_spread_levels[i]);
     		}
     		return {
     			props: switch_instance_props,
@@ -1965,15 +1684,15 @@ var app = (function () {
 
     	var div_data = {};
     	for (var i = 0; i < div_levels.length; i += 1) {
-    		div_data = assign$1(div_data, div_levels[i]);
+    		div_data = assign(div_data, div_levels[i]);
     	}
 
     	return {
     		c: function create() {
-    			div = element$1("div");
+    			div = element("div");
     			if (switch_instance) switch_instance.$$.fragment.c();
     			set_attributes(div, div_data);
-    			add_location$1(div, file, 46, 0, 840);
+    			add_location(div, file, 46, 0, 840);
     		},
 
     		l: function claim(nodes) {
@@ -1981,10 +1700,10 @@ var app = (function () {
     		},
 
     		m: function mount(target, anchor) {
-    			insert$1(target, div, anchor);
+    			insert(target, div, anchor);
 
     			if (switch_instance) {
-    				mount_component$1(switch_instance, div, null);
+    				mount_component(switch_instance, div, null);
     			}
 
     			ctx.div_binding(div);
@@ -1999,20 +1718,20 @@ var app = (function () {
 
     			if (switch_value !== (switch_value = ctx.component)) {
     				if (switch_instance) {
-    					group_outros$1();
+    					group_outros();
     					const old_component = switch_instance;
-    					transition_out$1(old_component.$$.fragment, 1, 0, () => {
-    						destroy_component$1(old_component, 1);
+    					transition_out(old_component.$$.fragment, 1, 0, () => {
+    						destroy_component(old_component, 1);
     					});
-    					check_outros$1();
+    					check_outros();
     				}
 
     				if (switch_value) {
     					switch_instance = new switch_value(switch_props());
 
     					switch_instance.$$.fragment.c();
-    					transition_in$1(switch_instance.$$.fragment, 1);
-    					mount_component$1(switch_instance, div, null);
+    					transition_in(switch_instance.$$.fragment, 1);
+    					mount_component(switch_instance, div, null);
     				} else {
     					switch_instance = null;
     				}
@@ -2030,22 +1749,22 @@ var app = (function () {
 
     		i: function intro(local) {
     			if (current) return;
-    			if (switch_instance) transition_in$1(switch_instance.$$.fragment, local);
+    			if (switch_instance) transition_in(switch_instance.$$.fragment, local);
 
     			current = true;
     		},
 
     		o: function outro(local) {
-    			if (switch_instance) transition_out$1(switch_instance.$$.fragment, local);
+    			if (switch_instance) transition_out(switch_instance.$$.fragment, local);
     			current = false;
     		},
 
     		d: function destroy(detaching) {
     			if (detaching) {
-    				detach$1(div);
+    				detach(div);
     			}
 
-    			if (switch_instance) destroy_component$1(switch_instance);
+    			if (switch_instance) destroy_component(switch_instance);
     			ctx.div_binding(null);
     		}
     	};
@@ -2084,7 +1803,7 @@ var app = (function () {
     	});
 
     	function div_binding($$value) {
-    		binding_callbacks$1[$$value ? 'unshift' : 'push'](() => {
+    		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
     			$$invalidate('domElement', domElement = $$value);
     		});
     	}
@@ -2122,10 +1841,10 @@ var app = (function () {
     	};
     }
 
-    class Instance extends SvelteComponentDev$1 {
+    class Instance extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$1(this, options, instance, create_fragment$1, safe_not_equal$1, ["component", "spawnOptions", "instanceOptions", "className", "showClassName"]);
+    		init(this, options, instance, create_fragment$1, safe_not_equal, ["component", "spawnOptions", "instanceOptions", "className", "showClassName"]);
     	}
 
     	get component() {
@@ -2193,7 +1912,7 @@ var app = (function () {
     		},
 
     		m: function mount(target, anchor) {
-    			mount_component$1(dialogic, target, anchor);
+    			mount_component(dialogic, target, anchor);
     			current = true;
     		},
 
@@ -2207,18 +1926,18 @@ var app = (function () {
 
     		i: function intro(local) {
     			if (current) return;
-    			transition_in$1(dialogic.$$.fragment, local);
+    			transition_in(dialogic.$$.fragment, local);
 
     			current = true;
     		},
 
     		o: function outro(local) {
-    			transition_out$1(dialogic.$$.fragment, local);
+    			transition_out(dialogic.$$.fragment, local);
     			current = false;
     		},
 
     		d: function destroy(detaching) {
-    			destroy_component$1(dialogic, detaching);
+    			destroy_component(dialogic, detaching);
     		}
     	};
     }
@@ -2246,10 +1965,10 @@ var app = (function () {
     	return { spawn, id, spawnOptions };
     }
 
-    class Dialog extends SvelteComponentDev$1 {
+    class Dialog extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$1(this, options, instance$1, create_fragment$2, safe_not_equal$1, ["spawn", "id"]);
+    		init(this, options, instance$1, create_fragment$2, safe_not_equal, ["spawn", "id"]);
     	}
 
     	get spawn() {
@@ -2293,7 +2012,7 @@ var app = (function () {
     		},
 
     		m: function mount(target, anchor) {
-    			mount_component$1(dialogic, target, anchor);
+    			mount_component(dialogic, target, anchor);
     			current = true;
     		},
 
@@ -2307,18 +2026,18 @@ var app = (function () {
 
     		i: function intro(local) {
     			if (current) return;
-    			transition_in$1(dialogic.$$.fragment, local);
+    			transition_in(dialogic.$$.fragment, local);
 
     			current = true;
     		},
 
     		o: function outro(local) {
-    			transition_out$1(dialogic.$$.fragment, local);
+    			transition_out(dialogic.$$.fragment, local);
     			current = false;
     		},
 
     		d: function destroy(detaching) {
-    			destroy_component$1(dialogic, detaching);
+    			destroy_component(dialogic, detaching);
     		}
     	};
     }
@@ -2346,10 +2065,10 @@ var app = (function () {
     	return { spawn, id, spawnOptions };
     }
 
-    class Notification extends SvelteComponentDev$1 {
+    class Notification extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$1(this, options, instance$2, create_fragment$3, safe_not_equal$1, ["spawn", "id"]);
+    		init(this, options, instance$2, create_fragment$3, safe_not_equal, ["spawn", "id"]);
     	}
 
     	get spawn() {
