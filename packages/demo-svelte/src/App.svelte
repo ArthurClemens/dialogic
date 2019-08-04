@@ -1,35 +1,41 @@
 <script>
-  import Notification, { notification } from "./notification/Notification.svelte";
-  import Dialog, { dialog } from "./dialog/Dialog.svelte";
+  import { Notification, notification, Dialog, dialog } from "dialogic-svelte";
+  import DefaultContent from "./default/Content.svelte";
+  import IntervalContent from "./interval/Content.svelte";
 
   const dialogCount = dialog.count;
   const notificationCount = notification.count;
 
-  import uuidv4 from "uuid/v4";
-
   const getRandomNumber = () => Math.round(1000 * Math.random());
 
-  $: showDialogs = false;
+  $: showDialogs = true;
   $: showNotifications = true;
 
   const dialogOneProps = {
-    title: "One",
     showDuration: 0.5,
     showDelay: 0.25,
     hideDuration: 0.5,
     hideDelay: .25,
-    id: uuidv4(),
+    component: IntervalContent,
+    className: "xxx",
+    showClassName: "xxx-visible",
+    instanceOptions: { 
+      title: "Clock"
+    }
   };
   const dialogTwoProps = {
-    title: "Two",
     showDuration: 0.75,
     showDelay: 0,
     hideDuration: 0.75,
     hideDelay: 0,
-    id: uuidv4()
+    component: DefaultContent,
+    className: "xxx",
+    showClassName: "xxx-visible",
+    instanceOptions: { 
+      title: "Fade"
+    }
   };
   const dialogFourProps = {
-    title: "Four",
     transitions: {
       show: domElements => {
         const el = domElements.domElement;
@@ -48,9 +54,12 @@
       hide: domElements => {
         const el = domElements.domElement;
         return { duration: 0.5, transition: () => el.style.opacity = 0 };
-      }
+      },
     },
-    id: uuidv4()
+    component: DefaultContent,
+    instanceOptions: { 
+      title: "Transitions"
+    }
   };
 
   const clearOptions = {
@@ -62,6 +71,16 @@
     }
   };
 </script>
+
+<style>
+  :global(.xxx) {
+    opacity: 0;
+  }
+  :global(.xxx-visible) {
+    opacity: 1;
+  }
+</style>
+
 
 <button on:click={() => notification.hideAll({ hideDelay: 0, hideDuration: .25 })}>Clear notifications</button>
 
@@ -85,7 +104,12 @@
 
 <div>
   <button
-    on:click={() => dialog.show({ title: 'Default ' + getRandomNumber() })}>
+    on:click={() => dialog.show({
+      component: DefaultContent,
+      instanceOptions: { 
+        title: "Default"
+      }
+    })}>
     Default
   </button>
   <button on:click={() => dialog.hide()}>Hide</button>
@@ -94,8 +118,11 @@
 <div>
   <button
     on:click={() => dialog.show({
-      title: 'Timer ' + getRandomNumber(),
-      timeout: 2000
+      timeout: 2000,
+      component: DefaultContent,
+      instanceOptions: { 
+        title: "With timer"
+      }
     })}>
     With timer
   </button>
@@ -106,11 +133,14 @@
   <button
     on:click={() => dialog.show(
       {
-        title: 'Promises ' + getRandomNumber(),
         didShow: id => console.log("didShow", id),
         didHide: id => console.log("didHide", id),
         showDuration: 0.5,
         showDelay: 0.25,
+        component: DefaultContent,
+        instanceOptions: { 
+          title: "With Promise"
+        }
       },
       {
         id: "withPromise"
@@ -126,7 +156,14 @@
 
 <div>
   <button
-    on:click={() => dialog.show({ ...dialogOneProps, title: dialogOneProps.title + ' ' + getRandomNumber() }, { id: dialogOneProps.id })}>
+    on:click={() => dialog.show({
+      ...dialogOneProps,
+      showDelay: .5,
+      hideDelay: 0,
+      instanceOptions: { 
+        title: dialogOneProps.instanceOptions.title + ' ' + getRandomNumber()
+      }
+    }, { id: dialogOneProps.id })}>
     Show delay
   </button>
   <button on:click={() => dialog.hide({ id: dialogOneProps.id })}>Hide</button>
@@ -147,7 +184,12 @@
 </div>
 <div>
   <button
-    on:click={() => dialog.show({ title: 'Custom spawn' }, { spawn: 'special' })}>
+    on:click={() => dialog.show({
+      component: DefaultContent,
+      instanceOptions: { 
+        title: "Custom spawn"
+      }
+    }, { spawn: 'special' })}>
     Show default in spawn
   </button>
   <button on:click={() => dialog.hide({ spawn: 'special' })}>Hide</button>
@@ -169,7 +211,12 @@
 Queued dialog
 <div>
   <button
-    on:click={() => dialog.show({ title: 'Queued ' + Math.round(1000 * Math.random()) }, { spawn: 'Q', queued: true })}>
+    on:click={() => dialog.show({
+      component: DefaultContent,
+      instanceOptions: { 
+        title: 'Queued ' + Math.round(1000 * Math.random())
+      }
+    }, { spawn: 'Q', queued: true })}>
     Queued
   </button>
   <button on:click={() => dialog.hide({ spawn: 'Q' })}>Hide</button>
@@ -194,9 +241,18 @@ Queued dialog
   <button
     on:click={() => notification.show(
       {
-        title: 'N ' + getRandomNumber(),
         didShow: id => console.log("didShow", id),
         didHide: id => console.log("didHide", id),
+        showDuration: 0.5,
+        showDelay: 0.25,
+        hideDuration: 0.5,
+        hideDelay: .25,
+        component: DefaultContent,
+        className: "xxx",
+        showClassName: "xxx-visible",
+        instanceOptions: { 
+          title: 'N ' + getRandomNumber(),
+        }
       },
       {
         spawn: 'NO'

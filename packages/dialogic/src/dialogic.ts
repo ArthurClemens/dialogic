@@ -219,8 +219,8 @@ export const count = (ns: string) =>
 const transitionItem = (item: Dialogic.Item, mode: string) => {
   return transition(
     {
+      ...item.instanceTransitionOptions,
       ...item.transitionOptions,
-      ...item.instanceTransitionOptions
     },
     mode
   );

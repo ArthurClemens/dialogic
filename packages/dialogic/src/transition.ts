@@ -19,8 +19,8 @@ export const transitionOptionKeys: TransitionOptionKeys = {
 	hideDelay: true,
 	hideTimingFunction: true,
 	transitions: true,
-	transitionClass: true,
-	showClass: true,
+	transitionClassName: true,
+	showClassName: true,
 	didShow: true,
 	didHide: true,
 	timeout: true,
@@ -39,9 +39,9 @@ type GetTransitionProps = {
 
 type TransitionProps = {
 	domElements?: Dialogic.DomElements;
-	transitionClass?: string;
-	showClass?: string;
 	showClassElement?: HTMLElement;
+	showClassName?: string;
+	transitionClassName?: string;
 } & GetTransitionProps;
 
 export const transition = (props: TransitionProps, mode?: string) => {
@@ -109,12 +109,12 @@ export const transition = (props: TransitionProps, mode?: string) => {
 			style.transitionDelay = delay + "ms";
 			
 			// Set classes (need to be set after styles)
-			if (props.transitionClass) {
-				domElement.classList.add(props.transitionClass);
+			if (props.transitionClassName) {
+				domElement.classList.add(props.transitionClassName);
 			}
-			if (props.showClass) {
+			if (props.showClassName) {
 				const showClassElement = props.showClassElement || domElement;
-				showClassElement.classList[isShow ? "add" : "remove"](props.showClass);
+				showClassElement.classList[isShow ? "add" : "remove"](props.showClassName);
 			}
 							
 			// Call transition function
@@ -127,8 +127,8 @@ export const transition = (props: TransitionProps, mode?: string) => {
 		applyTransition();
 		setTimeout(() => {
 			after();
-			if (props.transitionClass) {
-				domElement.classList.remove(props.transitionClass);
+			if (props.transitionClassName) {
+				domElement.classList.remove(props.transitionClassName);
 				// domElement.offsetHeight; // force reflow
 			}
 			resolve();

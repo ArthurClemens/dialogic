@@ -1,0 +1,24 @@
+{
+  "name": "dialogic-svelte-ts",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Logic for dialogs and notifications",
+  "main": "dist/dialogic-svelte",
+  "module": "dist/dialogic-svelte.mjs",
+  "scripts": {
+    "clean": "rm -rf dist/*",
+    "rollup": "MODULE=1 ../../node_modules/rollup/bin/rollup -c ../../scripts/rollup.config.svelte.js && ../../node_modules/rollup/bin/rollup -c ../../scripts/rollup.config.svelte.js ",
+    "build": "npm run clean && npm run rollup && npm run size",
+    "size": "gzip -c dist/dialogic-svelte.js | wc -c"
+  },
+  "dependencies": {
+    "dialogic": "^0.0.1"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
+  "homepage": "https://github.com/ArthurClemens/dialogic",
+  "license": "MIT"
+}

@@ -103,8 +103,8 @@ const transitionOptionKeys = {
     hideDelay: true,
     hideTimingFunction: true,
     transitions: true,
-    transitionClass: true,
-    showClass: true,
+    transitionClassName: true,
+    showClassName: true,
     didShow: true,
     didHide: true,
     timeout: true,
@@ -167,12 +167,12 @@ const transition = (props, mode) => {
             style.transitionDuration = duration + "ms";
             style.transitionDelay = delay + "ms";
             // Set classes (need to be set after styles)
-            if (props.transitionClass) {
-                domElement.classList.add(props.transitionClass);
+            if (props.transitionClassName) {
+                domElement.classList.add(props.transitionClassName);
             }
-            if (props.showClass) {
+            if (props.showClassName) {
                 const showClassElement = props.showClassElement || domElement;
-                showClassElement.classList[isShow ? "add" : "remove"](props.showClass);
+                showClassElement.classList[isShow ? "add" : "remove"](props.showClassName);
             }
             // Call transition function
             if (transitionProps.transition) {
@@ -183,8 +183,8 @@ const transition = (props, mode) => {
         applyTransition();
         setTimeout(() => {
             after();
-            if (props.transitionClass) {
-                domElement.classList.remove(props.transitionClass);
+            if (props.transitionClassName) {
+                domElement.classList.remove(props.transitionClassName);
                 // domElement.offsetHeight; // force reflow
             }
             resolve();
@@ -727,8 +727,8 @@ const resetItem = (item, ns) => {
 const count = (ns) => getCount(ns);
 const transitionItem = (item, mode) => {
     return transition({
+        ...item.instanceTransitionOptions,
         ...item.transitionOptions,
-        ...item.instanceTransitionOptions
     }, mode);
 };
 const deferredHideItem = async function (item, timeout, ns) {

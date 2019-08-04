@@ -1,5 +1,5 @@
 import { dialog as dialogicDialog } from "dialogic";
-import { getCount } from "../dialogic/stores";
+import { getCount } from "./stores";
 
 export const dialog = {
   ...dialogicDialog,

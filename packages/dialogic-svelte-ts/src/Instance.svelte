@@ -6,23 +6,21 @@
   // DOM bindings
   let domElement;
 
-  export let id = undefined;
-  export let title = "";
+  export let component = undefined;
   export let spawnOptions = undefined;
   export let instanceOptions = undefined;
-  export let className = "";
-  export let showClass = "pe-dialog--visible";
-  
+  export let className = undefined;
+  export let showClassName = undefined;
+
   $: R_classNames = [
-    "pe-dialog",
     className
 	].join(" ");
 
-  const dispatchTransition = (name, hideDelay) =>
+  const dispatchTransition = (name) =>
     dispatch(name, {
       spawnOptions,
       transitionOptions: {
-        showClass,
+        showClassName,
         domElements: {
           domElement
         },
@@ -51,8 +49,6 @@
   bind:this={domElement}
   {...elementProps}
 >
-  Dialog
-  {title}
-  <button on:click={hide}>hide from instance</button>
+  <svelte:component this={component} hide={hide} {...instanceOptions} />
 </div>
 

@@ -6,26 +6,24 @@
   // DOM bindings
   let domElement;
 
-  export let id = undefined;
-  export let title = "";
+  export let component = undefined;
   export let spawnOptions = undefined;
   export let instanceOptions = undefined;
-  export let className = "";
-  export let showClass = "xxx--visible";
-  
+  export let className = undefined;
+  export let showClassName = undefined;
+
   $: R_classNames = [
-    "xxx",
     className
 	].join(" ");
 
-  const dispatchTransition = name =>
+  const dispatchTransition = (name) =>
     dispatch(name, {
       spawnOptions,
       transitionOptions: {
-        showClass,
+        showClassName,
         domElements: {
           domElement
-        }
+        },
       },
     });
 
@@ -46,29 +44,11 @@
   };
 </script>
 
-<style>
-  :global(.xxx) {
-    background-color: #f0f0f0;
-    padding: 10px;
-    opacity: 0;
-    border: 5px solid #fff;
-    transition-property: opacity, background-color, transform;
-    transition-duration: 220ms;
-    transition-delay: 0ms;
-    transition-timing-function: ease-in-out;
-  }
-  :global(.xxx--visible) {
-    opacity: 1;
-  }
-</style>
-
 <div 
   class={R_classNames}
   bind:this={domElement}
   {...elementProps}
 >
-  Notification
-  {title}
-  <button on:click={hide}>hide from instance</button>
+  <svelte:component this={component} hide={hide} {...instanceOptions} />
 </div>
 

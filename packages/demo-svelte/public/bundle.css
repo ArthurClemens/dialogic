@@ -1,3 +1,3 @@
-.xxx{background-color:#f0f0f0;padding:10px;opacity:0;border:5px solid #fff;transition-property:opacity, background-color, transform;transition-duration:220ms;transition-delay:0ms;transition-timing-function:ease-in-out}.xxx--visible{opacity:1}
+.xxx{opacity:0}.xxx-visible{opacity:1}
 
 /*# sourceMappingURL=bundle.css.map */

@@ -55,9 +55,7 @@ export namespace Dialogic {
     queued?: boolean;
   }
 
-  type InstanceSpawnOptions = {
-    
-  }
+  type InstanceSpawnOptions = {}
 
   type SpawnOptions = {
     id: string;
@@ -89,6 +87,7 @@ export namespace Dialogic {
     showTimingFunction?: string;
     timeout?: number;
     transitions?: Transitions;
+    showClassName?: string;
   } & DefaultTransitionOptions;
 
   interface InstanceOptions {
