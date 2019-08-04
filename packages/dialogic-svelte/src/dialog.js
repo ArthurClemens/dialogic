@@ -3,5 +3,5 @@ import { getCount } from "./stores";
 
 export const dialog = {
   ..._dialog,
-  count: getCount(_dialog.ns)
+  count: getCount(_dialog.ns),
 };

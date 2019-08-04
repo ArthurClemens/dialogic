@@ -27,11 +27,11 @@
       },
     });
 
-  const show = e => {
+  const show = () => {
     dispatchTransition("show");
   };
 
-  const hide = e => {
+  const hide = () => {
     dispatchTransition("hide");
   };
 

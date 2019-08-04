@@ -20,6 +20,6 @@ export const show = _show(ns, defaultTransitionOptions, defaultSpawnOptions);
 export const hide = _hide(ns, defaultSpawnOptions);
 export const pause = _pause(ns, defaultSpawnOptions);
 export const resume = _resume(ns, defaultSpawnOptions);
-export const resetAll = _resetAll(ns);
 export const hideAll = _hideAll(ns, defaultSpawnOptions);
+export const resetAll = _resetAll(ns);
 export const count = _count(ns);
