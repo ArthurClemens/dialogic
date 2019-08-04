@@ -1273,6 +1273,7 @@ var app = (function () {
     	resetAll: resetAll$2,
     	count: count$2
     });
+    //# sourceMappingURL=dialogic.mjs.map
 
     const subscriber_queue = [];
     /**
@@ -2243,7 +2244,7 @@ var app = (function () {
 
     const file$3 = "src/App.svelte";
 
-    // (91:0) {#if showDialogs}
+    // (98:0) {#if showDialogs}
     function create_if_block_1(ctx) {
     	var h2, t1, p0, t2, t3, t4, hr0, t5, div0, button0, t7, button1, t9, div1, button2, t11, button3, t13, div2, button4, t15, button5, t17, div3, button6, t19, button7, t21, div4, button8, t23, button9, t25, div5, button10, t27, button11, t29, div6, button12, t31, button13, t33, hr1, t34, div7, p1, t36, t37, div8, p2, t39, t40, hr2, t41, div9, button14, t43, button15, t45, div10, p3, t47, current, dispose;
 
@@ -2344,41 +2345,41 @@ var app = (function () {
     			p3.textContent = "Dialog queued:";
     			t47 = space();
     			dialog2.$$.fragment.c();
-    			add_location(h2, file$3, 92, 0, 2348);
-    			add_location(p0, file$3, 94, 0, 2365);
-    			add_location(hr0, file$3, 96, 0, 2404);
-    			add_location(button0, file$3, 99, 2, 2420);
-    			add_location(button1, file$3, 106, 2, 2553);
-    			add_location(div0, file$3, 98, 0, 2412);
-    			add_location(button2, file$3, 110, 2, 2622);
-    			add_location(button3, file$3, 118, 2, 2782);
-    			add_location(div1, file$3, 109, 0, 2614);
-    			add_location(button4, file$3, 122, 2, 2886);
-    			add_location(button5, file$3, 138, 2, 3294);
-    			add_location(div2, file$3, 121, 0, 2878);
-    			add_location(button6, file$3, 145, 2, 3444);
-    			add_location(button7, file$3, 154, 2, 3677);
-    			add_location(div3, file$3, 144, 0, 3436);
-    			add_location(button8, file$3, 157, 2, 3770);
-    			add_location(button9, file$3, 161, 2, 3888);
-    			add_location(div4, file$3, 156, 0, 3762);
-    			add_location(button10, file$3, 164, 2, 3981);
-    			add_location(button11, file$3, 168, 2, 4102);
-    			add_location(div5, file$3, 163, 0, 3973);
-    			add_location(button12, file$3, 171, 2, 4196);
-    			add_location(button13, file$3, 178, 2, 4370);
-    			add_location(div6, file$3, 170, 0, 4188);
-    			add_location(hr1, file$3, 181, 0, 4451);
-    			add_location(p1, file$3, 184, 2, 4467);
-    			add_location(div7, file$3, 183, 0, 4459);
-    			add_location(p2, file$3, 189, 2, 4511);
-    			add_location(div8, file$3, 188, 0, 4503);
-    			add_location(hr2, file$3, 193, 0, 4574);
-    			add_location(button14, file$3, 196, 2, 4603);
-    			add_location(button15, file$3, 203, 2, 4800);
-    			add_location(div9, file$3, 195, 0, 4595);
-    			add_location(p3, file$3, 207, 2, 4883);
-    			add_location(div10, file$3, 206, 0, 4875);
+    			add_location(h2, file$3, 99, 0, 2504);
+    			add_location(p0, file$3, 101, 0, 2521);
+    			add_location(hr0, file$3, 103, 0, 2560);
+    			add_location(button0, file$3, 106, 2, 2576);
+    			add_location(button1, file$3, 113, 2, 2709);
+    			add_location(div0, file$3, 105, 0, 2568);
+    			add_location(button2, file$3, 117, 2, 2778);
+    			add_location(button3, file$3, 125, 2, 2938);
+    			add_location(div1, file$3, 116, 0, 2770);
+    			add_location(button4, file$3, 129, 2, 3042);
+    			add_location(button5, file$3, 145, 2, 3450);
+    			add_location(div2, file$3, 128, 0, 3034);
+    			add_location(button6, file$3, 152, 2, 3600);
+    			add_location(button7, file$3, 161, 2, 3833);
+    			add_location(div3, file$3, 151, 0, 3592);
+    			add_location(button8, file$3, 164, 2, 3926);
+    			add_location(button9, file$3, 168, 2, 4044);
+    			add_location(div4, file$3, 163, 0, 3918);
+    			add_location(button10, file$3, 171, 2, 4137);
+    			add_location(button11, file$3, 175, 2, 4258);
+    			add_location(div5, file$3, 170, 0, 4129);
+    			add_location(button12, file$3, 178, 2, 4352);
+    			add_location(button13, file$3, 185, 2, 4526);
+    			add_location(div6, file$3, 177, 0, 4344);
+    			add_location(hr1, file$3, 188, 0, 4607);
+    			add_location(p1, file$3, 191, 2, 4623);
+    			add_location(div7, file$3, 190, 0, 4615);
+    			add_location(p2, file$3, 196, 2, 4667);
+    			add_location(div8, file$3, 195, 0, 4659);
+    			add_location(hr2, file$3, 200, 0, 4730);
+    			add_location(button14, file$3, 203, 2, 4759);
+    			add_location(button15, file$3, 210, 2, 4956);
+    			add_location(div9, file$3, 202, 0, 4751);
+    			add_location(p3, file$3, 214, 2, 5039);
+    			add_location(div10, file$3, 213, 0, 5031);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_5),
@@ -2546,7 +2547,7 @@ var app = (function () {
     	};
     }
 
-    // (218:0) {#if showNotifications}
+    // (225:0) {#if showNotifications}
     function create_if_block(ctx) {
     	var h2, t1, div0, button0, t3, button1, t5, button2, t7, button3, t9, div1, p0, t11, p1, t12, t13, t14, t15, hr, current, dispose;
 
@@ -2581,16 +2582,16 @@ var app = (function () {
     			notification_1.$$.fragment.c();
     			t15 = space();
     			hr = element("hr");
-    			add_location(h2, file$3, 219, 0, 5071);
-    			add_location(button0, file$3, 222, 2, 5102);
-    			add_location(button1, file$3, 242, 2, 5630);
-    			add_location(button2, file$3, 247, 2, 5792);
-    			add_location(button3, file$3, 252, 2, 5896);
-    			add_location(div0, file$3, 221, 0, 5094);
-    			add_location(p0, file$3, 260, 2, 6008);
-    			add_location(p1, file$3, 261, 2, 6038);
-    			add_location(div1, file$3, 259, 0, 6000);
-    			add_location(hr, file$3, 265, 0, 6126);
+    			add_location(h2, file$3, 226, 0, 5227);
+    			add_location(button0, file$3, 229, 2, 5258);
+    			add_location(button1, file$3, 245, 2, 5699);
+    			add_location(button2, file$3, 250, 2, 5861);
+    			add_location(button3, file$3, 255, 2, 5965);
+    			add_location(div0, file$3, 228, 0, 5250);
+    			add_location(p0, file$3, 263, 2, 6077);
+    			add_location(p1, file$3, 264, 2, 6107);
+    			add_location(div1, file$3, 262, 0, 6069);
+    			add_location(hr, file$3, 268, 0, 6195);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_22),
@@ -2699,14 +2700,14 @@ var app = (function () {
     			t14 = space();
     			if (if_block1) if_block1.c();
     			if_block1_anchor = empty();
-    			add_location(button0, file$3, 78, 0, 1875);
-    			add_location(button1, file$3, 80, 0, 1988);
-    			add_location(button2, file$3, 82, 0, 2083);
-    			add_location(button3, file$3, 84, 0, 2161);
-    			add_location(hr0, file$3, 86, 0, 2244);
-    			add_location(button4, file$3, 88, 0, 2252);
-    			add_location(hr1, file$3, 213, 0, 4943);
-    			add_location(button5, file$3, 215, 0, 4951);
+    			add_location(button0, file$3, 85, 0, 2031);
+    			add_location(button1, file$3, 87, 0, 2144);
+    			add_location(button2, file$3, 89, 0, 2239);
+    			add_location(button3, file$3, 91, 0, 2317);
+    			add_location(hr0, file$3, 93, 0, 2400);
+    			add_location(button4, file$3, 95, 0, 2408);
+    			add_location(hr1, file$3, 220, 0, 5099);
+    			add_location(button5, file$3, 222, 0, 5107);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler),
@@ -3028,13 +3029,9 @@ var app = (function () {
     	      {
     	        didShow: id => console.log("didShow", id),
     	        didHide: id => console.log("didHide", id),
-    	        showDuration: 0.5,
-    	        showDelay: 0.25,
-    	        hideDuration: 0.5,
-    	        hideDelay: .25,
     	        component: Content,
-    	        className: "xxx",
-    	        showClassName: "xxx-visible",
+    	        className: "xxx-timings",
+    	        showClassName: "xxx-visible-timings",
     	        title: 'N ' + getRandomNumber(),
     	      },
     	      {

@@ -73,8 +73,15 @@
   :global(.xxx-visible) {
     opacity: 1;
   }
+  :global(.xxx-timings) {
+    opacity: 0;
+    transition-duration: 500ms;
+    transition-delay: 0;
+  }
+  :global(.xxx-visible-timings) {
+    opacity: 1;
+  }
 </style>
-
 
 <button on:click={() => notification.hideAll({ hideDelay: 0, hideDuration: .25 })}>Clear notifications</button>
 
@@ -225,13 +232,9 @@ Queued dialog
       {
         didShow: id => console.log("didShow", id),
         didHide: id => console.log("didHide", id),
-        showDuration: 0.5,
-        showDelay: 0.25,
-        hideDuration: 0.5,
-        hideDelay: .25,
         component: DefaultContent,
-        className: "xxx",
-        showClassName: "xxx-visible",
+        className: "xxx-timings",
+        showClassName: "xxx-visible-timings",
         title: 'N ' + getRandomNumber(),
       },
       {
