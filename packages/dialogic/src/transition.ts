@@ -12,18 +12,20 @@ type TransitionOptionKeys = {
 }
 
 export const transitionOptionKeys: TransitionOptionKeys = {
-	showDuration: true,
-	showDelay: true,
-	showTimingFunction: true,
-	hideDuration: true,
-	hideDelay: true,
-	hideTimingFunction: true,
-	transitions: true,
-	transitionClassName: true,
-	showClassName: true,
-	didShow: true,
+	className: true,
+	component: true,
 	didHide: true,
+	didShow: true,
+	hideDelay: true,
+	hideDuration: true,
+	hideTimingFunction: true,
+	showClassName: true,
+	showDelay: true,
+	showDuration: true,
+	showTimingFunction: true,
 	timeout: true,
+	transitionClassName: true,
+	transitions: true,
 };
 
 type GetTransitionProps = {

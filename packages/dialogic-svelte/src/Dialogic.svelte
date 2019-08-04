@@ -15,10 +15,11 @@
   
 </script>
 
-{#each filter($appState.store, spawnOptions.spawn, ns) as { spawnOptions, instanceOptions, key }, index(key)}
+{#each filter($appState.store, spawnOptions.spawn, ns) as { spawnOptions, transitionOptions, instanceOptions, key }, index(key)}
   <Instance
-    {...instanceOptions}
     {spawnOptions}
+    {transitionOptions}
+    {instanceOptions}
     on:mount={nsOnInstanceMounted}
     on:show={nsOnShowInstance}
     on:hide={nsOnHideInstance}

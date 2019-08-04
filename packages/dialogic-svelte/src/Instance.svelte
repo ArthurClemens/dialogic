@@ -6,21 +6,21 @@
   // DOM bindings
   let domElement;
 
-  export let component = undefined;
   export let spawnOptions = undefined;
   export let instanceOptions = undefined;
-  export let className = undefined;
-  export let showClassName = undefined;
+  export let transitionOptions = undefined;
 
-  $: R_classNames = [
-    className
+  $: R_classNames = [,
+    transitionOptions.className,
+    instanceOptions.className
 	].join(" ");
 
   const dispatchTransition = (name) =>
     dispatch(name, {
       spawnOptions,
       transitionOptions: {
-        showClassName,
+        className: transitionOptions.className,
+        showClassName: transitionOptions.showClassName,
         domElements: {
           domElement
         },
@@ -49,6 +49,6 @@
   bind:this={domElement}
   {...elementProps}
 >
-  <svelte:component this={component} hide={hide} {...instanceOptions} />
+  <svelte:component this={transitionOptions.component} hide={hide} {...instanceOptions} />
 </div>
 

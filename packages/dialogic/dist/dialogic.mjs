@@ -96,18 +96,20 @@ const MODE = {
     HIDE: "hide"
 };
 const transitionOptionKeys = {
-    showDuration: true,
-    showDelay: true,
-    showTimingFunction: true,
-    hideDuration: true,
-    hideDelay: true,
-    hideTimingFunction: true,
-    transitions: true,
-    transitionClassName: true,
-    showClassName: true,
-    didShow: true,
+    className: true,
+    component: true,
     didHide: true,
+    didShow: true,
+    hideDelay: true,
+    hideDuration: true,
+    hideTimingFunction: true,
+    showClassName: true,
+    showDelay: true,
+    showDuration: true,
+    showTimingFunction: true,
     timeout: true,
+    transitionClassName: true,
+    transitions: true,
 };
 const transition = (props, mode) => {
     const domElement = props.domElements
@@ -768,8 +770,8 @@ const show$1 = show(ns, defaultTransitionOptions, defaultSpawnOptions);
 const hide$1 = hide(ns, defaultSpawnOptions);
 const pause$1 = pause(ns, defaultSpawnOptions);
 const resume$1 = resume(ns, defaultSpawnOptions);
-const resetAll$1 = resetAll(ns);
 const hideAll$1 = hideAll(ns, defaultSpawnOptions);
+const resetAll$1 = resetAll(ns);
 const count$1 = count(ns);
 
 var notification = /*#__PURE__*/Object.freeze({
@@ -780,8 +782,8 @@ var notification = /*#__PURE__*/Object.freeze({
 	hide: hide$1,
 	pause: pause$1,
 	resume: resume$1,
-	resetAll: resetAll$1,
 	hideAll: hideAll$1,
+	resetAll: resetAll$1,
 	count: count$1
 });
 
@@ -797,8 +799,8 @@ const show$2 = show(ns$1, defaultTransitionOptions$1, defaultSpawnOptions$1);
 const hide$2 = hide(ns$1, defaultSpawnOptions$1);
 const pause$2 = pause(ns$1, defaultSpawnOptions$1);
 const resume$2 = resume(ns$1, defaultSpawnOptions$1);
-const resetAll$2 = resetAll(ns$1);
 const hideAll$2 = hideAll(ns$1, defaultSpawnOptions$1);
+const resetAll$2 = resetAll(ns$1);
 const count$2 = count(ns$1);
 
 var dialog = /*#__PURE__*/Object.freeze({
@@ -809,8 +811,8 @@ var dialog = /*#__PURE__*/Object.freeze({
 	hide: hide$2,
 	pause: pause$2,
 	resume: resume$2,
-	resetAll: resetAll$2,
 	hideAll: hideAll$2,
+	resetAll: resetAll$2,
 	count: count$2
 });
 

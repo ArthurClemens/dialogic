@@ -561,18 +561,20 @@ var app = (function () {
         HIDE: "hide"
     };
     const transitionOptionKeys = {
-        showDuration: true,
-        showDelay: true,
-        showTimingFunction: true,
-        hideDuration: true,
-        hideDelay: true,
-        hideTimingFunction: true,
-        transitions: true,
-        transitionClassName: true,
-        showClassName: true,
-        didShow: true,
+        className: true,
+        component: true,
         didHide: true,
+        didShow: true,
+        hideDelay: true,
+        hideDuration: true,
+        hideTimingFunction: true,
+        showClassName: true,
+        showDelay: true,
+        showDuration: true,
+        showTimingFunction: true,
         timeout: true,
+        transitionClassName: true,
+        transitions: true,
     };
     const transition = (props, mode) => {
         const domElement = props.domElements
@@ -1226,8 +1228,8 @@ var app = (function () {
     const hide$1 = hide(ns, defaultSpawnOptions);
     const pause$1 = pause(ns, defaultSpawnOptions);
     const resume$1 = resume(ns, defaultSpawnOptions);
-    const resetAll$1 = resetAll(ns);
     const hideAll$1 = hideAll(ns, defaultSpawnOptions);
+    const resetAll$1 = resetAll(ns);
     const count$1 = count(ns);
 
     var notification = /*#__PURE__*/Object.freeze({
@@ -1238,8 +1240,8 @@ var app = (function () {
     	hide: hide$1,
     	pause: pause$1,
     	resume: resume$1,
-    	resetAll: resetAll$1,
     	hideAll: hideAll$1,
+    	resetAll: resetAll$1,
     	count: count$1
     });
 
@@ -1255,8 +1257,8 @@ var app = (function () {
     const hide$2 = hide(ns$1, defaultSpawnOptions$1);
     const pause$2 = pause(ns$1, defaultSpawnOptions$1);
     const resume$2 = resume(ns$1, defaultSpawnOptions$1);
-    const resetAll$2 = resetAll(ns$1);
     const hideAll$2 = hideAll(ns$1, defaultSpawnOptions$1);
+    const resetAll$2 = resetAll(ns$1);
     const count$2 = count(ns$1);
 
     var dialog = /*#__PURE__*/Object.freeze({
@@ -1267,8 +1269,8 @@ var app = (function () {
     	hide: hide$2,
     	pause: pause$2,
     	resume: resume$2,
-    	resetAll: resetAll$2,
     	hideAll: hideAll$2,
+    	resetAll: resetAll$2,
     	count: count$2
     });
 
@@ -1399,12 +1401,12 @@ var app = (function () {
 
     const dialog$1 = {
       ...dialog,
-      count: getCount$1(dialog.ns)
+      count: getCount$1(dialog.ns),
     };
 
     const notification$1 = {
       ...notification,
-      count: getCount$1(notification.ns)
+      count: getCount$1(notification.ns),
     };
 
     // import { Dialogic } from "dialogic";
@@ -1436,26 +1438,25 @@ var app = (function () {
     function get_each_context(ctx, list, i) {
     	const child_ctx = Object.create(ctx);
     	child_ctx.spawnOptions = list[i].spawnOptions;
+    	child_ctx.transitionOptions = list[i].transitionOptions;
     	child_ctx.instanceOptions = list[i].instanceOptions;
     	child_ctx.key = list[i].key;
     	child_ctx.index = i;
     	return child_ctx;
     }
 
-    // (18:0) {#each filter($appState.store, spawnOptions.spawn, ns) as { spawnOptions, instanceOptions, key }
+    // (18:0) {#each filter($appState.store, spawnOptions.spawn, ns) as { spawnOptions, transitionOptions, instanceOptions, key }
     function create_each_block(key_1, ctx) {
     	var first, current;
 
-    	var instance_spread_levels = [
-    		ctx.instanceOptions,
-    		{ spawnOptions: ctx.spawnOptions }
-    	];
-
-    	let instance_props = {};
-    	for (var i = 0; i < instance_spread_levels.length; i += 1) {
-    		instance_props = assign(instance_props, instance_spread_levels[i]);
-    	}
-    	var instance = new ctx.Instance({ props: instance_props, $$inline: true });
+    	var instance = new ctx.Instance({
+    		props: {
+    		spawnOptions: ctx.spawnOptions,
+    		transitionOptions: ctx.transitionOptions,
+    		instanceOptions: ctx.instanceOptions
+    	},
+    		$$inline: true
+    	});
     	instance.$on("mount", ctx.nsOnInstanceMounted);
     	instance.$on("show", ctx.nsOnShowInstance);
     	instance.$on("hide", ctx.nsOnHideInstance);
@@ -1478,10 +1479,10 @@ var app = (function () {
     		},
 
     		p: function update(changed, ctx) {
-    			var instance_changes = (changed.filter || changed.$appState || changed.spawnOptions || changed.ns) ? get_spread_update(instance_spread_levels, [
-    				ctx.instanceOptions,
-    				instance_spread_levels[1]
-    			]) : {};
+    			var instance_changes = {};
+    			if (changed.filter || changed.$appState || changed.spawnOptions || changed.ns) instance_changes.spawnOptions = ctx.spawnOptions;
+    			if (changed.filter || changed.$appState || changed.spawnOptions || changed.ns) instance_changes.transitionOptions = ctx.transitionOptions;
+    			if (changed.filter || changed.$appState || changed.spawnOptions || changed.ns) instance_changes.instanceOptions = ctx.instanceOptions;
     			instance.$set(instance_changes);
     		},
 
@@ -1660,7 +1661,7 @@ var app = (function () {
     		ctx.instanceOptions
     	];
 
-    	var switch_value = ctx.component;
+    	var switch_value = ctx.transitionOptions.component;
 
     	function switch_props(ctx) {
     		let switch_instance_props = {};
@@ -1692,7 +1693,7 @@ var app = (function () {
     			div = element("div");
     			if (switch_instance) switch_instance.$$.fragment.c();
     			set_attributes(div, div_data);
-    			add_location(div, file, 46, 0, 840);
+    			add_location(div, file, 46, 0, 905);
     		},
 
     		l: function claim(nodes) {
@@ -1716,7 +1717,7 @@ var app = (function () {
     				(changed.instanceOptions) && ctx.instanceOptions
     			]) : {};
 
-    			if (switch_value !== (switch_value = ctx.component)) {
+    			if (switch_value !== (switch_value = ctx.transitionOptions.component)) {
     				if (switch_instance) {
     					group_outros();
     					const old_component = switch_instance;
@@ -1776,20 +1777,21 @@ var app = (function () {
       // DOM bindings
       let domElement;
 
-      let { component = undefined, spawnOptions = undefined, instanceOptions = undefined, className = undefined, showClassName = undefined } = $$props;
+      let { spawnOptions = undefined, instanceOptions = undefined, transitionOptions = undefined } = $$props;
 
       const dispatchTransition = (name) =>
         dispatch(name, {
           spawnOptions,
           transitionOptions: {
-            showClassName,
+            className: transitionOptions.className,
+            showClassName: transitionOptions.showClassName,
             domElements: {
               domElement
             },
           },
         });
 
-      const hide = e => {
+      const hide = () => {
         dispatchTransition("hide");
       };
 
@@ -1797,7 +1799,7 @@ var app = (function () {
         dispatchTransition("mount");
       });
 
-    	const writable_props = ['component', 'spawnOptions', 'instanceOptions', 'className', 'showClassName'];
+    	const writable_props = ['spawnOptions', 'instanceOptions', 'transitionOptions'];
     	Object.keys($$props).forEach(key => {
     		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<Instance> was created with unknown prop '${key}'`);
     	});
@@ -1809,18 +1811,17 @@ var app = (function () {
     	}
 
     	$$self.$set = $$props => {
-    		if ('component' in $$props) $$invalidate('component', component = $$props.component);
     		if ('spawnOptions' in $$props) $$invalidate('spawnOptions', spawnOptions = $$props.spawnOptions);
     		if ('instanceOptions' in $$props) $$invalidate('instanceOptions', instanceOptions = $$props.instanceOptions);
-    		if ('className' in $$props) $$invalidate('className', className = $$props.className);
-    		if ('showClassName' in $$props) $$invalidate('showClassName', showClassName = $$props.showClassName);
+    		if ('transitionOptions' in $$props) $$invalidate('transitionOptions', transitionOptions = $$props.transitionOptions);
     	};
 
     	let R_classNames, elementProps;
 
-    	$$self.$$.update = ($$dirty = { className: 1, R_classNames: 1 }) => {
-    		if ($$dirty.className) { $$invalidate('R_classNames', R_classNames = [
-            className
+    	$$self.$$.update = ($$dirty = { transitionOptions: 1, instanceOptions: 1, R_classNames: 1 }) => {
+    		if ($$dirty.transitionOptions || $$dirty.instanceOptions) { $$invalidate('R_classNames', R_classNames = [,
+            transitionOptions.className,
+            instanceOptions.className
         	].join(" ")); }
     		if ($$dirty.R_classNames) { $$invalidate('elementProps', elementProps = {
             class: R_classNames,
@@ -1829,11 +1830,9 @@ var app = (function () {
 
     	return {
     		domElement,
-    		component,
     		spawnOptions,
     		instanceOptions,
-    		className,
-    		showClassName,
+    		transitionOptions,
     		hide,
     		R_classNames,
     		elementProps,
@@ -1844,15 +1843,7 @@ var app = (function () {
     class Instance extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance, create_fragment$1, safe_not_equal, ["component", "spawnOptions", "instanceOptions", "className", "showClassName"]);
-    	}
-
-    	get component() {
-    		throw new Error("<Instance>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set component(value) {
-    		throw new Error("<Instance>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		init(this, options, instance, create_fragment$1, safe_not_equal, ["spawnOptions", "instanceOptions", "transitionOptions"]);
     	}
 
     	get spawnOptions() {
@@ -1871,19 +1862,11 @@ var app = (function () {
     		throw new Error("<Instance>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
-    	get className() {
+    	get transitionOptions() {
     		throw new Error("<Instance>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
-    	set className(value) {
-    		throw new Error("<Instance>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get showClassName() {
-    		throw new Error("<Instance>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set showClassName(value) {
+    	set transitionOptions(value) {
     		throw new Error("<Instance>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
@@ -2260,7 +2243,7 @@ var app = (function () {
 
     const file$3 = "src/App.svelte";
 
-    // (97:0) {#if showDialogs}
+    // (91:0) {#if showDialogs}
     function create_if_block_1(ctx) {
     	var h2, t1, p0, t2, t3, t4, hr0, t5, div0, button0, t7, button1, t9, div1, button2, t11, button3, t13, div2, button4, t15, button5, t17, div3, button6, t19, button7, t21, div4, button8, t23, button9, t25, div5, button10, t27, button11, t29, div6, button12, t31, button13, t33, hr1, t34, div7, p1, t36, t37, div8, p2, t39, t40, hr2, t41, div9, button14, t43, button15, t45, div10, p3, t47, current, dispose;
 
@@ -2361,41 +2344,41 @@ var app = (function () {
     			p3.textContent = "Dialog queued:";
     			t47 = space();
     			dialog2.$$.fragment.c();
-    			add_location(h2, file$3, 98, 0, 2444);
-    			add_location(p0, file$3, 100, 0, 2461);
-    			add_location(hr0, file$3, 102, 0, 2500);
-    			add_location(button0, file$3, 105, 2, 2516);
-    			add_location(button1, file$3, 114, 2, 2685);
-    			add_location(div0, file$3, 104, 0, 2508);
-    			add_location(button2, file$3, 118, 2, 2754);
-    			add_location(button3, file$3, 128, 2, 2950);
-    			add_location(div1, file$3, 117, 0, 2746);
-    			add_location(button4, file$3, 132, 2, 3054);
-    			add_location(button5, file$3, 150, 2, 3502);
-    			add_location(div2, file$3, 131, 0, 3046);
-    			add_location(button6, file$3, 157, 2, 3652);
-    			add_location(button7, file$3, 168, 2, 3937);
-    			add_location(div3, file$3, 156, 0, 3644);
-    			add_location(button8, file$3, 171, 2, 4030);
-    			add_location(button9, file$3, 175, 2, 4148);
-    			add_location(div4, file$3, 170, 0, 4022);
-    			add_location(button10, file$3, 178, 2, 4241);
-    			add_location(button11, file$3, 182, 2, 4362);
-    			add_location(div5, file$3, 177, 0, 4233);
-    			add_location(button12, file$3, 185, 2, 4456);
-    			add_location(button13, file$3, 194, 2, 4666);
-    			add_location(div6, file$3, 184, 0, 4448);
-    			add_location(hr1, file$3, 197, 0, 4747);
-    			add_location(p1, file$3, 200, 2, 4763);
-    			add_location(div7, file$3, 199, 0, 4755);
-    			add_location(p2, file$3, 205, 2, 4807);
-    			add_location(div8, file$3, 204, 0, 4799);
-    			add_location(hr2, file$3, 209, 0, 4870);
-    			add_location(button14, file$3, 212, 2, 4899);
-    			add_location(button15, file$3, 221, 2, 5132);
-    			add_location(div9, file$3, 211, 0, 4891);
-    			add_location(p3, file$3, 225, 2, 5215);
-    			add_location(div10, file$3, 224, 0, 5207);
+    			add_location(h2, file$3, 92, 0, 2348);
+    			add_location(p0, file$3, 94, 0, 2365);
+    			add_location(hr0, file$3, 96, 0, 2404);
+    			add_location(button0, file$3, 99, 2, 2420);
+    			add_location(button1, file$3, 106, 2, 2553);
+    			add_location(div0, file$3, 98, 0, 2412);
+    			add_location(button2, file$3, 110, 2, 2622);
+    			add_location(button3, file$3, 118, 2, 2782);
+    			add_location(div1, file$3, 109, 0, 2614);
+    			add_location(button4, file$3, 122, 2, 2886);
+    			add_location(button5, file$3, 138, 2, 3294);
+    			add_location(div2, file$3, 121, 0, 2878);
+    			add_location(button6, file$3, 145, 2, 3444);
+    			add_location(button7, file$3, 154, 2, 3677);
+    			add_location(div3, file$3, 144, 0, 3436);
+    			add_location(button8, file$3, 157, 2, 3770);
+    			add_location(button9, file$3, 161, 2, 3888);
+    			add_location(div4, file$3, 156, 0, 3762);
+    			add_location(button10, file$3, 164, 2, 3981);
+    			add_location(button11, file$3, 168, 2, 4102);
+    			add_location(div5, file$3, 163, 0, 3973);
+    			add_location(button12, file$3, 171, 2, 4196);
+    			add_location(button13, file$3, 178, 2, 4370);
+    			add_location(div6, file$3, 170, 0, 4188);
+    			add_location(hr1, file$3, 181, 0, 4451);
+    			add_location(p1, file$3, 184, 2, 4467);
+    			add_location(div7, file$3, 183, 0, 4459);
+    			add_location(p2, file$3, 189, 2, 4511);
+    			add_location(div8, file$3, 188, 0, 4503);
+    			add_location(hr2, file$3, 193, 0, 4574);
+    			add_location(button14, file$3, 196, 2, 4603);
+    			add_location(button15, file$3, 203, 2, 4800);
+    			add_location(div9, file$3, 195, 0, 4595);
+    			add_location(p3, file$3, 207, 2, 4883);
+    			add_location(div10, file$3, 206, 0, 4875);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_5),
@@ -2563,7 +2546,7 @@ var app = (function () {
     	};
     }
 
-    // (236:0) {#if showNotifications}
+    // (218:0) {#if showNotifications}
     function create_if_block(ctx) {
     	var h2, t1, div0, button0, t3, button1, t5, button2, t7, button3, t9, div1, p0, t11, p1, t12, t13, t14, t15, hr, current, dispose;
 
@@ -2598,16 +2581,16 @@ var app = (function () {
     			notification_1.$$.fragment.c();
     			t15 = space();
     			hr = element("hr");
-    			add_location(h2, file$3, 237, 0, 5403);
-    			add_location(button0, file$3, 240, 2, 5434);
-    			add_location(button1, file$3, 262, 2, 6002);
-    			add_location(button2, file$3, 267, 2, 6164);
-    			add_location(button3, file$3, 272, 2, 6268);
-    			add_location(div0, file$3, 239, 0, 5426);
-    			add_location(p0, file$3, 280, 2, 6380);
-    			add_location(p1, file$3, 281, 2, 6410);
-    			add_location(div1, file$3, 279, 0, 6372);
-    			add_location(hr, file$3, 285, 0, 6498);
+    			add_location(h2, file$3, 219, 0, 5071);
+    			add_location(button0, file$3, 222, 2, 5102);
+    			add_location(button1, file$3, 242, 2, 5630);
+    			add_location(button2, file$3, 247, 2, 5792);
+    			add_location(button3, file$3, 252, 2, 5896);
+    			add_location(div0, file$3, 221, 0, 5094);
+    			add_location(p0, file$3, 260, 2, 6008);
+    			add_location(p1, file$3, 261, 2, 6038);
+    			add_location(div1, file$3, 259, 0, 6000);
+    			add_location(hr, file$3, 265, 0, 6126);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_22),
@@ -2716,14 +2699,14 @@ var app = (function () {
     			t14 = space();
     			if (if_block1) if_block1.c();
     			if_block1_anchor = empty();
-    			add_location(button0, file$3, 84, 0, 1971);
-    			add_location(button1, file$3, 86, 0, 2084);
-    			add_location(button2, file$3, 88, 0, 2179);
-    			add_location(button3, file$3, 90, 0, 2257);
-    			add_location(hr0, file$3, 92, 0, 2340);
-    			add_location(button4, file$3, 94, 0, 2348);
-    			add_location(hr1, file$3, 231, 0, 5275);
-    			add_location(button5, file$3, 233, 0, 5283);
+    			add_location(button0, file$3, 78, 0, 1875);
+    			add_location(button1, file$3, 80, 0, 1988);
+    			add_location(button2, file$3, 82, 0, 2083);
+    			add_location(button3, file$3, 84, 0, 2161);
+    			add_location(hr0, file$3, 86, 0, 2244);
+    			add_location(button4, file$3, 88, 0, 2252);
+    			add_location(hr1, file$3, 213, 0, 4943);
+    			add_location(button5, file$3, 215, 0, 4951);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler),
@@ -2869,9 +2852,7 @@ var app = (function () {
         component: Content$1,
         className: "xxx",
         showClassName: "xxx-visible",
-        instanceOptions: { 
-          title: "Clock"
-        }
+        title: "Clock"
       };
       const dialogTwoProps = {
         showDuration: 0.75,
@@ -2881,9 +2862,7 @@ var app = (function () {
         component: Content,
         className: "xxx",
         showClassName: "xxx-visible",
-        instanceOptions: { 
-          title: "Fade"
-        }
+        title: "Fade"
       };
       const dialogFourProps = {
         transitions: {
@@ -2907,9 +2886,7 @@ var app = (function () {
           },
         },
         component: Content,
-        instanceOptions: { 
-          title: "Transitions"
-        }
+        title: "Transitions"
       };
 
       const clearOptions = {
@@ -2946,9 +2923,7 @@ var app = (function () {
     	function click_handler_5() {
     		return dialog$1.show({
     	      component: Content,
-    	      instanceOptions: { 
-    	        title: "Default"
-    	      }
+    	      title: "Default"
     	    });
     	}
 
@@ -2960,9 +2935,7 @@ var app = (function () {
     		return dialog$1.show({
     	      timeout: 2000,
     	      component: Content,
-    	      instanceOptions: { 
-    	        title: "With timer"
-    	      }
+    	      title: "With timer"
     	    });
     	}
 
@@ -2978,9 +2951,7 @@ var app = (function () {
     	        showDuration: 0.5,
     	        showDelay: 0.25,
     	        component: Content,
-    	        instanceOptions: { 
-    	          title: "With Promise"
-    	        }
+    	        title: "With Promise"
     	      },
     	      {
     	        id: "withPromise"
@@ -3000,9 +2971,7 @@ var app = (function () {
     	      ...dialogOneProps,
     	      showDelay: .5,
     	      hideDelay: 0,
-    	      instanceOptions: { 
-    	        title: dialogOneProps.instanceOptions.title + ' ' + getRandomNumber()
-    	      }
+    	      title: dialogOneProps.title + ' ' + getRandomNumber()
     	    }, { id: dialogOneProps.id });
     	}
 
@@ -3029,9 +2998,7 @@ var app = (function () {
     	function click_handler_17() {
     		return dialog$1.show({
     	      component: Content,
-    	      instanceOptions: { 
-    	        title: "Custom spawn"
-    	      }
+    	      title: "Custom spawn"
     	    }, { spawn: 'special' });
     	}
 
@@ -3042,9 +3009,7 @@ var app = (function () {
     	function click_handler_19() {
     		return dialog$1.show({
     	      component: Content,
-    	      instanceOptions: { 
-    	        title: 'Queued ' + Math.round(1000 * Math.random())
-    	      }
+    	      title: 'Queued ' + Math.round(1000 * Math.random())
     	    }, { spawn: 'Q', queued: true });
     	}
 
@@ -3070,9 +3035,7 @@ var app = (function () {
     	        component: Content,
     	        className: "xxx",
     	        showClassName: "xxx-visible",
-    	        instanceOptions: { 
-    	          title: 'N ' + getRandomNumber(),
-    	        }
+    	        title: 'N ' + getRandomNumber(),
     	      },
     	      {
     	        spawn: 'NO'

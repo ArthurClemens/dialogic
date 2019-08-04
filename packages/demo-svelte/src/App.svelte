@@ -19,9 +19,7 @@
     component: IntervalContent,
     className: "xxx",
     showClassName: "xxx-visible",
-    instanceOptions: { 
-      title: "Clock"
-    }
+    title: "Clock"
   };
   const dialogTwoProps = {
     showDuration: 0.75,
@@ -31,9 +29,7 @@
     component: DefaultContent,
     className: "xxx",
     showClassName: "xxx-visible",
-    instanceOptions: { 
-      title: "Fade"
-    }
+    title: "Fade"
   };
   const dialogFourProps = {
     transitions: {
@@ -57,9 +53,7 @@
       },
     },
     component: DefaultContent,
-    instanceOptions: { 
-      title: "Transitions"
-    }
+    title: "Transitions"
   };
 
   const clearOptions = {
@@ -106,9 +100,7 @@
   <button
     on:click={() => dialog.show({
       component: DefaultContent,
-      instanceOptions: { 
-        title: "Default"
-      }
+      title: "Default"
     })}>
     Default
   </button>
@@ -120,9 +112,7 @@
     on:click={() => dialog.show({
       timeout: 2000,
       component: DefaultContent,
-      instanceOptions: { 
-        title: "With timer"
-      }
+      title: "With timer"
     })}>
     With timer
   </button>
@@ -138,9 +128,7 @@
         showDuration: 0.5,
         showDelay: 0.25,
         component: DefaultContent,
-        instanceOptions: { 
-          title: "With Promise"
-        }
+        title: "With Promise"
       },
       {
         id: "withPromise"
@@ -160,9 +148,7 @@
       ...dialogOneProps,
       showDelay: .5,
       hideDelay: 0,
-      instanceOptions: { 
-        title: dialogOneProps.instanceOptions.title + ' ' + getRandomNumber()
-      }
+      title: dialogOneProps.title + ' ' + getRandomNumber()
     }, { id: dialogOneProps.id })}>
     Show delay
   </button>
@@ -186,9 +172,7 @@
   <button
     on:click={() => dialog.show({
       component: DefaultContent,
-      instanceOptions: { 
-        title: "Custom spawn"
-      }
+      title: "Custom spawn"
     }, { spawn: 'special' })}>
     Show default in spawn
   </button>
@@ -213,9 +197,7 @@ Queued dialog
   <button
     on:click={() => dialog.show({
       component: DefaultContent,
-      instanceOptions: { 
-        title: 'Queued ' + Math.round(1000 * Math.random())
-      }
+      title: 'Queued ' + Math.round(1000 * Math.random())
     }, { spawn: 'Q', queued: true })}>
     Queued
   </button>
@@ -250,9 +232,7 @@ Queued dialog
         component: DefaultContent,
         className: "xxx",
         showClassName: "xxx-visible",
-        instanceOptions: { 
-          title: 'N ' + getRandomNumber(),
-        }
+        title: 'N ' + getRandomNumber(),
       },
       {
         spawn: 'NO'
