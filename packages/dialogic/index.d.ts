@@ -101,6 +101,10 @@ export namespace Dialogic {
     nothing?: undefined;
   }
 
+  type ItemTransitionState =
+    "none" |
+    "hiding";
+
   type Item = {
     id: string;
     instanceOptions: InstanceOptions;
@@ -109,6 +113,7 @@ export namespace Dialogic {
     spawnOptions: SpawnOptions;
     timer: Timer;
     transitionOptions: TransitionOptions;
+    transitionState: ItemTransitionState;
   }
 
   type NamespaceStore = {

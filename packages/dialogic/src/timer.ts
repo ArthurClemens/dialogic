@@ -47,7 +47,7 @@ export const Timer: TTimerFn = () => {
     remaining = duration;
     return new Promise((resolve, reject) => {
       onDone = () => resolve();
-      onAbort = () => resolve();
+      onAbort = () => reject();
       startTimer();
     })
   };

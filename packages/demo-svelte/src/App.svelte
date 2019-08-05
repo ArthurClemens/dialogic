@@ -8,7 +8,7 @@
 
   const getRandomNumber = () => Math.round(1000 * Math.random());
 
-  $: showDialogs = true;
+  $: showDialogs = false;
   $: showNotifications = true;
 
   const dialogOneProps = {
@@ -228,26 +228,31 @@ Queued dialog
 
 <div>
   <button
-    on:click={() => notification.show(
-      {
-        didShow: id => console.log("didShow", id),
-        didHide: id => console.log("didHide", id),
-        component: DefaultContent,
-        className: "xxx-timings",
-        showClassName: "xxx-visible-timings",
-        title: 'N ' + getRandomNumber(),
-      },
-      {
-        spawn: 'NO'
-      }
-    ).then(id => console.log("notification shown", id))}>
+    on:click={() => {
+      const title = 'N ' + getRandomNumber();
+      notification.show(
+        {
+          didShow: id => console.log("didShow", id, title),
+          didHide: id => console.log("didHide", id, title),
+          component: DefaultContent,
+          className: "xxx-timings",
+          showClassName: "xxx-visible-timings",
+          title
+        },
+        {
+          spawn: 'NO'
+        }
+      ).then(id => console.log("notification shown", id, title))}
+    }
+    >
     Queued
   </button>
-  <button on:click={() => notification.hide(
+  <button on:click={e => (
+    notification.hide(
       {
         spawn: 'NO'
       }
-    ).then(id => console.log("notification hidden from App", id))}>Hide</button>
+    )).then(id => console.log("notification hidden from App", id))}>Hide</button>
   <button on:click={() => notification.pause(
       {
         spawn: 'NO'

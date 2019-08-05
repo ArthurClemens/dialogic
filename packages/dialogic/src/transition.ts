@@ -131,7 +131,6 @@ export const transition = (props: TransitionProps, mode?: string) => {
 			after();
 			if (props.transitionClassName) {
 				domElement.classList.remove(props.transitionClassName);
-				// domElement.offsetHeight; // force reflow
 			}
 			resolve();
 		}, totalDuration);

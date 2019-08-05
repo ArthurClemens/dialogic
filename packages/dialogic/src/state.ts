@@ -1,7 +1,7 @@
 import Stream from "mithril/Stream";
 import { Dialogic } from "..";
 
-type TPatchFn = (state: Dialogic.State) => Dialogic.State;
+type PatchFn = (state: Dialogic.State) => Dialogic.State;
 
 const findItem = (id: string, items: any[]) => {
   return items.find(item => item.id === id);
@@ -27,7 +27,7 @@ const store = {
   initialState: {
     store: {},
   },
-  actions: (update: Stream<TPatchFn>) => {
+  actions: (update: Stream<PatchFn>) => {
     return {
 
       /**
@@ -119,10 +119,10 @@ const store = {
   },
 };
 
-const update: Stream<TPatchFn> = Stream<TPatchFn>();
+const update: Stream<PatchFn> = Stream<PatchFn>();
 
 export const states: Dialogic.States = Stream.scan(
-  (state: Dialogic.State, patch: TPatchFn) => patch(state),
+  (state: Dialogic.State, patch: PatchFn) => patch(state),
   {
     ...store.initialState,
   },

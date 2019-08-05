@@ -1,96 +1,3 @@
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-var rngBrowser = createCommonjsModule(function (module) {
-// Unique ID creation requires a high quality random # generator.  In the
-// browser this is a little complicated due to unknown quality of Math.random()
-// and inconsistent support for the `crypto` API.  We do the best we can via
-// feature-detection
-
-// getRandomValues needs to be invoked in a context where "this" is a Crypto
-// implementation. Also, find the complete implementation of crypto on IE11.
-var getRandomValues = (typeof(crypto) != 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto)) ||
-                      (typeof(msCrypto) != 'undefined' && typeof window.msCrypto.getRandomValues == 'function' && msCrypto.getRandomValues.bind(msCrypto));
-
-if (getRandomValues) {
-  // WHATWG crypto RNG - http://wiki.whatwg.org/wiki/Crypto
-  var rnds8 = new Uint8Array(16); // eslint-disable-line no-undef
-
-  module.exports = function whatwgRNG() {
-    getRandomValues(rnds8);
-    return rnds8;
-  };
-} else {
-  // Math.random()-based (RNG)
-  //
-  // If all else fails, use Math.random().  It's fast, but is of unspecified
-  // quality.
-  var rnds = new Array(16);
-
-  module.exports = function mathRNG() {
-    for (var i = 0, r; i < 16; i++) {
-      if ((i & 0x03) === 0) r = Math.random() * 0x100000000;
-      rnds[i] = r >>> ((i & 0x03) << 3) & 0xff;
-    }
-
-    return rnds;
-  };
-}
-});
-
-/**
- * Convert array of 16 byte values to UUID string format of the form:
- * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
- */
-var byteToHex = [];
-for (var i = 0; i < 256; ++i) {
-  byteToHex[i] = (i + 0x100).toString(16).substr(1);
-}
-
-function bytesToUuid(buf, offset) {
-  var i = offset || 0;
-  var bth = byteToHex;
-  // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
-  return ([bth[buf[i++]], bth[buf[i++]], 
-	bth[buf[i++]], bth[buf[i++]], '-',
-	bth[buf[i++]], bth[buf[i++]], '-',
-	bth[buf[i++]], bth[buf[i++]], '-',
-	bth[buf[i++]], bth[buf[i++]], '-',
-	bth[buf[i++]], bth[buf[i++]],
-	bth[buf[i++]], bth[buf[i++]],
-	bth[buf[i++]], bth[buf[i++]]]).join('');
-}
-
-var bytesToUuid_1 = bytesToUuid;
-
-function v4(options, buf, offset) {
-  var i = buf && offset || 0;
-
-  if (typeof(options) == 'string') {
-    buf = options === 'binary' ? new Array(16) : null;
-    options = null;
-  }
-  options = options || {};
-
-  var rnds = options.random || (options.rng || rngBrowser)();
-
-  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
-  rnds[6] = (rnds[6] & 0x0f) | 0x40;
-  rnds[8] = (rnds[8] & 0x3f) | 0x80;
-
-  // Copy bytes to buffer, if provided
-  if (buf) {
-    for (var ii = 0; ii < 16; ++ii) {
-      buf[i + ii] = rnds[ii];
-    }
-  }
-
-  return buf || bytesToUuid_1(rnds);
-}
-
-var v4_1 = v4;
-
 const MODE = {
     SHOW: "show",
     HIDE: "hide"
@@ -187,7 +94,6 @@ const transition = (props, mode) => {
             after();
             if (props.transitionClassName) {
                 domElement.classList.remove(props.transitionClassName);
-                // domElement.offsetHeight; // force reflow
             }
             resolve();
         }, totalDuration);
@@ -212,6 +118,10 @@ const getTransitionProps = (props, isShow) => {
             : undefined)
     };
 };
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
 
 var stream = createCommonjsModule(function (module) {
 (function() {
@@ -541,7 +451,7 @@ const Timer = () => {
         remaining = duration;
         return new Promise((resolve, reject) => {
             onDone = () => resolve();
-            onAbort = () => resolve();
+            onAbort = () => reject();
             startTimer();
         });
     };
@@ -559,6 +469,14 @@ const Timer = () => {
     };
 };
 
+let uid = 0;
+const getUid = () => uid === Number.MAX_SAFE_INTEGER
+    ? 0
+    : uid++;
+const transitionStates = {
+    none: "none",
+    hiding: "hiding"
+};
 const filterBySpawnId = (nsItems, spawn) => nsItems.filter(item => item.spawnOptions.spawn === spawn);
 /**
  * Gets a list of all non-queued items.
@@ -598,7 +516,7 @@ const getOptionsByKind = options => {
         return acc;
     }, initial);
 };
-const createInstance = (ns, defaultTransitionOptions, defaultSpawnOptions) => (options, instanceSpawnOptions) => {
+const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOptions) => (options, instanceSpawnOptions) => {
     return new Promise((resolve) => {
         const spawnOptions = {
             ...defaultSpawnOptions,
@@ -622,7 +540,7 @@ const createInstance = (ns, defaultTransitionOptions, defaultSpawnOptions) => (o
             }
             return resolve(id);
         };
-        const uid = v4_1();
+        const uid = getUid().toString();
         const item = {
             spawnOptions,
             transitionOptions,
@@ -630,9 +548,8 @@ const createInstance = (ns, defaultTransitionOptions, defaultSpawnOptions) => (o
             instanceOptions,
             id,
             timer: Timer(),
-            key: spawnOptions.queued
-                ? uid // Uniquely identify each item for keyed display
-                : id,
+            key: uid,
+            transitionState: transitionStates.none,
         };
         const maybeExistingItem = selectors.find(spawnOptions, ns);
         if (maybeExistingItem.just && !spawnOptions.queued) {
@@ -655,7 +572,7 @@ const createInstance = (ns, defaultTransitionOptions, defaultSpawnOptions) => (o
     });
 };
 const show = createInstance;
-const performOnItem = fn => (ns, defaultSpawnOptions) => (instanceSpawnOptions) => {
+const performOnItem = fn => (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
     const spawnOptions = {
         ...defaultSpawnOptions,
         ...instanceSpawnOptions,
@@ -668,7 +585,15 @@ const performOnItem = fn => (ns, defaultSpawnOptions) => (instanceSpawnOptions) 
         return Promise.resolve();
     }
 };
-const hide = performOnItem((item, ns) => hideItem(item, ns));
+const hide = performOnItem((item, ns) => {
+    if (item.transitionState !== transitionStates.hiding) {
+        item.transitionState = transitionStates.hiding;
+        return hideItem(item, ns);
+    }
+    else {
+        return Promise.resolve();
+    }
+});
 const pause = performOnItem((item, ns) => {
     if (item && item.timer) {
         item.timer.pause();
@@ -701,7 +626,7 @@ const getOverridingTransitionOptions = (item, options) => {
  * Queued items: will trigger `hideItem` only for the first item, then reset the store.
  * `options` may contain specific transition options. This comes in handy when all items should hide in the same manner.
  * */
-const hideAll = (ns, defaultSpawnOptions) => (options, instanceSpawnOptions) => {
+const hideAll = (ns) => (defaultSpawnOptions) => (options, instanceSpawnOptions) => {
     const spawnOptions = {
         ...defaultSpawnOptions,
         ...instanceSpawnOptions,
@@ -766,11 +691,11 @@ const defaultSpawnOptions = {
 const defaultTransitionOptions = {
     timeout: 3000,
 };
-const show$1 = show(ns, defaultTransitionOptions, defaultSpawnOptions);
-const hide$1 = hide(ns, defaultSpawnOptions);
-const pause$1 = pause(ns, defaultSpawnOptions);
-const resume$1 = resume(ns, defaultSpawnOptions);
-const hideAll$1 = hideAll(ns, defaultSpawnOptions);
+const show$1 = show(ns)(defaultSpawnOptions)(defaultTransitionOptions);
+const hide$1 = hide(ns)(defaultSpawnOptions);
+const pause$1 = pause(ns)(defaultSpawnOptions);
+const resume$1 = resume(ns)(defaultSpawnOptions);
+const hideAll$1 = hideAll(ns)(defaultSpawnOptions);
 const resetAll$1 = resetAll(ns);
 const count$1 = count(ns);
 
@@ -795,11 +720,11 @@ const defaultSpawnOptions$1 = {
     spawn: defaultSpawn$1,
 };
 const defaultTransitionOptions$1 = {};
-const show$2 = show(ns$1, defaultTransitionOptions$1, defaultSpawnOptions$1);
-const hide$2 = hide(ns$1, defaultSpawnOptions$1);
-const pause$2 = pause(ns$1, defaultSpawnOptions$1);
-const resume$2 = resume(ns$1, defaultSpawnOptions$1);
-const hideAll$2 = hideAll(ns$1, defaultSpawnOptions$1);
+const show$2 = show(ns$1)(defaultSpawnOptions$1)(defaultTransitionOptions$1);
+const hide$2 = hide(ns$1)(defaultSpawnOptions$1);
+const pause$2 = pause(ns$1)(defaultSpawnOptions$1);
+const resume$2 = resume(ns$1)(defaultSpawnOptions$1);
+const hideAll$2 = hideAll(ns$1)(defaultSpawnOptions$1);
 const resetAll$2 = resetAll(ns$1);
 const count$2 = count(ns$1);
 

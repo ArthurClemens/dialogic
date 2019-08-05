@@ -1,4 +1,3 @@
-import uuidv4 from "uuid/v4";
 import { transition, transitionOptionKeys, MODE } from "./transition";
 import { actions, selectors, createId } from "./state";
 import { Timer } from "./timer";
@@ -7,8 +6,19 @@ import { Dialogic } from "../index";
 export { states, actions, selectors } from "./state";
 
 type PerformFn = (item: Dialogic.Item, ns:string) => any;
-type PerformOnItemNsFn = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => Promise<any>;
+type PerformOnItemNsFn = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => Promise<any>;
 type PerformOnItemFn = (fn: PerformFn) => PerformOnItemNsFn;
+
+let uid = 0;
+const getUid = () =>
+  uid === Number.MAX_SAFE_INTEGER
+    ? 0
+    : uid++;
+
+const transitionStates = {
+  none: "none",
+  hiding: "hiding"
+};
 
 const filterBySpawnId = (nsItems: Dialogic.Item[], spawn: string) =>
   nsItems.filter(item => item.spawnOptions.spawn === spawn);
@@ -60,7 +70,7 @@ const getOptionsByKind: TGetOptionsByKind = options => {
   }, initial );
 };
 
-const createInstance = (ns: string, defaultTransitionOptions: Dialogic.DefaultTransitionOptions, defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (options: Dialogic.Options, instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (defaultTransitionOptions: Dialogic.DefaultTransitionOptions) => (options: Dialogic.Options, instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
   return new Promise((resolve) => {
 
     const spawnOptions = {
@@ -91,7 +101,7 @@ const createInstance = (ns: string, defaultTransitionOptions: Dialogic.DefaultTr
       return resolve(id);
     };
 
-    const uid = uuidv4();
+    const uid = getUid().toString();
     const item: Dialogic.Item = {
       spawnOptions,
       transitionOptions,
@@ -99,9 +109,8 @@ const createInstance = (ns: string, defaultTransitionOptions: Dialogic.DefaultTr
       instanceOptions,
       id,
       timer: Timer(),
-      key: spawnOptions.queued
-        ? uid // Uniquely identify each item for keyed display
-        : id,
+      key: uid, // Uniquely identify each item for keyed display
+      transitionState: transitionStates.none as Dialogic.ItemTransitionState,
     };
     
     const maybeExistingItem: Dialogic.MaybeItem = selectors.find(spawnOptions, ns);
@@ -126,7 +135,7 @@ const createInstance = (ns: string, defaultTransitionOptions: Dialogic.DefaultTr
 
 export const show = createInstance;
 
-export const performOnItem: PerformOnItemFn = fn => (ns, defaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+export const performOnItem: PerformOnItemFn = fn => (ns) => (defaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
   const spawnOptions = {
     ...defaultSpawnOptions,
     ...instanceSpawnOptions,
@@ -140,7 +149,14 @@ export const performOnItem: PerformOnItemFn = fn => (ns, defaultSpawnOptions) =>
 };
 
 export const hide: PerformOnItemNsFn =
-  performOnItem((item, ns) => hideItem(item, ns));
+  performOnItem((item, ns) => {
+    if (item.transitionState !== transitionStates.hiding as Dialogic.ItemTransitionState) {
+      item.transitionState = transitionStates.hiding as Dialogic.ItemTransitionState;
+      return hideItem(item, ns);
+    } else {
+      return Promise.resolve();
+    }
+  });
 
 export const pause: PerformOnItemNsFn =
   performOnItem((item, ns) => {
@@ -182,7 +198,7 @@ const getOverridingTransitionOptions = (item: Dialogic.Item, options: Dialogic.O
  * Queued items: will trigger `hideItem` only for the first item, then reset the store.
  * `options` may contain specific transition options. This comes in handy when all items should hide in the same manner.
  * */
-export const hideAll = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (options: Dialogic.Options, instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+export const hideAll = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (options: Dialogic.Options, instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
   const spawnOptions = {
     ...defaultSpawnOptions,
     ...instanceSpawnOptions,

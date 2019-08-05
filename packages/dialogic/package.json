@@ -11,8 +11,7 @@
     "size": "gzip -c dist/dialogic.js | wc -c"
   },
   "dependencies": {
-    "mithril": "^2.0.3",
-    "uuid": "^3.3.2"
+    "mithril": "^2.0.3"
   },
   "devDependencies": {
     "@types/mithril": "2.0.0",
