@@ -51,7 +51,7 @@ export const transition = (props: TransitionProps, mode?: string) => {
 		? props.domElements.domElement
 		: null;
 	if (!domElement) {
-		return Promise.reject();
+		throw new Error("No DOM element");
 	}
 	return new Promise(resolve => {
 		const style = domElement.style;
@@ -126,6 +126,7 @@ export const transition = (props: TransitionProps, mode?: string) => {
 		};
 
 		before();	
+		
 		applyTransition();
 		setTimeout(() => {
 			after();

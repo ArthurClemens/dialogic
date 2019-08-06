@@ -1,4 +1,4 @@
-import Stream from "mithril/Stream";
+import Stream from "mithril/stream";
 import { Dialogic } from "..";
 
 type PatchFn = (state: Dialogic.State) => Dialogic.State;
@@ -94,6 +94,11 @@ const store = {
   },
   selectors: (states: Stream<Dialogic.State>) => {
     return {
+
+      getStore: () => {
+        const state = states();
+        return state.store;
+      },
 
       find: (spawnOptions: Dialogic.SpawnOptions, ns: string) => {
         const state = states();

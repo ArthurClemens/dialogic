@@ -40,9 +40,6 @@ const filterQueued = (nsItems: Dialogic.Item[], ns: string) => {
     .map(({ item }) => item);
 };
 
-const getCount = (ns: string) => 
-  selectors.getCount(ns);
-
 export const filter = (items: Dialogic.NamespaceStore, spawn: string, ns: string) => {
   const nsItems = items[ns] || [];
   return filterBySpawnId(filterQueued(nsItems, ns), spawn);
@@ -70,7 +67,7 @@ const getOptionsByKind: TGetOptionsByKind = options => {
   }, initial );
 };
 
-const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (defaultTransitionOptions: Dialogic.DefaultTransitionOptions) => (options: Dialogic.Options, instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (defaultTransitionOptions: Dialogic.DefaultTransitionOptions) => (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => {
   return new Promise((resolve) => {
 
     const spawnOptions = {
@@ -229,17 +226,21 @@ export const resetItem = (item: Dialogic.Item, ns: string) => {
   actions.remove(item.id, ns);
 };
 
-export const count = (ns: string) => 
-  getCount(ns);
+export const getCount = (ns: string) => () =>
+  selectors.getCount(ns);
 
 const transitionItem = (item: Dialogic.Item, mode: string) => {
-  return transition(
-    {
-      ...item.instanceTransitionOptions,
-      ...item.transitionOptions,
-    },
-    mode
-  );
+  try {
+    return transition(
+      {
+        ...item.instanceTransitionOptions,
+        ...item.transitionOptions,
+      },
+      mode
+    );
+  } catch(e) {
+    throw new Error(`Transition error: ${e}`);
+  }
 };
 
 const deferredHideItem = async function(item: Dialogic.Item, timeout: number, ns: string) {
@@ -250,7 +251,7 @@ const deferredHideItem = async function(item: Dialogic.Item, timeout: number, ns
 
 export const showItem: Dialogic.InitiateItemTransitionFn = async function(item, ns) {
   await(transitionItem(item, MODE.SHOW));
-  await(item.transitionOptions.didShow(item.spawnOptions.id));
+  item.transitionOptions.didShow && await(item.transitionOptions.didShow(item.spawnOptions.id));
   if (item.transitionOptions.timeout) {
     await(deferredHideItem(item, item.transitionOptions.timeout, ns));
   }
@@ -263,8 +264,9 @@ export const hideItem: Dialogic.InitiateItemTransitionFn = async function(item, 
     item.timer.stop();
   }
   await(transitionItem(item, MODE.HIDE));
-  await(item.transitionOptions.didHide(item.spawnOptions.id));
+  item.transitionOptions.didHide && await(item.transitionOptions.didHide(item.spawnOptions.id));
   actions.remove(item.id, ns);
+  console.log("after remove");
   return item.spawnOptions.id;
 };
 

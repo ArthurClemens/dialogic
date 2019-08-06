@@ -23,7 +23,7 @@ const transition = (props, mode) => {
         ? props.domElements.domElement
         : null;
     if (!domElement) {
-        return Promise.reject();
+        throw new Error("No DOM element");
     }
     return new Promise(resolve => {
         const style = domElement.style;
@@ -301,8 +301,6 @@ module["exports"] = Stream;
 }());
 });
 
-var Stream = stream;
-
 const findItem = (id, items) => {
     return items.find(item => item.id === id);
 };
@@ -383,6 +381,10 @@ const store = {
     },
     selectors: (states) => {
         return {
+            getStore: () => {
+                const state = states();
+                return state.store;
+            },
             find: (spawnOptions, ns) => {
                 const state = states();
                 const items = state.store[ns] || [];
@@ -403,8 +405,8 @@ const store = {
         };
     },
 };
-const update = Stream();
-const states = Stream.scan((state, patch) => patch(state), {
+const update = stream();
+const states = stream.scan((state, patch) => patch(state), {
     ...store.initialState,
 }, update);
 const actions = {
@@ -466,6 +468,7 @@ const Timer = () => {
         resume,
         stop,
         abort,
+        toString: () => "Timer"
     };
 };
 
@@ -494,7 +497,6 @@ const filterQueued = (nsItems, ns) => {
         .filter(({ queueCount }) => queueCount === 0)
         .map(({ item }) => item);
 };
-const getCount = (ns) => selectors.getCount(ns);
 const filter = (items, spawn, ns) => {
     const nsItems = items[ns] || [];
     return filterBySpawnId(filterQueued(nsItems), spawn);
@@ -651,19 +653,24 @@ const resetItem = (item, ns) => {
     item.timer.abort();
     actions.remove(item.id, ns);
 };
-const count = (ns) => getCount(ns);
+const getCount = (ns) => () => selectors.getCount(ns);
 const transitionItem = (item, mode) => {
-    return transition({
-        ...item.instanceTransitionOptions,
-        ...item.transitionOptions,
-    }, mode);
+    try {
+        return transition({
+            ...item.instanceTransitionOptions,
+            ...item.transitionOptions,
+        }, mode);
+    }
+    catch (e) {
+        throw new Error(`Transition error: ${e}`);
+    }
 };
 const deferredHideItem = async function (item, timeout, ns) {
     return item.timer.start(() => (hideItem(item, ns)), timeout);
 };
 const showItem = async function (item, ns) {
     await (transitionItem(item, MODE.SHOW));
-    await (item.transitionOptions.didShow(item.spawnOptions.id));
+    item.transitionOptions.didShow && await (item.transitionOptions.didShow(item.spawnOptions.id));
     if (item.transitionOptions.timeout) {
         await (deferredHideItem(item, item.transitionOptions.timeout, ns));
     }
@@ -675,8 +682,9 @@ const hideItem = async function (item, ns) {
         item.timer.stop();
     }
     await (transitionItem(item, MODE.HIDE));
-    await (item.transitionOptions.didHide(item.spawnOptions.id));
+    item.transitionOptions.didHide && await (item.transitionOptions.didHide(item.spawnOptions.id));
     actions.remove(item.id, ns);
+    console.log("after remove");
     return item.spawnOptions.id;
 };
 
@@ -697,7 +705,7 @@ const pause$1 = pause(ns)(defaultSpawnOptions);
 const resume$1 = resume(ns)(defaultSpawnOptions);
 const hideAll$1 = hideAll(ns)(defaultSpawnOptions);
 const resetAll$1 = resetAll(ns);
-const count$1 = count(ns);
+const getCount$1 = getCount(ns);
 
 var notification = /*#__PURE__*/Object.freeze({
 	ns: ns,
@@ -709,7 +717,7 @@ var notification = /*#__PURE__*/Object.freeze({
 	resume: resume$1,
 	hideAll: hideAll$1,
 	resetAll: resetAll$1,
-	count: count$1
+	getCount: getCount$1
 });
 
 const ns$1 = "dialog";
@@ -726,7 +734,7 @@ const pause$2 = pause(ns$1)(defaultSpawnOptions$1);
 const resume$2 = resume(ns$1)(defaultSpawnOptions$1);
 const hideAll$2 = hideAll(ns$1)(defaultSpawnOptions$1);
 const resetAll$2 = resetAll(ns$1);
-const count$2 = count(ns$1);
+const getCount$2 = getCount(ns$1);
 
 var dialog = /*#__PURE__*/Object.freeze({
 	ns: ns$1,
@@ -738,8 +746,8 @@ var dialog = /*#__PURE__*/Object.freeze({
 	resume: resume$2,
 	hideAll: hideAll$2,
 	resetAll: resetAll$2,
-	count: count$2
+	getCount: getCount$2
 });
 
-export { actions, count, dialog, filter, hide, hideAll, hideItem, notification, pause, performOnItem, resetAll, resetItem, resume, selectors, show, showItem, states };
+export { actions, dialog, filter, getCount, hide, hideAll, hideItem, notification, pause, performOnItem, resetAll, resetItem, resume, selectors, show, showItem, states };
 //# sourceMappingURL=dialogic.mjs.map

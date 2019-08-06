@@ -1,5 +1,4 @@
 import { showItem, hideItem, selectors } from "dialogic";
-// import { Dialogic } from "dialogic";
 
 export const handleDispatch = (ns) => (event, fn) => {
   // Update dispatching item:

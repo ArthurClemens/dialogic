@@ -1,0 +1,18 @@
+.demo {
+  padding: 16px;
+}
+
+.xxx {
+  opacity: 0;
+}
+.xxx-visible {
+  opacity: 1;
+}
+.xxx-timings {
+  opacity: 0;
+  transition-duration: 500ms;
+  transition-delay: 0;
+}
+.xxx-visible-timings {
+  opacity: 1;
+}

@@ -1,0 +1,35 @@
+{
+  "name": "demo-dialogic-mithril",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Logic for dialogs and notifications",
+  "main": "dist/demo-dialogic-mithril",
+  "module": "dist/demo-dialogic-mithril.mjs",
+  "scripts": {
+    "clean": "rm -rf dist/js/*",
+    "dev": "npm-run-all --parallel dev:watch dev:serve",
+    "dev:serve": "ENTRY=./src/index.ts ../../node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ../../scripts/webpack.config.dev.js --disableHostCheck true --port 3000 --host 0.0.0.0",
+    "dev:watch": "ENTRY=./src/index.ts ../../node_modules/webpack/bin/webpack.js --watch --config ../../scripts/webpack.config.dev.js",
+    "webpack": "ENTRY=./src/index.ts ../../node_modules/webpack/bin/webpack.js --config ../../scripts/webpack.config.prod.js",
+    "build": "npm run clean && npm run webpack",
+    "serve": "http-server -p 5000 dist",
+    "typecheck": "../../node_modules/typescript/bin/tsc --noEmit --strict --esModuleInterop src/index.ts"
+  },
+  "dependencies": {
+    "dialogic": "^0.0.1",
+    "mithril": "^2.0.3"
+  },
+  "devDependencies": {
+    "@types/mithril": "^2.0.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^3.5.3",
+    "typings": "^2.1.1"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
+  "homepage": "https://github.com/ArthurClemens/dialogic",
+  "license": "MIT"
+}

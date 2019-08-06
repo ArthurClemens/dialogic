@@ -6,7 +6,7 @@
   "module": "dist/dialogic.mjs",
   "scripts": {
     "clean": "rm -rf dist/*",
-    "rollup": "TYPESCRIPT=1 MODULE=1 ../../node_modules/rollup/bin/rollup -c ../../scripts/rollup.config.js && TYPESCRIPT=1 ../../node_modules/rollup/bin/rollup -c ../../scripts/rollup.config.js ",
+    "rollup": "TYPESCRIPT=1 MODULE=1 ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js && TYPESCRIPT=1 ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js ",
     "build": "npm run clean && npm run rollup && npm run size",
     "size": "gzip -c dist/dialogic.js | wc -c"
   },

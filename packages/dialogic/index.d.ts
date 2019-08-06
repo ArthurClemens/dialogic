@@ -4,7 +4,7 @@ type showFn = (ns: string, defaultTransitionOptions: Dialogic.DefaultTransitionO
 type hideFn = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => Promise<string>;
 type pauseFn = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) =>  Promise<string>;
 type resumeFn = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) =>  Promise<string>;
-type resetAllFn = (ns: string) => () => Promise<any>
+type resetAllFn = (ns: string) => () => Promise<any>;
 type hideAllFn = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (options: Dialogic.Options, instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => void;
 type showItemFn = (item: Dialogic.Item, ns: string) => Promise<string>;
 type hideItemFn = (item: Dialogic.Item, ns: string) => Promise<string>;
@@ -20,24 +20,22 @@ export const hideAll: hideAllFn;
 export const showItem: showItemFn;
 export const hideItem: hideItemFn;
 export const resetItem: resetItemFn;
-export const count: countFn;
+export const getCount: countFn;
 export const states: Dialogic.States;
 export const selectors: Dialogic.StateSelectors;
+export const filter: (items: Dialogic.NamespaceStore, spawn: string, ns: string) => Dialogic.Item[];
 
 type DialogicInstance = {
   ns: string;
   defaultId: string;
   defaultSpawn: string;
-  show: showFn;
-  hide: hideFn;
-  pause: pauseFn;
-  resume: resumeFn;
-  resetAll: resetAllFn;
-  hideAll: hideAllFn;
-  showItem: showItemFn;
-  hideItem: hideItemFn;
-  resetItem: resetItemFn;
-  count: countFn;
+  show: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => Promise<string>;
+  hide: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => Promise<string>;
+  pause: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) =>  Promise<string>;
+  resume: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) =>  Promise<string>;
+  resetAll: () => Promise<any>;
+  hideAll: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => void;
+  getCount: () => number;
 };
 
 export const dialog: DialogicInstance;
@@ -76,8 +74,8 @@ export namespace Dialogic {
 
   type TransitionOptions = {
     [key:string]: string | number | Transitions | DomElements | ConfirmFn | undefined;
-    didHide: ConfirmFn;
-    didShow: ConfirmFn;
+    didHide?: ConfirmFn;
+    didShow?: ConfirmFn;
     domElements?: DomElements;
     hideDelay?: number;
     hideDuration?: number;
@@ -88,13 +86,14 @@ export namespace Dialogic {
     timeout?: number;
     transitions?: Transitions;
     showClassName?: string;
+    component?: any;
   } & DefaultTransitionOptions;
 
   interface InstanceOptions {
-    [key:string]: string;
+    [key:string]: any;
   }
 
-  type Options = InstanceOptions & TransitionOptions;
+  type Options = InstanceOptions | TransitionOptions;
 
   type MaybeItem = {
     just?: Item;
@@ -160,9 +159,23 @@ export namespace Dialogic {
   type States = Stream<State>;
 
   type StateSelectors = {
+    getStore: () => NamespaceStore;
     find: (spawnOptions: SpawnOptions, ns: string) => MaybeItem;
     getAll: (ns: string) => Item[];
     getCount: (ns: string) => number;
+  }
+
+  type InstanceEvent = {
+    detail: {
+      spawnOptions: Dialogic.SpawnOptions;
+      transitionOptions: Dialogic.TransitionOptions;
+    }
+  }
+
+  type ContentComponentOptions = {
+    [key:string]: any;
+    show: () => Promise<string>;
+    hide: () => Promise<string>;
   }
 
 }

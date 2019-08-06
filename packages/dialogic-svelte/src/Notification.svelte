@@ -1,6 +1,6 @@
 <script>
   import { notification } from "./notification";
-  import Dialogic from "./Dialogic.svelte";
+  import Wrapper from "./Wrapper.svelte";
   import Instance from "./Instance.svelte";
 
   export let spawn = notification.defaultSpawn;
@@ -13,4 +13,4 @@
 
 </script>
 
-<Dialogic {Instance} {spawnOptions} ns={notification.ns} />
+<Wrapper {Instance} {spawnOptions} ns={notification.ns} />

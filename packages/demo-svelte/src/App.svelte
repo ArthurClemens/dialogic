@@ -155,7 +155,7 @@
       ...dialogOneProps,
       showDelay: .5,
       hideDelay: 0,
-      title: dialogOneProps.title + ' ' + getRandomNumber()
+      title: dialogOneProps.title + " " + getRandomNumber()
     }, { id: dialogOneProps.id })}>
     Show delay
   </button>
@@ -180,10 +180,10 @@
     on:click={() => dialog.show({
       component: DefaultContent,
       title: "Custom spawn"
-    }, { spawn: 'special' })}>
+    }, { spawn: "special" })}>
     Show default in spawn
   </button>
-  <button on:click={() => dialog.hide({ spawn: 'special' })}>Hide</button>
+  <button on:click={() => dialog.hide({ spawn: "special" })}>Hide</button>
 </div>
 
 <hr />
@@ -204,11 +204,11 @@ Queued dialog
   <button
     on:click={() => dialog.show({
       component: DefaultContent,
-      title: 'Queued ' + Math.round(1000 * Math.random())
-    }, { spawn: 'Q', queued: true })}>
+      title: "Queued " + Math.round(1000 * Math.random())
+    }, { spawn: "Q", queued: true })}>
     Queued
   </button>
-  <button on:click={() => dialog.hide({ spawn: 'Q' })}>Hide</button>
+  <button on:click={() => dialog.hide({ spawn: "Q" })}>Hide</button>
 </div>
 
 <div>
@@ -229,7 +229,7 @@ Queued dialog
 <div>
   <button
     on:click={() => {
-      const title = 'N ' + getRandomNumber();
+      const title = "N " + getRandomNumber();
       notification.show(
         {
           didShow: id => console.log("didShow", id, title),
@@ -240,7 +240,7 @@ Queued dialog
           title
         },
         {
-          spawn: 'NO'
+          spawn: "NO"
         }
       ).then(id => console.log("notification shown", id, title))}
     }
@@ -250,17 +250,17 @@ Queued dialog
   <button on:click={e => (
     notification.hide(
       {
-        spawn: 'NO'
+        spawn: "NO"
       }
     )).then(id => console.log("notification hidden from App", id))}>Hide</button>
   <button on:click={() => notification.pause(
       {
-        spawn: 'NO'
+        spawn: "NO"
       }
     )}>Pause</button>
   <button on:click={() => notification.resume(
     {
-      spawn: 'NO'
+      spawn: "NO"
     }
   )}>Resume</button>
 </div>

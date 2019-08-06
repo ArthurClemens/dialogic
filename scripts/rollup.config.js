@@ -3,6 +3,7 @@ import resolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
 import typescript from "rollup-plugin-typescript2";
+import pathmodify from "rollup-plugin-pathmodify";
 
 const env = process.env;
 const pkg = JSON.parse(fs.readFileSync("./package.json"));
@@ -24,6 +25,18 @@ export default {
     file
   },
   plugins: [
+    pathmodify({
+      aliases: [
+        {
+          id: "mithril/stream",
+          resolveTo: "node_modules/mithril/stream/stream.js"
+        },
+        {
+          id: "mithril",
+          resolveTo: "node_modules/mithril/mithril.js"
+        },
+      ]
+    }),
     resolve({ browser: true }),
     commonjs(),
     isTypeScript && typescript({

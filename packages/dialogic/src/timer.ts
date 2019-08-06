@@ -64,5 +64,6 @@ export const Timer: TTimerFn = () => {
     resume,
     stop,
     abort,
+    toString: () => "Timer"
   };
 };

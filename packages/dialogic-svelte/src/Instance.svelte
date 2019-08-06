@@ -49,6 +49,6 @@
   bind:this={domElement}
   {...elementProps}
 >
-  <svelte:component this={transitionOptions.component} hide={hide} {...instanceOptions} />
+  <svelte:component this={transitionOptions.component} {show} {hide} {...instanceOptions} />
 </div>
 

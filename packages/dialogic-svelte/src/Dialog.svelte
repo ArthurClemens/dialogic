@@ -1,7 +1,6 @@
 <script>
   import { dialog } from "./dialog";
-  import Dialogic from "./Dialogic.svelte";
-  import Instance from "./Instance.svelte";
+  import Wrapper from "./Wrapper.svelte";
 
   export let spawn = dialog.defaultSpawn;
   export let id = dialog.defaultId;
@@ -13,4 +12,4 @@
 
 </script>
 
-<Dialogic {Instance} {spawnOptions} ns={dialog.ns} />
+<Wrapper {spawnOptions} ns={dialog.ns} />

@@ -1,6 +1,6 @@
 
 <script>
-  import { appState } from "./stores";
+  import { appState } from "./store";
   import { filter } from "dialogic";
   import { onInstanceMounted, onShowInstance, onHideInstance } from "./dialogic-svelte";
   import { onDestroy } from "svelte";
