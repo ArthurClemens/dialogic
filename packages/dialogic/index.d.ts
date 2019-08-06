@@ -160,7 +160,7 @@ export namespace Dialogic {
 
   type StateSelectors = {
     getStore: () => NamespaceStore;
-    find: (spawnOptions: SpawnOptions, ns: string) => MaybeItem;
+    find: (ns: string, spawnOptions: SpawnOptions) => MaybeItem;
     getAll: (ns: string) => Item[];
     getCount: (ns: string) => number;
   }

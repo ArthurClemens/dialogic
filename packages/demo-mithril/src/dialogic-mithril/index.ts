@@ -5,6 +5,6 @@ export * from "./Dialog";
 export * from "./Notification";
 
 states.map(state => (
-  console.log(JSON.stringify(state, null, 2)),
+  // console.log(JSON.stringify(state, null, 2)),
   m.redraw()
 ));

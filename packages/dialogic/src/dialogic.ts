@@ -110,7 +110,7 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
       transitionState: transitionStates.none as Dialogic.ItemTransitionState,
     };
     
-    const maybeExistingItem: Dialogic.MaybeItem = selectors.find(spawnOptions, ns);
+    const maybeExistingItem: Dialogic.MaybeItem = selectors.find(ns, spawnOptions);
     if (maybeExistingItem.just && !spawnOptions.queued) {
       const existingItem = maybeExistingItem.just;
       // Preserve instanceTransitionOptions
@@ -137,7 +137,7 @@ export const performOnItem: PerformOnItemFn = fn => (ns) => (defaultSpawnOptions
     ...defaultSpawnOptions,
     ...instanceSpawnOptions,
   } as Dialogic.SpawnOptions;
-  const maybeItem: Dialogic.MaybeItem = selectors.find(spawnOptions, ns);
+  const maybeItem: Dialogic.MaybeItem = selectors.find(ns, spawnOptions);
   if (maybeItem.just) {
     return fn(maybeItem.just, ns);
   } else {
@@ -266,7 +266,6 @@ export const hideItem: Dialogic.InitiateItemTransitionFn = async function(item, 
   await(transitionItem(item, MODE.HIDE));
   item.transitionOptions.didHide && await(item.transitionOptions.didHide(item.spawnOptions.id));
   actions.remove(item.id, ns);
-  console.log("after remove");
   return item.spawnOptions.id;
 };
 

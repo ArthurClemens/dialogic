@@ -380,12 +380,12 @@ const store = {
         };
     },
     selectors: (states) => {
-        return {
+        const fns = {
             getStore: () => {
                 const state = states();
                 return state.store;
             },
-            find: (spawnOptions, ns) => {
+            find: (ns, spawnOptions) => {
                 const state = states();
                 const items = state.store[ns] || [];
                 const id = createId(spawnOptions, ns);
@@ -398,11 +398,9 @@ const store = {
                 const state = states();
                 return state.store[ns] || [];
             },
-            getCount: (ns) => {
-                const state = states();
-                return (state.store[ns] || []).length;
-            },
+            getCount: (ns) => fns.getAll(ns).length
         };
+        return fns;
     },
 };
 const update = stream();
@@ -553,7 +551,7 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
             key: uid,
             transitionState: transitionStates.none,
         };
-        const maybeExistingItem = selectors.find(spawnOptions, ns);
+        const maybeExistingItem = selectors.find(ns, spawnOptions);
         if (maybeExistingItem.just && !spawnOptions.queued) {
             const existingItem = maybeExistingItem.just;
             // Preserve instanceTransitionOptions
@@ -579,7 +577,7 @@ const performOnItem = fn => (ns) => (defaultSpawnOptions) => (instanceSpawnOptio
         ...defaultSpawnOptions,
         ...instanceSpawnOptions,
     };
-    const maybeItem = selectors.find(spawnOptions, ns);
+    const maybeItem = selectors.find(ns, spawnOptions);
     if (maybeItem.just) {
         return fn(maybeItem.just, ns);
     }
@@ -684,7 +682,6 @@ const hideItem = async function (item, ns) {
     await (transitionItem(item, MODE.HIDE));
     item.transitionOptions.didHide && await (item.transitionOptions.didHide(item.spawnOptions.id));
     actions.remove(item.id, ns);
-    console.log("after remove");
     return item.spawnOptions.id;
 };
 

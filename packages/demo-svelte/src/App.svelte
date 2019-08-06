@@ -83,11 +83,11 @@
   }
 </style>
 
-<button on:click={() => notification.hideAll({ hideDelay: 0, hideDuration: .25 })}>Clear notifications</button>
+<button on:click={() => notification.hideAll({ hideDelay: 0, hideDuration: .25 })}>Hide notifications</button>
 
 <button on:click={() => notification.resetAll().catch(() => {})}>Reset notifications</button>
 
-<button on:click={() => dialog.hideAll(clearOptions)}>Clear dialogs</button>
+<button on:click={() => dialog.hideAll(clearOptions)}>Hide dialogs</button>
 
 <button on:click={() => dialog.resetAll().catch(() => {})}>Reset dialogs</button>
 

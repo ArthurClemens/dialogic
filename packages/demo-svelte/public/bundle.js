@@ -487,7 +487,6 @@ var app = (function () {
         const domElement = props.domElements
             ? props.domElements.domElement
             : null;
-        console.log("domElement", domElement);
         if (!domElement) {
             throw new Error("No DOM element");
         }
@@ -846,12 +845,12 @@ var app = (function () {
             };
         },
         selectors: (states) => {
-            return {
+            const fns = {
                 getStore: () => {
                     const state = states();
                     return state.store;
                 },
-                find: (spawnOptions, ns) => {
+                find: (ns, spawnOptions) => {
                     const state = states();
                     const items = state.store[ns] || [];
                     const id = createId(spawnOptions, ns);
@@ -864,11 +863,9 @@ var app = (function () {
                     const state = states();
                     return state.store[ns] || [];
                 },
-                getCount: (ns) => {
-                    const state = states();
-                    return (state.store[ns] || []).length;
-                },
+                getCount: (ns) => fns.getAll(ns).length
             };
+            return fns;
         },
     };
     const update$1 = stream();
@@ -934,6 +931,7 @@ var app = (function () {
             resume,
             stop,
             abort,
+            toString: () => "Timer"
         };
     };
 
@@ -1018,7 +1016,7 @@ var app = (function () {
                 key: uid,
                 transitionState: transitionStates.none,
             };
-            const maybeExistingItem = selectors.find(spawnOptions, ns);
+            const maybeExistingItem = selectors.find(ns, spawnOptions);
             if (maybeExistingItem.just && !spawnOptions.queued) {
                 const existingItem = maybeExistingItem.just;
                 // Preserve instanceTransitionOptions
@@ -1044,7 +1042,7 @@ var app = (function () {
             ...defaultSpawnOptions,
             ...instanceSpawnOptions,
         };
-        const maybeItem = selectors.find(spawnOptions, ns);
+        const maybeItem = selectors.find(ns, spawnOptions);
         if (maybeItem.just) {
             return fn(maybeItem.just, ns);
         }
@@ -1128,7 +1126,7 @@ var app = (function () {
     };
     const showItem = async function (item, ns) {
         await (transitionItem(item, MODE.SHOW));
-        await (item.transitionOptions.didShow(item.spawnOptions.id));
+        item.transitionOptions.didShow && await (item.transitionOptions.didShow(item.spawnOptions.id));
         if (item.transitionOptions.timeout) {
             await (deferredHideItem(item, item.transitionOptions.timeout, ns));
         }
@@ -1140,7 +1138,7 @@ var app = (function () {
             item.timer.stop();
         }
         await (transitionItem(item, MODE.HIDE));
-        await (item.transitionOptions.didHide(item.spawnOptions.id));
+        item.transitionOptions.didHide && await (item.transitionOptions.didHide(item.spawnOptions.id));
         actions.remove(item.id, ns);
         return item.spawnOptions.id;
     };
@@ -1343,12 +1341,12 @@ var app = (function () {
 
     const handleDispatch = (ns) => (event, fn) => {
       // Update dispatching item:
-      const maybeItem = selectors.find(event.detail.spawnOptions, ns);
+      const maybeItem = selectors.find(ns, event.detail.spawnOptions);
       if (maybeItem.just) {
         maybeItem.just.instanceTransitionOptions = event.detail.transitionOptions;
       }
       // Find item to transition:
-      const maybeTransitioningItem = selectors.find(event.detail.spawnOptions, ns);
+      const maybeTransitioningItem = selectors.find(ns, event.detail.spawnOptions);
       if (maybeTransitioningItem.just) {
         fn(maybeTransitioningItem.just, ns);
       }
@@ -1371,6 +1369,7 @@ var app = (function () {
     	var div, current;
 
     	var switch_instance_spread_levels = [
+    		{ show: ctx.show },
     		{ hide: ctx.hide },
     		ctx.instanceOptions
     	];
@@ -1426,7 +1425,8 @@ var app = (function () {
     		},
 
     		p: function update(changed, ctx) {
-    			var switch_instance_changes = (changed.hide || changed.instanceOptions) ? get_spread_update(switch_instance_spread_levels, [
+    			var switch_instance_changes = (changed.show || changed.hide || changed.instanceOptions) ? get_spread_update(switch_instance_spread_levels, [
+    				(changed.show) && { show: ctx.show },
     				(changed.hide) && { hide: ctx.hide },
     				(changed.instanceOptions) && ctx.instanceOptions
     			]) : {};
@@ -1505,6 +1505,10 @@ var app = (function () {
           },
         });
 
+      const show = () => {
+        dispatchTransition("show");
+      };
+
       const hide = () => {
         dispatchTransition("hide");
       };
@@ -1547,6 +1551,7 @@ var app = (function () {
     		spawnOptions,
     		instanceOptions,
     		transitionOptions,
+    		show,
     		hide,
     		R_classNames,
     		elementProps,
@@ -2259,41 +2264,41 @@ var app = (function () {
     			p3.textContent = "Dialog queued:";
     			t47 = space();
     			dialog2.$$.fragment.c();
-    			add_location(h2, file$3, 99, 0, 2505);
-    			add_location(p0, file$3, 101, 0, 2522);
-    			add_location(hr0, file$3, 103, 0, 2561);
-    			add_location(button0, file$3, 106, 2, 2577);
-    			add_location(button1, file$3, 113, 2, 2710);
-    			add_location(div0, file$3, 105, 0, 2569);
-    			add_location(button2, file$3, 117, 2, 2779);
-    			add_location(button3, file$3, 125, 2, 2939);
-    			add_location(div1, file$3, 116, 0, 2771);
-    			add_location(button4, file$3, 129, 2, 3043);
-    			add_location(button5, file$3, 145, 2, 3451);
-    			add_location(div2, file$3, 128, 0, 3035);
-    			add_location(button6, file$3, 152, 2, 3601);
-    			add_location(button7, file$3, 161, 2, 3834);
-    			add_location(div3, file$3, 151, 0, 3593);
-    			add_location(button8, file$3, 164, 2, 3927);
-    			add_location(button9, file$3, 168, 2, 4045);
-    			add_location(div4, file$3, 163, 0, 3919);
-    			add_location(button10, file$3, 171, 2, 4138);
-    			add_location(button11, file$3, 175, 2, 4259);
-    			add_location(div5, file$3, 170, 0, 4130);
-    			add_location(button12, file$3, 178, 2, 4353);
-    			add_location(button13, file$3, 185, 2, 4527);
-    			add_location(div6, file$3, 177, 0, 4345);
-    			add_location(hr1, file$3, 188, 0, 4608);
-    			add_location(p1, file$3, 191, 2, 4624);
-    			add_location(div7, file$3, 190, 0, 4616);
-    			add_location(p2, file$3, 196, 2, 4668);
-    			add_location(div8, file$3, 195, 0, 4660);
-    			add_location(hr2, file$3, 200, 0, 4731);
-    			add_location(button14, file$3, 203, 2, 4760);
-    			add_location(button15, file$3, 210, 2, 4957);
-    			add_location(div9, file$3, 202, 0, 4752);
-    			add_location(p3, file$3, 214, 2, 5040);
-    			add_location(div10, file$3, 213, 0, 5032);
+    			add_location(h2, file$3, 99, 0, 2503);
+    			add_location(p0, file$3, 101, 0, 2520);
+    			add_location(hr0, file$3, 103, 0, 2559);
+    			add_location(button0, file$3, 106, 2, 2575);
+    			add_location(button1, file$3, 113, 2, 2708);
+    			add_location(div0, file$3, 105, 0, 2567);
+    			add_location(button2, file$3, 117, 2, 2777);
+    			add_location(button3, file$3, 125, 2, 2937);
+    			add_location(div1, file$3, 116, 0, 2769);
+    			add_location(button4, file$3, 129, 2, 3041);
+    			add_location(button5, file$3, 145, 2, 3449);
+    			add_location(div2, file$3, 128, 0, 3033);
+    			add_location(button6, file$3, 152, 2, 3599);
+    			add_location(button7, file$3, 161, 2, 3832);
+    			add_location(div3, file$3, 151, 0, 3591);
+    			add_location(button8, file$3, 164, 2, 3925);
+    			add_location(button9, file$3, 168, 2, 4043);
+    			add_location(div4, file$3, 163, 0, 3917);
+    			add_location(button10, file$3, 171, 2, 4136);
+    			add_location(button11, file$3, 175, 2, 4257);
+    			add_location(div5, file$3, 170, 0, 4128);
+    			add_location(button12, file$3, 178, 2, 4351);
+    			add_location(button13, file$3, 185, 2, 4525);
+    			add_location(div6, file$3, 177, 0, 4343);
+    			add_location(hr1, file$3, 188, 0, 4606);
+    			add_location(p1, file$3, 191, 2, 4622);
+    			add_location(div7, file$3, 190, 0, 4614);
+    			add_location(p2, file$3, 196, 2, 4666);
+    			add_location(div8, file$3, 195, 0, 4658);
+    			add_location(hr2, file$3, 200, 0, 4729);
+    			add_location(button14, file$3, 203, 2, 4758);
+    			add_location(button15, file$3, 210, 2, 4955);
+    			add_location(div9, file$3, 202, 0, 4750);
+    			add_location(p3, file$3, 214, 2, 5038);
+    			add_location(div10, file$3, 213, 0, 5030);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_5),
@@ -2496,16 +2501,16 @@ var app = (function () {
     			notification_1.$$.fragment.c();
     			t15 = space();
     			hr = element("hr");
-    			add_location(h2, file$3, 226, 0, 5228);
-    			add_location(button0, file$3, 229, 2, 5259);
-    			add_location(button1, file$3, 249, 2, 5783);
-    			add_location(button2, file$3, 255, 2, 5951);
-    			add_location(button3, file$3, 260, 2, 6055);
-    			add_location(div0, file$3, 228, 0, 5251);
-    			add_location(p0, file$3, 268, 2, 6167);
-    			add_location(p1, file$3, 269, 2, 6197);
-    			add_location(div1, file$3, 267, 0, 6159);
-    			add_location(hr, file$3, 273, 0, 6285);
+    			add_location(h2, file$3, 226, 0, 5226);
+    			add_location(button0, file$3, 229, 2, 5257);
+    			add_location(button1, file$3, 249, 2, 5781);
+    			add_location(button2, file$3, 255, 2, 5949);
+    			add_location(button3, file$3, 260, 2, 6053);
+    			add_location(div0, file$3, 228, 0, 5249);
+    			add_location(p0, file$3, 268, 2, 6165);
+    			add_location(p1, file$3, 269, 2, 6195);
+    			add_location(div1, file$3, 267, 0, 6157);
+    			add_location(hr, file$3, 273, 0, 6283);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_22),
@@ -2589,13 +2594,13 @@ var app = (function () {
     	return {
     		c: function create() {
     			button0 = element("button");
-    			button0.textContent = "Clear notifications";
+    			button0.textContent = "Hide notifications";
     			t1 = space();
     			button1 = element("button");
     			button1.textContent = "Reset notifications";
     			t3 = space();
     			button2 = element("button");
-    			button2.textContent = "Clear dialogs";
+    			button2.textContent = "Hide dialogs";
     			t5 = space();
     			button3 = element("button");
     			button3.textContent = "Reset dialogs";
@@ -2615,13 +2620,13 @@ var app = (function () {
     			if (if_block1) if_block1.c();
     			if_block1_anchor = empty();
     			add_location(button0, file$3, 85, 0, 2032);
-    			add_location(button1, file$3, 87, 0, 2145);
-    			add_location(button2, file$3, 89, 0, 2240);
-    			add_location(button3, file$3, 91, 0, 2318);
-    			add_location(hr0, file$3, 93, 0, 2401);
-    			add_location(button4, file$3, 95, 0, 2409);
-    			add_location(hr1, file$3, 220, 0, 5100);
-    			add_location(button5, file$3, 222, 0, 5108);
+    			add_location(button1, file$3, 87, 0, 2144);
+    			add_location(button2, file$3, 89, 0, 2239);
+    			add_location(button3, file$3, 91, 0, 2316);
+    			add_location(hr0, file$3, 93, 0, 2399);
+    			add_location(button4, file$3, 95, 0, 2407);
+    			add_location(hr1, file$3, 220, 0, 5098);
+    			add_location(button5, file$3, 222, 0, 5106);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler),

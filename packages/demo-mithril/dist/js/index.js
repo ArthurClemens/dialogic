@@ -2033,12 +2033,12 @@ var store = {
     };
   },
   selectors: function selectors(states) {
-    return {
+    var fns = {
       getStore: function getStore() {
         var state = states();
         return state.store;
       },
-      find: function find(spawnOptions, ns) {
+      find: function find(ns, spawnOptions) {
         var state = states();
         var items = state.store[ns] || [];
         var id = createId(spawnOptions, ns);
@@ -2056,10 +2056,10 @@ var store = {
         return state.store[ns] || [];
       },
       getCount: function getCount(ns) {
-        var state = states();
-        return (state.store[ns] || []).length;
+        return fns.getAll(ns).length;
       }
     };
+    return fns;
   }
 };
 var update = stream();
@@ -2248,7 +2248,7 @@ var createInstance = function createInstance(ns) {
             key: uid,
             transitionState: transitionStates.none
           };
-          var maybeExistingItem = selectors.find(spawnOptions, ns);
+          var maybeExistingItem = selectors.find(ns, spawnOptions);
 
           if (maybeExistingItem.just && !spawnOptions.queued) {
             var existingItem = maybeExistingItem.just; // Preserve instanceTransitionOptions
@@ -2280,7 +2280,7 @@ var performOnItem = function performOnItem(fn) {
       return function (instanceSpawnOptions) {
         var spawnOptions = _objectSpread({}, defaultSpawnOptions, {}, instanceSpawnOptions);
 
-        var maybeItem = selectors.find(spawnOptions, ns);
+        var maybeItem = selectors.find(ns, spawnOptions);
 
         if (maybeItem.just) {
           return fn(maybeItem.just, ns);
@@ -2501,10 +2501,9 @@ function () {
 
           case 7:
             actions.remove(item.id, ns);
-            console.log("after remove");
             return _context3.abrupt("return", item.spawnOptions.id);
 
-          case 10:
+          case 9:
           case "end":
             return _context3.stop();
         }
@@ -4539,7 +4538,6 @@ const Instance = ({ attrs }) => {
     };
     return {
         oncreate: (vnode) => {
-            console.log("oncreate", vnode.dom);
             domElement = vnode.dom;
             onMount();
         },
@@ -4665,8 +4663,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-dialogic__WEBPACK_IMPORTED_MODULE_1__["states"].map(state => (console.log(JSON.stringify(state, null, 2)),
-    mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw()));
+dialogic__WEBPACK_IMPORTED_MODULE_1__["states"].map(state => (
+// console.log(JSON.stringify(state, null, 2)),
+mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw()));
 
 
 /***/ }),
@@ -4688,12 +4687,12 @@ __webpack_require__.r(__webpack_exports__);
 
 const handleDispatch = (ns) => (event, fn) => {
     // Update dispatching item:
-    const maybeItem = dialogic__WEBPACK_IMPORTED_MODULE_0__["selectors"].find(event.detail.spawnOptions, ns);
+    const maybeItem = dialogic__WEBPACK_IMPORTED_MODULE_0__["selectors"].find(ns, event.detail.spawnOptions);
     if (maybeItem.just) {
         maybeItem.just.instanceTransitionOptions = event.detail.transitionOptions;
     }
     // Find item to transition:
-    const maybeTransitioningItem = dialogic__WEBPACK_IMPORTED_MODULE_0__["selectors"].find(event.detail.spawnOptions, ns);
+    const maybeTransitioningItem = dialogic__WEBPACK_IMPORTED_MODULE_0__["selectors"].find(ns, event.detail.spawnOptions);
     if (maybeTransitioningItem.just) {
         fn(maybeTransitioningItem.just, ns);
     }
@@ -4728,24 +4727,95 @@ __webpack_require__.r(__webpack_exports__);
 const getRandomNumber = () => Math.round(1000 * Math.random());
 const dialogOneProps = {
     showDuration: 0.5,
-    showDelay: 0.25,
     hideDuration: 0.5,
+    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+    className: "xxx",
+    showClassName: "xxx-visible",
+    title: "Clock",
+    id: getRandomNumber(),
+};
+// const dialogTwoProps = {
+//   showDuration: 0.75,
+//   showDelay: 0,
+//   hideDuration: 0.75,
+//   hideDelay: 0,
+//   component: DefaultContent,
+//   className: "xxx",
+//   showClassName: "xxx-visible",
+//   title: "Fade",
+//   id: getRandomNumber(),
+// };
+const dialogThreeProps = {
+    showDuration: 0.75,
+    showDelay: 0.25,
+    hideDuration: 0.75,
     hideDelay: .25,
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
     className: "xxx",
     showClassName: "xxx-visible",
-    title: "Clock"
+    title: "Delay",
+    id: getRandomNumber(),
+};
+const dialogFourProps = {
+    transitions: {
+        show: (domElements) => {
+            const el = domElements.domElement;
+            return {
+                duration: 0.5,
+                before: () => ((el.style.opacity = "0"),
+                    (el.style.transform = "translate3d(0, 20px, 0)")),
+                transition: () => ((el.style.opacity = "1"),
+                    (el.style.transform = "translate3d(0, 0px,  0)"))
+            };
+        },
+        hide: (domElements) => {
+            const el = domElements.domElement;
+            return { duration: 0.5, transition: () => el.style.opacity = "0" };
+        },
+    },
+    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+    title: "Transitions",
+    id: getRandomNumber(),
+};
+const clearOptions = {
+    transitions: {
+        hide: (domElements) => {
+            const el = domElements.domElement;
+            return { duration: 0.5, delay: 0, transition: () => el.style.opacity = "0" };
+        }
+    }
 };
 const App = {
     view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()(".demo", [
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].hideAll(clearOptions)
+            }, "Hide notifications"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].resetAll()
+            }, "Reset notifications"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hideAll(clearOptions)
+            }, "Hide dialogs"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].resetAll()
+            }, "Reset dialogs"),
+        ]),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", { className: "title is-2" }, "Dialog"),
+        ]),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Dialog count: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getCount()}`)),
+        ]),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
                 onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
                     ...dialogOneProps,
-                    showDelay: .5,
-                    hideDelay: 0,
                     title: dialogOneProps.title + ' ' + getRandomNumber(),
                 }, {
                     id: dialogOneProps.id
@@ -4755,7 +4825,77 @@ const App = {
                 className: "button",
                 onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ id: dialogOneProps.id })
             }, "Hide"),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Dialog count: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getCount()}`)),
+        ]),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
+                    didShow: id => console.log("didShow", id),
+                    didHide: id => console.log("didHide", id),
+                    showDuration: 0.5,
+                    showDelay: 0.25,
+                    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+                    title: "With Promise"
+                }, {
+                    id: "withPromise"
+                }).then(id => console.log("dialog shown", id))
+            }, "Show with promises"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ id: "withPromise" })
+                    .then(id => console.log("dialog hidden", id))
+            }, "Hide"),
+        ]),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
+                    ...dialogOneProps,
+                    showDelay: .5,
+                    hideDelay: 0,
+                    title: dialogThreeProps.title + " " + getRandomNumber()
+                }, {
+                    id: dialogThreeProps.id
+                })
+            }, "Show delay"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ id: dialogThreeProps.id })
+            }, "Hide"),
+        ]),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show(dialogFourProps, {
+                    id: dialogFourProps.id
+                })
+            }, "Show transition"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ id: dialogFourProps.id })
+            }, "Hide"),
+        ]),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
+                    title: "Queued " + Math.round(1000 * Math.random()),
+                    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+                }, {
+                    spawn: "Q",
+                    queued: true
+                })
+            }, "Queued dialog"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ spawn: "Q" })
+            }, "Hide"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Dialog in this spawn count: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getCount()}`)),
+            ]),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"], { spawn: "Q" }),
+            ]),
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()(_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"]),

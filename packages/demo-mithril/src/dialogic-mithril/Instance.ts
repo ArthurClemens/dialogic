@@ -50,7 +50,6 @@ export const Instance = ({ attrs } : { attrs: InstanceOptions }) => {
 
   return {
     oncreate: (vnode: { dom: Element }) => {
-      console.log("oncreate", vnode.dom);
       domElement = vnode.dom as HTMLElement;
       onMount();
     },

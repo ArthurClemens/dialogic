@@ -2,6 +2,10 @@
   padding: 16px;
 }
 
+.section {
+  padding: 1em;
+}
+
 .xxx {
   opacity: 0;
 }

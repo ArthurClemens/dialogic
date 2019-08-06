@@ -2,12 +2,12 @@ import { showItem, hideItem, selectors } from "dialogic";
 
 export const handleDispatch = (ns) => (event, fn) => {
   // Update dispatching item:
-  const maybeItem = selectors.find(event.detail.spawnOptions, ns);
+  const maybeItem = selectors.find(ns, event.detail.spawnOptions);
   if (maybeItem.just) {
     maybeItem.just.instanceTransitionOptions = event.detail.transitionOptions;
   }
   // Find item to transition:
-  const maybeTransitioningItem = selectors.find(event.detail.spawnOptions, ns);
+  const maybeTransitioningItem = selectors.find(ns, event.detail.spawnOptions);
   if (maybeTransitioningItem.just) {
     fn(maybeTransitioningItem.just, ns);
   }

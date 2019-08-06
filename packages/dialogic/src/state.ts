@@ -93,14 +93,14 @@ const store = {
     };
   },
   selectors: (states: Stream<Dialogic.State>) => {
-    return {
+    const fns = {
 
       getStore: () => {
         const state = states();
         return state.store;
       },
 
-      find: (spawnOptions: Dialogic.SpawnOptions, ns: string) => {
+      find: (ns: string, spawnOptions: Dialogic.SpawnOptions) => {
         const state = states();
         const items = state.store[ns] || [];
         const id = createId(spawnOptions, ns);
@@ -115,12 +115,12 @@ const store = {
         return state.store[ns] || [];
       },
 
-      getCount: (ns: string) => {
-        const state = states();
-        return (state.store[ns] || []).length;
-      },
+      getCount: (ns: string) =>
+        fns.getAll(ns).length
 
     };
+
+    return fns;
   },
 };
 
