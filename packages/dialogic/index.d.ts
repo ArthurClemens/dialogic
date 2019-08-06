@@ -35,7 +35,7 @@ type DialogicInstance = {
   resume: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) =>  Promise<string>;
   resetAll: () => Promise<any>;
   hideAll: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => void;
-  getCount: () => number;
+  getCount: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number;
 };
 
 export const dialog: DialogicInstance;
@@ -48,16 +48,18 @@ type ConfirmFn = {
 export namespace Dialogic {
 
   type DefaultSpawnOptions = {
+    id: string;
+    spawn: string;
+    queued?: boolean;
+  }
+
+  type InstanceSpawnOptions = {
     id?: string;
     spawn?: string;
     queued?: boolean;
   }
 
-  type InstanceSpawnOptions = {}
-
-  type SpawnOptions = {
-    id: string;
-  } & DefaultSpawnOptions & InstanceSpawnOptions;
+  type SpawnOptions = InstanceSpawnOptions & DefaultSpawnOptions;
 
   type DomElements = {
     domElement?: HTMLElement;
@@ -161,8 +163,8 @@ export namespace Dialogic {
   type StateSelectors = {
     getStore: () => NamespaceStore;
     find: (ns: string, spawnOptions: SpawnOptions) => MaybeItem;
-    getAll: (ns: string) => Item[];
-    getCount: (ns: string) => number;
+    getAll: (ns: string, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => Item[];
+    getCount: (ns: string, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number;
   }
 
   type InstanceEvent = {

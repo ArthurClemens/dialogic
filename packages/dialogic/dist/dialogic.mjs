@@ -325,7 +325,7 @@ const store = {
             /**
              * Add an item to the end of the list.
              */
-            add: (item, ns) => {
+            add: (ns, item) => {
                 update((state) => {
                     const items = state.store[ns] || [];
                     state.store[ns] = [...items, item];
@@ -335,7 +335,7 @@ const store = {
             /**
              * Removes the first item with a match on `id`.
              */
-            remove: (id, ns) => {
+            remove: (ns, id) => {
                 update((state) => {
                     const items = state.store[ns] || [];
                     const remaining = removeItem(id, items);
@@ -346,7 +346,7 @@ const store = {
             /**
              * Replaces the first item with a match on `id` with a newItem.
              */
-            replace: (id, newItem, ns) => {
+            replace: (ns, id, newItem) => {
                 update((state) => {
                     const items = state.store[ns] || [];
                     if (items) {
@@ -371,7 +371,7 @@ const store = {
             /**
              * Replaces all items within a namespace.
              */
-            store: (newItems, ns) => {
+            store: (ns, newItems) => {
                 update((state) => {
                     state.store[ns] = [...newItems];
                     return state;
@@ -394,11 +394,17 @@ const store = {
                     ? { just: item }
                     : { nothing: undefined };
             },
-            getAll: (ns) => {
+            getAll: (ns, instanceSpawnOptions) => {
                 const state = states();
-                return state.store[ns] || [];
+                const items = state.store[ns] || [];
+                const spawn = instanceSpawnOptions !== undefined
+                    ? instanceSpawnOptions.spawn
+                    : undefined;
+                return spawn !== undefined
+                    ? items.filter(item => item.spawnOptions.spawn === spawn)
+                    : items;
             },
-            getCount: (ns) => fns.getAll(ns).length
+            getCount: (ns, instanceSpawnOptions) => fns.getAll(ns, instanceSpawnOptions).length
         };
         return fns;
     },
@@ -560,12 +566,12 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
                 ...item,
                 instanceTransitionOptions
             };
-            actions.replace(existingItem.id, replacingItem, ns);
+            actions.replace(ns, existingItem.id, replacingItem);
             // While this is a replace action, mimic a show
             transitionOptions.didShow(spawnOptions.id);
         }
         else {
-            actions.add(item, ns);
+            actions.add(ns, item);
             // This will instantiate and draw the instance
             // The instance will call `showDialog` in `onMount`
         }
@@ -638,7 +644,7 @@ const hideAll = (ns) => (defaultSpawnOptions) => (options, instanceSpawnOptions)
     if (queuedItems.length > 0) {
         const [current,] = queuedItems;
         // Make sure that any remaining items don't suddenly appear
-        actions.store([current], ns);
+        actions.store(ns, [current]);
         // Transition the current item
         hideItem(getOverridingTransitionOptions(current, options), ns)
             .then(() => actions.removeAll(ns));
@@ -649,9 +655,9 @@ const hideAll = (ns) => (defaultSpawnOptions) => (options, instanceSpawnOptions)
  */
 const resetItem = (item, ns) => {
     item.timer.abort();
-    actions.remove(item.id, ns);
+    actions.remove(ns, item.id);
 };
-const getCount = (ns) => () => selectors.getCount(ns);
+const getCount = (ns) => (instanceSpawnOptions) => selectors.getCount(ns, instanceSpawnOptions);
 const transitionItem = (item, mode) => {
     try {
         return transition({
@@ -681,7 +687,7 @@ const hideItem = async function (item, ns) {
     }
     await (transitionItem(item, MODE.HIDE));
     item.transitionOptions.didHide && await (item.transitionOptions.didHide(item.spawnOptions.id));
-    actions.remove(item.id, ns);
+    actions.remove(ns, item.id);
     return item.spawnOptions.id;
 };
 

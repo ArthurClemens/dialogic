@@ -1971,7 +1971,7 @@ var store = {
       /**
        * Add an item to the end of the list.
        */
-      add: function add(item, ns) {
+      add: function add(ns, item) {
         update(function (state) {
           var items = state.store[ns] || [];
           state.store[ns] = [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(items), [item]);
@@ -1982,7 +1982,7 @@ var store = {
       /**
        * Removes the first item with a match on `id`.
        */
-      remove: function remove(id, ns) {
+      remove: function remove(ns, id) {
         update(function (state) {
           var items = state.store[ns] || [];
           var remaining = removeItem(id, items);
@@ -1994,7 +1994,7 @@ var store = {
       /**
        * Replaces the first item with a match on `id` with a newItem.
        */
-      replace: function replace(id, newItem, ns) {
+      replace: function replace(ns, id, newItem) {
         update(function (state) {
           var items = state.store[ns] || [];
 
@@ -2024,7 +2024,7 @@ var store = {
       /**
        * Replaces all items within a namespace.
        */
-      store: function store(newItems, ns) {
+      store: function store(ns, newItems) {
         update(function (state) {
           state.store[ns] = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(newItems);
           return state;
@@ -2051,12 +2051,16 @@ var store = {
           nothing: undefined
         };
       },
-      getAll: function getAll(ns) {
+      getAll: function getAll(ns, instanceSpawnOptions) {
         var state = states();
-        return state.store[ns] || [];
+        var items = state.store[ns] || [];
+        var spawn = instanceSpawnOptions !== undefined ? instanceSpawnOptions.spawn : undefined;
+        return spawn !== undefined ? items.filter(function (item) {
+          return item.spawnOptions.spawn === spawn;
+        }) : items;
       },
-      getCount: function getCount(ns) {
-        return fns.getAll(ns).length;
+      getCount: function getCount(ns, instanceSpawnOptions) {
+        return fns.getAll(ns, instanceSpawnOptions).length;
       }
     };
     return fns;
@@ -2259,11 +2263,11 @@ var createInstance = function createInstance(ns) {
               instanceTransitionOptions: _instanceTransitionOptions
             });
 
-            actions.replace(existingItem.id, replacingItem, ns); // While this is a replace action, mimic a show
+            actions.replace(ns, existingItem.id, replacingItem); // While this is a replace action, mimic a show
 
             transitionOptions.didShow(spawnOptions.id);
           } else {
-            actions.add(item, ns); // This will instantiate and draw the instance
+            actions.add(ns, item); // This will instantiate and draw the instance
             // The instance will call `showDialog` in `onMount`
           }
         });
@@ -2361,7 +2365,7 @@ var hideAll = function hideAll(ns) {
             current = _queuedItems[0]; // Make sure that any remaining items don't suddenly appear
 
 
-        actions.store([current], ns); // Transition the current item
+        actions.store(ns, [current]); // Transition the current item
 
         hideItem(getOverridingTransitionOptions(current, options), ns).then(function () {
           return actions.removeAll(ns);
@@ -2377,12 +2381,12 @@ var hideAll = function hideAll(ns) {
 
 var resetItem = function resetItem(item, ns) {
   item.timer.abort();
-  actions.remove(item.id, ns);
+  actions.remove(ns, item.id);
 };
 
 var getCount = function getCount(ns) {
-  return function () {
-    return selectors.getCount(ns);
+  return function (instanceSpawnOptions) {
+    return selectors.getCount(ns, instanceSpawnOptions);
   };
 };
 
@@ -2500,7 +2504,7 @@ function () {
             return item.transitionOptions.didHide(item.spawnOptions.id);
 
           case 7:
-            actions.remove(item.id, ns);
+            actions.remove(ns, item.id);
             return _context3.abrupt("return", item.spawnOptions.id);
 
           case 9:
@@ -4478,17 +4482,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const Dialog = ({ attrs }) => {
-    const spawnOptions = {
-        id: attrs.id || dialogic__WEBPACK_IMPORTED_MODULE_1__["dialog"].defaultId,
-        spawn: attrs.spawn || dialogic__WEBPACK_IMPORTED_MODULE_1__["dialog"].defaultSpawn,
-    };
-    return {
-        view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()(_Wrapper__WEBPACK_IMPORTED_MODULE_2__["Wrapper"], {
+const Dialog = {
+    view: ({ attrs }) => {
+        const spawnOptions = {
+            id: attrs.id || dialogic__WEBPACK_IMPORTED_MODULE_1__["dialog"].defaultId,
+            spawn: attrs.spawn || dialogic__WEBPACK_IMPORTED_MODULE_1__["dialog"].defaultSpawn,
+        };
+        return mithril__WEBPACK_IMPORTED_MODULE_0___default()(_Wrapper__WEBPACK_IMPORTED_MODULE_2__["Wrapper"], {
             spawnOptions,
             ns: dialogic__WEBPACK_IMPORTED_MODULE_1__["dialog"].ns,
-        })
-    };
+        });
+    }
 };
 
 
@@ -4663,9 +4667,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-dialogic__WEBPACK_IMPORTED_MODULE_1__["states"].map(state => (
-// console.log(JSON.stringify(state, null, 2)),
-mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw()));
+const DEBUG = false;
+dialogic__WEBPACK_IMPORTED_MODULE_1__["states"].map(state => (DEBUG && console.log(JSON.stringify(state, null, 2)),
+    mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw()));
 
 
 /***/ }),
@@ -4726,13 +4730,13 @@ __webpack_require__.r(__webpack_exports__);
 
 const getRandomNumber = () => Math.round(1000 * Math.random());
 const dialogOneProps = {
+    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
     showDuration: 0.5,
     hideDuration: 0.5,
-    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
     className: "xxx",
     showClassName: "xxx-visible",
     title: "Clock",
-    id: getRandomNumber(),
+    id: getRandomNumber().toString(),
 };
 // const dialogTwoProps = {
 //   showDuration: 0.75,
@@ -4754,7 +4758,7 @@ const dialogThreeProps = {
     className: "xxx",
     showClassName: "xxx-visible",
     title: "Delay",
-    id: getRandomNumber(),
+    id: getRandomNumber().toString(),
 };
 const dialogFourProps = {
     transitions: {
@@ -4775,7 +4779,7 @@ const dialogFourProps = {
     },
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
     title: "Transitions",
-    id: getRandomNumber(),
+    id: getRandomNumber().toString(),
 };
 const clearOptions = {
     transitions: {
@@ -4809,7 +4813,7 @@ const App = {
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", { className: "title is-2" }, "Dialog"),
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Dialog count: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getCount()}`)),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Dialog count: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getCount({ spawn: _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].defaultSpawn })}`)),
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
@@ -4876,37 +4880,19 @@ const App = {
             }, "Hide"),
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
-                className: "button",
-                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
-                    title: "Queued " + Math.round(1000 * Math.random()),
-                    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
-                }, {
-                    spawn: "Q",
-                    queued: true
-                })
-            }, "Queued dialog"),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
-                className: "button",
-                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ spawn: "Q" })
-            }, "Hide"),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Dialog in this spawn count: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getCount()}`)),
-            ]),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"], { spawn: "Q" }),
-            ]),
-        ]),
-        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()(_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"]),
         ]),
+        // Spawn
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", { className: "title is-2" }, "Dialog with spawn"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Dialog in this spawn count: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getCount({ spawn: "special" })}`)
+        ]),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
                 onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
                     title: "Custom spawn",
-                    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"]
+                    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
                 }, {
                     spawn: "special"
                 })
@@ -4921,8 +4907,39 @@ const App = {
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()(_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"], { spawn: "special" })
         ]),
+        // Queued
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", { className: "title is-2" }, "Queued dialog"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Dialog in this spawn count: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getCount({ spawn: "Q" })}`)
+        ]),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
+                    title: "Queued " + Math.round(1000 * Math.random()),
+                    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+                    showDuration: 0.5,
+                    hideDuration: 0.5,
+                    className: "xxx",
+                    showClassName: "xxx-visible",
+                }, {
+                    spawn: "Q",
+                    queued: true
+                })
+            }, "Queued dialog"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ spawn: "Q" })
+            }, "Hide"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"], { spawn: "Q" }),
+            ]),
+        ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", { className: "title is-2" }, "Notification"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Notification count: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getCount()}`)
+        ]),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
                 onclick: () => {
@@ -4943,7 +4960,14 @@ const App = {
                 className: "button",
                 onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].hide({ spawn: "NO" }).then(id => console.log("notification hidden from App", id))
             }, "Hide"),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Notification count: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getCount()}`)),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].pause({ spawn: "NO" })
+            }, "Pause"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].resume({ spawn: "NO" })
+            }, "Resume"),
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()(_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Notification"], { spawn: "NO" })

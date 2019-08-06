@@ -9,13 +9,13 @@ import "./styles.css";
 const getRandomNumber = () => Math.round(1000 * Math.random());
 
 const dialogOneProps: Dialogic.Options = {
+  component: DefaultContent,
   showDuration: 0.5,
   hideDuration: 0.5,
-  component: DefaultContent,
   className: "xxx",
   showClassName: "xxx-visible",
   title: "Clock",
-  id: getRandomNumber(),
+  id: getRandomNumber().toString(),
 };
 
 // const dialogTwoProps = {
@@ -39,7 +39,7 @@ const dialogThreeProps: Dialogic.Options = {
   className: "xxx",
   showClassName: "xxx-visible",
   title: "Delay",
-  id: getRandomNumber(),
+  id: getRandomNumber().toString(),
 };
 
 const dialogFourProps = {
@@ -65,7 +65,7 @@ const dialogFourProps = {
   },
   component: DefaultContent,
   title: "Transitions",
-  id: getRandomNumber(),
+  id: getRandomNumber().toString(),
 };
 
 const clearOptions = {
@@ -115,7 +115,7 @@ const App = {
       ]),
       m("section", { className: "section"}, [
         m("div",
-          m("p", `Dialog count: ${dialog.getCount()}`)
+          m("p", `Dialog count: ${dialog.getCount({ spawn: dialog.defaultSpawn })}`)
         ),
       ]),
       m("section", { className: "section"}, [
@@ -227,45 +227,15 @@ const App = {
         ),
       ]),
       m("section", { className: "section"}, [
-        m("button",
-          {
-            className: "button",
-            onclick: () =>
-              dialog.show(
-                {
-                  title: "Queued " + Math.round(1000 * Math.random()),
-                  component: DefaultContent,
-                },
-                {
-                  spawn: "Q",
-                  queued: true
-                }
-              )    
-          },
-          "Queued dialog"
-        ),
-        m("button",
-          {
-            className: "button",
-            onclick: () =>
-              dialog.hide({ spawn: "Q" })
-          },
-          "Hide"
-        ),
-        m("section", { className: "section"}, [
-          m("div",
-            m("p", `Dialog in this spawn count: ${dialog.getCount()}`)
-          ),
-        ]),
-        m("section", { className: "section"}, [
-          m(Dialog, { spawn: "Q" }),
-        ]),
-      ]),
-      m("section", { className: "section"}, [
         m(Dialog),
       ]),
+
+      // Spawn
       m("section", { className: "section"}, [
         m("h2", { className: "title is-2"}, "Dialog with spawn"),
+        m("p", `Dialog in this spawn count: ${dialog.getCount({ spawn: "special" })}`)
+      ]),
+      m("section", { className: "section"}, [
         m("button",
           {
             className: "button",
@@ -273,7 +243,7 @@ const App = {
               dialog.show(
                 {
                   title: "Custom spawn",
-                  component: DefaultContent
+                  component: DefaultContent,
                 },
                 {
                   spawn: "special"
@@ -296,9 +266,52 @@ const App = {
       m("section", { className: "section"}, [
         m(Dialog, { spawn: "special" })
       ]),
+
+      // Queued
+      m("section", { className: "section"}, [
+        m("h2", { className: "title is-2"}, "Queued dialog"),
+        m("p", `Dialog in this spawn count: ${dialog.getCount({ spawn: "Q" })}`)
+      ]),
+      m("section", { className: "section"}, [
+        m("button",
+          {
+            className: "button",
+            onclick: () =>
+              dialog.show(
+                {
+                  title: "Queued " + Math.round(1000 * Math.random()),
+                  component: DefaultContent,
+                  showDuration: 0.5,
+                  hideDuration: 0.5,
+                  className: "xxx",
+                  showClassName: "xxx-visible",
+                },
+                {
+                  spawn: "Q",
+                  queued: true
+                }
+              )    
+          },
+          "Queued dialog"
+        ),
+        m("button",
+          {
+            className: "button",
+            onclick: () =>
+              dialog.hide({ spawn: "Q" })
+          },
+          "Hide"
+        ),
+        m("section", { className: "section"}, [
+          m(Dialog, { spawn: "Q" }),
+        ]),
+      ]),
       
       m("section", { className: "section"}, [
         m("h2", { className: "title is-2"}, "Notification"),
+        m("p", `Notification count: ${notification.getCount()}`)
+      ]),
+      m("section", { className: "section"}, [
         m("button",
           {
             className: "button",
@@ -329,8 +342,21 @@ const App = {
           },
           "Hide"
         ),
-        m("div",
-          m("p", `Notification count: ${notification.getCount()}`)
+        m("button",
+          {
+            className: "button",
+            onclick: () =>
+              notification.pause({ spawn: "NO" })
+          },
+          "Pause"
+        ),
+        m("button",
+          {
+            className: "button",
+            onclick: () =>
+              notification.resume({ spawn: "NO" })
+          },
+          "Resume"
         ),
       ]),
       m("section", { className: "section"}, [

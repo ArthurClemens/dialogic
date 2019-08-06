@@ -33,7 +33,7 @@ const store = {
       /**
        * Add an item to the end of the list.
        */
-      add: (item: Dialogic.Item, ns: string) => {
+      add: (ns: string, item: Dialogic.Item) => {
         update((state: Dialogic.State) => {
           const items = state.store[ns] || [];
           state.store[ns] = [...items, item];
@@ -44,7 +44,7 @@ const store = {
       /**
        * Removes the first item with a match on `id`.
        */
-      remove: (id: string, ns: string) => {
+      remove: (ns: string, id: string) => {
         update((state: Dialogic.State) => {
           const items = state.store[ns] || [];
           const remaining = removeItem(id, items);
@@ -56,7 +56,7 @@ const store = {
       /**
        * Replaces the first item with a match on `id` with a newItem.
        */
-      replace: (id: string, newItem: Dialogic.Item, ns: string) => {
+      replace: (ns: string, id: string, newItem: Dialogic.Item) => {
         update((state: Dialogic.State) => {
           const items = state.store[ns] || [];
           if (items) {
@@ -83,7 +83,7 @@ const store = {
       /**
        * Replaces all items within a namespace.
        */
-      store: (newItems: Dialogic.Item[], ns: string) => {
+      store: (ns: string, newItems: Dialogic.Item[]) => {
         update((state: Dialogic.State) => {
           state.store[ns] = [...newItems];
           return state;
@@ -110,13 +110,19 @@ const store = {
           : { nothing: undefined }
       },
 
-      getAll: (ns: string) => {
+      getAll: (ns: string, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => {
         const state = states();
-        return state.store[ns] || [];
+        const items = state.store[ns] || [];
+        const spawn = instanceSpawnOptions !== undefined
+          ? instanceSpawnOptions.spawn
+          : undefined;
+        return spawn !== undefined
+          ? items.filter(item => item.spawnOptions.spawn === spawn)
+          : items;
       },
 
-      getCount: (ns: string) =>
-        fns.getAll(ns).length
+      getCount: (ns: string, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) =>
+        fns.getAll(ns, instanceSpawnOptions).length
 
     };
 

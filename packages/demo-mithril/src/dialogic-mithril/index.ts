@@ -4,7 +4,9 @@ import { states } from "dialogic";
 export * from "./Dialog";
 export * from "./Notification";
 
+const DEBUG = false;
+
 states.map(state => (
-  // console.log(JSON.stringify(state, null, 2)),
+  DEBUG && console.log(JSON.stringify(state, null, 2)),
   m.redraw()
 ));

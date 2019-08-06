@@ -9,16 +9,15 @@ type DialogOptions = {
   spawn?: string;
 }
 
-export const Dialog = ({ attrs } : { attrs: DialogOptions }) => {
-  const spawnOptions = {
-    id: attrs.id || dialog.defaultId,
-    spawn: attrs.spawn || dialog.defaultSpawn,
-  };
-  return {
-    view: () =>
-      m(Wrapper, {
-        spawnOptions,
-        ns: dialog.ns,
-      })
-  };
+export const Dialog = {
+  view: ({ attrs } : { attrs: DialogOptions }) => {
+    const spawnOptions = {
+      id: attrs.id || dialog.defaultId,
+      spawn: attrs.spawn || dialog.defaultSpawn,
+    };
+    return m(Wrapper, {
+      spawnOptions,
+      ns: dialog.ns,
+    });
+  }
 };

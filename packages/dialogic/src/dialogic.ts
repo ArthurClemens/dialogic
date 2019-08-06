@@ -119,11 +119,11 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
         ...item,
         instanceTransitionOptions
       };
-      actions.replace(existingItem.id, replacingItem, ns);
+      actions.replace(ns, existingItem.id, replacingItem);
       // While this is a replace action, mimic a show
       transitionOptions.didShow(spawnOptions.id);
     } else {
-      actions.add(item, ns);
+      actions.add(ns, item);
       // This will instantiate and draw the instance
       // The instance will call `showDialog` in `onMount`
     }
@@ -211,7 +211,7 @@ export const hideAll = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
   if (queuedItems.length > 0) {
     const [current, ] = queuedItems;
     // Make sure that any remaining items don't suddenly appear
-    actions.store([current], ns);
+    actions.store(ns, [current]);
     // Transition the current item
     hideItem(getOverridingTransitionOptions(current, options), ns)
       .then(() => actions.removeAll(ns))
@@ -223,11 +223,11 @@ export const hideAll = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
  */
 export const resetItem = (item: Dialogic.Item, ns: string) => {
   item.timer.abort();
-  actions.remove(item.id, ns);
+  actions.remove(ns, item.id);
 };
 
-export const getCount = (ns: string) => () =>
-  selectors.getCount(ns);
+export const getCount = (ns: string) => (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) =>
+  selectors.getCount(ns, instanceSpawnOptions);
 
 const transitionItem = (item: Dialogic.Item, mode: string) => {
   try {
@@ -265,7 +265,7 @@ export const hideItem: Dialogic.InitiateItemTransitionFn = async function(item, 
   }
   await(transitionItem(item, MODE.HIDE));
   item.transitionOptions.didHide && await(item.transitionOptions.didHide(item.spawnOptions.id));
-  actions.remove(item.id, ns);
+  actions.remove(ns, item.id);
   return item.spawnOptions.id;
 };
 
