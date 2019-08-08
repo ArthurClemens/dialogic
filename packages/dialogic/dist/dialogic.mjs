@@ -329,6 +329,10 @@ const store = {
                 update((state) => {
                     const items = state.store[ns] || [];
                     state.store[ns] = [...items, item];
+                    if (item.timer) {
+                        // When the timer state updates, refresh the store so that UI can pick up the change
+                        item.timer.states.map(() => store.actions(update).refresh());
+                    }
                     return state;
                 });
             },
@@ -377,6 +381,13 @@ const store = {
                     return state;
                 });
             },
+            refresh: () => {
+                update((state) => {
+                    return {
+                        ...state,
+                    };
+                });
+            },
         };
     },
     selectors: (states) => {
@@ -404,7 +415,7 @@ const store = {
                     ? items.filter(item => item.spawnOptions.spawn === spawn)
                     : items;
             },
-            getCount: (ns, instanceSpawnOptions) => fns.getAll(ns, instanceSpawnOptions).length
+            getCount: (ns, instanceSpawnOptions) => fns.getAll(ns, instanceSpawnOptions).length,
         };
         return fns;
     },
@@ -558,7 +569,7 @@ const Timer = () => {
                     return state.isPaused;
                 },
                 getRemaining: () => {
-                    timer.actions(update).refresh();
+                    // timer.actions(update).refresh()
                     const state = states();
                     return state.isPaused
                         ? state.remaining
@@ -695,7 +706,7 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
     });
 };
 const show = createInstance;
-const getMaybeItem = (ns, defaultSpawnOptions, instanceSpawnOptions) => {
+const getMaybeItem = (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
     const spawnOptions = {
         ...defaultSpawnOptions,
         ...instanceSpawnOptions,
@@ -703,7 +714,7 @@ const getMaybeItem = (ns, defaultSpawnOptions, instanceSpawnOptions) => {
     return selectors.find(ns, spawnOptions);
 };
 const performOnItem = fn => ns => defaultSpawnOptions => (instanceSpawnOptions, fnOptions) => {
-    const maybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
+    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
     if (maybeItem.just) {
         return fn(ns, maybeItem.just, fnOptions);
     }
@@ -733,7 +744,7 @@ const resume = performOnItem((ns, item, fnOptions = {}) => {
     return Promise.resolve();
 });
 const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
-    const maybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
+    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
     if (maybeItem.just) {
         if (maybeItem.just && maybeItem.just.timer) {
             return maybeItem.just.timer.selectors[timerProp]();
@@ -844,6 +855,7 @@ const hide$1 = hide(ns)(defaultSpawnOptions);
 const pause$1 = pause(ns)(defaultSpawnOptions);
 const resume$1 = resume(ns)(defaultSpawnOptions);
 const isPaused$1 = isPaused(ns)(defaultSpawnOptions);
+const getMaybeItem$1 = getMaybeItem(ns)(defaultSpawnOptions);
 const getRemaining$2 = getRemaining$1(ns)(defaultSpawnOptions);
 const hideAll$1 = hideAll(ns)(defaultSpawnOptions);
 const resetAll$1 = resetAll(ns);
@@ -853,11 +865,13 @@ var notification = /*#__PURE__*/Object.freeze({
 	ns: ns,
 	defaultId: defaultId,
 	defaultSpawn: defaultSpawn,
+	defaultSpawnOptions: defaultSpawnOptions,
 	show: show$1,
 	hide: hide$1,
 	pause: pause$1,
 	resume: resume$1,
 	isPaused: isPaused$1,
+	getMaybeItem: getMaybeItem$1,
 	getRemaining: getRemaining$2,
 	hideAll: hideAll$1,
 	resetAll: resetAll$1,
@@ -877,6 +891,7 @@ const hide$2 = hide(ns$1)(defaultSpawnOptions$1);
 const pause$2 = pause(ns$1)(defaultSpawnOptions$1);
 const resume$2 = resume(ns$1)(defaultSpawnOptions$1);
 const isPaused$2 = isPaused(ns$1)(defaultSpawnOptions$1);
+const getMaybeItem$2 = getMaybeItem(ns$1)(defaultSpawnOptions$1);
 const getRemaining$3 = getRemaining$1(ns$1)(defaultSpawnOptions$1);
 const hideAll$2 = hideAll(ns$1)(defaultSpawnOptions$1);
 const resetAll$2 = resetAll(ns$1);
@@ -886,16 +901,18 @@ var dialog = /*#__PURE__*/Object.freeze({
 	ns: ns$1,
 	defaultId: defaultId$1,
 	defaultSpawn: defaultSpawn$1,
+	defaultSpawnOptions: defaultSpawnOptions$1,
 	show: show$2,
 	hide: hide$2,
 	pause: pause$2,
 	resume: resume$2,
 	isPaused: isPaused$2,
+	getMaybeItem: getMaybeItem$2,
 	getRemaining: getRemaining$3,
 	hideAll: hideAll$2,
 	resetAll: resetAll$2,
 	getCount: getCount$2
 });
 
-export { actions, dialog, filter, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, performOnItem, resetAll, resetItem, resume, selectors, show, showItem, states };
+export { actions, dialog, filter, getCount, getMaybeItem, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, performOnItem, resetAll, resetItem, resume, selectors, show, showItem, states };
 //# sourceMappingURL=dialogic.mjs.map

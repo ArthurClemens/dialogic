@@ -154,11 +154,11 @@ export const Timer = () => {
 
         isPaused: () => {
           const state = states();
-          return state.isPaused;;
+          return state.isPaused;
         },
 
         getRemaining: () => {
-          timer.actions(update).refresh()
+          // timer.actions(update).refresh()
           const state = states();
           return state.isPaused
             ? state.remaining

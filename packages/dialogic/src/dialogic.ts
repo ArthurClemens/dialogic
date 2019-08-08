@@ -1,6 +1,6 @@
 import { transition, transitionOptionKeys, MODE } from "./transition";
 import { actions, selectors, createId } from "./state";
-import { Timer } from "./Timer";
+import { Timer } from "./timer";
 import { Dialogic } from "../index";
 
 export { states, actions, selectors } from "./state";
@@ -134,7 +134,7 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
 
 export const show = createInstance;
 
-const getMaybeItem = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOptions, instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+export const getMaybeItem = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
   const spawnOptions = {
     ...defaultSpawnOptions,
     ...instanceSpawnOptions,
@@ -143,7 +143,7 @@ const getMaybeItem = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOpti
 }
 
 export const performOnItem: PerformOnItemFn = fn => ns => defaultSpawnOptions => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions, fnOptions?: any) => {
-  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
+  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
   if (maybeItem.just) {
     return fn(ns, maybeItem.just, fnOptions);
   } else {
@@ -177,8 +177,8 @@ export const resume: PerformOnItemNsFn =
     return Promise.resolve();
   });
 
-export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getResultPromise") =>(ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
-  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
+export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getResultPromise") => (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
   if (maybeItem.just) {
     if (maybeItem.just && maybeItem.just.timer) {
       return maybeItem.just.timer.selectors[timerProp]();

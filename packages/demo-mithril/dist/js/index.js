@@ -1571,7 +1571,7 @@ module.exports = g;
 /*!**********************************************************************************************!*\
   !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic/dist/dialogic.mjs ***!
   \**********************************************************************************************/
-/*! exports provided: actions, dialog, filter, getCount, getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, performOnItem, resetAll, resetItem, resume, selectors, show, showItem, states */
+/*! exports provided: actions, dialog, filter, getCount, getMaybeItem, getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, performOnItem, resetAll, resetItem, resume, selectors, show, showItem, states */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1580,6 +1580,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dialog", function() { return dialog; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filter", function() { return filter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCount", function() { return getCount; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getMaybeItem", function() { return getMaybeItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRemaining", function() { return getRemaining$1; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTimerProperty", function() { return getTimerProperty; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hide", function() { return hide; });
@@ -1978,6 +1979,14 @@ var store = {
         update(function (state) {
           var items = state.store[ns] || [];
           state.store[ns] = [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(items), [item]);
+
+          if (item.timer) {
+            // When the timer state updates, refresh the store so that UI can pick up the change
+            item.timer.states.map(function () {
+              return store.actions(update).refresh();
+            });
+          }
+
           return state;
         });
       },
@@ -2031,6 +2040,11 @@ var store = {
         update(function (state) {
           state.store[ns] = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(newItems);
           return state;
+        });
+      },
+      refresh: function refresh() {
+        update(function (state) {
+          return _objectSpread({}, state);
         });
       }
     };
@@ -2203,7 +2217,6 @@ var Timer = function Timer() {
           return state.isPaused;
         },
         getRemaining: function getRemaining() {
-          timer.actions(update).refresh();
           var state = states();
           return state.isPaused ? state.remaining : _getRemaining(state);
         },
@@ -2363,17 +2376,21 @@ var createInstance = function createInstance(ns) {
 
 var show = createInstance;
 
-var getMaybeItem = function getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions) {
-  var spawnOptions = _objectSpread({}, defaultSpawnOptions, {}, instanceSpawnOptions);
+var getMaybeItem = function getMaybeItem(ns) {
+  return function (defaultSpawnOptions) {
+    return function (instanceSpawnOptions) {
+      var spawnOptions = _objectSpread({}, defaultSpawnOptions, {}, instanceSpawnOptions);
 
-  return selectors.find(ns, spawnOptions);
+      return selectors.find(ns, spawnOptions);
+    };
+  };
 };
 
 var performOnItem = function performOnItem(fn) {
   return function (ns) {
     return function (defaultSpawnOptions) {
       return function (instanceSpawnOptions, fnOptions) {
-        var maybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
+        var maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
 
         if (maybeItem.just) {
           return fn(ns, maybeItem.just, fnOptions);
@@ -2414,7 +2431,7 @@ var getTimerProperty = function getTimerProperty(timerProp) {
   return function (ns) {
     return function (defaultSpawnOptions) {
       return function (instanceSpawnOptions) {
-        var maybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
+        var maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
 
         if (maybeItem.just) {
           if (maybeItem.just && maybeItem.just.timer) {
@@ -2651,6 +2668,7 @@ var hide$1 = hide(ns)(defaultSpawnOptions);
 var pause$1 = pause(ns)(defaultSpawnOptions);
 var resume$1 = resume(ns)(defaultSpawnOptions);
 var isPaused$1 = isPaused(ns)(defaultSpawnOptions);
+var getMaybeItem$1 = getMaybeItem(ns)(defaultSpawnOptions);
 var getRemaining$2 = getRemaining$1(ns)(defaultSpawnOptions);
 var hideAll$1 = hideAll(ns)(defaultSpawnOptions);
 var resetAll$1 = resetAll(ns);
@@ -2661,11 +2679,13 @@ Object.freeze({
   ns: ns,
   defaultId: defaultId,
   defaultSpawn: defaultSpawn,
+  defaultSpawnOptions: defaultSpawnOptions,
   show: show$1,
   hide: hide$1,
   pause: pause$1,
   resume: resume$1,
   isPaused: isPaused$1,
+  getMaybeItem: getMaybeItem$1,
   getRemaining: getRemaining$2,
   hideAll: hideAll$1,
   resetAll: resetAll$1,
@@ -2684,6 +2704,7 @@ var hide$2 = hide(ns$1)(defaultSpawnOptions$1);
 var pause$2 = pause(ns$1)(defaultSpawnOptions$1);
 var resume$2 = resume(ns$1)(defaultSpawnOptions$1);
 var isPaused$2 = isPaused(ns$1)(defaultSpawnOptions$1);
+var getMaybeItem$2 = getMaybeItem(ns$1)(defaultSpawnOptions$1);
 var getRemaining$3 = getRemaining$1(ns$1)(defaultSpawnOptions$1);
 var hideAll$2 = hideAll(ns$1)(defaultSpawnOptions$1);
 var resetAll$2 = resetAll(ns$1);
@@ -2694,11 +2715,13 @@ Object.freeze({
   ns: ns$1,
   defaultId: defaultId$1,
   defaultSpawn: defaultSpawn$1,
+  defaultSpawnOptions: defaultSpawnOptions$1,
   show: show$2,
   hide: hide$2,
   pause: pause$2,
   resume: resume$2,
   isPaused: isPaused$2,
+  getMaybeItem: getMaybeItem$2,
   getRemaining: getRemaining$3,
   hideAll: hideAll$2,
   resetAll: resetAll$2,
@@ -4882,17 +4905,6 @@ const dialogOneProps = {
     title: "Clock",
     id: getRandomNumber().toString(),
 };
-// const dialogTwoProps = {
-//   showDuration: 0.75,
-//   showDelay: 0,
-//   hideDuration: 0.75,
-//   hideDelay: 0,
-//   component: DefaultContent,
-//   className: "xxx",
-//   showClassName: "xxx-visible",
-//   title: "Fade",
-//   id: getRandomNumber(),
-// };
 const dialogThreeProps = {
     showDuration: 0.75,
     showDelay: 0.25,

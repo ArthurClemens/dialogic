@@ -794,6 +794,10 @@ var app = (function () {
                     update((state) => {
                         const items = state.store[ns] || [];
                         state.store[ns] = [...items, item];
+                        if (item.timer) {
+                            // When the timer state updates, refresh the store so that UI can pick up the change
+                            item.timer.states.map(() => store.actions(update).refresh());
+                        }
                         return state;
                     });
                 },
@@ -842,6 +846,13 @@ var app = (function () {
                         return state;
                     });
                 },
+                refresh: () => {
+                    update((state) => {
+                        return {
+                            ...state,
+                        };
+                    });
+                },
             };
         },
         selectors: (states) => {
@@ -869,7 +880,7 @@ var app = (function () {
                         ? items.filter(item => item.spawnOptions.spawn === spawn)
                         : items;
                 },
-                getCount: (ns, instanceSpawnOptions) => fns.getAll(ns, instanceSpawnOptions).length
+                getCount: (ns, instanceSpawnOptions) => fns.getAll(ns, instanceSpawnOptions).length,
             };
             return fns;
         },
@@ -1023,7 +1034,7 @@ var app = (function () {
                         return state.isPaused;
                     },
                     getRemaining: () => {
-                        timer.actions(update).refresh();
+                        // timer.actions(update).refresh()
                         const state = states();
                         return state.isPaused
                             ? state.remaining
@@ -1160,7 +1171,7 @@ var app = (function () {
         });
     };
     const show = createInstance;
-    const getMaybeItem = (ns, defaultSpawnOptions, instanceSpawnOptions) => {
+    const getMaybeItem = (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
         const spawnOptions = {
             ...defaultSpawnOptions,
             ...instanceSpawnOptions,
@@ -1168,7 +1179,7 @@ var app = (function () {
         return selectors.find(ns, spawnOptions);
     };
     const performOnItem = fn => ns => defaultSpawnOptions => (instanceSpawnOptions, fnOptions) => {
-        const maybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
+        const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
         if (maybeItem.just) {
             return fn(ns, maybeItem.just, fnOptions);
         }
@@ -1198,7 +1209,7 @@ var app = (function () {
         return Promise.resolve();
     });
     const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
-        const maybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
+        const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
         if (maybeItem.just) {
             if (maybeItem.just && maybeItem.just.timer) {
                 return maybeItem.just.timer.selectors[timerProp]();
@@ -1302,6 +1313,7 @@ var app = (function () {
     const pause$1 = pause(ns)(defaultSpawnOptions);
     const resume$1 = resume(ns)(defaultSpawnOptions);
     const isPaused$1 = isPaused(ns)(defaultSpawnOptions);
+    const getMaybeItem$1 = getMaybeItem(ns)(defaultSpawnOptions);
     const getRemaining$2 = getRemaining$1(ns)(defaultSpawnOptions);
     const hideAll$1 = hideAll(ns)(defaultSpawnOptions);
     const resetAll$1 = resetAll(ns);
@@ -1311,11 +1323,13 @@ var app = (function () {
     	ns: ns,
     	defaultId: defaultId,
     	defaultSpawn: defaultSpawn,
+    	defaultSpawnOptions: defaultSpawnOptions,
     	show: show$1,
     	hide: hide$1,
     	pause: pause$1,
     	resume: resume$1,
     	isPaused: isPaused$1,
+    	getMaybeItem: getMaybeItem$1,
     	getRemaining: getRemaining$2,
     	hideAll: hideAll$1,
     	resetAll: resetAll$1,
@@ -1335,6 +1349,7 @@ var app = (function () {
     const pause$2 = pause(ns$1)(defaultSpawnOptions$1);
     const resume$2 = resume(ns$1)(defaultSpawnOptions$1);
     const isPaused$2 = isPaused(ns$1)(defaultSpawnOptions$1);
+    const getMaybeItem$2 = getMaybeItem(ns$1)(defaultSpawnOptions$1);
     const getRemaining$3 = getRemaining$1(ns$1)(defaultSpawnOptions$1);
     const hideAll$2 = hideAll(ns$1)(defaultSpawnOptions$1);
     const resetAll$2 = resetAll(ns$1);
@@ -1344,16 +1359,19 @@ var app = (function () {
     	ns: ns$1,
     	defaultId: defaultId$1,
     	defaultSpawn: defaultSpawn$1,
+    	defaultSpawnOptions: defaultSpawnOptions$1,
     	show: show$2,
     	hide: hide$2,
     	pause: pause$2,
     	resume: resume$2,
     	isPaused: isPaused$2,
+    	getMaybeItem: getMaybeItem$2,
     	getRemaining: getRemaining$3,
     	hideAll: hideAll$2,
     	resetAll: resetAll$2,
     	getCount: getCount$2
     });
+    //# sourceMappingURL=dialogic.mjs.map
 
     const subscriber_queue = [];
     /**
@@ -1475,19 +1493,28 @@ var app = (function () {
       ...selectors
     }));
 
-    const getCount$3 = (ns) => derived(
+    const getCount$3 = ns => instanceSpawnOptions => derived(
     	appState,
-    	() => selectors.getCount(ns)
+    	() => selectors.getCount(ns, instanceSpawnOptions)
+    );
+
+    const isPaused$3 = ns => defaultSpawnOptions => instanceSpawnOptions => derived(
+    	appState,
+    	() => getTimerProperty("isPaused")(ns)(defaultSpawnOptions)(instanceSpawnOptions)
     );
 
     const dialog$1 = {
       ...dialog,
-      count: getCount$3(dialog.ns),
+      getCount: getCount$3(dialog.ns),
+      isPaused: instanceSpawnOptions =>
+        isPaused$3(dialog.ns)(dialog.defaultSpawnOptions)(instanceSpawnOptions)
     };
 
     const notification$1 = {
       ...notification,
-      count: getCount$3(notification.ns),
+      getCount: getCount$3(notification.ns),
+      isPaused: instanceSpawnOptions =>
+        isPaused$3(notification.ns)(notification.defaultSpawnOptions)(instanceSpawnOptions)
     };
 
     const handleDispatch = (ns) => (event, fn) => {
@@ -2314,9 +2341,9 @@ var app = (function () {
 
     const file$3 = "src/App.svelte";
 
-    // (99:0) {#if showDialogs}
+    // (117:0) {#if showDialogs}
     function create_if_block_1(ctx) {
-    	var h2, t1, p0, t2, t3, t4, hr0, t5, div0, button0, t7, button1, t9, div1, button2, t11, button3, t13, div2, button4, t15, button5, t17, div3, button6, t19, button7, t21, div4, button8, t23, button9, t25, div5, button10, t27, button11, t29, div6, button12, t31, button13, t33, hr1, t34, div7, p1, t36, t37, div8, p2, t39, t40, hr2, t41, div9, button14, t43, button15, t45, div10, p3, t47, current, dispose;
+    	var h2, t1, p0, t2, t3, t4, hr0, t5, div0, button0, t7, button1, t9, div1, p1, t10, t11, t12, button2, t14, button3, t16, button4, t18, button5, t20, div2, button6, t22, button7, t24, div3, button8, t26, button9, t28, div4, button10, t30, button11, t32, div5, button12, t34, button13, t36, div6, button14, t38, button15, t40, hr1, t41, div7, p2, t43, t44, div8, p3, t46, t47, hr2, t48, div9, button16, t50, button17, t52, div10, p4, t54, current, dispose;
 
     	var dialog0 = new Dialog({ $$inline: true });
 
@@ -2346,110 +2373,123 @@ var app = (function () {
     			button1.textContent = "Hide";
     			t9 = space();
     			div1 = element("div");
+    			p1 = element("p");
+    			t10 = text("Remaining: ");
+    			t11 = text(ctx.remainingValue);
+    			t12 = space();
     			button2 = element("button");
     			button2.textContent = "With timer";
-    			t11 = space();
+    			t14 = space();
     			button3 = element("button");
-    			button3.textContent = "Hide";
-    			t13 = space();
-    			div2 = element("div");
+    			button3.textContent = "Pause";
+    			t16 = space();
     			button4 = element("button");
-    			button4.textContent = "Show with promises";
-    			t15 = space();
+    			button4.textContent = "Resume";
+    			t18 = space();
     			button5 = element("button");
     			button5.textContent = "Hide";
-    			t17 = space();
-    			div3 = element("div");
+    			t20 = space();
+    			div2 = element("div");
     			button6 = element("button");
-    			button6.textContent = "Show delay";
-    			t19 = space();
+    			button6.textContent = "Show with promises";
+    			t22 = space();
     			button7 = element("button");
     			button7.textContent = "Hide";
-    			t21 = space();
-    			div4 = element("div");
+    			t24 = space();
+    			div3 = element("div");
     			button8 = element("button");
-    			button8.textContent = "Show slow fade";
-    			t23 = space();
+    			button8.textContent = "Show delay";
+    			t26 = space();
     			button9 = element("button");
     			button9.textContent = "Hide";
-    			t25 = space();
-    			div5 = element("div");
+    			t28 = space();
+    			div4 = element("div");
     			button10 = element("button");
-    			button10.textContent = "Show transition";
-    			t27 = space();
+    			button10.textContent = "Show slow fade";
+    			t30 = space();
     			button11 = element("button");
     			button11.textContent = "Hide";
-    			t29 = space();
-    			div6 = element("div");
+    			t32 = space();
+    			div5 = element("div");
     			button12 = element("button");
-    			button12.textContent = "Show default in spawn";
-    			t31 = space();
+    			button12.textContent = "Show transition";
+    			t34 = space();
     			button13 = element("button");
     			button13.textContent = "Hide";
-    			t33 = space();
-    			hr1 = element("hr");
-    			t34 = space();
-    			div7 = element("div");
-    			p1 = element("p");
-    			p1.textContent = "Dialog:";
     			t36 = space();
-    			dialog0.$$.fragment.c();
-    			t37 = space();
-    			div8 = element("div");
-    			p2 = element("p");
-    			p2.textContent = "Dialog with spawn:";
-    			t39 = space();
-    			dialog1.$$.fragment.c();
-    			t40 = space();
-    			hr2 = element("hr");
-    			t41 = text("\nQueued dialog\n");
-    			div9 = element("div");
+    			div6 = element("div");
     			button14 = element("button");
-    			button14.textContent = "Queued";
-    			t43 = space();
+    			button14.textContent = "Show default in spawn";
+    			t38 = space();
     			button15 = element("button");
     			button15.textContent = "Hide";
-    			t45 = space();
-    			div10 = element("div");
+    			t40 = space();
+    			hr1 = element("hr");
+    			t41 = space();
+    			div7 = element("div");
+    			p2 = element("p");
+    			p2.textContent = "Dialog:";
+    			t43 = space();
+    			dialog0.$$.fragment.c();
+    			t44 = space();
+    			div8 = element("div");
     			p3 = element("p");
-    			p3.textContent = "Dialog queued:";
+    			p3.textContent = "Dialog with spawn:";
+    			t46 = space();
+    			dialog1.$$.fragment.c();
     			t47 = space();
+    			hr2 = element("hr");
+    			t48 = text("\nQueued dialog\n");
+    			div9 = element("div");
+    			button16 = element("button");
+    			button16.textContent = "Queued";
+    			t50 = space();
+    			button17 = element("button");
+    			button17.textContent = "Hide";
+    			t52 = space();
+    			div10 = element("div");
+    			p4 = element("p");
+    			p4.textContent = "Dialog queued:";
+    			t54 = space();
     			dialog2.$$.fragment.c();
-    			add_location(h2, file$3, 100, 0, 2553);
-    			add_location(p0, file$3, 102, 0, 2570);
-    			add_location(hr0, file$3, 104, 0, 2609);
-    			add_location(button0, file$3, 107, 2, 2625);
-    			add_location(button1, file$3, 114, 2, 2758);
-    			add_location(div0, file$3, 106, 0, 2617);
-    			add_location(button2, file$3, 118, 2, 2827);
-    			add_location(button3, file$3, 126, 2, 2987);
-    			add_location(div1, file$3, 117, 0, 2819);
-    			add_location(button4, file$3, 130, 2, 3091);
-    			add_location(button5, file$3, 146, 2, 3499);
-    			add_location(div2, file$3, 129, 0, 3083);
-    			add_location(button6, file$3, 153, 2, 3649);
-    			add_location(button7, file$3, 162, 2, 3882);
-    			add_location(div3, file$3, 152, 0, 3641);
-    			add_location(button8, file$3, 165, 2, 3975);
-    			add_location(button9, file$3, 169, 2, 4093);
-    			add_location(div4, file$3, 164, 0, 3967);
-    			add_location(button10, file$3, 172, 2, 4186);
-    			add_location(button11, file$3, 176, 2, 4307);
-    			add_location(div5, file$3, 171, 0, 4178);
-    			add_location(button12, file$3, 179, 2, 4401);
-    			add_location(button13, file$3, 186, 2, 4575);
-    			add_location(div6, file$3, 178, 0, 4393);
-    			add_location(hr1, file$3, 189, 0, 4656);
-    			add_location(p1, file$3, 192, 2, 4672);
-    			add_location(div7, file$3, 191, 0, 4664);
-    			add_location(p2, file$3, 197, 2, 4716);
-    			add_location(div8, file$3, 196, 0, 4708);
-    			add_location(hr2, file$3, 201, 0, 4779);
-    			add_location(button14, file$3, 204, 2, 4808);
-    			add_location(button15, file$3, 211, 2, 5005);
-    			add_location(div9, file$3, 203, 0, 4800);
-    			add_location(p3, file$3, 215, 2, 5088);
-    			add_location(div10, file$3, 214, 0, 5080);
+    			add_location(h2, file$3, 118, 0, 2953);
+    			add_location(p0, file$3, 120, 0, 2970);
+    			add_location(hr0, file$3, 122, 0, 3009);
+    			add_location(button0, file$3, 125, 2, 3025);
+    			add_location(button1, file$3, 132, 2, 3158);
+    			add_location(div0, file$3, 124, 0, 3017);
+    			add_location(p1, file$3, 136, 2, 3227);
+    			add_location(button2, file$3, 137, 2, 3264);
+    			add_location(button3, file$3, 149, 2, 3477);
+    			add_location(button4, file$3, 154, 2, 3575);
+    			add_location(button5, file$3, 162, 2, 3708);
+    			add_location(div1, file$3, 135, 0, 3219);
+    			add_location(button6, file$3, 166, 2, 3827);
+    			add_location(button7, file$3, 182, 2, 4235);
+    			add_location(div2, file$3, 165, 0, 3819);
+    			add_location(button8, file$3, 189, 2, 4385);
+    			add_location(button9, file$3, 198, 2, 4618);
+    			add_location(div3, file$3, 188, 0, 4377);
+    			add_location(button10, file$3, 201, 2, 4711);
+    			add_location(button11, file$3, 205, 2, 4829);
+    			add_location(div4, file$3, 200, 0, 4703);
+    			add_location(button12, file$3, 208, 2, 4922);
+    			add_location(button13, file$3, 212, 2, 5043);
+    			add_location(div5, file$3, 207, 0, 4914);
+    			add_location(button14, file$3, 215, 2, 5137);
+    			add_location(button15, file$3, 222, 2, 5311);
+    			add_location(div6, file$3, 214, 0, 5129);
+    			add_location(hr1, file$3, 225, 0, 5392);
+    			add_location(p2, file$3, 228, 2, 5408);
+    			add_location(div7, file$3, 227, 0, 5400);
+    			add_location(p3, file$3, 233, 2, 5452);
+    			add_location(div8, file$3, 232, 0, 5444);
+    			add_location(hr2, file$3, 237, 0, 5515);
+    			add_location(button16, file$3, 240, 2, 5544);
+    			add_location(button17, file$3, 247, 2, 5741);
+    			add_location(div9, file$3, 239, 0, 5536);
+    			add_location(p4, file$3, 251, 2, 5824);
+    			add_location(div10, file$3, 250, 0, 5816);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_5),
@@ -2467,7 +2507,9 @@ var app = (function () {
     				listen(button12, "click", ctx.click_handler_17),
     				listen(button13, "click", ctx.click_handler_18),
     				listen(button14, "click", ctx.click_handler_19),
-    				listen(button15, "click", ctx.click_handler_20)
+    				listen(button15, "click", ctx.click_handler_20),
+    				listen(button16, "click", ctx.click_handler_21),
+    				listen(button17, "click", ctx.click_handler_22)
     			];
     		},
 
@@ -2486,64 +2528,76 @@ var app = (function () {
     			append(div0, button1);
     			insert(target, t9, anchor);
     			insert(target, div1, anchor);
+    			append(div1, p1);
+    			append(p1, t10);
+    			append(p1, t11);
+    			append(div1, t12);
     			append(div1, button2);
-    			append(div1, t11);
+    			append(div1, t14);
     			append(div1, button3);
-    			insert(target, t13, anchor);
+    			append(div1, t16);
+    			append(div1, button4);
+    			append(div1, t18);
+    			append(div1, button5);
+    			insert(target, t20, anchor);
     			insert(target, div2, anchor);
-    			append(div2, button4);
-    			append(div2, t15);
-    			append(div2, button5);
-    			insert(target, t17, anchor);
+    			append(div2, button6);
+    			append(div2, t22);
+    			append(div2, button7);
+    			insert(target, t24, anchor);
     			insert(target, div3, anchor);
-    			append(div3, button6);
-    			append(div3, t19);
-    			append(div3, button7);
-    			insert(target, t21, anchor);
+    			append(div3, button8);
+    			append(div3, t26);
+    			append(div3, button9);
+    			insert(target, t28, anchor);
     			insert(target, div4, anchor);
-    			append(div4, button8);
-    			append(div4, t23);
-    			append(div4, button9);
-    			insert(target, t25, anchor);
+    			append(div4, button10);
+    			append(div4, t30);
+    			append(div4, button11);
+    			insert(target, t32, anchor);
     			insert(target, div5, anchor);
-    			append(div5, button10);
-    			append(div5, t27);
-    			append(div5, button11);
-    			insert(target, t29, anchor);
+    			append(div5, button12);
+    			append(div5, t34);
+    			append(div5, button13);
+    			insert(target, t36, anchor);
     			insert(target, div6, anchor);
-    			append(div6, button12);
-    			append(div6, t31);
-    			append(div6, button13);
-    			insert(target, t33, anchor);
-    			insert(target, hr1, anchor);
-    			insert(target, t34, anchor);
-    			insert(target, div7, anchor);
-    			append(div7, p1);
-    			append(div7, t36);
-    			mount_component(dialog0, div7, null);
-    			insert(target, t37, anchor);
-    			insert(target, div8, anchor);
-    			append(div8, p2);
-    			append(div8, t39);
-    			mount_component(dialog1, div8, null);
+    			append(div6, button14);
+    			append(div6, t38);
+    			append(div6, button15);
     			insert(target, t40, anchor);
-    			insert(target, hr2, anchor);
+    			insert(target, hr1, anchor);
     			insert(target, t41, anchor);
+    			insert(target, div7, anchor);
+    			append(div7, p2);
+    			append(div7, t43);
+    			mount_component(dialog0, div7, null);
+    			insert(target, t44, anchor);
+    			insert(target, div8, anchor);
+    			append(div8, p3);
+    			append(div8, t46);
+    			mount_component(dialog1, div8, null);
+    			insert(target, t47, anchor);
+    			insert(target, hr2, anchor);
+    			insert(target, t48, anchor);
     			insert(target, div9, anchor);
-    			append(div9, button14);
-    			append(div9, t43);
-    			append(div9, button15);
-    			insert(target, t45, anchor);
+    			append(div9, button16);
+    			append(div9, t50);
+    			append(div9, button17);
+    			insert(target, t52, anchor);
     			insert(target, div10, anchor);
-    			append(div10, p3);
-    			append(div10, t47);
+    			append(div10, p4);
+    			append(div10, t54);
     			mount_component(dialog2, div10, null);
     			current = true;
     		},
 
-    		p: function update(changed, ctx) {
+    		p: function update_1(changed, ctx) {
     			if (!current || changed.$dialogCount) {
     				set_data(t3, ctx.$dialogCount);
+    			}
+
+    			if (!current || changed.remainingValue) {
+    				set_data(t11, ctx.remainingValue);
     			}
     		},
 
@@ -2576,37 +2630,37 @@ var app = (function () {
     				detach(div0);
     				detach(t9);
     				detach(div1);
-    				detach(t13);
+    				detach(t20);
     				detach(div2);
-    				detach(t17);
+    				detach(t24);
     				detach(div3);
-    				detach(t21);
+    				detach(t28);
     				detach(div4);
-    				detach(t25);
+    				detach(t32);
     				detach(div5);
-    				detach(t29);
+    				detach(t36);
     				detach(div6);
-    				detach(t33);
+    				detach(t40);
     				detach(hr1);
-    				detach(t34);
+    				detach(t41);
     				detach(div7);
     			}
 
     			destroy_component(dialog0);
 
     			if (detaching) {
-    				detach(t37);
+    				detach(t44);
     				detach(div8);
     			}
 
     			destroy_component(dialog1);
 
     			if (detaching) {
-    				detach(t40);
+    				detach(t47);
     				detach(hr2);
-    				detach(t41);
+    				detach(t48);
     				detach(div9);
-    				detach(t45);
+    				detach(t52);
     				detach(div10);
     			}
 
@@ -2617,7 +2671,7 @@ var app = (function () {
     	};
     }
 
-    // (226:0) {#if showNotifications}
+    // (262:0) {#if showNotifications}
     function create_if_block(ctx) {
     	var h2, t1, p0, t2, t3, t4, p1, t5, t6, t7, div, button0, t9, button1, t11, button2, t13, button3, t15, t16, hr, current, dispose;
 
@@ -2633,8 +2687,8 @@ var app = (function () {
     			t3 = text(ctx.$notificationCount);
     			t4 = space();
     			p1 = element("p");
-    			t5 = text("isPaused = ");
-    			t6 = text(ctx.notificationPaused);
+    			t5 = text("notificationItemIsPaused = ");
+    			t6 = text(ctx.$notificationItemIsPaused);
     			t7 = space();
     			div = element("div");
     			button0 = element("button");
@@ -2652,21 +2706,21 @@ var app = (function () {
     			notification_1.$$.fragment.c();
     			t16 = space();
     			hr = element("hr");
-    			add_location(h2, file$3, 227, 0, 5276);
-    			add_location(p0, file$3, 228, 0, 5298);
-    			add_location(p1, file$3, 229, 0, 5347);
-    			add_location(button0, file$3, 232, 2, 5396);
-    			add_location(button1, file$3, 252, 2, 5920);
-    			add_location(button2, file$3, 258, 2, 6088);
-    			add_location(button3, file$3, 263, 2, 6192);
-    			add_location(div, file$3, 231, 0, 5388);
-    			add_location(hr, file$3, 272, 0, 6325);
+    			add_location(h2, file$3, 263, 0, 6012);
+    			add_location(p0, file$3, 264, 0, 6034);
+    			add_location(p1, file$3, 265, 0, 6083);
+    			add_location(button0, file$3, 268, 2, 6155);
+    			add_location(button1, file$3, 288, 2, 6679);
+    			add_location(button2, file$3, 294, 2, 6847);
+    			add_location(button3, file$3, 299, 2, 6951);
+    			add_location(div, file$3, 267, 0, 6147);
+    			add_location(hr, file$3, 308, 0, 7084);
 
     			dispose = [
-    				listen(button0, "click", ctx.click_handler_22),
-    				listen(button1, "click", ctx.click_handler_23),
-    				listen(button2, "click", ctx.click_handler_24),
-    				listen(button3, "click", ctx.click_handler_25)
+    				listen(button0, "click", ctx.click_handler_24),
+    				listen(button1, "click", ctx.click_handler_25),
+    				listen(button2, "click", ctx.click_handler_26),
+    				listen(button3, "click", ctx.click_handler_27)
     			];
     		},
 
@@ -2696,9 +2750,13 @@ var app = (function () {
     			current = true;
     		},
 
-    		p: function update(changed, ctx) {
+    		p: function update_1(changed, ctx) {
     			if (!current || changed.$notificationCount) {
     				set_data(t3, ctx.$notificationCount);
+    			}
+
+    			if (!current || changed.$notificationItemIsPaused) {
+    				set_data(t6, ctx.$notificationItemIsPaused);
     			}
     		},
 
@@ -2773,14 +2831,14 @@ var app = (function () {
     			t14 = space();
     			if (if_block1) if_block1.c();
     			if_block1_anchor = empty();
-    			add_location(button0, file$3, 86, 0, 2082);
-    			add_location(button1, file$3, 88, 0, 2194);
-    			add_location(button2, file$3, 90, 0, 2289);
-    			add_location(button3, file$3, 92, 0, 2366);
-    			add_location(hr0, file$3, 94, 0, 2449);
-    			add_location(button4, file$3, 96, 0, 2457);
-    			add_location(hr1, file$3, 221, 0, 5148);
-    			add_location(button5, file$3, 223, 0, 5156);
+    			add_location(button0, file$3, 104, 0, 2482);
+    			add_location(button1, file$3, 106, 0, 2594);
+    			add_location(button2, file$3, 108, 0, 2689);
+    			add_location(button3, file$3, 110, 0, 2766);
+    			add_location(hr0, file$3, 112, 0, 2849);
+    			add_location(button4, file$3, 114, 0, 2857);
+    			add_location(hr1, file$3, 257, 0, 5884);
+    			add_location(button5, file$3, 259, 0, 5892);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler),
@@ -2788,7 +2846,7 @@ var app = (function () {
     				listen(button2, "click", ctx.click_handler_2),
     				listen(button3, "click", ctx.click_handler_3),
     				listen(button4, "click", ctx.click_handler_4),
-    				listen(button5, "click", ctx.click_handler_21)
+    				listen(button5, "click", ctx.click_handler_23)
     			];
     		},
 
@@ -2820,7 +2878,7 @@ var app = (function () {
     			current = true;
     		},
 
-    		p: function update(changed, ctx) {
+    		p: function update_1(changed, ctx) {
     			if (ctx.showDialogs) {
     				if (if_block0) {
     					if_block0.p(changed, ctx);
@@ -2909,15 +2967,31 @@ var app = (function () {
     }
 
     function instance$5($$self, $$props, $$invalidate) {
-    	let $dialogCount, $notificationCount;
+    	let $dialogCount, $notificationCount, $notificationItemIsPaused;
 
     	
 
-      const dialogCount = dialog$1.count; validate_store(dialogCount, 'dialogCount'); component_subscribe($$self, dialogCount, $$value => { $dialogCount = $$value; $$invalidate('$dialogCount', $dialogCount); });
-      const notificationCount = notification$1.count; validate_store(notificationCount, 'notificationCount'); component_subscribe($$self, notificationCount, $$value => { $notificationCount = $$value; $$invalidate('$notificationCount', $notificationCount); });
-      const notificationPaused = notification$1.paused;
+      const dialogCount = dialog$1.getCount(); validate_store(dialogCount, 'dialogCount'); component_subscribe($$self, dialogCount, $$value => { $dialogCount = $$value; $$invalidate('$dialogCount', $dialogCount); });
+
+      const notificationCount = notification$1.getCount({
+        spawn: "NO"
+      }); validate_store(notificationCount, 'notificationCount'); component_subscribe($$self, notificationCount, $$value => { $notificationCount = $$value; $$invalidate('$notificationCount', $notificationCount); });
+
+      const notificationItemIsPaused = notification$1.isPaused({
+        spawn: "NO"
+      }); validate_store(notificationItemIsPaused, 'notificationItemIsPaused'); component_subscribe($$self, notificationItemIsPaused, $$value => { $notificationItemIsPaused = $$value; $$invalidate('$notificationItemIsPaused', $notificationItemIsPaused); });
 
       const getRandomNumber = () => Math.round(1000 * Math.random());
+      const update = () => {
+        const dialogTimerRemaining = dialog$1.getRemaining({
+          id: "timer"
+        });
+        $$invalidate('remainingValue', remainingValue = dialogTimerRemaining === undefined
+          ? undefined
+          : Math.max(dialogTimerRemaining, 0));
+        window.requestAnimationFrame(update);
+      };
+      window.requestAnimationFrame(update);
 
       const dialogOneProps = {
         showDuration: 0.5,
@@ -3007,18 +3081,41 @@ var app = (function () {
     	}
 
     	function click_handler_7() {
-    		return dialog$1.show({
-    	      timeout: 2000,
-    	      component: Content,
-    	      title: "With timer"
-    	    });
+    		return dialog$1.show(
+    	      {
+    	        timeout: 2000,
+    	        component: Content,
+    	        title: "With timer",
+    	      },
+    	      {
+    	        id: "timer"
+    	      });
     	}
 
     	function click_handler_8() {
-    		return dialog$1.hide().catch(() => console.log("caught"));
+    		return dialog$1.pause(
+    	      {
+    	        id: "timer"
+    	      }
+    	    );
     	}
 
     	function click_handler_9() {
+    		return dialog$1.resume(
+    	    {
+    	      id: "timer"
+    	    },
+    	    {
+    	      minimumDuration: 2000
+    	    }
+    	  );
+    	}
+
+    	function click_handler_10() {
+    		return dialog$1.hide({ id: "timer" }).catch(() => console.log("caught"));
+    	}
+
+    	function click_handler_11() {
     		return dialog$1.show(
     	      {
     	        didShow: id => console.log("didShow", id),
@@ -3034,14 +3131,14 @@ var app = (function () {
     	    ).then(id => console.log("dialog shown", id));
     	}
 
-    	function click_handler_10() {
+    	function click_handler_12() {
     		return dialog$1.hide(
     	    {
     	      id: "withPromise"
     	    }).then(id => console.log("dialog hidden", id));
     	}
 
-    	function click_handler_11() {
+    	function click_handler_13() {
     		return dialog$1.show({
     	      ...dialogOneProps,
     	      showDelay: .5,
@@ -3050,55 +3147,55 @@ var app = (function () {
     	    }, { id: dialogOneProps.id });
     	}
 
-    	function click_handler_12() {
+    	function click_handler_14() {
     		return dialog$1.hide({ id: dialogOneProps.id });
     	}
 
-    	function click_handler_13() {
+    	function click_handler_15() {
     		return dialog$1.show(dialogTwoProps, { id: dialogTwoProps.id });
     	}
 
-    	function click_handler_14() {
+    	function click_handler_16() {
     		return dialog$1.hide({ id: dialogTwoProps.id });
     	}
 
-    	function click_handler_15() {
+    	function click_handler_17() {
     		return dialog$1.show(dialogFourProps, { id: dialogFourProps.id });
     	}
 
-    	function click_handler_16() {
+    	function click_handler_18() {
     		return dialog$1.hide({ id: dialogFourProps.id });
     	}
 
-    	function click_handler_17() {
+    	function click_handler_19() {
     		return dialog$1.show({
     	      component: Content,
     	      title: "Custom spawn"
     	    }, { spawn: "special" });
     	}
 
-    	function click_handler_18() {
+    	function click_handler_20() {
     		return dialog$1.hide({ spawn: "special" });
     	}
 
-    	function click_handler_19() {
+    	function click_handler_21() {
     		return dialog$1.show({
     	      component: Content,
     	      title: "Queued " + Math.round(1000 * Math.random())
     	    }, { spawn: "Q", queued: true });
     	}
 
-    	function click_handler_20() {
+    	function click_handler_22() {
     		return dialog$1.hide({ spawn: "Q" });
     	}
 
-    	function click_handler_21() {
+    	function click_handler_23() {
     		const $$result = showNotifications = !showNotifications;
     		$$invalidate('showNotifications', showNotifications);
     		return $$result;
     	}
 
-    	function click_handler_22() {
+    	function click_handler_24() {
     	      const title = "N " + getRandomNumber();
     	      notification$1.show(
     	        {
@@ -3114,7 +3211,7 @@ var app = (function () {
     	        }
     	      ).then(id => console.log("notification shown", id, title));}
 
-    	function click_handler_23(e) {
+    	function click_handler_25(e) {
     		return (
     	    notification$1.hide(
     	      {
@@ -3123,7 +3220,7 @@ var app = (function () {
     	    )).then(id => console.log("notification hidden from App", id));
     	}
 
-    	function click_handler_24() {
+    	function click_handler_26() {
     		return notification$1.pause(
     	      {
     	        spawn: "NO"
@@ -3131,7 +3228,7 @@ var app = (function () {
     	    );
     	}
 
-    	function click_handler_25() {
+    	function click_handler_27() {
     		return notification$1.resume(
     	    {
     	      spawn: "NO"
@@ -3139,25 +3236,28 @@ var app = (function () {
     	  );
     	}
 
-    	let showDialogs, showNotifications;
+    	let remainingValue, showDialogs, showNotifications;
 
-    	$$invalidate('showDialogs', showDialogs = false);
-    	$$invalidate('showNotifications', showNotifications = true);
+    	$$invalidate('remainingValue', remainingValue = 0);
+    	$$invalidate('showDialogs', showDialogs = true);
+    	$$invalidate('showNotifications', showNotifications = false);
 
     	return {
     		dialogCount,
     		notificationCount,
-    		notificationPaused,
+    		notificationItemIsPaused,
     		getRandomNumber,
     		dialogOneProps,
     		dialogTwoProps,
     		dialogFourProps,
     		clearOptions,
     		Math,
+    		remainingValue,
     		showDialogs,
     		showNotifications,
     		$dialogCount,
     		$notificationCount,
+    		$notificationItemIsPaused,
     		click_handler,
     		click_handler_1,
     		click_handler_2,
@@ -3183,7 +3283,9 @@ var app = (function () {
     		click_handler_22,
     		click_handler_23,
     		click_handler_24,
-    		click_handler_25
+    		click_handler_25,
+    		click_handler_26,
+    		click_handler_27
     	};
     }
 

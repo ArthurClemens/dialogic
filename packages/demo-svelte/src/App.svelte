@@ -3,14 +3,32 @@
   import DefaultContent from "./default/Content.svelte";
   import IntervalContent from "./interval/Content.svelte";
 
-  const dialogCount = dialog.count;
-  const notificationCount = notification.count;
-  const notificationPaused = notification.paused;
+  const dialogCount = dialog.getCount();
+
+  const notificationCount = notification.getCount({
+    spawn: "NO"
+  });
+
+  const notificationItemIsPaused = notification.isPaused({
+    spawn: "NO"
+  });
 
   const getRandomNumber = () => Math.round(1000 * Math.random());
 
-  $: showDialogs = false;
-  $: showNotifications = true;
+  $: remainingValue = 0;
+  const update = () => {
+    const dialogTimerRemaining = dialog.getRemaining({
+      id: "timer"
+    });
+    remainingValue = dialogTimerRemaining === undefined
+      ? undefined
+      : Math.max(dialogTimerRemaining, 0);
+    window.requestAnimationFrame(update);
+  };
+  window.requestAnimationFrame(update);
+
+  $: showDialogs = true;
+  $: showNotifications = false;
 
   const dialogOneProps = {
     showDuration: 0.5,
@@ -116,15 +134,33 @@
 </div>
 
 <div>
+  <p>Remaining: {remainingValue}</p>
   <button
-    on:click={() => dialog.show({
-      timeout: 2000,
-      component: DefaultContent,
-      title: "With timer"
-    })}>
+    on:click={() => dialog.show(
+      {
+        timeout: 2000,
+        component: DefaultContent,
+        title: "With timer",
+      },
+      {
+        id: "timer"
+      })}>
     With timer
   </button>
-  <button on:click={() => dialog.hide().catch(() => console.log("caught"))}>Hide</button>
+  <button on:click={() => dialog.pause(
+      {
+        id: "timer"
+      }
+    )}>Pause</button>
+  <button on:click={() => dialog.resume(
+    {
+      id: "timer"
+    },
+    {
+      minimumDuration: 2000
+    }
+  )}>Resume</button>
+  <button on:click={() => dialog.hide({ id: "timer" }).catch(() => console.log("caught"))}>Hide</button>
 </div>
 
 <div>
@@ -227,7 +263,7 @@ Queued dialog
 
 <h2>Notification</h2>
 <p>Notification count: {$notificationCount} </p>
-<p>isPaused = {notificationPaused} </p>
+<p>notificationItemIsPaused = {$notificationItemIsPaused} </p>
 
 <div>
   <button

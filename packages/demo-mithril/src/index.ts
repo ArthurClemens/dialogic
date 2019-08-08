@@ -43,18 +43,6 @@ const dialogOneProps: Dialogic.Options = {
   id: getRandomNumber().toString(),
 };
 
-// const dialogTwoProps = {
-//   showDuration: 0.75,
-//   showDelay: 0,
-//   hideDuration: 0.75,
-//   hideDelay: 0,
-//   component: DefaultContent,
-//   className: "xxx",
-//   showClassName: "xxx-visible",
-//   title: "Fade",
-//   id: getRandomNumber(),
-// };
-
 const dialogThreeProps: Dialogic.Options = {
   showDuration: 0.75,
   showDelay: 0.25,

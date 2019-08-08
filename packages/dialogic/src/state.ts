@@ -24,10 +24,13 @@ export const createId = (spawnOptions: Dialogic.SpawnOptions, ns: string) =>
   [ns, spawnOptions.id, spawnOptions.spawn].filter(Boolean).join("-");
 
 const store = {
+
   initialState: {
     store: {},
   },
+
   actions: (update: Stream<PatchFn>) => {
+
     return {
 
       /**
@@ -37,6 +40,10 @@ const store = {
         update((state: Dialogic.State) => {
           const items = state.store[ns] || [];
           state.store[ns] = [...items, item];
+          if (item.timer) {
+            // When the timer state updates, refresh the store so that UI can pick up the change
+            item.timer.states.map(() => store.actions(update).refresh())
+          }
           return state;
         });
       },
@@ -90,8 +97,17 @@ const store = {
         });
       },
 
+      refresh: () => {
+        update((state: Dialogic.State) => {
+          return {
+            ...state,
+          }
+        })
+      },
+
     };
   },
+
   selectors: (states: Stream<Dialogic.State>) => {
     const fns = {
 
@@ -122,7 +138,7 @@ const store = {
       },
 
       getCount: (ns: string, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) =>
-        fns.getAll(ns, instanceSpawnOptions).length
+        fns.getAll(ns, instanceSpawnOptions).length,
 
     };
 
