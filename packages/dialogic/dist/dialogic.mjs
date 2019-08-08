@@ -423,56 +423,171 @@ const selectors = {
 //   console.log(JSON.stringify(state, null, 2))
 // );
 
-const isClient = typeof document !== "undefined";
-
-const Timer = () => {
-    let timerId;
-    let startTime;
-    let remaining;
-    let cb;
-    let onDone;
-    let onAbort;
-    const stop = () => {
-        if (isClient) {
-            window.clearTimeout(timerId);
-            timerId = -1;
-        }
-    };
-    const abort = () => (stop(),
-        onAbort && onAbort());
-    const pause = () => (stop(),
-        remaining -= new Date().getTime() - startTime);
-    const startTimer = () => {
-        if (isClient) {
-            stop();
-            startTime = new Date().getTime();
-            timerId = window.setTimeout(() => {
-                cb();
-                onDone();
-            }, remaining);
-        }
-    };
-    const start = (callback, duration) => {
-        cb = callback;
-        remaining = duration;
-        return new Promise((resolve, reject) => {
-            onDone = () => resolve();
-            onAbort = () => reject();
-            startTimer();
-        });
-    };
-    const resume = () => {
-        if (timerId === -1) {
-            return startTimer();
-        }
+const initialState = {
+    timerId: undefined,
+    isPaused: undefined,
+    remaining: undefined,
+    startTime: undefined,
+    callback: () => { },
+    timeoutFn: () => { },
+    promise: undefined,
+    onDone: () => { },
+    onAbort: () => { },
+};
+const appendStartTimer = (state, callback, duration, updateState) => {
+    const timeoutFn = () => {
+        callback();
+        state.onDone();
+        updateState();
     };
     return {
-        start,
-        pause,
-        resume,
-        stop,
-        abort,
-        toString: () => "Timer"
+        timeoutFn,
+        promise: new Promise((resolve, reject) => {
+            state.onDone = () => resolve();
+            state.onAbort = () => reject();
+        }),
+        ...(state.isPaused
+            ? {}
+            : {
+                startTime: new Date().getTime(),
+                timerId: window.setTimeout(timeoutFn, duration),
+                remaining: duration,
+            })
+    };
+};
+const appendStopTimeout = (state) => {
+    window.clearTimeout(state.timerId);
+    return {
+        timerId: initialState.timerId
+    };
+};
+const appendStopTimer = (state) => {
+    return {
+        ...appendStopTimeout(state),
+    };
+};
+const appendPauseTimer = (state) => {
+    return {
+        ...appendStopTimeout(state),
+        isPaused: true,
+        remaining: getRemaining(state)
+    };
+};
+const appendResumeTimer = (state, minimumDuration) => {
+    window.clearTimeout(state.timerId);
+    const remaining = minimumDuration
+        ? Math.max(state.remaining || 0, minimumDuration)
+        : state.remaining;
+    return {
+        startTime: new Date().getTime(),
+        isPaused: false,
+        remaining,
+        timerId: window.setTimeout(state.timeoutFn, remaining),
+    };
+};
+const getRemaining = (state) => state.remaining === undefined
+    ? undefined
+    : state.remaining - (new Date().getTime() - (state.startTime || 0));
+const Timer = () => {
+    const timer = {
+        initialState,
+        actions: (update) => {
+            return {
+                start: (callback, duration) => {
+                    update((state) => {
+                        return {
+                            ...state,
+                            ...appendStopTimeout(state),
+                            ...appendStartTimer(state, callback, duration, () => timer.actions(update).done()),
+                            ...(state.isPaused && appendPauseTimer(state)),
+                        };
+                    });
+                },
+                stop: () => {
+                    update((state) => {
+                        return {
+                            ...state,
+                            ...appendStopTimer(state),
+                            ...initialState
+                        };
+                    });
+                },
+                pause: () => {
+                    update((state) => {
+                        return {
+                            ...state,
+                            ...appendPauseTimer(state),
+                        };
+                    });
+                },
+                resume: (minimumDuration) => {
+                    update((state) => {
+                        return {
+                            ...state,
+                            ...(state.isPaused && appendResumeTimer(state, minimumDuration))
+                        };
+                    });
+                },
+                abort: () => {
+                    update((state) => {
+                        state.onAbort();
+                        return {
+                            ...state,
+                            ...appendStopTimeout(state),
+                        };
+                    });
+                },
+                done: () => {
+                    update((state) => {
+                        return initialState;
+                    });
+                },
+                refresh: () => {
+                    update((state) => {
+                        return {
+                            ...state,
+                        };
+                    });
+                },
+            };
+        },
+        selectors: (states) => {
+            return {
+                isPaused: () => {
+                    const state = states();
+                    return state.isPaused;
+                },
+                getRemaining: () => {
+                    timer.actions(update).refresh();
+                    const state = states();
+                    return state.isPaused
+                        ? state.remaining
+                        : getRemaining(state);
+                },
+                getResultPromise: () => {
+                    const state = states();
+                    return state.promise;
+                },
+            };
+        },
+    };
+    const update = stream();
+    const states = stream.scan((state, patch) => patch(state), {
+        ...timer.initialState,
+    }, update);
+    const actions = {
+        ...timer.actions(update),
+    };
+    const selectors = {
+        ...timer.selectors(states),
+    };
+    // states.map(state => 
+    //   console.log(JSON.stringify(state, null, 2))
+    // );
+    return {
+        states,
+        actions,
+        selectors,
     };
 };
 
@@ -501,7 +616,7 @@ const filterQueued = (nsItems, ns) => {
         .filter(({ queueCount }) => queueCount === 0)
         .map(({ item }) => item);
 };
-const filter = (items, spawn, ns) => {
+const filter = (ns, items, spawn) => {
     const nsItems = items[ns] || [];
     return filterBySpawnId(filterQueued(nsItems), spawn);
 };
@@ -553,7 +668,9 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
             instanceTransitionOptions,
             instanceOptions,
             id,
-            timer: Timer(),
+            timer: transitionOptions.timeout
+                ? Timer()
+                : undefined,
             key: uid,
             transitionState: transitionStates.none,
         };
@@ -578,42 +695,61 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
     });
 };
 const show = createInstance;
-const performOnItem = fn => (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
+const getMaybeItem = (ns, defaultSpawnOptions, instanceSpawnOptions) => {
     const spawnOptions = {
         ...defaultSpawnOptions,
         ...instanceSpawnOptions,
     };
-    const maybeItem = selectors.find(ns, spawnOptions);
+    return selectors.find(ns, spawnOptions);
+};
+const performOnItem = fn => ns => defaultSpawnOptions => (instanceSpawnOptions, fnOptions) => {
+    const maybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
     if (maybeItem.just) {
-        return fn(maybeItem.just, ns);
+        return fn(ns, maybeItem.just, fnOptions);
     }
     else {
         return Promise.resolve();
     }
 };
-const hide = performOnItem((item, ns) => {
+const hide = performOnItem((ns, item) => {
     if (item.transitionState !== transitionStates.hiding) {
         item.transitionState = transitionStates.hiding;
-        return hideItem(item, ns);
+        return hideItem(ns, item);
     }
     else {
         return Promise.resolve();
     }
 });
-const pause = performOnItem((item, ns) => {
+const pause = performOnItem((ns, item) => {
     if (item && item.timer) {
-        item.timer.pause();
+        item.timer.actions.pause();
     }
     return Promise.resolve();
 });
-const resume = performOnItem((item, ns) => {
+const resume = performOnItem((ns, item, fnOptions = {}) => {
     if (item && item.timer) {
-        item.timer.resume();
+        item.timer.actions.resume(fnOptions.minimumDuration);
     }
     return Promise.resolve();
 });
+const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
+    const maybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
+    if (maybeItem.just) {
+        if (maybeItem.just && maybeItem.just.timer) {
+            return maybeItem.just.timer.selectors[timerProp]();
+        }
+        else {
+            return undefined;
+        }
+    }
+    else {
+        return undefined;
+    }
+};
+const isPaused = getTimerProperty("isPaused");
+const getRemaining$1 = getTimerProperty("getRemaining");
 const resetAll = (ns) => () => {
-    selectors.getAll(ns).forEach((item) => item.timer.abort());
+    selectors.getAll(ns).forEach((item) => item.timer && item.timer.actions.abort());
     actions.removeAll(ns);
     return Promise.resolve();
 };
@@ -640,13 +776,13 @@ const hideAll = (ns) => (defaultSpawnOptions) => (options, instanceSpawnOptions)
     const allItems = selectors.getAll(ns);
     const regularItems = allItems.filter((item) => !spawnOptions.queued && !item.spawnOptions.queued);
     const queuedItems = allItems.filter((item) => spawnOptions.queued || item.spawnOptions.queued);
-    regularItems.forEach((item) => hideItem(getOverridingTransitionOptions(item, options), ns));
+    regularItems.forEach((item) => hideItem(ns, getOverridingTransitionOptions(item, options)));
     if (queuedItems.length > 0) {
         const [current,] = queuedItems;
         // Make sure that any remaining items don't suddenly appear
         actions.store(ns, [current]);
         // Transition the current item
-        hideItem(getOverridingTransitionOptions(current, options), ns)
+        hideItem(ns, getOverridingTransitionOptions(current, options))
             .then(() => actions.removeAll(ns));
     }
 };
@@ -654,7 +790,7 @@ const hideAll = (ns) => (defaultSpawnOptions) => (options, instanceSpawnOptions)
  * Stop any running timer and remmove the item
  */
 const resetItem = (item, ns) => {
-    item.timer.abort();
+    item.timer && item.timer.actions.abort();
     actions.remove(ns, item.id);
 };
 const getCount = (ns) => (instanceSpawnOptions) => selectors.getCount(ns, instanceSpawnOptions);
@@ -669,21 +805,22 @@ const transitionItem = (item, mode) => {
         throw new Error(`Transition error: ${e}`);
     }
 };
-const deferredHideItem = async function (item, timeout, ns) {
-    return item.timer.start(() => (hideItem(item, ns)), timeout);
+const deferredHideItem = async function (ns, item, timer, timeout) {
+    timer.actions.start(() => (hideItem(ns, item)), timeout);
+    return getTimerProperty("getResultPromise"); // timer.selectors.getResultPromise();
 };
-const showItem = async function (item, ns) {
+const showItem = async function (ns, item) {
     await (transitionItem(item, MODE.SHOW));
     item.transitionOptions.didShow && await (item.transitionOptions.didShow(item.spawnOptions.id));
-    if (item.transitionOptions.timeout) {
-        await (deferredHideItem(item, item.transitionOptions.timeout, ns));
+    if (item.transitionOptions.timeout && item.timer) {
+        await (deferredHideItem(ns, item, item.timer, item.transitionOptions.timeout));
     }
     return item.spawnOptions.id;
 };
-const hideItem = async function (item, ns) {
+const hideItem = async function (ns, item) {
     // Stop any running timer
-    if (item.transitionOptions.timeout) {
-        item.timer.stop();
+    if (item.timer) {
+        item.timer.actions.stop();
     }
     await (transitionItem(item, MODE.HIDE));
     item.transitionOptions.didHide && await (item.transitionOptions.didHide(item.spawnOptions.id));
@@ -706,6 +843,8 @@ const show$1 = show(ns)(defaultSpawnOptions)(defaultTransitionOptions);
 const hide$1 = hide(ns)(defaultSpawnOptions);
 const pause$1 = pause(ns)(defaultSpawnOptions);
 const resume$1 = resume(ns)(defaultSpawnOptions);
+const isPaused$1 = isPaused(ns)(defaultSpawnOptions);
+const getRemaining$2 = getRemaining$1(ns)(defaultSpawnOptions);
 const hideAll$1 = hideAll(ns)(defaultSpawnOptions);
 const resetAll$1 = resetAll(ns);
 const getCount$1 = getCount(ns);
@@ -718,6 +857,8 @@ var notification = /*#__PURE__*/Object.freeze({
 	hide: hide$1,
 	pause: pause$1,
 	resume: resume$1,
+	isPaused: isPaused$1,
+	getRemaining: getRemaining$2,
 	hideAll: hideAll$1,
 	resetAll: resetAll$1,
 	getCount: getCount$1
@@ -735,6 +876,8 @@ const show$2 = show(ns$1)(defaultSpawnOptions$1)(defaultTransitionOptions$1);
 const hide$2 = hide(ns$1)(defaultSpawnOptions$1);
 const pause$2 = pause(ns$1)(defaultSpawnOptions$1);
 const resume$2 = resume(ns$1)(defaultSpawnOptions$1);
+const isPaused$2 = isPaused(ns$1)(defaultSpawnOptions$1);
+const getRemaining$3 = getRemaining$1(ns$1)(defaultSpawnOptions$1);
 const hideAll$2 = hideAll(ns$1)(defaultSpawnOptions$1);
 const resetAll$2 = resetAll(ns$1);
 const getCount$2 = getCount(ns$1);
@@ -747,10 +890,12 @@ var dialog = /*#__PURE__*/Object.freeze({
 	hide: hide$2,
 	pause: pause$2,
 	resume: resume$2,
+	isPaused: isPaused$2,
+	getRemaining: getRemaining$3,
 	hideAll: hideAll$2,
 	resetAll: resetAll$2,
 	getCount: getCount$2
 });
 
-export { actions, dialog, filter, getCount, hide, hideAll, hideItem, notification, pause, performOnItem, resetAll, resetItem, resume, selectors, show, showItem, states };
+export { actions, dialog, filter, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, performOnItem, resetAll, resetItem, resume, selectors, show, showItem, states };
 //# sourceMappingURL=dialogic.mjs.map

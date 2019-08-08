@@ -790,7 +790,7 @@ var app = (function () {
                 /**
                  * Add an item to the end of the list.
                  */
-                add: (item, ns) => {
+                add: (ns, item) => {
                     update((state) => {
                         const items = state.store[ns] || [];
                         state.store[ns] = [...items, item];
@@ -800,7 +800,7 @@ var app = (function () {
                 /**
                  * Removes the first item with a match on `id`.
                  */
-                remove: (id, ns) => {
+                remove: (ns, id) => {
                     update((state) => {
                         const items = state.store[ns] || [];
                         const remaining = removeItem(id, items);
@@ -811,7 +811,7 @@ var app = (function () {
                 /**
                  * Replaces the first item with a match on `id` with a newItem.
                  */
-                replace: (id, newItem, ns) => {
+                replace: (ns, id, newItem) => {
                     update((state) => {
                         const items = state.store[ns] || [];
                         if (items) {
@@ -836,7 +836,7 @@ var app = (function () {
                 /**
                  * Replaces all items within a namespace.
                  */
-                store: (newItems, ns) => {
+                store: (ns, newItems) => {
                     update((state) => {
                         state.store[ns] = [...newItems];
                         return state;
@@ -859,11 +859,17 @@ var app = (function () {
                         ? { just: item }
                         : { nothing: undefined };
                 },
-                getAll: (ns) => {
+                getAll: (ns, instanceSpawnOptions) => {
                     const state = states();
-                    return state.store[ns] || [];
+                    const items = state.store[ns] || [];
+                    const spawn = instanceSpawnOptions !== undefined
+                        ? instanceSpawnOptions.spawn
+                        : undefined;
+                    return spawn !== undefined
+                        ? items.filter(item => item.spawnOptions.spawn === spawn)
+                        : items;
                 },
-                getCount: (ns) => fns.getAll(ns).length
+                getCount: (ns, instanceSpawnOptions) => fns.getAll(ns, instanceSpawnOptions).length
             };
             return fns;
         },
@@ -882,56 +888,171 @@ var app = (function () {
     //   console.log(JSON.stringify(state, null, 2))
     // );
 
-    const isClient = typeof document !== "undefined";
-
-    const Timer = () => {
-        let timerId;
-        let startTime;
-        let remaining;
-        let cb;
-        let onDone;
-        let onAbort;
-        const stop = () => {
-            if (isClient) {
-                window.clearTimeout(timerId);
-                timerId = -1;
-            }
-        };
-        const abort = () => (stop(),
-            onAbort && onAbort());
-        const pause = () => (stop(),
-            remaining -= new Date().getTime() - startTime);
-        const startTimer = () => {
-            if (isClient) {
-                stop();
-                startTime = new Date().getTime();
-                timerId = window.setTimeout(() => {
-                    cb();
-                    onDone();
-                }, remaining);
-            }
-        };
-        const start = (callback, duration) => {
-            cb = callback;
-            remaining = duration;
-            return new Promise((resolve, reject) => {
-                onDone = () => resolve();
-                onAbort = () => reject();
-                startTimer();
-            });
-        };
-        const resume = () => {
-            if (timerId === -1) {
-                return startTimer();
-            }
+    const initialState = {
+        timerId: undefined,
+        isPaused: undefined,
+        remaining: undefined,
+        startTime: undefined,
+        callback: () => { },
+        timeoutFn: () => { },
+        promise: undefined,
+        onDone: () => { },
+        onAbort: () => { },
+    };
+    const appendStartTimer = (state, callback, duration, updateState) => {
+        const timeoutFn = () => {
+            callback();
+            state.onDone();
+            updateState();
         };
         return {
-            start,
-            pause,
-            resume,
-            stop,
-            abort,
-            toString: () => "Timer"
+            timeoutFn,
+            promise: new Promise((resolve, reject) => {
+                state.onDone = () => resolve();
+                state.onAbort = () => reject();
+            }),
+            ...(state.isPaused
+                ? {}
+                : {
+                    startTime: new Date().getTime(),
+                    timerId: window.setTimeout(timeoutFn, duration),
+                    remaining: duration,
+                })
+        };
+    };
+    const appendStopTimeout = (state) => {
+        window.clearTimeout(state.timerId);
+        return {
+            timerId: initialState.timerId
+        };
+    };
+    const appendStopTimer = (state) => {
+        return {
+            ...appendStopTimeout(state),
+        };
+    };
+    const appendPauseTimer = (state) => {
+        return {
+            ...appendStopTimeout(state),
+            isPaused: true,
+            remaining: getRemaining(state)
+        };
+    };
+    const appendResumeTimer = (state, minimumDuration) => {
+        window.clearTimeout(state.timerId);
+        const remaining = minimumDuration
+            ? Math.max(state.remaining || 0, minimumDuration)
+            : state.remaining;
+        return {
+            startTime: new Date().getTime(),
+            isPaused: false,
+            remaining,
+            timerId: window.setTimeout(state.timeoutFn, remaining),
+        };
+    };
+    const getRemaining = (state) => state.remaining === undefined
+        ? undefined
+        : state.remaining - (new Date().getTime() - (state.startTime || 0));
+    const Timer = () => {
+        const timer = {
+            initialState,
+            actions: (update) => {
+                return {
+                    start: (callback, duration) => {
+                        update((state) => {
+                            return {
+                                ...state,
+                                ...appendStopTimeout(state),
+                                ...appendStartTimer(state, callback, duration, () => timer.actions(update).done()),
+                                ...(state.isPaused && appendPauseTimer(state)),
+                            };
+                        });
+                    },
+                    stop: () => {
+                        update((state) => {
+                            return {
+                                ...state,
+                                ...appendStopTimer(state),
+                                ...initialState
+                            };
+                        });
+                    },
+                    pause: () => {
+                        update((state) => {
+                            return {
+                                ...state,
+                                ...appendPauseTimer(state),
+                            };
+                        });
+                    },
+                    resume: (minimumDuration) => {
+                        update((state) => {
+                            return {
+                                ...state,
+                                ...(state.isPaused && appendResumeTimer(state, minimumDuration))
+                            };
+                        });
+                    },
+                    abort: () => {
+                        update((state) => {
+                            state.onAbort();
+                            return {
+                                ...state,
+                                ...appendStopTimeout(state),
+                            };
+                        });
+                    },
+                    done: () => {
+                        update((state) => {
+                            return initialState;
+                        });
+                    },
+                    refresh: () => {
+                        update((state) => {
+                            return {
+                                ...state,
+                            };
+                        });
+                    },
+                };
+            },
+            selectors: (states) => {
+                return {
+                    isPaused: () => {
+                        const state = states();
+                        return state.isPaused;
+                    },
+                    getRemaining: () => {
+                        timer.actions(update).refresh();
+                        const state = states();
+                        return state.isPaused
+                            ? state.remaining
+                            : getRemaining(state);
+                    },
+                    getResultPromise: () => {
+                        const state = states();
+                        return state.promise;
+                    },
+                };
+            },
+        };
+        const update = stream();
+        const states = stream.scan((state, patch) => patch(state), {
+            ...timer.initialState,
+        }, update);
+        const actions = {
+            ...timer.actions(update),
+        };
+        const selectors = {
+            ...timer.selectors(states),
+        };
+        // states.map(state => 
+        //   console.log(JSON.stringify(state, null, 2))
+        // );
+        return {
+            states,
+            actions,
+            selectors,
         };
     };
 
@@ -960,7 +1081,7 @@ var app = (function () {
             .filter(({ queueCount }) => queueCount === 0)
             .map(({ item }) => item);
     };
-    const filter = (items, spawn, ns) => {
+    const filter = (ns, items, spawn) => {
         const nsItems = items[ns] || [];
         return filterBySpawnId(filterQueued(nsItems), spawn);
     };
@@ -1012,7 +1133,9 @@ var app = (function () {
                 instanceTransitionOptions,
                 instanceOptions,
                 id,
-                timer: Timer(),
+                timer: transitionOptions.timeout
+                    ? Timer()
+                    : undefined,
                 key: uid,
                 transitionState: transitionStates.none,
             };
@@ -1025,54 +1148,73 @@ var app = (function () {
                     ...item,
                     instanceTransitionOptions
                 };
-                actions.replace(existingItem.id, replacingItem, ns);
+                actions.replace(ns, existingItem.id, replacingItem);
                 // While this is a replace action, mimic a show
                 transitionOptions.didShow(spawnOptions.id);
             }
             else {
-                actions.add(item, ns);
+                actions.add(ns, item);
                 // This will instantiate and draw the instance
                 // The instance will call `showDialog` in `onMount`
             }
         });
     };
     const show = createInstance;
-    const performOnItem = fn => (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
+    const getMaybeItem = (ns, defaultSpawnOptions, instanceSpawnOptions) => {
         const spawnOptions = {
             ...defaultSpawnOptions,
             ...instanceSpawnOptions,
         };
-        const maybeItem = selectors.find(ns, spawnOptions);
+        return selectors.find(ns, spawnOptions);
+    };
+    const performOnItem = fn => ns => defaultSpawnOptions => (instanceSpawnOptions, fnOptions) => {
+        const maybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
         if (maybeItem.just) {
-            return fn(maybeItem.just, ns);
+            return fn(ns, maybeItem.just, fnOptions);
         }
         else {
             return Promise.resolve();
         }
     };
-    const hide = performOnItem((item, ns) => {
+    const hide = performOnItem((ns, item) => {
         if (item.transitionState !== transitionStates.hiding) {
             item.transitionState = transitionStates.hiding;
-            return hideItem(item, ns);
+            return hideItem(ns, item);
         }
         else {
             return Promise.resolve();
         }
     });
-    const pause = performOnItem((item, ns) => {
+    const pause = performOnItem((ns, item) => {
         if (item && item.timer) {
-            item.timer.pause();
+            item.timer.actions.pause();
         }
         return Promise.resolve();
     });
-    const resume = performOnItem((item, ns) => {
+    const resume = performOnItem((ns, item, fnOptions = {}) => {
         if (item && item.timer) {
-            item.timer.resume();
+            item.timer.actions.resume(fnOptions.minimumDuration);
         }
         return Promise.resolve();
     });
+    const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
+        const maybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
+        if (maybeItem.just) {
+            if (maybeItem.just && maybeItem.just.timer) {
+                return maybeItem.just.timer.selectors[timerProp]();
+            }
+            else {
+                return undefined;
+            }
+        }
+        else {
+            return undefined;
+        }
+    };
+    const isPaused = getTimerProperty("isPaused");
+    const getRemaining$1 = getTimerProperty("getRemaining");
     const resetAll = (ns) => () => {
-        selectors.getAll(ns).forEach((item) => item.timer.abort());
+        selectors.getAll(ns).forEach((item) => item.timer && item.timer.actions.abort());
         actions.removeAll(ns);
         return Promise.resolve();
     };
@@ -1099,17 +1241,17 @@ var app = (function () {
         const allItems = selectors.getAll(ns);
         const regularItems = allItems.filter((item) => !spawnOptions.queued && !item.spawnOptions.queued);
         const queuedItems = allItems.filter((item) => spawnOptions.queued || item.spawnOptions.queued);
-        regularItems.forEach((item) => hideItem(getOverridingTransitionOptions(item, options), ns));
+        regularItems.forEach((item) => hideItem(ns, getOverridingTransitionOptions(item, options)));
         if (queuedItems.length > 0) {
             const [current,] = queuedItems;
             // Make sure that any remaining items don't suddenly appear
-            actions.store([current], ns);
+            actions.store(ns, [current]);
             // Transition the current item
-            hideItem(getOverridingTransitionOptions(current, options), ns)
+            hideItem(ns, getOverridingTransitionOptions(current, options))
                 .then(() => actions.removeAll(ns));
         }
     };
-    const getCount = (ns) => () => selectors.getCount(ns);
+    const getCount = (ns) => (instanceSpawnOptions) => selectors.getCount(ns, instanceSpawnOptions);
     const transitionItem = (item, mode) => {
         try {
             return transition({
@@ -1121,25 +1263,26 @@ var app = (function () {
             throw new Error(`Transition error: ${e}`);
         }
     };
-    const deferredHideItem = async function (item, timeout, ns) {
-        return item.timer.start(() => (hideItem(item, ns)), timeout);
+    const deferredHideItem = async function (ns, item, timer, timeout) {
+        timer.actions.start(() => (hideItem(ns, item)), timeout);
+        return getTimerProperty("getResultPromise"); // timer.selectors.getResultPromise();
     };
-    const showItem = async function (item, ns) {
+    const showItem = async function (ns, item) {
         await (transitionItem(item, MODE.SHOW));
         item.transitionOptions.didShow && await (item.transitionOptions.didShow(item.spawnOptions.id));
-        if (item.transitionOptions.timeout) {
-            await (deferredHideItem(item, item.transitionOptions.timeout, ns));
+        if (item.transitionOptions.timeout && item.timer) {
+            await (deferredHideItem(ns, item, item.timer, item.transitionOptions.timeout));
         }
         return item.spawnOptions.id;
     };
-    const hideItem = async function (item, ns) {
+    const hideItem = async function (ns, item) {
         // Stop any running timer
-        if (item.transitionOptions.timeout) {
-            item.timer.stop();
+        if (item.timer) {
+            item.timer.actions.stop();
         }
         await (transitionItem(item, MODE.HIDE));
         item.transitionOptions.didHide && await (item.transitionOptions.didHide(item.spawnOptions.id));
-        actions.remove(item.id, ns);
+        actions.remove(ns, item.id);
         return item.spawnOptions.id;
     };
 
@@ -1158,6 +1301,8 @@ var app = (function () {
     const hide$1 = hide(ns)(defaultSpawnOptions);
     const pause$1 = pause(ns)(defaultSpawnOptions);
     const resume$1 = resume(ns)(defaultSpawnOptions);
+    const isPaused$1 = isPaused(ns)(defaultSpawnOptions);
+    const getRemaining$2 = getRemaining$1(ns)(defaultSpawnOptions);
     const hideAll$1 = hideAll(ns)(defaultSpawnOptions);
     const resetAll$1 = resetAll(ns);
     const getCount$1 = getCount(ns);
@@ -1170,6 +1315,8 @@ var app = (function () {
     	hide: hide$1,
     	pause: pause$1,
     	resume: resume$1,
+    	isPaused: isPaused$1,
+    	getRemaining: getRemaining$2,
     	hideAll: hideAll$1,
     	resetAll: resetAll$1,
     	getCount: getCount$1
@@ -1187,6 +1334,8 @@ var app = (function () {
     const hide$2 = hide(ns$1)(defaultSpawnOptions$1);
     const pause$2 = pause(ns$1)(defaultSpawnOptions$1);
     const resume$2 = resume(ns$1)(defaultSpawnOptions$1);
+    const isPaused$2 = isPaused(ns$1)(defaultSpawnOptions$1);
+    const getRemaining$3 = getRemaining$1(ns$1)(defaultSpawnOptions$1);
     const hideAll$2 = hideAll(ns$1)(defaultSpawnOptions$1);
     const resetAll$2 = resetAll(ns$1);
     const getCount$2 = getCount(ns$1);
@@ -1199,6 +1348,8 @@ var app = (function () {
     	hide: hide$2,
     	pause: pause$2,
     	resume: resume$2,
+    	isPaused: isPaused$2,
+    	getRemaining: getRemaining$3,
     	hideAll: hideAll$2,
     	resetAll: resetAll$2,
     	getCount: getCount$2
@@ -1348,7 +1499,7 @@ var app = (function () {
       // Find item to transition:
       const maybeTransitioningItem = selectors.find(ns, event.detail.spawnOptions);
       if (maybeTransitioningItem.just) {
-        fn(maybeTransitioningItem.just, ns);
+        fn(ns, maybeTransitioningItem.just);
       }
     };
 
@@ -1602,7 +1753,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (17:0) {#each filter($appState.store, spawnOptions.spawn, ns) as { spawnOptions, transitionOptions, instanceOptions, key }
+    // (17:0) {#each filter(ns, $appState.store, spawnOptions.spawn) as { spawnOptions, transitionOptions, instanceOptions, key }
     function create_each_block(key_1, ctx) {
     	var first, current;
 
@@ -1637,9 +1788,9 @@ var app = (function () {
 
     		p: function update(changed, ctx) {
     			var instance_changes = {};
-    			if (changed.filter || changed.$appState || changed.spawnOptions || changed.ns) instance_changes.spawnOptions = ctx.spawnOptions;
-    			if (changed.filter || changed.$appState || changed.spawnOptions || changed.ns) instance_changes.transitionOptions = ctx.transitionOptions;
-    			if (changed.filter || changed.$appState || changed.spawnOptions || changed.ns) instance_changes.instanceOptions = ctx.instanceOptions;
+    			if (changed.filter || changed.ns || changed.$appState || changed.spawnOptions) instance_changes.spawnOptions = ctx.spawnOptions;
+    			if (changed.filter || changed.ns || changed.$appState || changed.spawnOptions) instance_changes.transitionOptions = ctx.transitionOptions;
+    			if (changed.filter || changed.ns || changed.$appState || changed.spawnOptions) instance_changes.instanceOptions = ctx.instanceOptions;
     			instance.$set(instance_changes);
     		},
 
@@ -1668,7 +1819,7 @@ var app = (function () {
     function create_fragment$1(ctx) {
     	var each_blocks = [], each_1_lookup = new Map(), each_1_anchor, current;
 
-    	var each_value = filter(ctx.$appState.store, ctx.spawnOptions.spawn, ctx.ns);
+    	var each_value = filter(ctx.ns, ctx.$appState.store, ctx.spawnOptions.spawn);
 
     	const get_key = ctx => ctx.key;
 
@@ -1697,7 +1848,7 @@ var app = (function () {
     		},
 
     		p: function update(changed, ctx) {
-    			const each_value = filter(ctx.$appState.store, ctx.spawnOptions.spawn, ctx.ns);
+    			const each_value = filter(ctx.ns, ctx.$appState.store, ctx.spawnOptions.spawn);
 
     			group_outros();
     			each_blocks = update_keyed_each(each_blocks, changed, get_key, 1, ctx, each_value, each_1_lookup, each_1_anchor.parentNode, outro_and_destroy_block, create_each_block, each_1_anchor, get_each_context);
@@ -2163,7 +2314,7 @@ var app = (function () {
 
     const file$3 = "src/App.svelte";
 
-    // (98:0) {#if showDialogs}
+    // (99:0) {#if showDialogs}
     function create_if_block_1(ctx) {
     	var h2, t1, p0, t2, t3, t4, hr0, t5, div0, button0, t7, button1, t9, div1, button2, t11, button3, t13, div2, button4, t15, button5, t17, div3, button6, t19, button7, t21, div4, button8, t23, button9, t25, div5, button10, t27, button11, t29, div6, button12, t31, button13, t33, hr1, t34, div7, p1, t36, t37, div8, p2, t39, t40, hr2, t41, div9, button14, t43, button15, t45, div10, p3, t47, current, dispose;
 
@@ -2264,41 +2415,41 @@ var app = (function () {
     			p3.textContent = "Dialog queued:";
     			t47 = space();
     			dialog2.$$.fragment.c();
-    			add_location(h2, file$3, 99, 0, 2503);
-    			add_location(p0, file$3, 101, 0, 2520);
-    			add_location(hr0, file$3, 103, 0, 2559);
-    			add_location(button0, file$3, 106, 2, 2575);
-    			add_location(button1, file$3, 113, 2, 2708);
-    			add_location(div0, file$3, 105, 0, 2567);
-    			add_location(button2, file$3, 117, 2, 2777);
-    			add_location(button3, file$3, 125, 2, 2937);
-    			add_location(div1, file$3, 116, 0, 2769);
-    			add_location(button4, file$3, 129, 2, 3041);
-    			add_location(button5, file$3, 145, 2, 3449);
-    			add_location(div2, file$3, 128, 0, 3033);
-    			add_location(button6, file$3, 152, 2, 3599);
-    			add_location(button7, file$3, 161, 2, 3832);
-    			add_location(div3, file$3, 151, 0, 3591);
-    			add_location(button8, file$3, 164, 2, 3925);
-    			add_location(button9, file$3, 168, 2, 4043);
-    			add_location(div4, file$3, 163, 0, 3917);
-    			add_location(button10, file$3, 171, 2, 4136);
-    			add_location(button11, file$3, 175, 2, 4257);
-    			add_location(div5, file$3, 170, 0, 4128);
-    			add_location(button12, file$3, 178, 2, 4351);
-    			add_location(button13, file$3, 185, 2, 4525);
-    			add_location(div6, file$3, 177, 0, 4343);
-    			add_location(hr1, file$3, 188, 0, 4606);
-    			add_location(p1, file$3, 191, 2, 4622);
-    			add_location(div7, file$3, 190, 0, 4614);
-    			add_location(p2, file$3, 196, 2, 4666);
-    			add_location(div8, file$3, 195, 0, 4658);
-    			add_location(hr2, file$3, 200, 0, 4729);
-    			add_location(button14, file$3, 203, 2, 4758);
-    			add_location(button15, file$3, 210, 2, 4955);
-    			add_location(div9, file$3, 202, 0, 4750);
-    			add_location(p3, file$3, 214, 2, 5038);
-    			add_location(div10, file$3, 213, 0, 5030);
+    			add_location(h2, file$3, 100, 0, 2553);
+    			add_location(p0, file$3, 102, 0, 2570);
+    			add_location(hr0, file$3, 104, 0, 2609);
+    			add_location(button0, file$3, 107, 2, 2625);
+    			add_location(button1, file$3, 114, 2, 2758);
+    			add_location(div0, file$3, 106, 0, 2617);
+    			add_location(button2, file$3, 118, 2, 2827);
+    			add_location(button3, file$3, 126, 2, 2987);
+    			add_location(div1, file$3, 117, 0, 2819);
+    			add_location(button4, file$3, 130, 2, 3091);
+    			add_location(button5, file$3, 146, 2, 3499);
+    			add_location(div2, file$3, 129, 0, 3083);
+    			add_location(button6, file$3, 153, 2, 3649);
+    			add_location(button7, file$3, 162, 2, 3882);
+    			add_location(div3, file$3, 152, 0, 3641);
+    			add_location(button8, file$3, 165, 2, 3975);
+    			add_location(button9, file$3, 169, 2, 4093);
+    			add_location(div4, file$3, 164, 0, 3967);
+    			add_location(button10, file$3, 172, 2, 4186);
+    			add_location(button11, file$3, 176, 2, 4307);
+    			add_location(div5, file$3, 171, 0, 4178);
+    			add_location(button12, file$3, 179, 2, 4401);
+    			add_location(button13, file$3, 186, 2, 4575);
+    			add_location(div6, file$3, 178, 0, 4393);
+    			add_location(hr1, file$3, 189, 0, 4656);
+    			add_location(p1, file$3, 192, 2, 4672);
+    			add_location(div7, file$3, 191, 0, 4664);
+    			add_location(p2, file$3, 197, 2, 4716);
+    			add_location(div8, file$3, 196, 0, 4708);
+    			add_location(hr2, file$3, 201, 0, 4779);
+    			add_location(button14, file$3, 204, 2, 4808);
+    			add_location(button15, file$3, 211, 2, 5005);
+    			add_location(div9, file$3, 203, 0, 4800);
+    			add_location(p3, file$3, 215, 2, 5088);
+    			add_location(div10, file$3, 214, 0, 5080);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_5),
@@ -2466,9 +2617,9 @@ var app = (function () {
     	};
     }
 
-    // (225:0) {#if showNotifications}
+    // (226:0) {#if showNotifications}
     function create_if_block(ctx) {
-    	var h2, t1, div0, button0, t3, button1, t5, button2, t7, button3, t9, div1, p0, t11, p1, t12, t13, t14, t15, hr, current, dispose;
+    	var h2, t1, p0, t2, t3, t4, p1, t5, t6, t7, div, button0, t9, button1, t11, button2, t13, button3, t15, t16, hr, current, dispose;
 
     	var notification_1 = new Notification({ props: { spawn: "NO" }, $$inline: true });
 
@@ -2477,40 +2628,39 @@ var app = (function () {
     			h2 = element("h2");
     			h2.textContent = "Notification";
     			t1 = space();
-    			div0 = element("div");
+    			p0 = element("p");
+    			t2 = text("Notification count: ");
+    			t3 = text(ctx.$notificationCount);
+    			t4 = space();
+    			p1 = element("p");
+    			t5 = text("isPaused = ");
+    			t6 = text(ctx.notificationPaused);
+    			t7 = space();
+    			div = element("div");
     			button0 = element("button");
     			button0.textContent = "Queued";
-    			t3 = space();
+    			t9 = space();
     			button1 = element("button");
     			button1.textContent = "Hide";
-    			t5 = space();
+    			t11 = space();
     			button2 = element("button");
     			button2.textContent = "Pause";
-    			t7 = space();
+    			t13 = space();
     			button3 = element("button");
     			button3.textContent = "Resume";
-    			t9 = space();
-    			div1 = element("div");
-    			p0 = element("p");
-    			p0.textContent = "Notification queued:";
-    			t11 = space();
-    			p1 = element("p");
-    			t12 = text("Notification count = ");
-    			t13 = text(ctx.$notificationCount);
-    			t14 = space();
-    			notification_1.$$.fragment.c();
     			t15 = space();
+    			notification_1.$$.fragment.c();
+    			t16 = space();
     			hr = element("hr");
-    			add_location(h2, file$3, 226, 0, 5226);
-    			add_location(button0, file$3, 229, 2, 5257);
-    			add_location(button1, file$3, 249, 2, 5781);
-    			add_location(button2, file$3, 255, 2, 5949);
-    			add_location(button3, file$3, 260, 2, 6053);
-    			add_location(div0, file$3, 228, 0, 5249);
-    			add_location(p0, file$3, 268, 2, 6165);
-    			add_location(p1, file$3, 269, 2, 6195);
-    			add_location(div1, file$3, 267, 0, 6157);
-    			add_location(hr, file$3, 273, 0, 6283);
+    			add_location(h2, file$3, 227, 0, 5276);
+    			add_location(p0, file$3, 228, 0, 5298);
+    			add_location(p1, file$3, 229, 0, 5347);
+    			add_location(button0, file$3, 232, 2, 5396);
+    			add_location(button1, file$3, 252, 2, 5920);
+    			add_location(button2, file$3, 258, 2, 6088);
+    			add_location(button3, file$3, 263, 2, 6192);
+    			add_location(div, file$3, 231, 0, 5388);
+    			add_location(hr, file$3, 272, 0, 6325);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_22),
@@ -2523,31 +2673,32 @@ var app = (function () {
     		m: function mount(target, anchor) {
     			insert(target, h2, anchor);
     			insert(target, t1, anchor);
-    			insert(target, div0, anchor);
-    			append(div0, button0);
-    			append(div0, t3);
-    			append(div0, button1);
-    			append(div0, t5);
-    			append(div0, button2);
-    			append(div0, t7);
-    			append(div0, button3);
-    			insert(target, t9, anchor);
-    			insert(target, div1, anchor);
-    			append(div1, p0);
-    			append(div1, t11);
-    			append(div1, p1);
-    			append(p1, t12);
-    			append(p1, t13);
-    			append(div1, t14);
-    			mount_component(notification_1, div1, null);
+    			insert(target, p0, anchor);
+    			append(p0, t2);
+    			append(p0, t3);
+    			insert(target, t4, anchor);
+    			insert(target, p1, anchor);
+    			append(p1, t5);
+    			append(p1, t6);
+    			insert(target, t7, anchor);
+    			insert(target, div, anchor);
+    			append(div, button0);
+    			append(div, t9);
+    			append(div, button1);
+    			append(div, t11);
+    			append(div, button2);
+    			append(div, t13);
+    			append(div, button3);
     			insert(target, t15, anchor);
+    			mount_component(notification_1, target, anchor);
+    			insert(target, t16, anchor);
     			insert(target, hr, anchor);
     			current = true;
     		},
 
     		p: function update(changed, ctx) {
     			if (!current || changed.$notificationCount) {
-    				set_data(t13, ctx.$notificationCount);
+    				set_data(t3, ctx.$notificationCount);
     			}
     		},
 
@@ -2567,15 +2718,18 @@ var app = (function () {
     			if (detaching) {
     				detach(h2);
     				detach(t1);
-    				detach(div0);
-    				detach(t9);
-    				detach(div1);
+    				detach(p0);
+    				detach(t4);
+    				detach(p1);
+    				detach(t7);
+    				detach(div);
+    				detach(t15);
     			}
 
-    			destroy_component(notification_1);
+    			destroy_component(notification_1, detaching);
 
     			if (detaching) {
-    				detach(t15);
+    				detach(t16);
     				detach(hr);
     			}
 
@@ -2619,14 +2773,14 @@ var app = (function () {
     			t14 = space();
     			if (if_block1) if_block1.c();
     			if_block1_anchor = empty();
-    			add_location(button0, file$3, 85, 0, 2032);
-    			add_location(button1, file$3, 87, 0, 2144);
-    			add_location(button2, file$3, 89, 0, 2239);
-    			add_location(button3, file$3, 91, 0, 2316);
-    			add_location(hr0, file$3, 93, 0, 2399);
-    			add_location(button4, file$3, 95, 0, 2407);
-    			add_location(hr1, file$3, 220, 0, 5098);
-    			add_location(button5, file$3, 222, 0, 5106);
+    			add_location(button0, file$3, 86, 0, 2082);
+    			add_location(button1, file$3, 88, 0, 2194);
+    			add_location(button2, file$3, 90, 0, 2289);
+    			add_location(button3, file$3, 92, 0, 2366);
+    			add_location(hr0, file$3, 94, 0, 2449);
+    			add_location(button4, file$3, 96, 0, 2457);
+    			add_location(hr1, file$3, 221, 0, 5148);
+    			add_location(button5, file$3, 223, 0, 5156);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler),
@@ -2761,6 +2915,7 @@ var app = (function () {
 
       const dialogCount = dialog$1.count; validate_store(dialogCount, 'dialogCount'); component_subscribe($$self, dialogCount, $$value => { $dialogCount = $$value; $$invalidate('$dialogCount', $dialogCount); });
       const notificationCount = notification$1.count; validate_store(notificationCount, 'notificationCount'); component_subscribe($$self, notificationCount, $$value => { $notificationCount = $$value; $$invalidate('$notificationCount', $notificationCount); });
+      const notificationPaused = notification$1.paused;
 
       const getRandomNumber = () => Math.round(1000 * Math.random());
 
@@ -2992,6 +3147,7 @@ var app = (function () {
     	return {
     		dialogCount,
     		notificationCount,
+    		notificationPaused,
     		getRandomNumber,
     		dialogOneProps,
     		dialogTwoProps,

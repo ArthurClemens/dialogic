@@ -9,7 +9,7 @@ export const handleDispatch = (ns) => (event, fn) => {
   // Find item to transition:
   const maybeTransitioningItem = selectors.find(ns, event.detail.spawnOptions);
   if (maybeTransitioningItem.just) {
-    fn(maybeTransitioningItem.just, ns);
+    fn(ns, maybeTransitioningItem.just);
   }
 };
 

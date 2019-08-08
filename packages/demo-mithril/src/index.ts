@@ -6,6 +6,31 @@ import { Content as DefaultContent } from "./default/Content";
 
 import "./styles.css";
 
+const Remaining = ({ attrs } : { attrs: { getRemaining: () => number | undefined }}) => {
+  let displayValue: number | undefined;
+  const update = () => {
+    const remaining = attrs.getRemaining();
+    if (remaining !== undefined) {
+      if (displayValue !== remaining) {
+        m.redraw();
+        displayValue = Math.max(remaining, 0);
+      }
+    } else {
+      displayValue = undefined;
+      m.redraw();
+    }
+    window.requestAnimationFrame(update);
+  };
+  
+  update();
+
+  return {
+    view: () => 
+      m("div", `Remaining: ${displayValue}`)
+  }
+};
+
+
 const getRandomNumber = () => Math.round(1000 * Math.random());
 
 const dialogOneProps: Dialogic.Options = {
@@ -203,6 +228,55 @@ const App = {
           "Hide"
         ),
       ]),
+
+      // Timer
+      m("section", { className: "section"}, [
+        m("button",
+          {
+            className: "button",
+            onclick: () =>
+              dialog.show(
+                {
+                  ...dialogOneProps,
+                  timeout: 2000,
+                  title: dialogThreeProps.title + " " + getRandomNumber()
+                },
+                {
+                  id: "timer"
+                }
+              )    
+          },
+          "With timeout"
+        ),
+        m("div", `Is paused: ${dialog.isPaused({ id: "timer" })}`),
+        m("div", m(Remaining, { getRemaining: () => dialog.getRemaining({ id: "timer" })})),
+        m("button",
+          {
+            className: "button",
+            onclick: () =>
+              dialog.pause({ id: "timer" })
+          },
+          "Pause"
+        ),
+        m("button",
+          {
+            className: "button",
+            onclick: () =>
+              dialog.resume({ id: "timer" }, { minimumDuration: 2000 })
+          },
+          "Resume"
+        ),
+        m("button",
+          {
+            className: "button",
+            onclick: () =>
+              dialog.hide({ id: "timer" })
+          },
+          "Hide"
+        ),
+      ]),
+
+      // Transition
       m("section", { className: "section"}, [
         m("button",
           {
@@ -309,7 +383,8 @@ const App = {
       
       m("section", { className: "section"}, [
         m("h2", { className: "title is-2"}, "Notification"),
-        m("p", `Notification count: ${notification.getCount()}`)
+        m("p", `Notification count: ${notification.getCount()}`),
+        m("p", `Is paused: ${notification.isPaused({ spawn: "NO" })}`),
       ]),
       m("section", { className: "section"}, [
         m("button",
@@ -338,14 +413,6 @@ const App = {
           {
             className: "button",
             onclick: () =>
-              notification.hide({ spawn: "NO" }).then(id => console.log("notification hidden from App", id))
-          },
-          "Hide"
-        ),
-        m("button",
-          {
-            className: "button",
-            onclick: () =>
               notification.pause({ spawn: "NO" })
           },
           "Pause"
@@ -354,9 +421,17 @@ const App = {
           {
             className: "button",
             onclick: () =>
-              notification.resume({ spawn: "NO" })
+              notification.resume({ spawn: "NO" }, { minimumDuration: 2000 })
           },
           "Resume"
+        ),
+        m("button",
+          {
+            className: "button",
+            onclick: () =>
+              notification.hide({ spawn: "NO" }).then(id => console.log("notification hidden from App", id))
+          },
+          "Hide"
         ),
       ]),
       m("section", { className: "section"}, [

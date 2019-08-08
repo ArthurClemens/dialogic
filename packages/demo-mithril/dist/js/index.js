@@ -1571,7 +1571,7 @@ module.exports = g;
 /*!**********************************************************************************************!*\
   !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic/dist/dialogic.mjs ***!
   \**********************************************************************************************/
-/*! exports provided: actions, dialog, filter, getCount, hide, hideAll, hideItem, notification, pause, performOnItem, resetAll, resetItem, resume, selectors, show, showItem, states */
+/*! exports provided: actions, dialog, filter, getCount, getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, performOnItem, resetAll, resetItem, resume, selectors, show, showItem, states */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1580,9 +1580,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dialog", function() { return dialog; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filter", function() { return filter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCount", function() { return getCount; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRemaining", function() { return getRemaining$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTimerProperty", function() { return getTimerProperty; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hide", function() { return hide; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hideAll", function() { return hideAll; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hideItem", function() { return hideItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isPaused", function() { return isPaused; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "notification", function() { return notification; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pause", function() { return pause; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "performOnItem", function() { return performOnItem; });
@@ -2078,73 +2081,155 @@ var selectors = _objectSpread({}, store.selectors(states)); // states.map(state 
 // );
 
 
-var isClient = typeof document !== "undefined";
+var initialState = {
+  timerId: undefined,
+  isPaused: undefined,
+  remaining: undefined,
+  startTime: undefined,
+  callback: function callback() {},
+  timeoutFn: function timeoutFn() {},
+  promise: undefined,
+  onDone: function onDone() {},
+  onAbort: function onAbort() {}
+};
 
-var Timer = function Timer() {
-  var timerId;
-  var startTime;
-  var remaining;
-  var cb;
-  var onDone;
-  var onAbort;
-
-  var stop = function stop() {
-    if (isClient) {
-      window.clearTimeout(timerId);
-      timerId = -1;
-    }
+var appendStartTimer = function appendStartTimer(state, callback, duration, updateState) {
+  var timeoutFn = function timeoutFn() {
+    callback();
+    state.onDone();
+    updateState();
   };
 
-  var abort = function abort() {
-    return stop(), onAbort && onAbort();
-  };
-
-  var pause = function pause() {
-    return stop(), remaining -= new Date().getTime() - startTime;
-  };
-
-  var startTimer = function startTimer() {
-    if (isClient) {
-      stop();
-      startTime = new Date().getTime();
-      timerId = window.setTimeout(function () {
-        cb();
-        onDone();
-      }, remaining);
-    }
-  };
-
-  var start = function start(callback, duration) {
-    cb = callback;
-    remaining = duration;
-    return new Promise(function (resolve, reject) {
-      onDone = function onDone() {
+  return _objectSpread({
+    timeoutFn: timeoutFn,
+    promise: new Promise(function (resolve, reject) {
+      state.onDone = function () {
         return resolve();
       };
 
-      onAbort = function onAbort() {
+      state.onAbort = function () {
         return reject();
       };
+    })
+  }, state.isPaused ? {} : {
+    startTime: new Date().getTime(),
+    timerId: window.setTimeout(timeoutFn, duration),
+    remaining: duration
+  });
+};
 
-      startTimer();
-    });
+var appendStopTimeout = function appendStopTimeout(state) {
+  window.clearTimeout(state.timerId);
+  return {
+    timerId: initialState.timerId
   };
+};
 
-  var resume = function resume() {
-    if (timerId === -1) {
-      return startTimer();
+var appendStopTimer = function appendStopTimer(state) {
+  return _objectSpread({}, appendStopTimeout(state));
+};
+
+var appendPauseTimer = function appendPauseTimer(state) {
+  return _objectSpread({}, appendStopTimeout(state), {
+    isPaused: true,
+    remaining: _getRemaining(state)
+  });
+};
+
+var appendResumeTimer = function appendResumeTimer(state, minimumDuration) {
+  window.clearTimeout(state.timerId);
+  var remaining = minimumDuration ? Math.max(state.remaining || 0, minimumDuration) : state.remaining;
+  return {
+    startTime: new Date().getTime(),
+    isPaused: false,
+    remaining: remaining,
+    timerId: window.setTimeout(state.timeoutFn, remaining)
+  };
+};
+
+var _getRemaining = function getRemaining(state) {
+  return state.remaining === undefined ? undefined : state.remaining - (new Date().getTime() - (state.startTime || 0));
+};
+
+var Timer = function Timer() {
+  var timer = {
+    initialState: initialState,
+    actions: function actions(update) {
+      return {
+        start: function start(callback, duration) {
+          update(function (state) {
+            return _objectSpread({}, state, {}, appendStopTimeout(state), {}, appendStartTimer(state, callback, duration, function () {
+              return timer.actions(update).done();
+            }), {}, state.isPaused && appendPauseTimer(state));
+          });
+        },
+        stop: function stop() {
+          update(function (state) {
+            return _objectSpread({}, state, {}, appendStopTimer(state), {}, initialState);
+          });
+        },
+        pause: function pause() {
+          update(function (state) {
+            return _objectSpread({}, state, {}, appendPauseTimer(state));
+          });
+        },
+        resume: function resume(minimumDuration) {
+          update(function (state) {
+            return _objectSpread({}, state, {}, state.isPaused && appendResumeTimer(state, minimumDuration));
+          });
+        },
+        abort: function abort() {
+          update(function (state) {
+            state.onAbort();
+            return _objectSpread({}, state, {}, appendStopTimeout(state));
+          });
+        },
+        done: function done() {
+          update(function (state) {
+            return initialState;
+          });
+        },
+        refresh: function refresh() {
+          update(function (state) {
+            return _objectSpread({}, state);
+          });
+        }
+      };
+    },
+    selectors: function selectors(states) {
+      return {
+        isPaused: function isPaused() {
+          var state = states();
+          return state.isPaused;
+        },
+        getRemaining: function getRemaining() {
+          timer.actions(update).refresh();
+          var state = states();
+          return state.isPaused ? state.remaining : _getRemaining(state);
+        },
+        getResultPromise: function getResultPromise() {
+          var state = states();
+          return state.promise;
+        }
+      };
     }
   };
+  var update = stream();
+  var states = stream.scan(function (state, patch) {
+    return patch(state);
+  }, _objectSpread({}, timer.initialState), update);
+
+  var actions = _objectSpread({}, timer.actions(update));
+
+  var selectors = _objectSpread({}, timer.selectors(states)); // states.map(state => 
+  //   console.log(JSON.stringify(state, null, 2))
+  // );
+
 
   return {
-    start: start,
-    pause: pause,
-    resume: resume,
-    stop: stop,
-    abort: abort,
-    toString: function toString() {
-      return "Timer";
-    }
+    states: states,
+    actions: actions,
+    selectors: selectors
   };
 };
 
@@ -2186,7 +2271,7 @@ var filterQueued = function filterQueued(nsItems, ns) {
   });
 };
 
-var filter = function filter(items, spawn, ns) {
+var filter = function filter(ns, items, spawn) {
   var nsItems = items[ns] || [];
   return filterBySpawnId(filterQueued(nsItems), spawn);
 };
@@ -2248,7 +2333,7 @@ var createInstance = function createInstance(ns) {
             instanceTransitionOptions: instanceTransitionOptions,
             instanceOptions: instanceOptions,
             id: id,
-            timer: Timer(),
+            timer: transitionOptions.timeout ? Timer() : undefined,
             key: uid,
             transitionState: transitionStates.none
           };
@@ -2278,16 +2363,20 @@ var createInstance = function createInstance(ns) {
 
 var show = createInstance;
 
+var getMaybeItem = function getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions) {
+  var spawnOptions = _objectSpread({}, defaultSpawnOptions, {}, instanceSpawnOptions);
+
+  return selectors.find(ns, spawnOptions);
+};
+
 var performOnItem = function performOnItem(fn) {
   return function (ns) {
     return function (defaultSpawnOptions) {
-      return function (instanceSpawnOptions) {
-        var spawnOptions = _objectSpread({}, defaultSpawnOptions, {}, instanceSpawnOptions);
-
-        var maybeItem = selectors.find(ns, spawnOptions);
+      return function (instanceSpawnOptions, fnOptions) {
+        var maybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
 
         if (maybeItem.just) {
-          return fn(maybeItem.just, ns);
+          return fn(ns, maybeItem.just, fnOptions);
         } else {
           return Promise.resolve();
         }
@@ -2296,33 +2385,58 @@ var performOnItem = function performOnItem(fn) {
   };
 };
 
-var hide = performOnItem(function (item, ns) {
+var hide = performOnItem(function (ns, item) {
   if (item.transitionState !== transitionStates.hiding) {
     item.transitionState = transitionStates.hiding;
-    return hideItem(item, ns);
+    return hideItem(ns, item);
   } else {
     return Promise.resolve();
   }
 });
-var pause = performOnItem(function (item, ns) {
+var pause = performOnItem(function (ns, item) {
   if (item && item.timer) {
-    item.timer.pause();
+    item.timer.actions.pause();
   }
 
   return Promise.resolve();
 });
-var resume = performOnItem(function (item, ns) {
+var resume = performOnItem(function (ns, item) {
+  var fnOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
   if (item && item.timer) {
-    item.timer.resume();
+    item.timer.actions.resume(fnOptions.minimumDuration);
   }
 
   return Promise.resolve();
 });
+
+var getTimerProperty = function getTimerProperty(timerProp) {
+  return function (ns) {
+    return function (defaultSpawnOptions) {
+      return function (instanceSpawnOptions) {
+        var maybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
+
+        if (maybeItem.just) {
+          if (maybeItem.just && maybeItem.just.timer) {
+            return maybeItem.just.timer.selectors[timerProp]();
+          } else {
+            return undefined;
+          }
+        } else {
+          return undefined;
+        }
+      };
+    };
+  };
+};
+
+var isPaused = getTimerProperty("isPaused");
+var getRemaining$1 = getTimerProperty("getRemaining");
 
 var resetAll = function resetAll(ns) {
   return function () {
     selectors.getAll(ns).forEach(function (item) {
-      return item.timer.abort();
+      return item.timer && item.timer.actions.abort();
     });
     actions.removeAll(ns);
     return Promise.resolve();
@@ -2357,7 +2471,7 @@ var hideAll = function hideAll(ns) {
         return spawnOptions.queued || item.spawnOptions.queued;
       });
       regularItems.forEach(function (item) {
-        return hideItem(getOverridingTransitionOptions(item, options), ns);
+        return hideItem(ns, getOverridingTransitionOptions(item, options));
       });
 
       if (queuedItems.length > 0) {
@@ -2367,7 +2481,7 @@ var hideAll = function hideAll(ns) {
 
         actions.store(ns, [current]); // Transition the current item
 
-        hideItem(getOverridingTransitionOptions(current, options), ns).then(function () {
+        hideItem(ns, getOverridingTransitionOptions(current, options)).then(function () {
           return actions.removeAll(ns);
         });
       }
@@ -2380,7 +2494,7 @@ var hideAll = function hideAll(ns) {
 
 
 var resetItem = function resetItem(item, ns) {
-  item.timer.abort();
+  item.timer && item.timer.actions.abort();
   actions.remove(ns, item.id);
 };
 
@@ -2403,16 +2517,17 @@ var deferredHideItem =
 function () {
   var _ref5 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
   /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(item, timeout, ns) {
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(ns, item, timer, timeout) {
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            return _context.abrupt("return", item.timer.start(function () {
-              return hideItem(item, ns);
-            }, timeout));
+            timer.actions.start(function () {
+              return hideItem(ns, item);
+            }, timeout);
+            return _context.abrupt("return", getTimerProperty("getResultPromise"));
 
-          case 1:
+          case 2:
           case "end":
             return _context.stop();
         }
@@ -2420,7 +2535,7 @@ function () {
     }, _callee);
   }));
 
-  return function deferredHideItem(_x, _x2, _x3) {
+  return function deferredHideItem(_x, _x2, _x3, _x4) {
     return _ref5.apply(this, arguments);
   };
 }();
@@ -2430,7 +2545,7 @@ var showItem =
 function () {
   var _ref6 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
   /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(item, ns) {
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(ns, item) {
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -2450,13 +2565,13 @@ function () {
             return item.transitionOptions.didShow(item.spawnOptions.id);
 
           case 6:
-            if (!item.transitionOptions.timeout) {
+            if (!(item.transitionOptions.timeout && item.timer)) {
               _context2.next = 9;
               break;
             }
 
             _context2.next = 9;
-            return deferredHideItem(item, item.transitionOptions.timeout, ns);
+            return deferredHideItem(ns, item, item.timer, item.transitionOptions.timeout);
 
           case 9:
             return _context2.abrupt("return", item.spawnOptions.id);
@@ -2469,7 +2584,7 @@ function () {
     }, _callee2);
   }));
 
-  return function showItem(_x4, _x5) {
+  return function showItem(_x5, _x6) {
     return _ref6.apply(this, arguments);
   };
 }();
@@ -2479,14 +2594,14 @@ var hideItem =
 function () {
   var _ref7 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
   /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(item, ns) {
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(ns, item) {
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             // Stop any running timer
-            if (item.transitionOptions.timeout) {
-              item.timer.stop();
+            if (item.timer) {
+              item.timer.actions.stop();
             }
 
             _context3.next = 3;
@@ -2515,7 +2630,7 @@ function () {
     }, _callee3);
   }));
 
-  return function hideItem(_x6, _x7) {
+  return function hideItem(_x7, _x8) {
     return _ref7.apply(this, arguments);
   };
 }();
@@ -2535,6 +2650,8 @@ var show$1 = show(ns)(defaultSpawnOptions)(defaultTransitionOptions);
 var hide$1 = hide(ns)(defaultSpawnOptions);
 var pause$1 = pause(ns)(defaultSpawnOptions);
 var resume$1 = resume(ns)(defaultSpawnOptions);
+var isPaused$1 = isPaused(ns)(defaultSpawnOptions);
+var getRemaining$2 = getRemaining$1(ns)(defaultSpawnOptions);
 var hideAll$1 = hideAll(ns)(defaultSpawnOptions);
 var resetAll$1 = resetAll(ns);
 var getCount$1 = getCount(ns);
@@ -2548,6 +2665,8 @@ Object.freeze({
   hide: hide$1,
   pause: pause$1,
   resume: resume$1,
+  isPaused: isPaused$1,
+  getRemaining: getRemaining$2,
   hideAll: hideAll$1,
   resetAll: resetAll$1,
   getCount: getCount$1
@@ -2564,6 +2683,8 @@ var show$2 = show(ns$1)(defaultSpawnOptions$1)(defaultTransitionOptions$1);
 var hide$2 = hide(ns$1)(defaultSpawnOptions$1);
 var pause$2 = pause(ns$1)(defaultSpawnOptions$1);
 var resume$2 = resume(ns$1)(defaultSpawnOptions$1);
+var isPaused$2 = isPaused(ns$1)(defaultSpawnOptions$1);
+var getRemaining$3 = getRemaining$1(ns$1)(defaultSpawnOptions$1);
 var hideAll$2 = hideAll(ns$1)(defaultSpawnOptions$1);
 var resetAll$2 = resetAll(ns$1);
 var getCount$2 = getCount(ns$1);
@@ -2577,6 +2698,8 @@ Object.freeze({
   hide: hide$2,
   pause: pause$2,
   resume: resume$2,
+  isPaused: isPaused$2,
+  getRemaining: getRemaining$3,
   hideAll: hideAll$2,
   resetAll: resetAll$2,
   getCount: getCount$2
@@ -4625,7 +4748,7 @@ const Wrapper = {
         const nsOnHideInstance = Object(_instance_events__WEBPACK_IMPORTED_MODULE_2__["onHideInstance"])(attrs.ns);
         const spawnOptions = attrs.spawnOptions || {};
         const spawn = spawnOptions.spawn || "";
-        const filtered = Object(dialogic__WEBPACK_IMPORTED_MODULE_1__["filter"])(dialogic__WEBPACK_IMPORTED_MODULE_1__["selectors"].getStore(), spawn, attrs.ns);
+        const filtered = Object(dialogic__WEBPACK_IMPORTED_MODULE_1__["filter"])(attrs.ns, dialogic__WEBPACK_IMPORTED_MODULE_1__["selectors"].getStore(), spawn);
         return filtered.map(item => mithril__WEBPACK_IMPORTED_MODULE_0___default()(_Instance__WEBPACK_IMPORTED_MODULE_3__["Instance"], {
             key: item.key,
             spawnOptions: item.spawnOptions,
@@ -4698,7 +4821,7 @@ const handleDispatch = (ns) => (event, fn) => {
     // Find item to transition:
     const maybeTransitioningItem = dialogic__WEBPACK_IMPORTED_MODULE_0__["selectors"].find(ns, event.detail.spawnOptions);
     if (maybeTransitioningItem.just) {
-        fn(maybeTransitioningItem.just, ns);
+        fn(ns, maybeTransitioningItem.just);
     }
 };
 const onInstanceMounted = (ns) => (event) => handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_0__["showItem"]);
@@ -4728,6 +4851,27 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const Remaining = ({ attrs }) => {
+    let displayValue;
+    const update = () => {
+        const remaining = attrs.getRemaining();
+        if (remaining !== undefined) {
+            if (displayValue !== remaining) {
+                mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw();
+                displayValue = Math.max(remaining, 0);
+            }
+        }
+        else {
+            displayValue = undefined;
+            mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw();
+        }
+        window.requestAnimationFrame(update);
+    };
+    update();
+    return {
+        view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", `Remaining: ${displayValue}`)
+    };
+};
 const getRandomNumber = () => Math.round(1000 * Math.random());
 const dialogOneProps = {
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
@@ -4867,6 +5011,34 @@ const App = {
                 onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ id: dialogThreeProps.id })
             }, "Hide"),
         ]),
+        // Timer
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
+                    ...dialogOneProps,
+                    timeout: 2000,
+                    title: dialogThreeProps.title + " " + getRandomNumber()
+                }, {
+                    id: "timer"
+                })
+            }, "With timeout"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", `Is paused: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].isPaused({ id: "timer" })}`),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()(Remaining, { getRemaining: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getRemaining({ id: "timer" }) })),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].pause({ id: "timer" })
+            }, "Pause"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].resume({ id: "timer" }, { minimumDuration: 2000 })
+            }, "Resume"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ id: "timer" })
+            }, "Hide"),
+        ]),
+        // Transition
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
@@ -4937,7 +5109,8 @@ const App = {
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", { className: "title is-2" }, "Notification"),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Notification count: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getCount()}`)
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Notification count: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getCount()}`),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Is paused: ${_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].isPaused({ spawn: "NO" })}`),
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
@@ -4958,16 +5131,16 @@ const App = {
             }, "Show notification"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
-                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].hide({ spawn: "NO" }).then(id => console.log("notification hidden from App", id))
-            }, "Hide"),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
-                className: "button",
                 onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].pause({ spawn: "NO" })
             }, "Pause"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
-                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].resume({ spawn: "NO" })
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].resume({ spawn: "NO" }, { minimumDuration: 2000 })
             }, "Resume"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => _dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].hide({ spawn: "NO" }).then(id => console.log("notification hidden from App", id))
+            }, "Hide"),
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()(_dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Notification"], { spawn: "NO" })

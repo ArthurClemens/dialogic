@@ -5,6 +5,7 @@
 
   const dialogCount = dialog.count;
   const notificationCount = notification.count;
+  const notificationPaused = notification.paused;
 
   const getRandomNumber = () => Math.round(1000 * Math.random());
 
@@ -225,6 +226,8 @@ Queued dialog
 {#if showNotifications}
 
 <h2>Notification</h2>
+<p>Notification count: {$notificationCount} </p>
+<p>isPaused = {notificationPaused} </p>
 
 <div>
   <button
@@ -265,11 +268,7 @@ Queued dialog
   )}>Resume</button>
 </div>
 
-<div>
-  <p>Notification queued:</p>
-  <p>Notification count = {$notificationCount} </p>
-  <Notification spawn="NO" />
-</div>
+<Notification spawn="NO" />
 
 <hr />
 

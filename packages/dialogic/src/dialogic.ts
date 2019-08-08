@@ -1,12 +1,12 @@
 import { transition, transitionOptionKeys, MODE } from "./transition";
 import { actions, selectors, createId } from "./state";
-import { Timer } from "./timer";
+import { Timer } from "./Timer";
 import { Dialogic } from "../index";
 
 export { states, actions, selectors } from "./state";
 
-type PerformFn = (item: Dialogic.Item, ns:string) => any;
-type PerformOnItemNsFn = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => Promise<any>;
+type PerformFn = (ns:string, item: Dialogic.Item, fnOptions?: any) => any;
+type PerformOnItemNsFn = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<any>;
 type PerformOnItemFn = (fn: PerformFn) => PerformOnItemNsFn;
 
 let uid = 0;
@@ -40,7 +40,7 @@ const filterQueued = (nsItems: Dialogic.Item[], ns: string) => {
     .map(({ item }) => item);
 };
 
-export const filter = (items: Dialogic.NamespaceStore, spawn: string, ns: string) => {
+export const filter = (ns: string, items: Dialogic.NamespaceStore, spawn: string) => {
   const nsItems = items[ns] || [];
   return filterBySpawnId(filterQueued(nsItems, ns), spawn);
 };
@@ -105,7 +105,9 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
       instanceTransitionOptions,
       instanceOptions,
       id,
-      timer: Timer(),
+      timer: transitionOptions.timeout
+        ? Timer()
+        : undefined,
       key: uid, // Uniquely identify each item for keyed display
       transitionState: transitionStates.none as Dialogic.ItemTransitionState,
     };
@@ -132,48 +134,68 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
 
 export const show = createInstance;
 
-export const performOnItem: PerformOnItemFn = fn => (ns) => (defaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+const getMaybeItem = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOptions, instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
   const spawnOptions = {
     ...defaultSpawnOptions,
     ...instanceSpawnOptions,
   } as Dialogic.SpawnOptions;
-  const maybeItem: Dialogic.MaybeItem = selectors.find(ns, spawnOptions);
+  return selectors.find(ns, spawnOptions);
+}
+
+export const performOnItem: PerformOnItemFn = fn => ns => defaultSpawnOptions => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions, fnOptions?: any) => {
+  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
   if (maybeItem.just) {
-    return fn(maybeItem.just, ns);
+    return fn(ns, maybeItem.just, fnOptions);
   } else {
     return Promise.resolve();
   }
 };
 
 export const hide: PerformOnItemNsFn =
-  performOnItem((item, ns) => {
+  performOnItem((ns, item) => {
     if (item.transitionState !== transitionStates.hiding as Dialogic.ItemTransitionState) {
       item.transitionState = transitionStates.hiding as Dialogic.ItemTransitionState;
-      return hideItem(item, ns);
+      return hideItem(ns, item);
     } else {
       return Promise.resolve();
     }
   });
 
 export const pause: PerformOnItemNsFn =
-  performOnItem((item, ns) => {
+  performOnItem((ns, item) => {
     if (item && item.timer) {
-      item.timer.pause();
+      item.timer.actions.pause();
     }
     return Promise.resolve();
   });
 
 export const resume: PerformOnItemNsFn =
-  performOnItem((item, ns) => {
+  performOnItem((ns, item, fnOptions: Dialogic.TimerResumeOptions = {}) => {
     if (item && item.timer) {
-      item.timer.resume();
+      item.timer.actions.resume(fnOptions.minimumDuration);
     }
     return Promise.resolve();
   });
 
+export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getResultPromise") =>(ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns, defaultSpawnOptions, instanceSpawnOptions);
+  if (maybeItem.just) {
+    if (maybeItem.just && maybeItem.just.timer) {
+      return maybeItem.just.timer.selectors[timerProp]();
+    } else {
+      return undefined
+    }
+  } else {
+    return undefined;
+  }
+};
+
+export const isPaused = getTimerProperty("isPaused");
+export const getRemaining = getTimerProperty("getRemaining");
+
 export const resetAll = (ns: string) => () => {
   selectors.getAll(ns).forEach((item: Dialogic.Item) =>
-    item.timer.abort()
+    item.timer && item.timer.actions.abort()
   );
   actions.removeAll(ns);
   return Promise.resolve();
@@ -205,7 +227,7 @@ export const hideAll = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
   const queuedItems = allItems.filter((item: Dialogic.Item) => spawnOptions.queued || item.spawnOptions.queued);
 
   regularItems.forEach((item: Dialogic.Item) =>
-    hideItem(getOverridingTransitionOptions(item, options), ns)
+    hideItem(ns, getOverridingTransitionOptions(item, options))
   );
 
   if (queuedItems.length > 0) {
@@ -213,7 +235,7 @@ export const hideAll = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
     // Make sure that any remaining items don't suddenly appear
     actions.store(ns, [current]);
     // Transition the current item
-    hideItem(getOverridingTransitionOptions(current, options), ns)
+    hideItem(ns, getOverridingTransitionOptions(current, options))
       .then(() => actions.removeAll(ns))
   };
 };
@@ -222,7 +244,7 @@ export const hideAll = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
  * Stop any running timer and remmove the item
  */
 export const resetItem = (item: Dialogic.Item, ns: string) => {
-  item.timer.abort();
+  item.timer && item.timer.actions.abort();
   actions.remove(ns, item.id);
 };
 
@@ -243,25 +265,26 @@ const transitionItem = (item: Dialogic.Item, mode: string) => {
   }
 };
 
-const deferredHideItem = async function(item: Dialogic.Item, timeout: number, ns: string) {
-  return item.timer.start(() => (
-    hideItem(item, ns)
+const deferredHideItem = async function(ns: string, item: Dialogic.Item, timer: Dialogic.Timer, timeout: number) {
+  timer.actions.start(() => (
+    hideItem(ns, item)
   ), timeout);
+  return getTimerProperty("getResultPromise") // timer.selectors.getResultPromise();
 };
 
-export const showItem: Dialogic.InitiateItemTransitionFn = async function(item, ns) {
+export const showItem: Dialogic.InitiateItemTransitionFn = async function(ns, item) {
   await(transitionItem(item, MODE.SHOW));
   item.transitionOptions.didShow && await(item.transitionOptions.didShow(item.spawnOptions.id));
-  if (item.transitionOptions.timeout) {
-    await(deferredHideItem(item, item.transitionOptions.timeout, ns));
+  if (item.transitionOptions.timeout && item.timer) {
+    await(deferredHideItem(ns, item, item.timer, item.transitionOptions.timeout));
   }
   return item.spawnOptions.id;
 };
 
-export const hideItem: Dialogic.InitiateItemTransitionFn = async function(item, ns) {
+export const hideItem: Dialogic.InitiateItemTransitionFn = async function(ns, item) {
   // Stop any running timer
-  if (item.transitionOptions.timeout) {
-    item.timer.stop();
+  if (item.timer) {
+    item.timer.actions.stop();
   }
   await(transitionItem(item, MODE.HIDE));
   item.transitionOptions.didHide && await(item.transitionOptions.didHide(item.spawnOptions.id));

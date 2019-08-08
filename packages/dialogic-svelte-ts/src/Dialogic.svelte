@@ -15,7 +15,7 @@
   
 </script>
 
-{#each filter($appState.store, spawnOptions.spawn, ns) as { spawnOptions, instanceOptions, key }, index(key)}
+{#each filter(ns, $appState.store, spawnOptions.spawn) as { spawnOptions, instanceOptions, key }, index(key)}
   <Instance
     {...instanceOptions}
     {spawnOptions}
