@@ -830,7 +830,7 @@ const hideItem = async function (ns, item) {
     return item.spawnOptions.id;
 };
 
-const dialogicable = ({ ns, queued, timeout }) => {
+const dialogical = ({ ns, queued, timeout }) => {
     const defaultId = `default_${ns}`;
     const defaultSpawn = `default_${ns}`;
     const defaultSpawnOptions = {
@@ -859,9 +859,9 @@ const dialogicable = ({ ns, queued, timeout }) => {
     };
 };
 
-const dialog = dialogicable({ ns: "dialog" });
+const dialog = dialogical({ ns: "dialog" });
 
-const notification = dialogicable({ ns: "notification", queued: true, timeout: 3000 });
+const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
 
 const handleDispatch = (ns) => (event, fn) => {
     // Update dispatching item:

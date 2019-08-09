@@ -1,3 +1,3 @@
-import { dialogicable } from "./dialogicable";
+import { dialogical } from "./dialogical";
 
-export const dialog = dialogicable({ ns: "dialog" });
+export const dialog = dialogical({ ns: "dialog" });

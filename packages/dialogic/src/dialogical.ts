@@ -1,7 +1,7 @@
 import { show, hide, hideAll, resetAll, getCount, pause, resume, isPaused, getRemaining, getMaybeItem } from "./dialogic";
 import { Dialogic } from "../index";
 
-export const dialogicable = ({ ns, queued, timeout }: { ns: string, queued?: boolean, timeout?: number }) => {
+export const dialogical = ({ ns, queued, timeout }: { ns: string, queued?: boolean, timeout?: number }) => {
   const defaultId = `default_${ns}`;
   const defaultSpawn = `default_${ns}`;
   const defaultSpawnOptions: Dialogic.DefaultSpawnOptions = {
