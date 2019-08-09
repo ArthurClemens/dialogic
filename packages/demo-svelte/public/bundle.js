@@ -495,16 +495,7 @@ var app = (function () {
             const computedStyle =  window.getComputedStyle(domElement)
                 ;
             const isShow = mode === MODE.SHOW;
-            const transitionProps = getTransitionProps({
-                showDuration: props.showDuration,
-                showDelay: props.showDelay,
-                showTimingFunction: props.showTimingFunction,
-                hideDuration: props.hideDuration,
-                hideDelay: props.hideDelay,
-                hideTimingFunction: props.hideTimingFunction,
-                transitions: props.transitions,
-                domElements: props.domElements,
-            }, isShow);
+            const transitionProps = getTransitionProps(props, isShow);
             const duration = transitionProps.duration !== undefined
                 ? transitionProps.duration * 1000
                 : computedStyle
@@ -880,7 +871,13 @@ var app = (function () {
                         ? items.filter(item => item.spawnOptions.spawn === spawn)
                         : items;
                 },
-                getCount: (ns, instanceSpawnOptions) => fns.getAll(ns, instanceSpawnOptions).length,
+                getCount: (ns, instanceSpawnOptions) => {
+                    const itemsBySpawn = fns.getAll(ns, instanceSpawnOptions);
+                    const items = instanceSpawnOptions && instanceSpawnOptions.id !== undefined
+                        ? [itemsBySpawn.find((item) => item.spawnOptions.id === instanceSpawnOptions.id)].filter(Boolean)
+                        : itemsBySpawn;
+                    return items.length;
+                }
             };
             return fns;
         },
@@ -1034,7 +1031,6 @@ var app = (function () {
                         return state.isPaused;
                     },
                     getRemaining: () => {
-                        // timer.actions(update).refresh()
                         const state = states();
                         return state.isPaused
                             ? state.remaining
@@ -1297,81 +1293,38 @@ var app = (function () {
         return item.spawnOptions.id;
     };
 
-    const ns = "notification";
-    const defaultId = `default_${ns}`;
-    const defaultSpawn = `default_${ns}`;
-    const defaultSpawnOptions = {
-        id: defaultId,
-        queued: true,
-        spawn: defaultSpawn,
+    const dialogicable = ({ ns, queued, timeout }) => {
+        const defaultId = `default_${ns}`;
+        const defaultSpawn = `default_${ns}`;
+        const defaultSpawnOptions = {
+            id: defaultId,
+            spawn: defaultSpawn,
+            queued
+        };
+        const defaultTransitionOptions = {
+            timeout
+        };
+        return {
+            ns,
+            defaultId,
+            defaultSpawn,
+            defaultSpawnOptions,
+            show: show(ns)(defaultSpawnOptions)(defaultTransitionOptions),
+            hide: hide(ns)(defaultSpawnOptions),
+            pause: pause(ns)(defaultSpawnOptions),
+            resume: resume(ns)(defaultSpawnOptions),
+            isPaused: isPaused(ns)(defaultSpawnOptions),
+            getMaybeItem: getMaybeItem(ns)(defaultSpawnOptions),
+            getRemaining: getRemaining$1(ns)(defaultSpawnOptions),
+            hideAll: hideAll(ns)(defaultSpawnOptions),
+            resetAll: resetAll(ns),
+            getCount: getCount(ns),
+        };
     };
-    const defaultTransitionOptions = {
-        timeout: 3000,
-    };
-    const show$1 = show(ns)(defaultSpawnOptions)(defaultTransitionOptions);
-    const hide$1 = hide(ns)(defaultSpawnOptions);
-    const pause$1 = pause(ns)(defaultSpawnOptions);
-    const resume$1 = resume(ns)(defaultSpawnOptions);
-    const isPaused$1 = isPaused(ns)(defaultSpawnOptions);
-    const getMaybeItem$1 = getMaybeItem(ns)(defaultSpawnOptions);
-    const getRemaining$2 = getRemaining$1(ns)(defaultSpawnOptions);
-    const hideAll$1 = hideAll(ns)(defaultSpawnOptions);
-    const resetAll$1 = resetAll(ns);
-    const getCount$1 = getCount(ns);
 
-    var notification = /*#__PURE__*/Object.freeze({
-    	ns: ns,
-    	defaultId: defaultId,
-    	defaultSpawn: defaultSpawn,
-    	defaultSpawnOptions: defaultSpawnOptions,
-    	show: show$1,
-    	hide: hide$1,
-    	pause: pause$1,
-    	resume: resume$1,
-    	isPaused: isPaused$1,
-    	getMaybeItem: getMaybeItem$1,
-    	getRemaining: getRemaining$2,
-    	hideAll: hideAll$1,
-    	resetAll: resetAll$1,
-    	getCount: getCount$1
-    });
+    const dialog = dialogicable({ ns: "dialog" });
 
-    const ns$1 = "dialog";
-    const defaultId$1 = `default_${ns$1}`;
-    const defaultSpawn$1 = `default_${ns$1}`;
-    const defaultSpawnOptions$1 = {
-        id: defaultId$1,
-        spawn: defaultSpawn$1,
-    };
-    const defaultTransitionOptions$1 = {};
-    const show$2 = show(ns$1)(defaultSpawnOptions$1)(defaultTransitionOptions$1);
-    const hide$2 = hide(ns$1)(defaultSpawnOptions$1);
-    const pause$2 = pause(ns$1)(defaultSpawnOptions$1);
-    const resume$2 = resume(ns$1)(defaultSpawnOptions$1);
-    const isPaused$2 = isPaused(ns$1)(defaultSpawnOptions$1);
-    const getMaybeItem$2 = getMaybeItem(ns$1)(defaultSpawnOptions$1);
-    const getRemaining$3 = getRemaining$1(ns$1)(defaultSpawnOptions$1);
-    const hideAll$2 = hideAll(ns$1)(defaultSpawnOptions$1);
-    const resetAll$2 = resetAll(ns$1);
-    const getCount$2 = getCount(ns$1);
-
-    var dialog = /*#__PURE__*/Object.freeze({
-    	ns: ns$1,
-    	defaultId: defaultId$1,
-    	defaultSpawn: defaultSpawn$1,
-    	defaultSpawnOptions: defaultSpawnOptions$1,
-    	show: show$2,
-    	hide: hide$2,
-    	pause: pause$2,
-    	resume: resume$2,
-    	isPaused: isPaused$2,
-    	getMaybeItem: getMaybeItem$2,
-    	getRemaining: getRemaining$3,
-    	hideAll: hideAll$2,
-    	resetAll: resetAll$2,
-    	getCount: getCount$2
-    });
-    //# sourceMappingURL=dialogic.mjs.map
+    const notification = dialogicable({ ns: "notification", queued: true, timeout: 3000 });
 
     const subscriber_queue = [];
     /**
@@ -1493,28 +1446,30 @@ var app = (function () {
       ...selectors
     }));
 
-    const getCount$3 = ns => instanceSpawnOptions => derived(
+    const getCount$1 = ns => defaultSpawnOptions => instanceSpawnOptions => derived(
     	appState,
-    	() => selectors.getCount(ns, instanceSpawnOptions)
+    	() => selectors.getCount(ns, defaultSpawnOptions, instanceSpawnOptions)
     );
 
-    const isPaused$3 = ns => defaultSpawnOptions => instanceSpawnOptions => derived(
+    const isPaused$1 = ns => defaultSpawnOptions => instanceSpawnOptions => derived(
     	appState,
     	() => getTimerProperty("isPaused")(ns)(defaultSpawnOptions)(instanceSpawnOptions)
     );
 
     const dialog$1 = {
       ...dialog,
-      getCount: getCount$3(dialog.ns),
+      getCount: instanceSpawnOptions =>
+        getCount$1(dialog.ns)(dialog.defaultSpawnOptions)(instanceSpawnOptions),
       isPaused: instanceSpawnOptions =>
-        isPaused$3(dialog.ns)(dialog.defaultSpawnOptions)(instanceSpawnOptions)
+        isPaused$1(dialog.ns)(dialog.defaultSpawnOptions)(instanceSpawnOptions)
     };
 
     const notification$1 = {
       ...notification,
-      getCount: getCount$3(notification.ns),
+      getCount: instanceSpawnOptions =>
+        getCount$1(notification.ns)(notification.defaultSpawnOptions)(instanceSpawnOptions),
       isPaused: instanceSpawnOptions =>
-        isPaused$3(notification.ns)(notification.defaultSpawnOptions)(instanceSpawnOptions)
+        isPaused$1(notification.ns)(notification.defaultSpawnOptions)(instanceSpawnOptions)
     };
 
     const handleDispatch = (ns) => (event, fn) => {
