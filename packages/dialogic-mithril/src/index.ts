@@ -1,8 +1,8 @@
 import m from "mithril";
 import { states } from "dialogic";
 
-export * from "./Dialog";
-export * from "./Notification";
+export { dialog, Dialog } from "./Dialog";
+export { notification, Notification } from "./Notification";
 
 const DEBUG = false;
 

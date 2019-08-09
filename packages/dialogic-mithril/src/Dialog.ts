@@ -15,6 +15,7 @@ export const Dialog = {
       id: attrs.id || dialog.defaultId,
       spawn: attrs.spawn || dialog.defaultSpawn,
     };
+    console.log("Dialog", "spawnOptions", spawnOptions, "dialog.ns", dialog.ns);
     return m(Wrapper, {
       spawnOptions,
       ns: dialog.ns,

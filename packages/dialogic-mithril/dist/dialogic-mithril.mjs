@@ -32,16 +32,7 @@ const transition = (props, mode) => {
         const computedStyle =  window.getComputedStyle(domElement)
             ;
         const isShow = mode === MODE.SHOW;
-        const transitionProps = getTransitionProps({
-            showDuration: props.showDuration,
-            showDelay: props.showDelay,
-            showTimingFunction: props.showTimingFunction,
-            hideDuration: props.hideDuration,
-            hideDelay: props.hideDelay,
-            hideTimingFunction: props.hideTimingFunction,
-            transitions: props.transitions,
-            domElements: props.domElements,
-        }, isShow);
+        const transitionProps = getTransitionProps(props, isShow);
         const duration = transitionProps.duration !== undefined
             ? transitionProps.duration * 1000
             : computedStyle
@@ -571,7 +562,6 @@ const Timer = () => {
                     return state.isPaused;
                 },
                 getRemaining: () => {
-                    // timer.actions(update).refresh()
                     const state = states();
                     return state.isPaused
                         ? state.remaining
@@ -834,80 +824,57 @@ const hideItem = async function (ns, item) {
     return item.spawnOptions.id;
 };
 
-const ns = "notification";
-const defaultId = `default_${ns}`;
-const defaultSpawn = `default_${ns}`;
-const defaultSpawnOptions = {
-    id: defaultId,
-    queued: true,
-    spawn: defaultSpawn,
+const dialogicable = ({ ns, queued, timeout }) => {
+    const defaultId = `default_${ns}`;
+    const defaultSpawn = `default_${ns}`;
+    const defaultSpawnOptions = {
+        id: defaultId,
+        spawn: defaultSpawn,
+        queued
+    };
+    const defaultTransitionOptions = {
+        timeout
+    };
+    return {
+        defaultId,
+        defaultSpawn,
+        defaultSpawnOptions,
+        show: show(ns)(defaultSpawnOptions)(defaultTransitionOptions),
+        hide: hide(ns)(defaultSpawnOptions),
+        pause: pause(ns)(defaultSpawnOptions),
+        resume: resume(ns)(defaultSpawnOptions),
+        isPaused: isPaused(ns)(defaultSpawnOptions),
+        getMaybeItem: getMaybeItem(ns)(defaultSpawnOptions),
+        getRemaining: getRemaining$1(ns)(defaultSpawnOptions),
+        hideAll: hideAll(ns)(defaultSpawnOptions),
+        resetAll: resetAll(ns),
+        getCount: getCount(ns),
+    };
 };
-const defaultTransitionOptions = {
-    timeout: 3000,
-};
-const show$1 = show(ns)(defaultSpawnOptions)(defaultTransitionOptions);
-const hide$1 = hide(ns)(defaultSpawnOptions);
-const pause$1 = pause(ns)(defaultSpawnOptions);
-const resume$1 = resume(ns)(defaultSpawnOptions);
-const isPaused$1 = isPaused(ns)(defaultSpawnOptions);
-const getMaybeItem$1 = getMaybeItem(ns)(defaultSpawnOptions);
-const getRemaining$2 = getRemaining$1(ns)(defaultSpawnOptions);
-const hideAll$1 = hideAll(ns)(defaultSpawnOptions);
-const resetAll$1 = resetAll(ns);
-const getCount$1 = getCount(ns);
 
-var notification = /*#__PURE__*/Object.freeze({
-	ns: ns,
-	defaultId: defaultId,
-	defaultSpawn: defaultSpawn,
-	defaultSpawnOptions: defaultSpawnOptions,
-	show: show$1,
-	hide: hide$1,
-	pause: pause$1,
-	resume: resume$1,
-	isPaused: isPaused$1,
-	getMaybeItem: getMaybeItem$1,
-	getRemaining: getRemaining$2,
-	hideAll: hideAll$1,
-	resetAll: resetAll$1,
-	getCount: getCount$1
-});
+const dialog = dialogicable({ ns: "dialog" });
+// import { show as _show, hide as _hide, hideAll as _hideAll, resetAll as _resetAll, getCount as _getCount, pause as _pause, resume as _resume, isPaused as _isPaused, getRemaining as _getRemaining, getMaybeItem as _getMaybeItem } from "./dialogic";
+// import { Dialogic } from "../index";
+// export const ns = "dialog";
+// export const defaultId = `default_${ns}`;
+// export const defaultSpawn = `default_${ns}`;
+// export const defaultSpawnOptions: Dialogic.DefaultSpawnOptions = {
+//   id: defaultId,
+//   spawn: defaultSpawn,
+// };
+// const defaultTransitionOptions: Dialogic.DefaultTransitionOptions = {};
+// export const show = _show(ns)(defaultSpawnOptions)(defaultTransitionOptions);
+// export const hide = _hide(ns)(defaultSpawnOptions);
+// export const pause = _pause(ns)(defaultSpawnOptions);
+// export const resume = _resume(ns)(defaultSpawnOptions);
+// export const isPaused = _isPaused(ns)(defaultSpawnOptions);
+// export const getMaybeItem = _getMaybeItem(ns)(defaultSpawnOptions);
+// export const getRemaining = _getRemaining(ns)(defaultSpawnOptions);
+// export const hideAll = _hideAll(ns)(defaultSpawnOptions);
+// export const resetAll = _resetAll(ns);
+// export const getCount = _getCount(ns);
 
-const ns$1 = "dialog";
-const defaultId$1 = `default_${ns$1}`;
-const defaultSpawn$1 = `default_${ns$1}`;
-const defaultSpawnOptions$1 = {
-    id: defaultId$1,
-    spawn: defaultSpawn$1,
-};
-const defaultTransitionOptions$1 = {};
-const show$2 = show(ns$1)(defaultSpawnOptions$1)(defaultTransitionOptions$1);
-const hide$2 = hide(ns$1)(defaultSpawnOptions$1);
-const pause$2 = pause(ns$1)(defaultSpawnOptions$1);
-const resume$2 = resume(ns$1)(defaultSpawnOptions$1);
-const isPaused$2 = isPaused(ns$1)(defaultSpawnOptions$1);
-const getMaybeItem$2 = getMaybeItem(ns$1)(defaultSpawnOptions$1);
-const getRemaining$3 = getRemaining$1(ns$1)(defaultSpawnOptions$1);
-const hideAll$2 = hideAll(ns$1)(defaultSpawnOptions$1);
-const resetAll$2 = resetAll(ns$1);
-const getCount$2 = getCount(ns$1);
-
-var dialog = /*#__PURE__*/Object.freeze({
-	ns: ns$1,
-	defaultId: defaultId$1,
-	defaultSpawn: defaultSpawn$1,
-	defaultSpawnOptions: defaultSpawnOptions$1,
-	show: show$2,
-	hide: hide$2,
-	pause: pause$2,
-	resume: resume$2,
-	isPaused: isPaused$2,
-	getMaybeItem: getMaybeItem$2,
-	getRemaining: getRemaining$3,
-	hideAll: hideAll$2,
-	resetAll: resetAll$2,
-	getCount: getCount$2
-});
+const notification = dialogicable({ ns: "notification", queued: true, timeout: 3000 });
 
 const handleDispatch = (ns) => (event, fn) => {
     // Update dispatching item:
@@ -982,6 +949,7 @@ const Wrapper = {
         const spawnOptions = attrs.spawnOptions || {};
         const spawn = spawnOptions.spawn || "";
         const filtered = filter(attrs.ns, selectors.getStore(), spawn);
+        console.log("Wrapper", "spawnOptions", spawnOptions, "filtered", filtered);
         return filtered.map(item => m(Instance, {
             key: item.key,
             spawnOptions: item.spawnOptions,
@@ -1000,6 +968,7 @@ const Dialog = {
             id: attrs.id || dialog.defaultId,
             spawn: attrs.spawn || dialog.defaultSpawn,
         };
+        console.log("Dialog", "spawnOptions", spawnOptions, "dialog.ns", dialog.ns);
         return m(Wrapper, {
             spawnOptions,
             ns: dialog.ns,

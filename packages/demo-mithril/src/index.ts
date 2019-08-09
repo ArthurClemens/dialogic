@@ -1,10 +1,12 @@
-// import { dialog, states, selectors } from "dialogic";
 import m from "mithril";
 import { Dialogic } from "dialogic";
 import { dialog, Dialog, notification, Notification } from "dialogic-mithril";
 import { Content as DefaultContent } from "./default/Content";
 
 import "./styles.css";
+
+console.log("dialog", dialog);
+console.log("Dialog", Dialog);
 
 const Remaining = ({ attrs } : { attrs: { getRemaining: () => number | undefined }}) => {
   let displayValue: number | undefined;

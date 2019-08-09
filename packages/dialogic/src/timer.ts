@@ -158,7 +158,6 @@ export const Timer = () => {
         },
 
         getRemaining: () => {
-          // timer.actions(update).refresh()
           const state = states();
           return state.isPaused
             ? state.remaining

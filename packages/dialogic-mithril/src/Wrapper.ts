@@ -18,6 +18,7 @@ export const Wrapper = {
     const spawnOptions: Dialogic.SpawnOptions = attrs.spawnOptions || {} as Dialogic.SpawnOptions;
     const spawn = spawnOptions.spawn || "";
     const filtered = filter(attrs.ns, selectors.getStore(), spawn);
+    console.log("Wrapper", "spawnOptions", spawnOptions, "filtered", filtered);
     return filtered.map(item =>
       m(Instance, {
         key: item.key,

@@ -59,16 +59,7 @@ export const transition = (props: TransitionProps, mode?: string) => {
 			? window.getComputedStyle(domElement)
 			: null;
 		const isShow = mode === MODE.SHOW;
-		const transitionProps = getTransitionProps({
-			showDuration: props.showDuration,
-			showDelay: props.showDelay,
-			showTimingFunction: props.showTimingFunction,
-			hideDuration: props.hideDuration,
-			hideDelay: props.hideDelay,
-			hideTimingFunction: props.hideTimingFunction,
-			transitions: props.transitions,
-			domElements: props.domElements,
-		}, isShow);
+		const transitionProps = getTransitionProps(props, isShow);
 		const duration = transitionProps.duration !== undefined
 			? transitionProps.duration * 1000
 			: computedStyle

@@ -1635,16 +1635,7 @@ var transition = function transition(props, mode) {
     var style = domElement.style;
     var computedStyle = window.getComputedStyle(domElement);
     var isShow = mode === MODE.SHOW;
-    var transitionProps = getTransitionProps({
-      showDuration: props.showDuration,
-      showDelay: props.showDelay,
-      showTimingFunction: props.showTimingFunction,
-      hideDuration: props.hideDuration,
-      hideDelay: props.hideDelay,
-      hideTimingFunction: props.hideTimingFunction,
-      transitions: props.transitions,
-      domElements: props.domElements
-    }, isShow);
+    var transitionProps = getTransitionProps(props, isShow);
     var duration = transitionProps.duration !== undefined ? transitionProps.duration * 1000 : computedStyle ? styleDurationToMs(computedStyle.transitionDuration) : 0;
     var delay = transitionProps.delay !== undefined ? transitionProps.delay * 1000 : computedStyle ? styleDurationToMs(computedStyle.transitionDelay) : 0;
     var totalDuration = duration + delay;
@@ -2203,7 +2194,6 @@ var Timer = function Timer() {
           return state.isPaused;
         },
         getRemaining: function getRemaining() {
-          // timer.actions(update).refresh()
           var state = states();
           return state.isPaused ? state.remaining : _getRemaining(state);
         },
@@ -2630,80 +2620,64 @@ function () {
   };
 }();
 
-var ns = "notification";
-var defaultId = "default_".concat(ns);
-var defaultSpawn = "default_".concat(ns);
-var defaultSpawnOptions = {
-  id: defaultId,
+var dialogicable = function dialogicable(_ref8) {
+  var ns = _ref8.ns,
+      queued = _ref8.queued,
+      timeout = _ref8.timeout;
+  var defaultId = "default_".concat(ns);
+  var defaultSpawn = "default_".concat(ns);
+  var defaultSpawnOptions = {
+    id: defaultId,
+    spawn: defaultSpawn,
+    queued: queued
+  };
+  var defaultTransitionOptions = {
+    timeout: timeout
+  };
+  return {
+    defaultId: defaultId,
+    defaultSpawn: defaultSpawn,
+    defaultSpawnOptions: defaultSpawnOptions,
+    show: show(ns)(defaultSpawnOptions)(defaultTransitionOptions),
+    hide: hide(ns)(defaultSpawnOptions),
+    pause: pause(ns)(defaultSpawnOptions),
+    resume: resume(ns)(defaultSpawnOptions),
+    isPaused: isPaused(ns)(defaultSpawnOptions),
+    getMaybeItem: getMaybeItem(ns)(defaultSpawnOptions),
+    getRemaining: getRemaining$1(ns)(defaultSpawnOptions),
+    hideAll: hideAll(ns)(defaultSpawnOptions),
+    resetAll: resetAll(ns),
+    getCount: getCount(ns)
+  };
+};
+
+var dialog = dialogicable({
+  ns: "dialog"
+}); // import { show as _show, hide as _hide, hideAll as _hideAll, resetAll as _resetAll, getCount as _getCount, pause as _pause, resume as _resume, isPaused as _isPaused, getRemaining as _getRemaining, getMaybeItem as _getMaybeItem } from "./dialogic";
+// import { Dialogic } from "../index";
+// export const ns = "dialog";
+// export const defaultId = `default_${ns}`;
+// export const defaultSpawn = `default_${ns}`;
+// export const defaultSpawnOptions: Dialogic.DefaultSpawnOptions = {
+//   id: defaultId,
+//   spawn: defaultSpawn,
+// };
+// const defaultTransitionOptions: Dialogic.DefaultTransitionOptions = {};
+// export const show = _show(ns)(defaultSpawnOptions)(defaultTransitionOptions);
+// export const hide = _hide(ns)(defaultSpawnOptions);
+// export const pause = _pause(ns)(defaultSpawnOptions);
+// export const resume = _resume(ns)(defaultSpawnOptions);
+// export const isPaused = _isPaused(ns)(defaultSpawnOptions);
+// export const getMaybeItem = _getMaybeItem(ns)(defaultSpawnOptions);
+// export const getRemaining = _getRemaining(ns)(defaultSpawnOptions);
+// export const hideAll = _hideAll(ns)(defaultSpawnOptions);
+// export const resetAll = _resetAll(ns);
+// export const getCount = _getCount(ns);
+
+var notification = dialogicable({
+  ns: "notification",
   queued: true,
-  spawn: defaultSpawn
-};
-var defaultTransitionOptions = {
   timeout: 3000
-};
-var show$1 = show(ns)(defaultSpawnOptions)(defaultTransitionOptions);
-var hide$1 = hide(ns)(defaultSpawnOptions);
-var pause$1 = pause(ns)(defaultSpawnOptions);
-var resume$1 = resume(ns)(defaultSpawnOptions);
-var isPaused$1 = isPaused(ns)(defaultSpawnOptions);
-var getMaybeItem$1 = getMaybeItem(ns)(defaultSpawnOptions);
-var getRemaining$2 = getRemaining$1(ns)(defaultSpawnOptions);
-var hideAll$1 = hideAll(ns)(defaultSpawnOptions);
-var resetAll$1 = resetAll(ns);
-var getCount$1 = getCount(ns);
-var notification =
-/*#__PURE__*/
-Object.freeze({
-  ns: ns,
-  defaultId: defaultId,
-  defaultSpawn: defaultSpawn,
-  defaultSpawnOptions: defaultSpawnOptions,
-  show: show$1,
-  hide: hide$1,
-  pause: pause$1,
-  resume: resume$1,
-  isPaused: isPaused$1,
-  getMaybeItem: getMaybeItem$1,
-  getRemaining: getRemaining$2,
-  hideAll: hideAll$1,
-  resetAll: resetAll$1,
-  getCount: getCount$1
-});
-var ns$1 = "dialog";
-var defaultId$1 = "default_".concat(ns$1);
-var defaultSpawn$1 = "default_".concat(ns$1);
-var defaultSpawnOptions$1 = {
-  id: defaultId$1,
-  spawn: defaultSpawn$1
-};
-var defaultTransitionOptions$1 = {};
-var show$2 = show(ns$1)(defaultSpawnOptions$1)(defaultTransitionOptions$1);
-var hide$2 = hide(ns$1)(defaultSpawnOptions$1);
-var pause$2 = pause(ns$1)(defaultSpawnOptions$1);
-var resume$2 = resume(ns$1)(defaultSpawnOptions$1);
-var isPaused$2 = isPaused(ns$1)(defaultSpawnOptions$1);
-var getMaybeItem$2 = getMaybeItem(ns$1)(defaultSpawnOptions$1);
-var getRemaining$3 = getRemaining$1(ns$1)(defaultSpawnOptions$1);
-var hideAll$2 = hideAll(ns$1)(defaultSpawnOptions$1);
-var resetAll$2 = resetAll(ns$1);
-var getCount$2 = getCount(ns$1);
-var dialog =
-/*#__PURE__*/
-Object.freeze({
-  ns: ns$1,
-  defaultId: defaultId$1,
-  defaultSpawn: defaultSpawn$1,
-  defaultSpawnOptions: defaultSpawnOptions$1,
-  show: show$2,
-  hide: hide$2,
-  pause: pause$2,
-  resume: resume$2,
-  isPaused: isPaused$2,
-  getMaybeItem: getMaybeItem$2,
-  getRemaining: getRemaining$3,
-  hideAll: hideAll$2,
-  resetAll: resetAll$2,
-  getCount: getCount$2
 });
 
 var handleDispatch = function handleDispatch(ns) {
@@ -2742,8 +2716,8 @@ var onHideInstance = function onHideInstance(ns) {
   };
 };
 
-var Instance = function Instance(_ref8) {
-  var attrs = _ref8.attrs;
+var Instance = function Instance(_ref9) {
+  var attrs = _ref9.attrs;
   var domElement;
   var classNames = [attrs.transitionOptions.className, attrs.instanceOptions.className].join(" ");
 
@@ -2795,14 +2769,15 @@ var Instance = function Instance(_ref8) {
 };
 
 var Wrapper = {
-  view: function view(_ref9) {
-    var attrs = _ref9.attrs;
+  view: function view(_ref10) {
+    var attrs = _ref10.attrs;
     var nsOnInstanceMounted = onInstanceMounted(attrs.ns);
     var nsOnShowInstance = onShowInstance(attrs.ns);
     var nsOnHideInstance = onHideInstance(attrs.ns);
     var spawnOptions = attrs.spawnOptions || {};
     var spawn = spawnOptions.spawn || "";
     var filtered = filter(attrs.ns, selectors.getStore(), spawn);
+    console.log("Wrapper", "spawnOptions", spawnOptions, "filtered", filtered);
     return filtered.map(function (item) {
       return mithril__WEBPACK_IMPORTED_MODULE_5___default()(Instance, {
         key: item.key,
@@ -2817,12 +2792,13 @@ var Wrapper = {
   }
 };
 var Dialog = {
-  view: function view(_ref10) {
-    var attrs = _ref10.attrs;
+  view: function view(_ref11) {
+    var attrs = _ref11.attrs;
     var spawnOptions = {
       id: attrs.id || dialog.defaultId,
       spawn: attrs.spawn || dialog.defaultSpawn
     };
+    console.log("Dialog", "spawnOptions", spawnOptions, "dialog.ns", dialog.ns);
     return mithril__WEBPACK_IMPORTED_MODULE_5___default()(Wrapper, {
       spawnOptions: spawnOptions,
       ns: dialog.ns
@@ -2830,8 +2806,8 @@ var Dialog = {
   }
 };
 
-var Notification = function Notification(_ref11) {
-  var attrs = _ref11.attrs;
+var Notification = function Notification(_ref12) {
+  var attrs = _ref12.attrs;
   var spawnOptions = {
     id: attrs.id || notification.defaultId,
     spawn: attrs.spawn || notification.defaultSpawn
@@ -4745,11 +4721,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _default_Content__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./default/Content */ "./default/Content.ts");
 /* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./styles.css */ "./styles.css");
 /* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_styles_css__WEBPACK_IMPORTED_MODULE_3__);
-// import { dialog, states, selectors } from "dialogic";
 
 
 
 
+console.log("dialog", dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"]);
+console.log("Dialog", dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"]);
 const Remaining = ({ attrs }) => {
     let displayValue;
     const update = () => {
