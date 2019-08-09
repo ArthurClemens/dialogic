@@ -626,7 +626,7 @@ const filterQueued = (nsItems, ns) => {
         .filter(({ queueCount }) => queueCount === 0)
         .map(({ item }) => item);
 };
-const filter = (ns, items, spawn) => {
+const filterCandidates = (ns, items, spawn) => {
     const nsItems = items[ns] || [];
     return filterBySpawnId(filterQueued(nsItems), spawn);
 };
@@ -940,7 +940,7 @@ const Wrapper = {
         const nsOnHideInstance = onHideInstance(attrs.ns);
         const spawnOptions = attrs.spawnOptions || {};
         const spawn = spawnOptions.spawn || "";
-        const filtered = filter(attrs.ns, selectors.getStore(), spawn);
+        const filtered = filterCandidates(attrs.ns, selectors.getStore(), spawn);
         return filtered.map(item => m(Instance, {
             key: item.key,
             spawnOptions: item.spawnOptions,

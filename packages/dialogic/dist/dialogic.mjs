@@ -624,7 +624,7 @@ const filterQueued = (nsItems, ns) => {
         .filter(({ queueCount }) => queueCount === 0)
         .map(({ item }) => item);
 };
-const filter = (ns, items, spawn) => {
+const filterCandidates = (ns, items, spawn) => {
     const nsItems = items[ns] || [];
     return filterBySpawnId(filterQueued(nsItems), spawn);
 };
@@ -866,5 +866,5 @@ const dialog = dialogical({ ns: "dialog" });
 
 const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
 
-export { actions, dialog, dialogical, filter, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isDisplayed, isPaused, notification, pause, performOnItem, resetAll, resume, selectors, show, showItem, states };
+export { actions, dialog, dialogical, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isDisplayed, isPaused, notification, pause, performOnItem, resetAll, resume, selectors, show, showItem, states };
 //# sourceMappingURL=dialogic.mjs.map

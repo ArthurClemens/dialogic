@@ -2,7 +2,7 @@ import Stream from "mithril/stream";
 
 export const showItem: (ns: string, item: Dialogic.Item) => Promise<string>;
 export const hideItem: (ns: string, item: Dialogic.Item) => Promise<string>;
-export const filter: (ns: string, items: Dialogic.NamespaceStore, spawn: string) => Dialogic.Item[];
+export const filterCandidates: (ns: string, items: Dialogic.NamespaceStore, spawn: string) => Dialogic.Item[];
 export const states: Dialogic.States;
 export const selectors: Dialogic.StateSelectors;
 
@@ -41,6 +41,7 @@ export namespace Dialogic {
     id?: string;
     spawn?: string;
     queued?: boolean;
+    show?: boolean;
   }
 
   type SpawnOptions = InstanceSpawnOptions & DefaultSpawnOptions;

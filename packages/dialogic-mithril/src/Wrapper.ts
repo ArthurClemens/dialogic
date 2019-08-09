@@ -1,5 +1,5 @@
 import m, { Component } from "mithril";
-import { filter, selectors, Dialogic } from "dialogic";
+import { filterCandidates, selectors, Dialogic } from "dialogic";
 import { onInstanceMounted, onShowInstance, onHideInstance } from "./instance-events";
 import { Instance } from "./Instance";
 
@@ -14,7 +14,7 @@ export const Wrapper: Component<Dialogic.DialogicalWrapperOptions> = {
     
     const spawnOptions: Dialogic.SpawnOptions = attrs.spawnOptions || {} as Dialogic.SpawnOptions;
     const spawn = spawnOptions.spawn || "";
-    const filtered = filter(attrs.ns, selectors.getStore(), spawn);
+    const filtered = filterCandidates(attrs.ns, selectors.getStore(), spawn);
 
     return filtered.map(item =>
       m(Instance, {

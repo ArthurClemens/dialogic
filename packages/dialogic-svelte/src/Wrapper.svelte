@@ -1,7 +1,7 @@
 
 <script>
   import { appState } from "./store";
-  import { filter } from "dialogic";
+  import { filterCandidates } from "dialogic";
   import { onInstanceMounted, onShowInstance, onHideInstance } from "./instance-events";
   import Instance from "./Instance.svelte";
 
@@ -14,7 +14,7 @@
   
 </script>
 
-{#each filter(ns, $appState.store, spawnOptions.spawn) as { spawnOptions, transitionOptions, instanceOptions, key }, index(key)}
+{#each filterCandidates(ns, $appState.store, spawnOptions.spawn) as { spawnOptions, transitionOptions, instanceOptions, key }, index(key)}
   <Instance
     {spawnOptions}
     {transitionOptions}

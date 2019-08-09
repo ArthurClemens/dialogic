@@ -40,7 +40,7 @@ const filterQueued = (nsItems: Dialogic.Item[], ns: string) => {
     .map(({ item }) => item);
 };
 
-export const filter = (ns: string, items: Dialogic.NamespaceStore, spawn: string) => {
+export const filterCandidates = (ns: string, items: Dialogic.NamespaceStore, spawn: string) => {
   const nsItems = items[ns] || [];
   return filterBySpawnId(filterQueued(nsItems, ns), spawn);
 };
