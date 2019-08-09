@@ -4,7 +4,7 @@ import { getCount, isPaused } from "./store"; // Access Svelte's store for the c
 export const notification = {
   ..._notification,
   getCount: instanceSpawnOptions =>
-    getCount(_notification.ns)(_notification.defaultSpawnOptions)(instanceSpawnOptions),
+    getCount(_notification.ns)(instanceSpawnOptions),
   isPaused: instanceSpawnOptions =>
     isPaused(_notification.ns)(_notification.defaultSpawnOptions)(instanceSpawnOptions)
 };
