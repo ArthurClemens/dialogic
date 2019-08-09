@@ -953,32 +953,21 @@ const Wrapper = {
     }
 };
 
-const Dialog = {
+const Dialogical = type => ({
     view: ({ attrs }) => {
         const spawnOptions = {
-            id: attrs.id || dialog.defaultId,
-            spawn: attrs.spawn || dialog.defaultSpawn,
+            id: attrs.id || type.defaultId,
+            spawn: attrs.spawn || type.defaultSpawn,
         };
         return m(Wrapper, {
             spawnOptions,
-            ns: dialog.ns,
+            ns: type.ns,
         });
     }
-};
+});
 
-const Notification = ({ attrs }) => {
-    const spawnOptions = {
-        id: attrs.id || notification.defaultId,
-        spawn: attrs.spawn || notification.defaultSpawn,
-    };
-    return {
-        view: () => m(Wrapper, {
-            spawnOptions,
-            ns: notification.ns,
-        })
-    };
-};
-
+const Dialog = Dialogical(dialog);
+const Notification = Dialogical(notification);
 states.map(state => (m.redraw()));
 
 export { Dialog, Notification, dialog, notification };

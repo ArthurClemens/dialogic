@@ -6,30 +6,30 @@ export const filter: (ns: string, items: Dialogic.NamespaceStore, spawn: string)
 export const states: Dialogic.States;
 export const selectors: Dialogic.StateSelectors;
 
-type DialogicInstance = {
-  ns: string;
-  defaultId: string;
-  defaultSpawn: string;
-  show: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
-  hide: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
-  pause: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
-  resume: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: Dialogic.TimerResumeOptions) => Promise<string>;
-  isPaused: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean | undefined;
-  isDisplayed: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean;
-  getRemaining: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number | undefined;
-  resetAll: () => Promise<any>;
-  hideAll: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => void;
-  getCount: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number;
-};
-
-export const dialog: DialogicInstance;
-export const notification: DialogicInstance;
+export const dialog: Dialogic.DialogicInstance;
+export const notification: Dialogic.DialogicInstance;
 
 type ConfirmFn = {
   (spawnId: string):  void;
 }
 
 export namespace Dialogic {
+
+  type DialogicInstance = {
+    ns: string;
+    defaultId: string;
+    defaultSpawn: string;
+    show: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
+    hide: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
+    pause: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
+    resume: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: Dialogic.TimerResumeOptions) => Promise<string>;
+    isPaused: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean | undefined;
+    isDisplayed: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean;
+    getRemaining: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number | undefined;
+    resetAll: () => Promise<any>;
+    hideAll: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => void;
+    getCount: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number;
+  };
 
   type DefaultSpawnOptions = {
     id: string;
@@ -44,6 +44,30 @@ export namespace Dialogic {
   }
 
   type SpawnOptions = InstanceSpawnOptions & DefaultSpawnOptions;
+
+  // Components
+
+  type DialogicalWrapperOptions = {
+    ns: string;
+    spawnOptions: Dialogic.SpawnOptions;
+  }
+
+  type DialogicalInstanceDispatchFn = (event: Dialogic.InstanceEvent) => void;
+
+  type DialogicalInstanceOptions = {
+    spawnOptions: Dialogic.SpawnOptions;
+    transitionOptions: Dialogic.TransitionOptions;
+    instanceOptions: Dialogic.InstanceOptions;
+    onMount: DialogicalInstanceDispatchFn;
+    onShow: DialogicalInstanceDispatchFn;
+    onHide: DialogicalInstanceDispatchFn;
+  }
+  
+  interface InstanceOptions {
+    [key:string]: any;
+  }
+  
+  // Transitions
 
   type DomElements = {
     domElement?: HTMLElement;
@@ -74,10 +98,6 @@ export namespace Dialogic {
     showClassName?: string;
     component?: any;
   } & DefaultTransitionOptions;
-
-  interface InstanceOptions {
-    [key:string]: any;
-  }
 
   type Options = InstanceOptions | TransitionOptions;
 

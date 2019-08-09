@@ -1,15 +1,12 @@
-import m from "mithril";
+import m, { Component } from "mithril";
 import { filter, selectors, Dialogic } from "dialogic";
 import { onInstanceMounted, onShowInstance, onHideInstance } from "./instance-events";
 import { Instance } from "./Instance";
 
-type WrapperOptions = {
-  ns: string;
-  spawnOptions: Dialogic.SpawnOptions;
-}
+interface Wrapper extends Dialogic.DialogicalWrapperOptions{}
 
-export const Wrapper = {
-  view: ({ attrs } : { attrs: WrapperOptions }) => {
+export const Wrapper: Component<Dialogic.DialogicalWrapperOptions> = {
+  view: ({ attrs }) => {
 
     const nsOnInstanceMounted = onInstanceMounted(attrs.ns);
     const nsOnShowInstance = onShowInstance(attrs.ns);

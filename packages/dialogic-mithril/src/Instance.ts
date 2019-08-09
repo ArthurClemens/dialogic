@@ -1,19 +1,12 @@
 
-import m from "mithril";
+import m, { Component } from "mithril";
 import { Dialogic } from "dialogic";
 
-type DispatchFn = (event: Dialogic.InstanceEvent) => void;
+interface Instance extends Dialogic.DialogicalInstanceOptions{}
 
-export type InstanceOptions = {
-  spawnOptions: Dialogic.SpawnOptions;
-  transitionOptions: Dialogic.TransitionOptions;
-  instanceOptions: Dialogic.InstanceOptions;
-  onMount: DispatchFn;
-  onShow: DispatchFn;
-  onHide: DispatchFn;
-}
+type InstanceFn = ({ attrs } : { attrs: Dialogic.DialogicalInstanceOptions }) => Component<Dialogic.DialogicalInstanceOptions>;
 
-export const Instance = ({ attrs } : { attrs: InstanceOptions }) => {
+export const Instance: InstanceFn = ({ attrs }) => {
   let domElement: HTMLElement;
 
   const classNames = [
@@ -21,7 +14,7 @@ export const Instance = ({ attrs } : { attrs: InstanceOptions }) => {
     attrs.instanceOptions.className
   ].join(" ");
   
-  const dispatchTransition = (dispatchFn: DispatchFn) => {
+  const dispatchTransition = (dispatchFn: Dialogic.DialogicalInstanceDispatchFn) => {
     dispatchFn({
       detail: {
         spawnOptions: attrs.spawnOptions,

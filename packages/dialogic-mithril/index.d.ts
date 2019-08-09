@@ -1,13 +1,10 @@
 import { Component } from "mithril";
-export { dialog, notification } from "dialogic";
+import { dialog, notification, Dialogic } from "dialogic";
 
-type Options = {
-  id?: string;
-  spawn?: string;
-}
+export { dialog, notification };
 
-interface Dialog extends Options{}
-export const Dialog: Component<Options>;
+interface Dialog extends Dialogic.InstanceSpawnOptions{}
+export const Dialog: Component<Dialogic.InstanceSpawnOptions>;
 
-interface Notification extends Options{}
-export const Notification: Component<Options>;
+interface Notification extends Dialogic.InstanceSpawnOptions{}
+export const Notification: Component<Dialogic.InstanceSpawnOptions>;
