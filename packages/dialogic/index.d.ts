@@ -15,6 +15,7 @@ type DialogicInstance = {
   pause: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
   resume: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: Dialogic.TimerResumeOptions) => Promise<string>;
   isPaused: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean | undefined;
+  isDisplayed: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean;
   getRemaining: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number | undefined;
   resetAll: () => Promise<any>;
   hideAll: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => void;

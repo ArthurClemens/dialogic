@@ -1,4 +1,4 @@
-import { show, hide, hideAll, resetAll, getCount, pause, resume, isPaused, getRemaining } from "./dialogic";
+import { show, hide, hideAll, resetAll, getCount, pause, resume, isPaused, getRemaining, isDisplayed } from "./dialogic";
 import { Dialogic } from "../index";
 
 export const dialogical = ({ ns, queued, timeout }: { ns: string, queued?: boolean, timeout?: number }) => {
@@ -23,6 +23,7 @@ export const dialogical = ({ ns, queued, timeout }: { ns: string, queued?: boole
     hide: hide(ns)(defaultSpawnOptions),
     pause: pause(ns)(defaultSpawnOptions),
     resume: resume(ns)(defaultSpawnOptions),
+    isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
     isPaused: isPaused(ns)(defaultSpawnOptions),
     getRemaining: getRemaining(ns)(defaultSpawnOptions),
     hideAll: hideAll(ns)(defaultSpawnOptions),

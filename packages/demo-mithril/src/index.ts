@@ -2,35 +2,11 @@ import m from "mithril";
 import { Dialogic } from "dialogic";
 import { dialog, Dialog, notification, Notification } from "dialogic-mithril";
 import { Content as DefaultContent } from "./default/Content";
+import { Remaining } from "./Remaining";
 
 import "./styles.css";
 
-const Remaining = ({ attrs } : { attrs: { getRemaining: () => number | undefined }}) => {
-  let displayValue: number | undefined;
-  let reqId: number;
-  const update = () => {
-    const remaining = attrs.getRemaining();
-    if (remaining !== undefined) {
-      if (displayValue !== remaining) {
-        m.redraw();
-        displayValue = Math.max(remaining, 0);
-      }
-    } else {
-      displayValue = undefined;
-      m.redraw();
-    }
-    reqId = window.requestAnimationFrame(update);
-  };
-  reqId = window.requestAnimationFrame(update);
-
-  return {
-    onremove: () => window.cancelAnimationFrame(reqId),
-    view: () => 
-      m("div", `Remaining: ${displayValue}`)
-  }
-};
-
-const getRandomNumber = () => Math.round(1000 * Math.random());
+const getRandomId = () => Math.round(1000 * Math.random()).toString();
 
 const dialogOneProps: Dialogic.Options = {
   component: DefaultContent,
@@ -39,7 +15,7 @@ const dialogOneProps: Dialogic.Options = {
   className: "xxx",
   showClassName: "xxx-visible",
   title: "Clock",
-  id: getRandomNumber().toString(),
+  id: getRandomId(),
 };
 
 const dialogThreeProps: Dialogic.Options = {
@@ -51,7 +27,7 @@ const dialogThreeProps: Dialogic.Options = {
   className: "xxx",
   showClassName: "xxx-visible",
   title: "Delay",
-  id: getRandomNumber().toString(),
+  id: getRandomId(),
 };
 
 const dialogFourProps = {
@@ -77,7 +53,7 @@ const dialogFourProps = {
   },
   component: DefaultContent,
   title: "Transitions",
-  id: getRandomNumber().toString(),
+  id: getRandomId(),
 };
 
 const clearOptions = {
@@ -138,7 +114,7 @@ const App = {
               dialog.show(
                 {
                   ...dialogOneProps,
-                  title: dialogOneProps.title + ' ' + getRandomNumber(),
+                  title: dialogOneProps.title + ' ' + getRandomId(),
                 },
                 {
                   id: dialogOneProps.id
@@ -197,7 +173,7 @@ const App = {
                   ...dialogOneProps,
                   showDelay: .5,
                   hideDelay: 0,
-                  title: dialogThreeProps.title + " " + getRandomNumber()
+                  title: dialogThreeProps.title + " " + getRandomId()
                 },
                 {
                   id: dialogThreeProps.id
@@ -226,7 +202,7 @@ const App = {
                 {
                   ...dialogOneProps,
                   timeout: 2000,
-                  title: dialogThreeProps.title + " " + getRandomNumber()
+                  title: dialogThreeProps.title + " " + getRandomId()
                 },
                 {
                   id: "timer"
@@ -236,7 +212,7 @@ const App = {
           "With timeout"
         ),
         m("div", `Is paused: ${dialog.isPaused({ id: "timer" })}`),
-        dialog.getCount({ id: "timer" })
+        dialog.isDisplayed({ id: "timer" })
           ? m("div", m(Remaining, { getRemaining: () => dialog.getRemaining({ id: "timer" })}))
           : null,
         m("button",
@@ -373,8 +349,9 @@ const App = {
       m("section", { className: "section"}, [
         m("h2", { className: "title is-2"}, "Notification"),
         m("div", `Notification count: ${notification.getCount()}`),
+        m("div", `Is shown: ${notification.isDisplayed({ spawn: "NO" })}`),
         m("div", `Is paused: ${notification.isPaused({ spawn: "NO" })}`),
-        notification.getCount()
+        notification.isDisplayed({ spawn: "NO" })
           ? m("div", m(Remaining, { getRemaining: () => notification.getRemaining({ spawn: "NO" })}))
           : null,
       ]),
@@ -383,7 +360,7 @@ const App = {
           {
             className: "button",
             onclick: () => {
-              const title = "N " + getRandomNumber();
+              const title = "N " + getRandomId();
               return notification.show(
                 {
                   didShow: (id: string) => console.log("didShow", id, title),

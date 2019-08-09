@@ -758,6 +758,10 @@ const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (instan
 };
 const isPaused = getTimerProperty("isPaused");
 const getRemaining$1 = getTimerProperty("getRemaining");
+const isDisplayed = (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+    return !!maybeItem.just;
+};
 const resetAll = (ns) => () => {
     selectors.getAll(ns).forEach((item) => item.timer && item.timer.actions.abort());
     actions.removeAll(ns);
@@ -851,6 +855,7 @@ const dialogical = ({ ns, queued, timeout }) => {
         hide: hide(ns)(defaultSpawnOptions),
         pause: pause(ns)(defaultSpawnOptions),
         resume: resume(ns)(defaultSpawnOptions),
+        isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
         isPaused: isPaused(ns)(defaultSpawnOptions),
         getRemaining: getRemaining$1(ns)(defaultSpawnOptions),
         hideAll: hideAll(ns)(defaultSpawnOptions),

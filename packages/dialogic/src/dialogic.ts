@@ -193,6 +193,11 @@ export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getRe
 export const isPaused = getTimerProperty("isPaused");
 export const getRemaining = getTimerProperty("getRemaining");
 
+export const isDisplayed = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+  return !!maybeItem.just;
+};
+
 export const resetAll = (ns: string) => () => {
   selectors.getAll(ns).forEach((item: Dialogic.Item) =>
     item.timer && item.timer.actions.abort()

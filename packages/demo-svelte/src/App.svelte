@@ -5,7 +5,7 @@
   import Remaining from "./remaining/Remaining.svelte";
 
   const dialogCount = dialog.getCount();
-  const timerDialogCount = dialog.getCount({
+  const timerDialogDisplayed = dialog.isDisplayed({
     id: "timer"
   });
 
@@ -14,6 +14,9 @@
   });
 
   const notificationItemIsPaused = notification.isPaused({
+    spawn: "NO"
+  });
+  const notificationDisplayed = notification.isDisplayed({
     spawn: "NO"
   });
 
@@ -130,7 +133,7 @@
 
 <div>
 
-  {#if $timerDialogCount}
+  {#if $timerDialogDisplayed}
     <Remaining getRemainingFn={() => dialog.getRemaining({
       id: "timer"
     })} />
@@ -264,7 +267,8 @@ Queued dialog
 
 <h2>Notification</h2>
 <p>Notification count: {$notificationCount} </p>
-<p>notificationItemIsPaused = {$notificationItemIsPaused} </p>
+<p>Notification displayed: {$notificationDisplayed} </p>
+<p>Is paused: {$notificationItemIsPaused} </p>
 
 <div>
   <button
