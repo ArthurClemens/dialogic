@@ -1,30 +1,10 @@
 import Stream from "mithril/stream";
 
-type showFn = (ns: string, defaultTransitionOptions: Dialogic.DefaultTransitionOptions, defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (options: Dialogic.Options, instanceSpawnOptions: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
-type hideFn = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
-type pauseFn = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
-type resumeFn = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions, fnOptions?: Dialogic.TimerResumeOptions) => Promise<string>;
-type isPausedFn = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => boolean | undefined;
-type resetAllFn = (ns: string) => () => Promise<any>;
-type hideAllFn = (ns: string, defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (options: Dialogic.Options, instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => void;
-type showItemFn = (ns: string, item: Dialogic.Item) => Promise<string>;
-type hideItemFn = (ns: string, item: Dialogic.Item) => Promise<string>;
-type resetItemFn = (ns: string, item: Dialogic.Item) => void;
-type countFn = (ns: string) => number;
-
-export const show: showFn;
-export const hide: hideFn;
-export const pause: pauseFn;
-export const resume: resumeFn;
-export const resetAll: resetAllFn;
-export const hideAll: hideAllFn;
-export const showItem: showItemFn;
-export const hideItem: hideItemFn;
-export const resetItem: resetItemFn;
-export const getCount: countFn;
+export const showItem: (ns: string, item: Dialogic.Item) => Promise<string>;
+export const hideItem: (ns: string, item: Dialogic.Item) => Promise<string>;
+export const filter: (ns: string, items: Dialogic.NamespaceStore, spawn: string) => Dialogic.Item[];
 export const states: Dialogic.States;
 export const selectors: Dialogic.StateSelectors;
-export const filter: (ns: string, items: Dialogic.NamespaceStore, spawn: string) => Dialogic.Item[];
 
 type DialogicInstance = {
   ns: string;

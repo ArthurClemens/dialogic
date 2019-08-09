@@ -240,14 +240,6 @@ export const hideAll = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
   };
 };
 
-/**
- * Stop any running timer and remmove the item
- */
-export const resetItem = (item: Dialogic.Item, ns: string) => {
-  item.timer && item.timer.actions.abort();
-  actions.remove(ns, item.id);
-};
-
 export const getCount = (ns: string) => (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) =>
   selectors.getCount(ns, instanceSpawnOptions);
 
