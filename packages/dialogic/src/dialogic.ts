@@ -134,7 +134,7 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
 
 export const show = createInstance;
 
-export const getMaybeItem = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+const getMaybeItem = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
   const spawnOptions = {
     ...defaultSpawnOptions,
     ...instanceSpawnOptions,

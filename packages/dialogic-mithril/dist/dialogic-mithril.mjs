@@ -852,7 +852,6 @@ const dialogical = ({ ns, queued, timeout }) => {
         pause: pause(ns)(defaultSpawnOptions),
         resume: resume(ns)(defaultSpawnOptions),
         isPaused: isPaused(ns)(defaultSpawnOptions),
-        getMaybeItem: getMaybeItem(ns)(defaultSpawnOptions),
         getRemaining: getRemaining$1(ns)(defaultSpawnOptions),
         hideAll: hideAll(ns)(defaultSpawnOptions),
         resetAll: resetAll(ns),

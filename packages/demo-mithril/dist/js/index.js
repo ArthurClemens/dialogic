@@ -2053,8 +2053,6 @@ var store = {
         var itemsBySpawn = spawn !== undefined ? items.filter(function (item) {
           return item.spawnOptions.spawn === spawn;
         }) : items;
-        console.log("instanceSpawnOptions", instanceSpawnOptions);
-        console.log("itemsBySpawn", itemsBySpawn);
         var itemsById = id !== undefined ? itemsBySpawn.filter(function (item) {
           return item.spawnOptions.id === id;
         }) : itemsBySpawn;
@@ -2651,7 +2649,6 @@ var dialogical = function dialogical(_ref8) {
     pause: pause(ns)(defaultSpawnOptions),
     resume: resume(ns)(defaultSpawnOptions),
     isPaused: isPaused(ns)(defaultSpawnOptions),
-    getMaybeItem: getMaybeItem(ns)(defaultSpawnOptions),
     getRemaining: getRemaining$1(ns)(defaultSpawnOptions),
     hideAll: hideAll(ns)(defaultSpawnOptions),
     resetAll: resetAll(ns),
