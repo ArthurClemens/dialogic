@@ -2049,16 +2049,19 @@ var store = {
         var state = states();
         var items = state.store[ns] || [];
         var spawn = instanceSpawnOptions !== undefined ? instanceSpawnOptions.spawn : undefined;
-        return spawn !== undefined ? items.filter(function (item) {
+        var id = instanceSpawnOptions !== undefined ? instanceSpawnOptions.id : undefined;
+        var itemsBySpawn = spawn !== undefined ? items.filter(function (item) {
           return item.spawnOptions.spawn === spawn;
         }) : items;
+        console.log("instanceSpawnOptions", instanceSpawnOptions);
+        console.log("itemsBySpawn", itemsBySpawn);
+        var itemsById = id !== undefined ? itemsBySpawn.filter(function (item) {
+          return item.spawnOptions.id === id;
+        }) : itemsBySpawn;
+        return itemsById;
       },
       getCount: function getCount(ns, instanceSpawnOptions) {
-        var itemsBySpawn = fns.getAll(ns, instanceSpawnOptions);
-        var items = instanceSpawnOptions && instanceSpawnOptions.id !== undefined ? [itemsBySpawn.find(function (item) {
-          return item.spawnOptions.id === instanceSpawnOptions.id;
-        })].filter(Boolean) : itemsBySpawn;
-        return items.length;
+        return fns.getAll(ns, instanceSpawnOptions).length;
       }
     };
     return fns;
@@ -2624,7 +2627,7 @@ function () {
   };
 }();
 
-var dialogicable = function dialogicable(_ref8) {
+var dialogical = function dialogical(_ref8) {
   var ns = _ref8.ns,
       queued = _ref8.queued,
       timeout = _ref8.timeout;
@@ -2656,10 +2659,10 @@ var dialogicable = function dialogicable(_ref8) {
   };
 };
 
-var dialog = dialogicable({
+var dialog = dialogical({
   ns: "dialog"
 });
-var notification = dialogicable({
+var notification = dialogical({
   ns: "notification",
   queued: true,
   timeout: 3000
@@ -4710,6 +4713,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const Remaining = ({ attrs }) => {
     let displayValue;
+    let reqId;
     const update = () => {
         const remaining = attrs.getRemaining();
         if (remaining !== undefined) {
@@ -4722,10 +4726,11 @@ const Remaining = ({ attrs }) => {
             displayValue = undefined;
             mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw();
         }
-        window.requestAnimationFrame(update);
+        reqId = window.requestAnimationFrame(update);
     };
-    window.requestAnimationFrame(update);
+    reqId = window.requestAnimationFrame(update);
     return {
+        onremove: () => window.cancelAnimationFrame(reqId),
         view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", `Remaining: ${displayValue}`)
     };
 };

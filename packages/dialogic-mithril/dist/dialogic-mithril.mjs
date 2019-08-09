@@ -404,17 +404,18 @@ const store = {
                 const spawn = instanceSpawnOptions !== undefined
                     ? instanceSpawnOptions.spawn
                     : undefined;
-                return spawn !== undefined
+                const id = instanceSpawnOptions !== undefined
+                    ? instanceSpawnOptions.id
+                    : undefined;
+                const itemsBySpawn = spawn !== undefined
                     ? items.filter(item => item.spawnOptions.spawn === spawn)
                     : items;
-            },
-            getCount: (ns, instanceSpawnOptions) => {
-                const itemsBySpawn = fns.getAll(ns, instanceSpawnOptions);
-                const items = instanceSpawnOptions && instanceSpawnOptions.id !== undefined
-                    ? [itemsBySpawn.find((item) => item.spawnOptions.id === instanceSpawnOptions.id)].filter(Boolean)
+                const itemsById = id !== undefined
+                    ? itemsBySpawn.filter(item => item.spawnOptions.id === id)
                     : itemsBySpawn;
-                return items.length;
-            }
+                return itemsById;
+            },
+            getCount: (ns, instanceSpawnOptions) => fns.getAll(ns, instanceSpawnOptions).length,
         };
         return fns;
     },

@@ -402,17 +402,18 @@ const store = {
                 const spawn = instanceSpawnOptions !== undefined
                     ? instanceSpawnOptions.spawn
                     : undefined;
-                return spawn !== undefined
+                const id = instanceSpawnOptions !== undefined
+                    ? instanceSpawnOptions.id
+                    : undefined;
+                const itemsBySpawn = spawn !== undefined
                     ? items.filter(item => item.spawnOptions.spawn === spawn)
                     : items;
-            },
-            getCount: (ns, instanceSpawnOptions) => {
-                const itemsBySpawn = fns.getAll(ns, instanceSpawnOptions);
-                const items = instanceSpawnOptions && instanceSpawnOptions.id !== undefined
-                    ? [itemsBySpawn.find((item) => item.spawnOptions.id === instanceSpawnOptions.id)].filter(Boolean)
+                const itemsById = id !== undefined
+                    ? itemsBySpawn.filter(item => item.spawnOptions.id === id)
                     : itemsBySpawn;
-                return items.length;
-            }
+                return itemsById;
+            },
+            getCount: (ns, instanceSpawnOptions) => fns.getAll(ns, instanceSpawnOptions).length,
         };
         return fns;
     },
@@ -793,13 +794,6 @@ const hideAll = (ns) => (defaultSpawnOptions) => (options, instanceSpawnOptions)
             .then(() => actions.removeAll(ns));
     }
 };
-/**
- * Stop any running timer and remmove the item
- */
-const resetItem = (item, ns) => {
-    item.timer && item.timer.actions.abort();
-    actions.remove(ns, item.id);
-};
 const getCount = (ns) => (instanceSpawnOptions) => selectors.getCount(ns, instanceSpawnOptions);
 const transitionItem = (item, mode) => {
     try {
@@ -868,5 +862,5 @@ const dialog = dialogical({ ns: "dialog" });
 
 const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
 
-export { actions, dialog, filter, getCount, getMaybeItem, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, performOnItem, resetAll, resetItem, resume, selectors, show, showItem, states };
+export { actions, dialog, dialogical, filter, getCount, getMaybeItem, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, performOnItem, resetAll, resume, selectors, show, showItem, states };
 //# sourceMappingURL=dialogic.mjs.map
