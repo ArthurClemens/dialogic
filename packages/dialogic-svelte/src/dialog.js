@@ -1,9 +1,10 @@
 import { dialog as _dialog } from "dialogic";
-import { getCount, isPaused, getRemaining } from "./store"; // Access Svelte's store for the count
+import { getCount, isPaused } from "./store"; // Access Svelte's store for the count
 
 export const dialog = {
   ..._dialog,
-  getCount: getCount(_dialog.ns),
+  getCount: instanceSpawnOptions =>
+    getCount(_dialog.ns)(_dialog.defaultSpawnOptions)(instanceSpawnOptions),
   isPaused: instanceSpawnOptions =>
     isPaused(_dialog.ns)(_dialog.defaultSpawnOptions)(instanceSpawnOptions)
 };

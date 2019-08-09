@@ -2054,7 +2054,11 @@ var store = {
         }) : items;
       },
       getCount: function getCount(ns, instanceSpawnOptions) {
-        return fns.getAll(ns, instanceSpawnOptions).length;
+        var itemsBySpawn = fns.getAll(ns, instanceSpawnOptions);
+        var items = instanceSpawnOptions && instanceSpawnOptions.id !== undefined ? [itemsBySpawn.find(function (item) {
+          return item.spawnOptions.id === instanceSpawnOptions.id;
+        })].filter(Boolean) : itemsBySpawn;
+        return items.length;
       }
     };
     return fns;
@@ -2635,6 +2639,7 @@ var dialogicable = function dialogicable(_ref8) {
     timeout: timeout
   };
   return {
+    ns: ns,
     defaultId: defaultId,
     defaultSpawn: defaultSpawn,
     defaultSpawnOptions: defaultSpawnOptions,
@@ -2653,27 +2658,7 @@ var dialogicable = function dialogicable(_ref8) {
 
 var dialog = dialogicable({
   ns: "dialog"
-}); // import { show as _show, hide as _hide, hideAll as _hideAll, resetAll as _resetAll, getCount as _getCount, pause as _pause, resume as _resume, isPaused as _isPaused, getRemaining as _getRemaining, getMaybeItem as _getMaybeItem } from "./dialogic";
-// import { Dialogic } from "../index";
-// export const ns = "dialog";
-// export const defaultId = `default_${ns}`;
-// export const defaultSpawn = `default_${ns}`;
-// export const defaultSpawnOptions: Dialogic.DefaultSpawnOptions = {
-//   id: defaultId,
-//   spawn: defaultSpawn,
-// };
-// const defaultTransitionOptions: Dialogic.DefaultTransitionOptions = {};
-// export const show = _show(ns)(defaultSpawnOptions)(defaultTransitionOptions);
-// export const hide = _hide(ns)(defaultSpawnOptions);
-// export const pause = _pause(ns)(defaultSpawnOptions);
-// export const resume = _resume(ns)(defaultSpawnOptions);
-// export const isPaused = _isPaused(ns)(defaultSpawnOptions);
-// export const getMaybeItem = _getMaybeItem(ns)(defaultSpawnOptions);
-// export const getRemaining = _getRemaining(ns)(defaultSpawnOptions);
-// export const hideAll = _hideAll(ns)(defaultSpawnOptions);
-// export const resetAll = _resetAll(ns);
-// export const getCount = _getCount(ns);
-
+});
 var notification = dialogicable({
   ns: "notification",
   queued: true,
@@ -2777,7 +2762,6 @@ var Wrapper = {
     var spawnOptions = attrs.spawnOptions || {};
     var spawn = spawnOptions.spawn || "";
     var filtered = filter(attrs.ns, selectors.getStore(), spawn);
-    console.log("Wrapper", "spawnOptions", spawnOptions, "filtered", filtered);
     return filtered.map(function (item) {
       return mithril__WEBPACK_IMPORTED_MODULE_5___default()(Instance, {
         key: item.key,
@@ -2798,7 +2782,6 @@ var Dialog = {
       id: attrs.id || dialog.defaultId,
       spawn: attrs.spawn || dialog.defaultSpawn
     };
-    console.log("Dialog", "spawnOptions", spawnOptions, "dialog.ns", dialog.ns);
     return mithril__WEBPACK_IMPORTED_MODULE_5___default()(Wrapper, {
       spawnOptions: spawnOptions,
       ns: dialog.ns
@@ -4725,8 +4708,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-console.log("dialog", dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"]);
-console.log("Dialog", dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"]);
 const Remaining = ({ attrs }) => {
     let displayValue;
     const update = () => {
@@ -4743,7 +4724,7 @@ const Remaining = ({ attrs }) => {
         }
         window.requestAnimationFrame(update);
     };
-    update();
+    window.requestAnimationFrame(update);
     return {
         view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", `Remaining: ${displayValue}`)
     };
@@ -4889,7 +4870,9 @@ const App = {
                 })
             }, "With timeout"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", `Is paused: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].isPaused({ id: "timer" })}`),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()(Remaining, { getRemaining: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getRemaining({ id: "timer" }) })),
+            dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getCount({ id: "timer" })
+                ? mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()(Remaining, { getRemaining: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getRemaining({ id: "timer" }) }))
+                : null,
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].pause({ id: "timer" })
@@ -4976,7 +4959,9 @@ const App = {
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", { className: "title is-2" }, "Notification"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", `Notification count: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getCount()}`),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", `Is paused: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].isPaused({ spawn: "NO" })}`),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()(Remaining, { getRemaining: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getRemaining({ spawn: "NO" }) })),
+            dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getCount()
+                ? mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()(Remaining, { getRemaining: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getRemaining({ spawn: "NO" }) }))
+                : null,
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {

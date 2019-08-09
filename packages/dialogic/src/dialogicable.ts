@@ -15,6 +15,7 @@ export const dialogicable = ({ ns, queued, timeout }: { ns: string, queued?: boo
   };
 
   return {
+    ns,
     defaultId,
     defaultSpawn,
     defaultSpawnOptions,

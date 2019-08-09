@@ -11,9 +11,9 @@ states.map(state => appState.set({
   ...selectors
 }));
 
-export const getCount = ns => instanceSpawnOptions => derived(
+export const getCount = ns => defaultSpawnOptions => instanceSpawnOptions => derived(
 	appState,
-	() => selectors.getCount(ns, instanceSpawnOptions)
+	() => selectors.getCount(ns, defaultSpawnOptions, instanceSpawnOptions)
 );
 
 export const isPaused = ns => defaultSpawnOptions => instanceSpawnOptions => derived(

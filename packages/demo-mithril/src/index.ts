@@ -5,9 +5,6 @@ import { Content as DefaultContent } from "./default/Content";
 
 import "./styles.css";
 
-console.log("dialog", dialog);
-console.log("Dialog", Dialog);
-
 const Remaining = ({ attrs } : { attrs: { getRemaining: () => number | undefined }}) => {
   let displayValue: number | undefined;
   const update = () => {
@@ -23,15 +20,13 @@ const Remaining = ({ attrs } : { attrs: { getRemaining: () => number | undefined
     }
     window.requestAnimationFrame(update);
   };
-  
-  update();
+  window.requestAnimationFrame(update);
 
   return {
     view: () => 
       m("div", `Remaining: ${displayValue}`)
   }
 };
-
 
 const getRandomNumber = () => Math.round(1000 * Math.random());
 
@@ -239,7 +234,9 @@ const App = {
           "With timeout"
         ),
         m("div", `Is paused: ${dialog.isPaused({ id: "timer" })}`),
-        m("div", m(Remaining, { getRemaining: () => dialog.getRemaining({ id: "timer" })})),
+        dialog.getCount({ id: "timer" })
+          ? m("div", m(Remaining, { getRemaining: () => dialog.getRemaining({ id: "timer" })}))
+          : null,
         m("button",
           {
             className: "button",
@@ -375,7 +372,9 @@ const App = {
         m("h2", { className: "title is-2"}, "Notification"),
         m("div", `Notification count: ${notification.getCount()}`),
         m("div", `Is paused: ${notification.isPaused({ spawn: "NO" })}`),
-        m("div", m(Remaining, { getRemaining: () => notification.getRemaining({ spawn: "NO" })})),
+        notification.getCount()
+          ? m("div", m(Remaining, { getRemaining: () => notification.getRemaining({ spawn: "NO" })}))
+          : null,
       ]),
       m("section", { className: "section"}, [
         m("button",

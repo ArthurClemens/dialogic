@@ -137,8 +137,13 @@ const store = {
           : items;
       },
 
-      getCount: (ns: string, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) =>
-        fns.getAll(ns, instanceSpawnOptions).length,
+      getCount: (ns: string, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => {
+        const itemsBySpawn = fns.getAll(ns, instanceSpawnOptions);
+        const items = instanceSpawnOptions && instanceSpawnOptions.id !== undefined
+          ? [itemsBySpawn.find((item: Dialogic.Item) => item.spawnOptions.id === instanceSpawnOptions.id)].filter(Boolean)
+          : itemsBySpawn;
+        return items.length;
+      }
 
     };
 
