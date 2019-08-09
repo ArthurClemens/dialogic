@@ -1,7 +1,7 @@
 // import { dialog, states, selectors } from "dialogic";
 import m from "mithril";
 import { Dialogic } from "dialogic";
-import { dialog, Dialog, notification, Notification } from "./dialogic-mithril";
+import { dialog, Dialog, notification, Notification } from "dialogic-mithril";
 import { Content as DefaultContent } from "./default/Content";
 
 import "./styles.css";
@@ -164,8 +164,8 @@ const App = {
             onclick: () =>
               dialog.show(
                 {
-                  didShow: id => console.log("didShow", id),
-                  didHide: id => console.log("didHide", id),
+                  didShow: (id: string) => console.log("didShow", id),
+                  didHide: (id: string) => console.log("didHide", id),
                   showDuration: 0.5,
                   showDelay: 0.25,
                   component: DefaultContent,
@@ -174,7 +174,7 @@ const App = {
                 {
                   id: "withPromise"
                 }
-              ).then(id => console.log("dialog shown", id)) 
+              ).then((id: string) => console.log("dialog shown", id)) 
           },
           "Show with promises"
         ),
@@ -183,7 +183,7 @@ const App = {
             className: "button",
             onclick: () =>
               dialog.hide({ id: "withPromise" })
-                .then(id => console.log("dialog hidden", id))
+                .then((id: string) => console.log("dialog hidden", id))
           },
           "Hide"
         ),
@@ -371,8 +371,9 @@ const App = {
       
       m("section", { className: "section"}, [
         m("h2", { className: "title is-2"}, "Notification"),
-        m("p", `Notification count: ${notification.getCount()}`),
-        m("p", `Is paused: ${notification.isPaused({ spawn: "NO" })}`),
+        m("div", `Notification count: ${notification.getCount()}`),
+        m("div", `Is paused: ${notification.isPaused({ spawn: "NO" })}`),
+        m("div", m(Remaining, { getRemaining: () => notification.getRemaining({ spawn: "NO" })})),
       ]),
       m("section", { className: "section"}, [
         m("button",
@@ -382,8 +383,8 @@ const App = {
               const title = "N " + getRandomNumber();
               return notification.show(
                 {
-                  didShow: id => console.log("didShow", id, title),
-                  didHide: id => console.log("didHide", id, title),
+                  didShow: (id: string) => console.log("didShow", id, title),
+                  didHide: (id: string) => console.log("didHide", id, title),
                   component: DefaultContent,
                   className: "xxx-timings",
                   showClassName: "xxx-visible-timings",
@@ -392,7 +393,7 @@ const App = {
                 {
                   spawn: "NO"
                 }
-              ).then(id => console.log("notification shown", id, title))
+              ).then((id: string) => console.log("notification shown", id, title))
             } 
           },
           "Show notification"
@@ -417,7 +418,7 @@ const App = {
           {
             className: "button",
             onclick: () =>
-              notification.hide({ spawn: "NO" }).then(id => console.log("notification hidden from App", id))
+              notification.hide({ spawn: "NO" }).then((id: string) => console.log("notification hidden from App", id))
           },
           "Hide"
         ),

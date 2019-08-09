@@ -1,9 +1,9 @@
-import fs from "fs";
-import resolve from "rollup-plugin-node-resolve";
-import commonjs from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
-import typescript from "rollup-plugin-typescript2";
+import commonjs from "rollup-plugin-commonjs";
+import fs from "fs";
 import pathmodify from "rollup-plugin-pathmodify";
+import resolve from "rollup-plugin-node-resolve";
+import typescript from "rollup-plugin-typescript2";
 
 const env = process.env;
 const pkg = JSON.parse(fs.readFileSync("./package.json"));
@@ -16,6 +16,7 @@ const format = isModule
 const file = isModule
   ? `${process.env.DEST || pkg.main}.mjs`
   : `${process.env.DEST || pkg.main}.js`;
+
 export default {
   input: env.ENTRY || "src/index.ts",
   output: {

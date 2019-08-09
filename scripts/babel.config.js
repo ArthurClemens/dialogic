@@ -1,5 +1,9 @@
 module.exports = function (api) {
+  
+  api.cache.forever();
+
   const presets = [
+    "@babel/preset-typescript",
     "@babel/preset-env",
     "@babel/preset-react"
   ];
@@ -11,8 +15,6 @@ module.exports = function (api) {
       "pragma": "jsx"
     }]
   ];
-
-  api.cache(false);
 
   return {
     presets,
