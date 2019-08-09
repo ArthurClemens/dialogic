@@ -132,18 +132,20 @@ const store = {
         const spawn = instanceSpawnOptions !== undefined
           ? instanceSpawnOptions.spawn
           : undefined;
-        return spawn !== undefined
+        const id = instanceSpawnOptions !== undefined
+          ? instanceSpawnOptions.id
+          : undefined;
+        const itemsBySpawn = spawn !== undefined
           ? items.filter(item => item.spawnOptions.spawn === spawn)
           : items;
+        const itemsById = id !== undefined
+          ? itemsBySpawn.filter(item => item.spawnOptions.id === id)
+          : itemsBySpawn;
+        return itemsById;
       },
 
-      getCount: (ns: string, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => {
-        const itemsBySpawn = fns.getAll(ns, instanceSpawnOptions);
-        const items = instanceSpawnOptions && instanceSpawnOptions.id !== undefined
-          ? [itemsBySpawn.find((item: Dialogic.Item) => item.spawnOptions.id === instanceSpawnOptions.id)].filter(Boolean)
-          : itemsBySpawn;
-        return items.length;
-      }
+      getCount: (ns: string, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) =>
+        fns.getAll(ns, instanceSpawnOptions).length,
 
     };
 
