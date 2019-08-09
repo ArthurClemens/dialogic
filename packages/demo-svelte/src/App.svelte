@@ -2,8 +2,12 @@
   import { Notification, notification, Dialog, dialog } from "dialogic-svelte";
   import DefaultContent from "./default/Content.svelte";
   import IntervalContent from "./interval/Content.svelte";
+  import Remaining from "./remaining/Remaining.svelte";
 
   const dialogCount = dialog.getCount();
+  const timerDialogCount = dialog.getCount({
+    id: "timer"
+  });
 
   const notificationCount = notification.getCount({
     spawn: "NO"
@@ -13,19 +17,7 @@
     spawn: "NO"
   });
 
-  const getRandomNumber = () => Math.round(1000 * Math.random());
-
-  $: remainingValue = 0;
-  const update = () => {
-    const dialogTimerRemaining = dialog.getRemaining({
-      id: "timer"
-    });
-    remainingValue = dialogTimerRemaining === undefined
-      ? undefined
-      : Math.max(dialogTimerRemaining, 0);
-    window.requestAnimationFrame(update);
-  };
-  window.requestAnimationFrame(update);
+  const getRandomId = () => Math.round(1000 * Math.random()).toString();
 
   $: showDialogs = true;
   $: showNotifications = false;
@@ -38,7 +30,8 @@
     component: IntervalContent,
     className: "xxx",
     showClassName: "xxx-visible",
-    title: "Clock"
+    title: "Clock",
+    id: getRandomId()
   };
   const dialogTwoProps = {
     showDuration: 0.75,
@@ -48,7 +41,8 @@
     component: DefaultContent,
     className: "xxx",
     showClassName: "xxx-visible",
-    title: "Fade"
+    title: "Fade",
+    id: getRandomId()
   };
   const dialogFourProps = {
     transitions: {
@@ -72,7 +66,8 @@
       },
     },
     component: DefaultContent,
-    title: "Transitions"
+    title: "Transitions",
+    id: getRandomId()
   };
 
   const clearOptions = {
@@ -134,7 +129,13 @@
 </div>
 
 <div>
-  <p>Remaining: {remainingValue}</p>
+
+  {#if $timerDialogCount}
+    <Remaining getRemainingFn={() => dialog.getRemaining({
+      id: "timer"
+    })} />
+  {/if}
+
   <button
     on:click={() => dialog.show(
       {
@@ -192,7 +193,7 @@
       ...dialogOneProps,
       showDelay: .5,
       hideDelay: 0,
-      title: dialogOneProps.title + " " + getRandomNumber()
+      title: dialogOneProps.title + " " + getRandomId()
     }, { id: dialogOneProps.id })}>
     Show delay
   </button>
@@ -268,7 +269,7 @@ Queued dialog
 <div>
   <button
     on:click={() => {
-      const title = "N " + getRandomNumber();
+      const title = "N " + getRandomId();
       notification.show(
         {
           didShow: id => console.log("didShow", id, title),
