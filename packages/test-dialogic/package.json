@@ -9,15 +9,19 @@
     "test": "ava"
   },
   "ava": {
-		"require": [
-			"./test/_setup-browser-env.js"
-		]
-	},
-  "dependencies": {
-    "dialogic": "0.0.1"
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register",
+      "./test/_setup-browser-env.ts"
+    ]
   },
-  "devDependencies": {
+  "dependencies": {
     "ava": "^2.2.0",
-    "browser-env": "^3.2.6"
+    "browser-env": "^3.2.6",
+    "dialogic": "0.0.1",
+    "ts-node": "^8.3.0"
   }
 }

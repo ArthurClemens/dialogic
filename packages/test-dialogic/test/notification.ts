@@ -1,4 +1,4 @@
-import { notification } from "dialogic";
+import { notification, Dialogic } from "dialogic";
 import test from "ava";
 
 const getDefaultItemId = name => `${name}-default_${name}-default_${name}`;
@@ -36,14 +36,14 @@ test("show, getCount: when spawn option `id` is specified, the state should cont
       title: n
     },
     {
-      id: n
+      id: n.toString()
     }));
   const expected = 3;
   const actual = notification.getCount();
   t.is(actual, expected);
-  t.is(notification.isDisplayed({ id: 1 }), true);
-  t.is(notification.isDisplayed({ id: 2 }), true);
-  t.is(notification.isDisplayed({ id: 3 }), true);
+  t.is(notification.isDisplayed({ id: "1" }), true);
+  t.is(notification.isDisplayed({ id: "2" }), true);
+  t.is(notification.isDisplayed({ id: "3" }), true);
 });
 
 test("show, getCount: when spawn option `spawn` is specified, the state should contain multiple items", t => {
@@ -53,13 +53,13 @@ test("show, getCount: when spawn option `spawn` is specified, the state should c
       title: n
     },
     {
-      spawn: n
+      spawn: n.toString()
     }));
   const expected = 3;
   const actual = notification.getCount();
-  t.is(notification.isDisplayed({ spawn: 1 }), true);
-  t.is(notification.isDisplayed({ spawn: 2 }), true);
-  t.is(notification.isDisplayed({ spawn: 3 }), true);
+  t.is(notification.isDisplayed({ spawn: "1" }), true);
+  t.is(notification.isDisplayed({ spawn: "2" }), true);
+  t.is(notification.isDisplayed({ spawn: "3" }), true);
   t.is(actual, expected);
 });
 

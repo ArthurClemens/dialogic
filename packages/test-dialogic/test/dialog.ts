@@ -1,4 +1,4 @@
-import { dialog } from "dialogic";
+import { dialog, Dialogic } from "dialogic";
 import test from "ava";
 
 const getDefaultItemId = name => `${name}-default_${name}-default_${name}`;
@@ -35,7 +35,7 @@ test("show, getCount: when spawn option `id` is specified, the state should cont
       title: n
     },
     {
-      id: n
+      id: n.toString()
     }));
   const expected = 3;
   const actual = dialog.getCount();
@@ -49,7 +49,7 @@ test("show, getCount: when spawn option `spawn` is specified, the state should c
       title: n
     },
     {
-      spawn: n
+      spawn: n.toString()
     }));
   const expected = 3;
   const actual = dialog.getCount();
