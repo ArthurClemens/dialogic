@@ -1126,12 +1126,6 @@ var app = (function () {
                 ...defaultTransitionOptions,
                 ...instanceTransitionOptions,
             };
-            const hasTransitionOptions = Object.keys(transitionOptions).reduce((acc, key) => {
-                const value = transitionOptions[key];
-                return value !== undefined
-                    ? acc + 1
-                    : acc;
-            }, 0) > 0;
             transitionOptions.didShow = item => {
                 if (options.didShow) {
                     options.didShow(item);
@@ -1175,9 +1169,7 @@ var app = (function () {
                 // This will instantiate and draw the instance
                 // The instance will call `showDialog` in `onMount`
             }
-            if (!hasTransitionOptions) {
-                resolve(item);
-            }
+            resolve(item);
         });
     };
     const show = createInstance;
@@ -1243,7 +1235,7 @@ var app = (function () {
     };
     const isPaused = getTimerProperty("isPaused");
     const getRemaining$1 = getTimerProperty("getRemaining");
-    const isDisplayed = (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
+    const exists = (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
         const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
         return !!maybeItem.just;
     };
@@ -1344,7 +1336,7 @@ var app = (function () {
             pause: pause(ns)(defaultSpawnOptions),
             resume: resume(ns)(defaultSpawnOptions),
             // State
-            isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
+            exists: exists(ns)(defaultSpawnOptions),
             getCount: getCount(ns),
             // Timer state
             isPaused: isPaused(ns)(defaultSpawnOptions),
@@ -1486,9 +1478,9 @@ var app = (function () {
     	() => getTimerProperty("isPaused")(ns)(defaultSpawnOptions)(instanceSpawnOptions)
     );
 
-    const isDisplayed$1 = ns => defaultSpawnOptions => instanceSpawnOptions => derived(
+    const exists$1 = ns => defaultSpawnOptions => instanceSpawnOptions => derived(
     	appState,
-    	() => isDisplayed(ns)(defaultSpawnOptions)(instanceSpawnOptions)
+    	() => exists(ns)(defaultSpawnOptions)(instanceSpawnOptions)
     );
 
     const dialog$1 = {
@@ -1497,8 +1489,8 @@ var app = (function () {
         getCount$1(dialog.ns)(instanceSpawnOptions),
       isPaused: instanceSpawnOptions =>
         isPaused$1(dialog.ns)(dialog.defaultSpawnOptions)(instanceSpawnOptions),
-      isDisplayed: instanceSpawnOptions =>
-        isDisplayed$1(dialog.ns)(dialog.defaultSpawnOptions)(instanceSpawnOptions),
+      exists: instanceSpawnOptions =>
+        exists$1(dialog.ns)(dialog.defaultSpawnOptions)(instanceSpawnOptions),
     };
 
     const notification$1 = {
@@ -1507,8 +1499,8 @@ var app = (function () {
         getCount$1(notification.ns)(instanceSpawnOptions),
       isPaused: instanceSpawnOptions =>
         isPaused$1(notification.ns)(notification.defaultSpawnOptions)(instanceSpawnOptions),
-      isDisplayed: instanceSpawnOptions =>
-        isDisplayed$1(notification.ns)(notification.defaultSpawnOptions)(instanceSpawnOptions),
+      exists: instanceSpawnOptions =>
+        exists$1(notification.ns)(notification.defaultSpawnOptions)(instanceSpawnOptions),
     };
 
     const handleDispatch = (ns) => (event, fn) => {
@@ -2651,48 +2643,48 @@ var app = (function () {
     			t58 = space();
     			div12 = element("div");
     			dialog3.$$.fragment.c();
-    			add_location(h2, file$4, 132, 0, 3192);
-    			add_location(p0, file$4, 134, 0, 3209);
-    			add_location(hr0, file$4, 136, 0, 3248);
-    			add_location(button0, file$4, 139, 2, 3264);
-    			add_location(button1, file$4, 146, 2, 3397);
-    			add_location(div0, file$4, 138, 0, 3256);
-    			add_location(button2, file$4, 157, 2, 3594);
-    			add_location(button3, file$4, 169, 2, 3807);
-    			add_location(button4, file$4, 174, 2, 3905);
-    			add_location(button5, file$4, 182, 2, 4038);
-    			add_location(div1, file$4, 149, 0, 3458);
-    			add_location(button6, file$4, 186, 2, 4157);
-    			add_location(button7, file$4, 202, 2, 4577);
-    			add_location(div2, file$4, 185, 0, 4149);
-    			add_location(button8, file$4, 209, 2, 4731);
-    			add_location(button9, file$4, 218, 2, 4960);
-    			add_location(div3, file$4, 208, 0, 4723);
-    			add_location(button10, file$4, 221, 2, 5053);
-    			add_location(button11, file$4, 225, 2, 5171);
-    			add_location(div4, file$4, 220, 0, 5045);
-    			add_location(button12, file$4, 228, 2, 5264);
-    			add_location(button13, file$4, 232, 2, 5385);
-    			add_location(div5, file$4, 227, 0, 5256);
-    			add_location(button14, file$4, 235, 2, 5479);
-    			add_location(button15, file$4, 242, 2, 5653);
-    			add_location(div6, file$4, 234, 0, 5471);
-    			add_location(hr1, file$4, 245, 0, 5734);
-    			add_location(p1, file$4, 248, 2, 5750);
-    			add_location(div7, file$4, 247, 0, 5742);
-    			add_location(p2, file$4, 253, 2, 5794);
-    			add_location(div8, file$4, 252, 0, 5786);
-    			add_location(hr2, file$4, 257, 0, 5857);
-    			add_location(button16, file$4, 260, 2, 5886);
-    			add_location(button17, file$4, 267, 2, 6083);
-    			add_location(div9, file$4, 259, 0, 5878);
-    			add_location(p3, file$4, 271, 2, 6166);
-    			add_location(div10, file$4, 270, 0, 6158);
-    			add_location(hr3, file$4, 275, 0, 6219);
-    			add_location(button18, file$4, 278, 2, 6257);
-    			add_location(button19, file$4, 282, 2, 6335);
-    			add_location(div11, file$4, 277, 0, 6249);
-    			add_location(div12, file$4, 285, 0, 6416);
+    			add_location(h2, file$4, 132, 0, 3182);
+    			add_location(p0, file$4, 134, 0, 3199);
+    			add_location(hr0, file$4, 136, 0, 3238);
+    			add_location(button0, file$4, 139, 2, 3254);
+    			add_location(button1, file$4, 146, 2, 3387);
+    			add_location(div0, file$4, 138, 0, 3246);
+    			add_location(button2, file$4, 157, 2, 3584);
+    			add_location(button3, file$4, 169, 2, 3797);
+    			add_location(button4, file$4, 174, 2, 3895);
+    			add_location(button5, file$4, 182, 2, 4028);
+    			add_location(div1, file$4, 149, 0, 3448);
+    			add_location(button6, file$4, 186, 2, 4147);
+    			add_location(button7, file$4, 202, 2, 4567);
+    			add_location(div2, file$4, 185, 0, 4139);
+    			add_location(button8, file$4, 209, 2, 4721);
+    			add_location(button9, file$4, 218, 2, 4950);
+    			add_location(div3, file$4, 208, 0, 4713);
+    			add_location(button10, file$4, 221, 2, 5043);
+    			add_location(button11, file$4, 225, 2, 5161);
+    			add_location(div4, file$4, 220, 0, 5035);
+    			add_location(button12, file$4, 228, 2, 5254);
+    			add_location(button13, file$4, 232, 2, 5375);
+    			add_location(div5, file$4, 227, 0, 5246);
+    			add_location(button14, file$4, 235, 2, 5469);
+    			add_location(button15, file$4, 242, 2, 5643);
+    			add_location(div6, file$4, 234, 0, 5461);
+    			add_location(hr1, file$4, 245, 0, 5724);
+    			add_location(p1, file$4, 248, 2, 5740);
+    			add_location(div7, file$4, 247, 0, 5732);
+    			add_location(p2, file$4, 253, 2, 5784);
+    			add_location(div8, file$4, 252, 0, 5776);
+    			add_location(hr2, file$4, 257, 0, 5847);
+    			add_location(button16, file$4, 260, 2, 5876);
+    			add_location(button17, file$4, 267, 2, 6073);
+    			add_location(div9, file$4, 259, 0, 5868);
+    			add_location(p3, file$4, 271, 2, 6156);
+    			add_location(div10, file$4, 270, 0, 6148);
+    			add_location(hr3, file$4, 275, 0, 6209);
+    			add_location(button18, file$4, 278, 2, 6247);
+    			add_location(button19, file$4, 282, 2, 6325);
+    			add_location(div11, file$4, 277, 0, 6239);
+    			add_location(div12, file$4, 285, 0, 6406);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_5),
@@ -3006,16 +2998,16 @@ var app = (function () {
     			notification_1.$$.fragment.c();
     			t19 = space();
     			hr = element("hr");
-    			add_location(h2, file$4, 299, 0, 6651);
-    			add_location(p0, file$4, 300, 0, 6673);
-    			add_location(p1, file$4, 301, 0, 6722);
-    			add_location(p2, file$4, 302, 0, 6779);
-    			add_location(button0, file$4, 305, 2, 6835);
-    			add_location(button1, file$4, 325, 2, 7367);
-    			add_location(button2, file$4, 331, 2, 7539);
-    			add_location(button3, file$4, 336, 2, 7643);
-    			add_location(div, file$4, 304, 0, 6827);
-    			add_location(hr, file$4, 345, 0, 7776);
+    			add_location(h2, file$4, 299, 0, 6641);
+    			add_location(p0, file$4, 300, 0, 6663);
+    			add_location(p1, file$4, 301, 0, 6712);
+    			add_location(p2, file$4, 302, 0, 6769);
+    			add_location(button0, file$4, 305, 2, 6825);
+    			add_location(button1, file$4, 325, 2, 7357);
+    			add_location(button2, file$4, 331, 2, 7529);
+    			add_location(button3, file$4, 336, 2, 7633);
+    			add_location(div, file$4, 304, 0, 6817);
+    			add_location(hr, file$4, 345, 0, 7766);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_26),
@@ -3142,14 +3134,14 @@ var app = (function () {
     			t14 = space();
     			if (if_block1) if_block1.c();
     			if_block1_anchor = empty();
-    			add_location(button0, file$4, 118, 0, 2721);
-    			add_location(button1, file$4, 120, 0, 2833);
-    			add_location(button2, file$4, 122, 0, 2928);
-    			add_location(button3, file$4, 124, 0, 3005);
-    			add_location(hr0, file$4, 126, 0, 3088);
-    			add_location(button4, file$4, 128, 0, 3096);
-    			add_location(hr1, file$4, 293, 0, 6523);
-    			add_location(button5, file$4, 295, 0, 6531);
+    			add_location(button0, file$4, 118, 0, 2711);
+    			add_location(button1, file$4, 120, 0, 2823);
+    			add_location(button2, file$4, 122, 0, 2918);
+    			add_location(button3, file$4, 124, 0, 2995);
+    			add_location(hr0, file$4, 126, 0, 3078);
+    			add_location(button4, file$4, 128, 0, 3086);
+    			add_location(hr1, file$4, 293, 0, 6513);
+    			add_location(button5, file$4, 295, 0, 6521);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler),
@@ -3283,7 +3275,7 @@ var app = (function () {
     	
 
       const dialogCount = dialog$1.getCount(); validate_store(dialogCount, 'dialogCount'); component_subscribe($$self, dialogCount, $$value => { $dialogCount = $$value; $$invalidate('$dialogCount', $dialogCount); });
-      const timerDialogDisplayed = dialog$1.isDisplayed({
+      const timerDialogDisplayed = dialog$1.exists({
         id: "timer"
       }); validate_store(timerDialogDisplayed, 'timerDialogDisplayed'); component_subscribe($$self, timerDialogDisplayed, $$value => { $timerDialogDisplayed = $$value; $$invalidate('$timerDialogDisplayed', $timerDialogDisplayed); });
 
@@ -3294,7 +3286,7 @@ var app = (function () {
       const notificationItemIsPaused = notification$1.isPaused({
         spawn: "NO"
       }); validate_store(notificationItemIsPaused, 'notificationItemIsPaused'); component_subscribe($$self, notificationItemIsPaused, $$value => { $notificationItemIsPaused = $$value; $$invalidate('$notificationItemIsPaused', $notificationItemIsPaused); });
-      const notificationDisplayed = notification$1.isDisplayed({
+      const notificationDisplayed = notification$1.exists({
         spawn: "NO"
       }); validate_store(notificationDisplayed, 'notificationDisplayed'); component_subscribe($$self, notificationDisplayed, $$value => { $notificationDisplayed = $$value; $$invalidate('$notificationDisplayed', $notificationDisplayed); });
 

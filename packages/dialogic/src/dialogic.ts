@@ -87,13 +87,6 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
       ...defaultTransitionOptions,
       ...instanceTransitionOptions,
     };
-    
-    const hasTransitionOptions = Object.keys(transitionOptions as Dialogic.TransitionOptions).reduce((acc, key) => {
-      const value = (transitionOptions as Dialogic.TransitionOptions)[key];
-      return value !== undefined
-        ? acc + 1
-        : acc;
-    }, 0) > 0;
 
     transitionOptions.didShow = item => {
       if (options.didShow) {
@@ -141,9 +134,7 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
       // The instance will call `showDialog` in `onMount`
     }
 
-    if (!hasTransitionOptions) {
-      resolve(item);
-    }
+    resolve(item);
   });
 };
 
@@ -217,7 +208,7 @@ export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getRe
 export const isPaused = getTimerProperty("isPaused");
 export const getRemaining = getTimerProperty("getRemaining");
 
-export const isDisplayed = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+export const exists = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
   const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
   return !!maybeItem.just;
 };
@@ -309,4 +300,3 @@ export const hideItem: Dialogic.InitiateItemTransitionFn = async function(ns, it
   actions.remove(ns, item.id);
   return Promise.resolve(copy);
 };
-

@@ -32,7 +32,7 @@ export namespace Dialogic {
     pause: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<Dialogic.Item>;
     resume: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: Dialogic.TimerResumeOptions) => Promise<Dialogic.Item>;
     // State
-    isDisplayed: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean;
+    exists: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean;
     getCount: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number;
     // Timer state
     isPaused: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean | undefined;

@@ -661,12 +661,6 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
             ...defaultTransitionOptions,
             ...instanceTransitionOptions,
         };
-        const hasTransitionOptions = Object.keys(transitionOptions).reduce((acc, key) => {
-            const value = transitionOptions[key];
-            return value !== undefined
-                ? acc + 1
-                : acc;
-        }, 0) > 0;
         transitionOptions.didShow = item => {
             if (options.didShow) {
                 options.didShow(item);
@@ -710,9 +704,7 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
             // This will instantiate and draw the instance
             // The instance will call `showDialog` in `onMount`
         }
-        if (!hasTransitionOptions) {
-            resolve(item);
-        }
+        resolve(item);
     });
 };
 const show = createInstance;
@@ -778,7 +770,7 @@ const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (instan
 };
 const isPaused = getTimerProperty("isPaused");
 const getRemaining$1 = getTimerProperty("getRemaining");
-const isDisplayed = (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
+const exists = (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
     const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
     return !!maybeItem.just;
 };
@@ -879,7 +871,7 @@ const dialogical = ({ ns, queued, timeout }) => {
         pause: pause(ns)(defaultSpawnOptions),
         resume: resume(ns)(defaultSpawnOptions),
         // State
-        isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
+        exists: exists(ns)(defaultSpawnOptions),
         getCount: getCount(ns),
         // Timer state
         isPaused: isPaused(ns)(defaultSpawnOptions),
@@ -891,5 +883,5 @@ const dialog = dialogical({ ns: "dialog" });
 
 const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
 
-export { actions, dialog, dialogical, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isDisplayed, isPaused, notification, pause, performOnItem, resetAll, resume, selectors, show, showItem, states, toggle };
+export { actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, performOnItem, resetAll, resume, selectors, show, showItem, states, toggle };
 //# sourceMappingURL=dialogic.mjs.map

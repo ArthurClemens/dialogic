@@ -1,5 +1,5 @@
 import { writable, derived } from "svelte/store";
-import { states, selectors, getTimerProperty, isDisplayed as _isDisplayed } from "dialogic";
+import { states, selectors, getTimerProperty, exists as _isDisplayed } from "dialogic";
 
 export const appState = {
   ...writable(states),
@@ -21,7 +21,7 @@ export const isPaused = ns => defaultSpawnOptions => instanceSpawnOptions => der
 	() => getTimerProperty("isPaused")(ns)(defaultSpawnOptions)(instanceSpawnOptions)
 );
 
-export const isDisplayed = ns => defaultSpawnOptions => instanceSpawnOptions => derived(
+export const exists = ns => defaultSpawnOptions => instanceSpawnOptions => derived(
 	appState,
 	() => _isDisplayed(ns)(defaultSpawnOptions)(instanceSpawnOptions)
 );

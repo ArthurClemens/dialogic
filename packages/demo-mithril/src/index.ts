@@ -242,7 +242,7 @@ const App = {
           "With timeout"
         ),
         m("div", `Is paused: ${dialog.isPaused({ id: "timer" })}`),
-        dialog.isDisplayed({ id: "timer" })
+        dialog.exists({ id: "timer" })
           ? m("div", m(Remaining, { getRemaining: () => dialog.getRemaining({ id: "timer" })}))
           : null,
         m("button",
@@ -426,9 +426,9 @@ const App = {
       m("section", { className: "section"}, [
         m("h2", { className: "title is-2"}, "Notification"),
         m("div", `Notification count: ${notification.getCount()}`),
-        m("div", `Is shown: ${notification.isDisplayed({ spawn: "NO" })}`),
+        m("div", `Is shown: ${notification.exists({ spawn: "NO" })}`),
         m("div", `Is paused: ${notification.isPaused({ spawn: "NO" })}`),
-        notification.isDisplayed({ spawn: "NO" })
+        notification.exists({ spawn: "NO" })
           ? m("div", m(Remaining, { getRemaining: () => notification.getRemaining({ spawn: "NO" })}))
           : null,
       ]),

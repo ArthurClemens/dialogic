@@ -66,10 +66,10 @@ test("show, hide: should hide the item", t => {
   }
   return dialog.show(options, spawnOptions)
     .then(() => {
-      t.is(dialog.isDisplayed(spawnOptions), true);
+      t.is(dialog.exists(spawnOptions), true);
       return dialog.hide(spawnOptions).then(item => {
         t.is(item.id, "dialog-show-hide-default_dialog");
-        t.is(dialog.isDisplayed(spawnOptions), false);
+        t.is(dialog.exists(spawnOptions), false);
       })
     });
 });

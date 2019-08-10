@@ -5,7 +5,7 @@
   import Remaining from "./remaining/Remaining.svelte";
 
   const dialogCount = dialog.getCount();
-  const timerDialogDisplayed = dialog.isDisplayed({
+  const timerDialogDisplayed = dialog.exists({
     id: "timer"
   });
 
@@ -16,7 +16,7 @@
   const notificationItemIsPaused = notification.isPaused({
     spawn: "NO"
   });
-  const notificationDisplayed = notification.isDisplayed({
+  const notificationDisplayed = notification.exists({
     spawn: "NO"
   });
 

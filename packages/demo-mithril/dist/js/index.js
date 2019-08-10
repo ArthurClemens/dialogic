@@ -2322,12 +2322,13 @@ var createInstance = function createInstance(ns) {
               instanceTransitionOptions = _getOptionsByKind.transitionOptions,
               instanceOptions = _getOptionsByKind.instanceOptions;
 
-          var transitionOptions = _objectSpread({}, defaultTransitionOptions, {}, instanceTransitionOptions);
+          var transitionOptions = _objectSpread({}, defaultTransitionOptions, {}, instanceTransitionOptions); // const hasTransitionOptions = Object.keys(transitionOptions as Dialogic.TransitionOptions).reduce((acc, key) => {
+          //   const value = (transitionOptions as Dialogic.TransitionOptions)[key];
+          //   return value !== undefined
+          //     ? acc + 1
+          //     : acc;
+          // }, 0) > 0;
 
-          var hasTransitionOptions = Object.keys(transitionOptions).reduce(function (acc, key) {
-            var value = transitionOptions[key];
-            return value !== undefined ? acc + 1 : acc;
-          }, 0) > 0;
 
           transitionOptions.didShow = function (item) {
             if (options.didShow) {
@@ -2373,11 +2374,10 @@ var createInstance = function createInstance(ns) {
           } else {
             actions.add(ns, item); // This will instantiate and draw the instance
             // The instance will call `showDialog` in `onMount`
-          }
+          } // if (!hasTransitionOptions) {
 
-          if (!hasTransitionOptions) {
-            resolve(item);
-          }
+
+          resolve(item); // }
         });
       };
     };

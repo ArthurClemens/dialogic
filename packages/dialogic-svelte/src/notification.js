@@ -1,5 +1,5 @@
 import { notification as _notification } from "dialogic";
-import { getCount, isPaused, isDisplayed } from "./store"; // Access Svelte's store
+import { getCount, isPaused, exists } from "./store"; // Access Svelte's store
 
 export const notification = {
   ..._notification,
@@ -7,6 +7,6 @@ export const notification = {
     getCount(_notification.ns)(instanceSpawnOptions),
   isPaused: instanceSpawnOptions =>
     isPaused(_notification.ns)(_notification.defaultSpawnOptions)(instanceSpawnOptions),
-  isDisplayed: instanceSpawnOptions =>
-    isDisplayed(_notification.ns)(_notification.defaultSpawnOptions)(instanceSpawnOptions),
+  exists: instanceSpawnOptions =>
+    exists(_notification.ns)(_notification.defaultSpawnOptions)(instanceSpawnOptions),
 };

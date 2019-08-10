@@ -1,7 +1,7 @@
-import { notification, Dialogic } from "dialogic";
+import { notification, showItem } from "dialogic";
 import test from "ava";
 
-const getDefaultItemId = name => `${name}-default_${name}-default_${name}`;
+const getDefaultItemId = (name: string) => `${name}-default_${name}-default_${name}`;
 
 const defaultItemId = getDefaultItemId("notification");
 
@@ -26,7 +26,7 @@ test("show, getCount: even when no spawn options are specified, the state should
   };
   const spawnOptions = undefined;
   [1,2,3].forEach(n => notification.show(options, spawnOptions));
-  t.is(notification.isDisplayed(), true);
+  t.is(notification.exists(), true);
 });
 
 test("show, getCount: when spawn option `id` is specified, the state should contain multiple items", t => {
@@ -41,9 +41,9 @@ test("show, getCount: when spawn option `id` is specified, the state should cont
   const expected = 3;
   const actual = notification.getCount();
   t.is(actual, expected);
-  t.is(notification.isDisplayed({ id: "1" }), true);
-  t.is(notification.isDisplayed({ id: "2" }), true);
-  t.is(notification.isDisplayed({ id: "3" }), true);
+  t.is(notification.exists({ id: "1" }), true);
+  t.is(notification.exists({ id: "2" }), true);
+  t.is(notification.exists({ id: "3" }), true);
 });
 
 test("show, getCount: when spawn option `spawn` is specified, the state should contain multiple items", t => {
@@ -57,9 +57,9 @@ test("show, getCount: when spawn option `spawn` is specified, the state should c
     }));
   const expected = 3;
   const actual = notification.getCount();
-  t.is(notification.isDisplayed({ spawn: "1" }), true);
-  t.is(notification.isDisplayed({ spawn: "2" }), true);
-  t.is(notification.isDisplayed({ spawn: "3" }), true);
+  t.is(notification.exists({ spawn: "1" }), true);
+  t.is(notification.exists({ spawn: "2" }), true);
+  t.is(notification.exists({ spawn: "3" }), true);
   t.is(actual, expected);
 });
 
@@ -73,10 +73,10 @@ test("show, hide: should hide the item", t => {
   }
   return notification.show(options, spawnOptions)
     .then(() => {
-      t.is(notification.isDisplayed(spawnOptions), true);
+      t.is(notification.exists(spawnOptions), true);
       return notification.hide(spawnOptions).then(item => {
         t.is(item.id, "notification-show-hide-default_notification");
-        t.is(notification.isDisplayed(spawnOptions), false);
+        t.is(notification.exists(spawnOptions), false);
       })
     });
 });
@@ -91,11 +91,38 @@ test("show, toggle: should hide the item", t => {
   }
   return notification.show(options, spawnOptions)
     .then(() => {
-      t.is(notification.isDisplayed(spawnOptions), true);
+      t.is(notification.exists(spawnOptions), true);
       return notification.toggle(options, spawnOptions).then(item => {
         t.is(item.id, "notification-show-toggle-default_notification");
-        t.is(notification.isDisplayed(spawnOptions), false);
+        t.is(notification.exists(spawnOptions), false);
       })
     });
 });
 
+test("Insert to DOM", t => {
+	const div = document.createElement("div");
+	document.body.appendChild(div);
+  t.is(document.querySelector("div"), div);
+  
+  const options = {
+    title: "Test", // not a transition option
+  };
+  const spawnOptions = {
+    id: "dom"
+  };
+  notification.show(options, spawnOptions)
+    .then(item => {
+      t.is(item.id, "notification-dom-default_notification");
+      t.is(notification.exists(spawnOptions), true);
+      item.instanceTransitionOptions = {
+        showDuration: .5,
+        domElements: {
+          domElement: div
+        },
+      };
+      return showItem("notification", item).then(item => {
+        t.is(item.id, "notification-dom-default_notification");
+        t.is(notification.exists(spawnOptions), true);
+      })
+    })
+});
