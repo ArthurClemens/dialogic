@@ -1,6 +1,6 @@
 import m, { Component } from "mithril";
 import { filterCandidates, selectors, Dialogic } from "dialogic";
-import { onInstanceMounted, onShowInstance, onHideInstance } from "./instance-events";
+import { onInstanceMounted, onShowInstance, onHideInstance } from "./instanceEvents";
 import { Instance } from "./Instance";
 
 interface Wrapper extends Dialogic.DialogicalWrapperOptions{}

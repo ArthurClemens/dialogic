@@ -2,7 +2,7 @@
 <script>
   import { appState } from "./store";
   import { filterCandidates } from "dialogic";
-  import { onInstanceMounted, onShowInstance, onHideInstance } from "./instance-events";
+  import { onInstanceMounted, onShowInstance, onHideInstance } from "./instanceEvents";
   import Instance from "./Instance.svelte";
 
   export let spawnOptions;
