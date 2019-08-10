@@ -8,6 +8,22 @@ import "./styles.css";
 
 const getRandomId = () => Math.round(1000 * Math.random()).toString();
 
+const showInitial = ({ isOnMount } : { isOnMount?: boolean } = {} ) => dialog.show(
+  {
+    title: getRandomId(),
+    component: DefaultContent,
+    showDuration: isOnMount
+      ? 0
+      : .5,
+    hideDuration: 0.5,
+    className: "xxx",
+    showClassName: "xxx-visible",
+  },
+  {
+    spawn: "initial",
+  }
+);
+
 const dialogOneProps: Dialogic.Options = {
   component: DefaultContent,
   showDuration: 0.5,
@@ -272,7 +288,7 @@ const App = {
       // Spawn
       m("section", { className: "section"}, [
         m("h2", { className: "title is-2"}, "Dialog with spawn"),
-        m("p", `Dialog in this spawn count: ${dialog.getCount({ spawn: "special" })}`)
+        m("p", `Dialog count: ${dialog.getCount({ spawn: "special" })}`)
       ]),
       m("section", { className: "section"}, [
         m("button",
@@ -309,7 +325,7 @@ const App = {
       // Queued
       m("section", { className: "section"}, [
         m("h2", { className: "title is-2"}, "Queued dialog"),
-        m("p", `Dialog in this spawn count: ${dialog.getCount({ spawn: "Q" })}`)
+        m("p", `Dialog count: ${dialog.getCount({ spawn: "Q" })}`)
       ]),
       m("section", { className: "section"}, [
         m("button",
@@ -318,7 +334,7 @@ const App = {
             onclick: () =>
               dialog.show(
                 {
-                  title: "Queued " + Math.round(1000 * Math.random()),
+                  title: getRandomId(),
                   component: DefaultContent,
                   showDuration: 0.5,
                   hideDuration: 0.5,
@@ -341,9 +357,37 @@ const App = {
           },
           "Hide"
         ),
-        m("section", { className: "section"}, [
-          m(Dialog, { spawn: "Q" }),
-        ]),
+      ]),
+      m("section", { className: "section"}, [
+        m(Dialog, { spawn: "Q" }),
+      ]),
+
+      // Initially displayed
+      m("section", { className: "section"}, [
+        m("h2", { className: "title is-2"}, "Initially displayed dialog"),
+      ]),
+      m("section", { className: "section"}, [
+        m("button",
+          {
+            className: "button",
+            onclick: () => showInitial()
+          },
+          "Shown initially"
+        ),
+        m("button",
+          {
+            className: "button",
+            onclick: () =>
+              dialog.hide({ spawn: "initial" })
+          },
+          "Hide"
+        ),
+      ]),
+      m("section", { className: "section"}, [
+        m(Dialog, {
+          spawn: "initial",
+          onMount: () => showInitial({ isOnMount: true })
+        }),
       ]),
       
       m("section", { className: "section"}, [

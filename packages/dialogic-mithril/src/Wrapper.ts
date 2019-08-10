@@ -13,8 +13,7 @@ export const Wrapper: Component<Dialogic.DialogicalWrapperOptions> = {
     const nsOnHideInstance = onHideInstance(attrs.ns);
     
     const spawnOptions: Dialogic.SpawnOptions = attrs.spawnOptions || {} as Dialogic.SpawnOptions;
-    const spawn = spawnOptions.spawn || "";
-    const filtered = filterCandidates(attrs.ns, selectors.getStore(), spawn);
+    const filtered = filterCandidates(attrs.ns, selectors.getStore(), spawnOptions);
 
     return filtered.map(item =>
       m(Instance, {

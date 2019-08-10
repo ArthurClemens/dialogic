@@ -1603,6 +1603,20 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 
+var isClient = typeof document !== "undefined";
+
+var pipe = function pipe() {
+  for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
+    fns[_key] = arguments[_key];
+  }
+
+  return function (x) {
+    return fns.filter(Boolean).reduce(function (y, f) {
+      return f(y);
+    }, x);
+  };
+};
+
 var MODE = {
   SHOW: "show",
   HIDE: "hide"
@@ -1633,7 +1647,7 @@ var transition = function transition(props, mode) {
 
   return new Promise(function (resolve) {
     var style = domElement.style;
-    var computedStyle = window.getComputedStyle(domElement);
+    var computedStyle = isClient ? window.getComputedStyle(domElement) : null;
     var isShow = mode === MODE.SHOW;
     var transitionProps = getTransitionProps(props, isShow);
     var duration = transitionProps.duration !== undefined ? transitionProps.duration * 1000 : computedStyle ? styleDurationToMs(computedStyle.transitionDuration) : 0;
@@ -2239,10 +2253,12 @@ var transitionStates = {
   hiding: "hiding"
 };
 
-var filterBySpawnId = function filterBySpawnId(nsItems, spawn) {
-  return nsItems.filter(function (item) {
-    return item.spawnOptions.spawn === spawn;
-  });
+var filterBySpawnOption = function filterBySpawnOption(spawnOptions) {
+  return function (nsItems) {
+    return nsItems.filter(function (item) {
+      return item.spawnOptions.spawn === spawnOptions.spawn;
+    });
+  };
 };
 /**
  * Gets a list of all non-queued items.
@@ -2250,7 +2266,7 @@ var filterBySpawnId = function filterBySpawnId(nsItems, spawn) {
  * */
 
 
-var filterQueued = function filterQueued(nsItems, ns) {
+var filterFirstInQueue = function filterFirstInQueue(nsItems) {
   var queuedCount = 0;
   return nsItems.map(function (item) {
     return {
@@ -2266,9 +2282,9 @@ var filterQueued = function filterQueued(nsItems, ns) {
   });
 };
 
-var filter = function filter(ns, items, spawn) {
+var filterCandidates = function filterCandidates(ns, items, spawnOptions) {
   var nsItems = items[ns] || [];
-  return filterBySpawnId(filterQueued(nsItems), spawn);
+  return pipe(filterFirstInQueue, filterBySpawnOption(spawnOptions))(nsItems);
 };
 
 var getOptionsByKind = function getOptionsByKind(options) {
@@ -2649,20 +2665,25 @@ var dialogical = function dialogical(_ref8) {
     timeout: timeout
   };
   return {
+    // Identification
     ns: ns,
     defaultId: defaultId,
     defaultSpawn: defaultSpawn,
+    // Configuration
     defaultSpawnOptions: defaultSpawnOptions,
+    // Commands
     show: show(ns)(defaultSpawnOptions)(defaultTransitionOptions),
     hide: hide(ns)(defaultSpawnOptions),
     pause: pause(ns)(defaultSpawnOptions),
     resume: resume(ns)(defaultSpawnOptions),
-    isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
-    isPaused: isPaused(ns)(defaultSpawnOptions),
-    getRemaining: getRemaining$1(ns)(defaultSpawnOptions),
     hideAll: hideAll(ns)(defaultSpawnOptions),
     resetAll: resetAll(ns),
-    getCount: getCount(ns)
+    // State
+    isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
+    getCount: getCount(ns),
+    // Timer state
+    isPaused: isPaused(ns)(defaultSpawnOptions),
+    getRemaining: getRemaining$1(ns)(defaultSpawnOptions)
   };
 };
 
@@ -2770,8 +2791,7 @@ var Wrapper = {
     var nsOnShowInstance = onShowInstance(attrs.ns);
     var nsOnHideInstance = onHideInstance(attrs.ns);
     var spawnOptions = attrs.spawnOptions || {};
-    var spawn = spawnOptions.spawn || "";
-    var filtered = filter(attrs.ns, selectors.getStore(), spawn);
+    var filtered = filterCandidates(attrs.ns, selectors.getStore(), spawnOptions);
     return filtered.map(function (item) {
       return mithril__WEBPACK_IMPORTED_MODULE_5___default()(Instance, {
         key: item.key,
@@ -2785,36 +2805,32 @@ var Wrapper = {
     });
   }
 };
-var Dialog = {
-  view: function view(_ref11) {
-    var attrs = _ref11.attrs;
-    var spawnOptions = {
-      id: attrs.id || dialog.defaultId,
-      spawn: attrs.spawn || dialog.defaultSpawn
-    };
-    return mithril__WEBPACK_IMPORTED_MODULE_5___default()(Wrapper, {
-      spawnOptions: spawnOptions,
-      ns: dialog.ns
-    });
-  }
-};
 
-var Notification = function Notification(_ref12) {
-  var attrs = _ref12.attrs;
-  var spawnOptions = {
-    id: attrs.id || notification.defaultId,
-    spawn: attrs.spawn || notification.defaultSpawn
-  };
+var Dialogical = function Dialogical(type) {
   return {
-    view: function view() {
+    oncreate: function oncreate(_ref11) {
+      var attrs = _ref11.attrs;
+
+      if (typeof attrs.onMount === "function") {
+        attrs.onMount();
+      }
+    },
+    view: function view(_ref12) {
+      var attrs = _ref12.attrs;
+      var spawnOptions = {
+        id: attrs.id || type.defaultId,
+        spawn: attrs.spawn || type.defaultSpawn
+      };
       return mithril__WEBPACK_IMPORTED_MODULE_5___default()(Wrapper, {
         spawnOptions: spawnOptions,
-        ns: notification.ns
+        ns: type.ns
       });
     }
   };
 };
 
+var Dialog = Dialogical(dialog);
+var Notification = Dialogical(notification);
 states.map(function (state) {
   return mithril__WEBPACK_IMPORTED_MODULE_5___default.a.redraw();
 });
@@ -4761,6 +4777,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const getRandomId = () => Math.round(1000 * Math.random()).toString();
+const showInitial = ({ isOnMount } = {}) => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
+    title: getRandomId(),
+    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+    showDuration: isOnMount
+        ? 0
+        : .5,
+    hideDuration: 0.5,
+    className: "xxx",
+    showClassName: "xxx-visible",
+}, {
+    spawn: "initial",
+});
 const dialogOneProps = {
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
     showDuration: 0.5,
@@ -4936,7 +4964,7 @@ const App = {
         // Spawn
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", { className: "title is-2" }, "Dialog with spawn"),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Dialog in this spawn count: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getCount({ spawn: "special" })}`)
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Dialog count: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getCount({ spawn: "special" })}`)
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
@@ -4961,13 +4989,13 @@ const App = {
         // Queued
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", { className: "title is-2" }, "Queued dialog"),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Dialog in this spawn count: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getCount({ spawn: "Q" })}`)
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("p", `Dialog count: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getCount({ spawn: "Q" })}`)
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
-                    title: "Queued " + Math.round(1000 * Math.random()),
+                    title: getRandomId(),
                     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
                     showDuration: 0.5,
                     hideDuration: 0.5,
@@ -4982,9 +5010,29 @@ const App = {
                 className: "button",
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ spawn: "Q" })
             }, "Hide"),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"], { spawn: "Q" }),
-            ]),
+        ]),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"], { spawn: "Q" }),
+        ]),
+        // Initially displayed
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", { className: "title is-2" }, "Initially displayed dialog"),
+        ]),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => showInitial()
+            }, "Shown initially"),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                className: "button",
+                onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ spawn: "initial" })
+            }, "Hide"),
+        ]),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"], {
+                spawn: "initial",
+                onMount: () => showInitial({ isOnMount: true })
+            }),
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", { className: "title is-2" }, "Notification"),

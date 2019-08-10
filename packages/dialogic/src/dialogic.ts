@@ -2,6 +2,7 @@ import { transition, transitionOptionKeys, MODE } from "./transition";
 import { actions, selectors, createId } from "./state";
 import { Timer } from "./timer";
 import { Dialogic } from "../index";
+import { pipe } from "./utils";
 
 export { states, actions, selectors } from "./state";
 
@@ -20,14 +21,14 @@ const transitionStates = {
   hiding: "hiding"
 };
 
-const filterBySpawnId = (nsItems: Dialogic.Item[], spawn: string) =>
-  nsItems.filter(item => item.spawnOptions.spawn === spawn);
+const filterBySpawnOption = (spawnOptions: Dialogic.SpawnOptions) => (nsItems: Dialogic.Item[]) =>
+  nsItems.filter(item => item.spawnOptions.spawn === spawnOptions.spawn);
 
 /**
  * Gets a list of all non-queued items.
  * From the queued items only the first item is listed.
  * */
-const filterQueued = (nsItems: Dialogic.Item[], ns: string) => {
+const filterFirstInQueue = (nsItems: Dialogic.Item[]) => {
   let queuedCount = 0;
   return nsItems
     .map(item => ({
@@ -40,9 +41,12 @@ const filterQueued = (nsItems: Dialogic.Item[], ns: string) => {
     .map(({ item }) => item);
 };
 
-export const filterCandidates = (ns: string, items: Dialogic.NamespaceStore, spawn: string) => {
+export const filterCandidates = (ns: string, items: Dialogic.NamespaceStore, spawnOptions: Dialogic.SpawnOptions) => {
   const nsItems = items[ns] || [];
-  return filterBySpawnId(filterQueued(nsItems, ns), spawn);
+  return pipe(
+    filterFirstInQueue,
+    filterBySpawnOption(spawnOptions)
+  )(nsItems);
 };
 
 type TGetOptionsByKind = (options: Dialogic.Options) => {

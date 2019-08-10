@@ -1,6 +1,6 @@
-export * from "./dialog";
-export * from "./notification";
+import { dialog } from "./dialog";
+import { notification } from "./notification";
 import Dialog from "./Dialog.svelte";
 import Notification from "./Notification.svelte";
 
-export { Dialog, Notification };
+export { dialog, notification, Dialog, Notification };

@@ -1,15 +1,10 @@
 <script>
   import { dialog } from "./dialog";
-  import Wrapper from "./Wrapper.svelte";
+  import Dialogical from "./Dialogical.svelte";
 
-  export let spawn = dialog.defaultSpawn;
-  export let id = dialog.defaultId;
-
-  const spawnOptions = {
-    id,
-    spawn,
-  };
-
+  export let spawn = undefined;
+  export let id = undefined;
+  export let onMount = undefined;
 </script>
 
-<Wrapper {spawnOptions} ns={dialog.ns} />
+<Dialogical {spawn} {id} type={dialog} {onMount} />

@@ -22,6 +22,22 @@
 
   const getRandomId = () => Math.round(1000 * Math.random()).toString();
 
+  const showInitial = ({ isOnMount } = {}) => dialog.show(
+  {
+    title: getRandomId(),
+    component: DefaultContent,
+    showDuration: isOnMount
+      ? 0
+      : .5,
+    hideDuration: 0.5,
+    className: "xxx",
+    showClassName: "xxx-visible",
+  },
+  {
+    spawn: "initial",
+  }
+);
+
   $: showDialogs = true;
   $: showNotifications = false;
 
@@ -255,6 +271,22 @@ Queued dialog
 <div>
   <p>Dialog queued:</p>
   <Dialog spawn="Q" />
+</div>
+
+<hr />
+Initially shown dialog
+<div>
+  <button
+    on:click={() => showInitial()}>
+    Initially shown
+  </button>
+  <button on:click={() => dialog.hide({ spawn: "initial" })}>Hide</button>
+</div>
+
+<div>
+  <Dialog spawn="initial" onMount={
+    () => showInitial({ isOnMount: true })
+  } />
 </div>
 
 {/if}

@@ -1,5 +1,5 @@
-const isClient: boolean = true;
 
+import { isClient } from "./utils";
 import { Dialogic } from "../index";
 
 export const MODE = {

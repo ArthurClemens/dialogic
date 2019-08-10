@@ -14,7 +14,7 @@
   
 </script>
 
-{#each filterCandidates(ns, $appState.store, spawnOptions.spawn) as { spawnOptions, transitionOptions, instanceOptions, key }, index(key)}
+{#each filterCandidates(ns, $appState.store, spawnOptions) as { spawnOptions, transitionOptions, instanceOptions, key }, index(key)}
   <Instance
     {spawnOptions}
     {transitionOptions}

@@ -2,7 +2,7 @@ import Stream from "mithril/stream";
 
 export const showItem: (ns: string, item: Dialogic.Item) => Promise<string>;
 export const hideItem: (ns: string, item: Dialogic.Item) => Promise<string>;
-export const filterCandidates: (ns: string, items: Dialogic.NamespaceStore, spawn: string) => Dialogic.Item[];
+export const filterCandidates: (ns: string, items: Dialogic.NamespaceStore, spawnOptions: Dialogic.SpawnOptions) => Dialogic.Item[];
 export const states: Dialogic.States;
 export const selectors: Dialogic.StateSelectors;
 
@@ -16,19 +16,25 @@ type ConfirmFn = {
 export namespace Dialogic {
 
   type DialogicInstance = {
+    // Identification
     ns: string;
     defaultId: string;
     defaultSpawn: string;
+    // Configuration
+    defaultSpawnOptions: DefaultSpawnOptions;
+    // Commands
     show: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
     hide: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
     pause: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
     resume: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: Dialogic.TimerResumeOptions) => Promise<string>;
-    isPaused: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean | undefined;
-    isDisplayed: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean;
-    getRemaining: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number | undefined;
     resetAll: () => Promise<any>;
     hideAll: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => void;
+    // State
+    isDisplayed: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean;
     getCount: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number;
+    // Timer state
+    isPaused: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean | undefined;
+    getRemaining: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number | undefined;
   };
 
   type DefaultSpawnOptions = {
@@ -41,7 +47,7 @@ export namespace Dialogic {
     id?: string;
     spawn?: string;
     queued?: boolean;
-    show?: boolean;
+    onMount?: (args?: any) => any;
   }
 
   type SpawnOptions = InstanceSpawnOptions & DefaultSpawnOptions;

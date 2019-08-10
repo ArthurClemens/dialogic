@@ -1,16 +1,10 @@
 <script>
   import { notification } from "./notification";
-  import Wrapper from "./Wrapper.svelte";
-  import Instance from "./Instance.svelte";
+  import Dialogical from "./Dialogical.svelte";
 
-  export let spawn = notification.defaultSpawn;
-  export let id = notification.defaultId;
-
-  const spawnOptions = {
-    id,
-    spawn,
-  };
-
+  export let spawn = undefined;
+  export let id = undefined;
+  export let onMount = undefined;
 </script>
 
-<Wrapper {Instance} {spawnOptions} ns={notification.ns} />
+<Dialogical {spawn} {id} type={notification} {onMount} />

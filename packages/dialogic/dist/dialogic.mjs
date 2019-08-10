@@ -1,3 +1,6 @@
+const isClient = typeof document !== "undefined";
+const pipe = (...fns) => (x) => fns.filter(Boolean).reduce((y, f) => f(y), x);
+
 const MODE = {
     SHOW: "show",
     HIDE: "hide"
@@ -27,8 +30,9 @@ const transition = (props, mode) => {
     }
     return new Promise(resolve => {
         const style = domElement.style;
-        const computedStyle =  window.getComputedStyle(domElement)
-            ;
+        const computedStyle = isClient
+            ? window.getComputedStyle(domElement)
+            : null;
         const isShow = mode === MODE.SHOW;
         const transitionProps = getTransitionProps(props, isShow);
         const duration = transitionProps.duration !== undefined
@@ -607,12 +611,12 @@ const transitionStates = {
     none: "none",
     hiding: "hiding"
 };
-const filterBySpawnId = (nsItems, spawn) => nsItems.filter(item => item.spawnOptions.spawn === spawn);
+const filterBySpawnOption = (spawnOptions) => (nsItems) => nsItems.filter(item => item.spawnOptions.spawn === spawnOptions.spawn);
 /**
  * Gets a list of all non-queued items.
  * From the queued items only the first item is listed.
  * */
-const filterQueued = (nsItems, ns) => {
+const filterFirstInQueue = (nsItems) => {
     let queuedCount = 0;
     return nsItems
         .map(item => ({
@@ -624,9 +628,9 @@ const filterQueued = (nsItems, ns) => {
         .filter(({ queueCount }) => queueCount === 0)
         .map(({ item }) => item);
 };
-const filterCandidates = (ns, items, spawn) => {
+const filterCandidates = (ns, items, spawnOptions) => {
     const nsItems = items[ns] || [];
-    return filterBySpawnId(filterQueued(nsItems), spawn);
+    return pipe(filterFirstInQueue, filterBySpawnOption(spawnOptions))(nsItems);
 };
 const getOptionsByKind = options => {
     const initial = {
@@ -845,20 +849,25 @@ const dialogical = ({ ns, queued, timeout }) => {
         timeout
     };
     return {
+        // Identification
         ns,
         defaultId,
         defaultSpawn,
+        // Configuration
         defaultSpawnOptions,
+        // Commands
         show: show(ns)(defaultSpawnOptions)(defaultTransitionOptions),
         hide: hide(ns)(defaultSpawnOptions),
         pause: pause(ns)(defaultSpawnOptions),
         resume: resume(ns)(defaultSpawnOptions),
-        isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
-        isPaused: isPaused(ns)(defaultSpawnOptions),
-        getRemaining: getRemaining$1(ns)(defaultSpawnOptions),
         hideAll: hideAll(ns)(defaultSpawnOptions),
         resetAll: resetAll(ns),
+        // State
+        isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
         getCount: getCount(ns),
+        // Timer state
+        isPaused: isPaused(ns)(defaultSpawnOptions),
+        getRemaining: getRemaining$1(ns)(defaultSpawnOptions),
     };
 };
 
