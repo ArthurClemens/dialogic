@@ -1,4 +1,4 @@
-import { notification, showItem } from "dialogic";
+import { notification, showItem, setDomElement } from "dialogic";
 import test from "ava";
 
 const getDefaultItemId = (name: string) => `${name}-default_${name}-default_${name}`;
@@ -114,12 +114,7 @@ test("Insert to DOM", t => {
     .then(item => {
       t.is(item.id, "notification-dom-default_notification");
       t.is(notification.exists(spawnOptions), true);
-      item.instanceTransitionOptions = {
-        showDuration: .5,
-        domElements: {
-          domElement: div
-        },
-      };
+      setDomElement(div, item);
       return showItem(item).then(item => {
         t.is(item.id, "notification-dom-default_notification");
         t.is(notification.exists(spawnOptions), true);

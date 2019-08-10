@@ -2,7 +2,7 @@ import Stream from "mithril/stream";
 
 export const showItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
 export const hideItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
-export const setTransitionOptions: (transitionOptions: Dialogic.TransitionOptions, item: Dialogic.Item) => void;
+export const setDomElement: (domElement: HTMLElement, item: Dialogic.Item) => void;
 export const filterCandidates: (ns: string, items: Dialogic.NamespaceStore, spawnOptions: Dialogic.SpawnOptions) => Dialogic.Item[];
 export const states: Dialogic.States;
 export const selectors: Dialogic.StateSelectors;
@@ -79,13 +79,9 @@ export namespace Dialogic {
   
   // Transitions
 
-  type DomElements = {
-    domElement?: HTMLElement;
-  };
-
   type Transitions = {
-    show?: (domElements?: DomElements) => any;
-    hide?: (domElements?: DomElements) => any;
+    show?: (domElement?: HTMLElement) => any;
+    hide?: (domElement?: HTMLElement) => any;
   }
 
   type DefaultTransitionOptions = {
@@ -93,10 +89,10 @@ export namespace Dialogic {
   }
 
   type TransitionOptions = {
-    [key:string]: string | number | Transitions | DomElements | ConfirmFn | undefined;
+    [key:string]: string | number | Transitions | HTMLElement | ConfirmFn | undefined;
     didHide?: ConfirmFn;
     didShow?: ConfirmFn;
-    domElements?: DomElements;
+    domElement?: HTMLElement;
     hideDelay?: number;
     hideDuration?: number;
     hideTimingFunction?: string;
@@ -124,11 +120,11 @@ export namespace Dialogic {
     ns: string;
     id: string;
     instanceOptions: InstanceOptions;
-    instanceTransitionOptions: TransitionOptions;
     key: string;
     spawnOptions: SpawnOptions;
     timer?: Timer;
     transitionOptions: TransitionOptions;
+    instanceTransitionOptions: TransitionOptions;
     transitionState: ItemTransitionState;
   }
 
@@ -233,7 +229,8 @@ export namespace Dialogic {
   type InstanceEvent = {
     detail: {
       spawnOptions: Dialogic.SpawnOptions;
-      transitionOptions: Dialogic.TransitionOptions;
+      // transitionOptions: Dialogic.TransitionOptions;
+      domElement: HTMLElement
     }
   }
 

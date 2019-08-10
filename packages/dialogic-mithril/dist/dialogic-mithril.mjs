@@ -24,9 +24,7 @@ const transitionOptionKeys = {
     transitions: true,
 };
 const transition = (props, mode) => {
-    const domElement = props.domElements
-        ? props.domElements.domElement
-        : null;
+    const domElement = props.domElement;
     if (!domElement) {
         return Promise.resolve("no domElement");
     }
@@ -111,7 +109,7 @@ const getTransitionProps = (props, isShow) => {
         delay,
         timingFunction,
         ...(transition
-            ? transition(props.domElements)
+            ? transition(props.domElement)
             : undefined)
     };
 };
@@ -845,8 +843,8 @@ const hideItem = async function (item) {
     actions.remove(item.ns, item.id);
     return Promise.resolve(copy);
 };
-const setTransitionOptions = (transitionOptions, item) => {
-    item.instanceTransitionOptions = transitionOptions;
+const setDomElement = (domElement, item) => {
+    item.transitionOptions.domElement = domElement;
 };
 
 const dialogical = ({ ns, queued, timeout }) => {
@@ -893,7 +891,7 @@ const handleDispatch = (ns) => (event, fn) => {
     // Update dispatching item:
     const maybeItem = selectors.find(ns, event.detail.spawnOptions);
     if (maybeItem.just) {
-        setTransitionOptions(event.detail.transitionOptions, maybeItem.just);
+        setDomElement(event.detail.domElement, maybeItem.just);
     }
     // Find item to transition:
     const maybeTransitioningItem = selectors.find(ns, event.detail.spawnOptions);
@@ -915,13 +913,7 @@ const Instance = ({ attrs }) => {
         dispatchFn({
             detail: {
                 spawnOptions: attrs.spawnOptions,
-                transitionOptions: {
-                    className: attrs.transitionOptions.className,
-                    showClassName: attrs.transitionOptions.showClassName,
-                    domElements: {
-                        domElement
-                    },
-                },
+                domElement
             }
         });
     };

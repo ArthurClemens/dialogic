@@ -36,20 +36,18 @@ type GetTransitionProps = {
 	hideDelay?: number;
 	hideTimingFunction?: string;
 	transitions?: Dialogic.Transitions;
-	domElements?: Dialogic.DomElements;
+	domElement?: HTMLElement;
 }
 
 type TransitionProps = {
-	domElements?: Dialogic.DomElements;
+	domElement?: HTMLElement;
 	showClassElement?: HTMLElement;
 	showClassName?: string;
 	transitionClassName?: string;
 } & GetTransitionProps;
 
 export const transition = (props: TransitionProps, mode?: string) => {
-	const domElement = props.domElements
-		? props.domElements.domElement
-		: null;
+	const domElement = props.domElement;
 	if (!domElement) {
 		return Promise.resolve("no domElement");
 	}
@@ -145,7 +143,7 @@ const getTransitionProps = (props: GetTransitionProps, isShow: boolean) => {
 		delay,
 		timingFunction,
 		...(transition
-			? transition(props.domElements)
+			? transition(props.domElement)
 			: undefined
 		)
 	};

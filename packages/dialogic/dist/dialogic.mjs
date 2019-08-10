@@ -22,9 +22,7 @@ const transitionOptionKeys = {
     transitions: true,
 };
 const transition = (props, mode) => {
-    const domElement = props.domElements
-        ? props.domElements.domElement
-        : null;
+    const domElement = props.domElement;
     if (!domElement) {
         return Promise.resolve("no domElement");
     }
@@ -109,7 +107,7 @@ const getTransitionProps = (props, isShow) => {
         delay,
         timingFunction,
         ...(transition
-            ? transition(props.domElements)
+            ? transition(props.domElement)
             : undefined)
     };
 };
@@ -843,8 +841,8 @@ const hideItem = async function (item) {
     actions.remove(item.ns, item.id);
     return Promise.resolve(copy);
 };
-const setTransitionOptions = (transitionOptions, item) => {
-    item.instanceTransitionOptions = transitionOptions;
+const setDomElement = (domElement, item) => {
+    item.transitionOptions.domElement = domElement;
 };
 
 const dialogical = ({ ns, queued, timeout }) => {
@@ -887,5 +885,5 @@ const dialog = dialogical({ ns: "dialog" });
 
 const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
 
-export { actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, performOnItem, resetAll, resume, selectors, setTransitionOptions, show, showItem, states, toggle };
+export { actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, performOnItem, resetAll, resume, selectors, setDomElement, show, showItem, states, toggle };
 //# sourceMappingURL=dialogic.mjs.map

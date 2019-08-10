@@ -302,6 +302,6 @@ export const hideItem: Dialogic.InitiateItemTransitionFn = async function(item) 
   return Promise.resolve(copy);
 };
 
-export const setTransitionOptions = (transitionOptions: Dialogic.TransitionOptions, item: Dialogic.Item) => {
-  item.instanceTransitionOptions = transitionOptions;
+export const setDomElement = (domElement: HTMLElement, item: Dialogic.Item) => {
+  item.transitionOptions.domElement = domElement;
 };

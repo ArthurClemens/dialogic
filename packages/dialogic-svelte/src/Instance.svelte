@@ -17,14 +17,8 @@
 
   const dispatchTransition = (name) =>
     dispatch(name, {
-      spawnOptions,
-      transitionOptions: {
-        className: transitionOptions.className,
-        showClassName: transitionOptions.showClassName,
-        domElements: {
-          domElement
-        },
-      },
+      spawnOptions, // for identification
+      domElement
     });
 
   const show = () => {

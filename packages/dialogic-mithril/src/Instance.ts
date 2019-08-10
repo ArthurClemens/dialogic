@@ -17,14 +17,8 @@ export const Instance: InstanceFn = ({ attrs }) => {
   const dispatchTransition = (dispatchFn: Dialogic.DialogicalInstanceDispatchFn) => {
     dispatchFn({
       detail: {
-        spawnOptions: attrs.spawnOptions,
-        transitionOptions: {
-          className: attrs.transitionOptions.className,
-          showClassName: attrs.transitionOptions.showClassName,
-          domElements: {
-            domElement
-          },
-        },
+        spawnOptions: attrs.spawnOptions, // for identification
+        domElement
       }
     });
   };

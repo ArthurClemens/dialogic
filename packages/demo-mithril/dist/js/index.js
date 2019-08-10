@@ -1640,7 +1640,7 @@ var transitionOptionKeys = {
 };
 
 var transition = function transition(props, mode) {
-  var domElement = props.domElements ? props.domElements.domElement : null;
+  var domElement = props.domElement;
 
   if (!domElement) {
     return Promise.resolve("no domElement");
@@ -1727,7 +1727,7 @@ var getTransitionProps = function getTransitionProps(props, isShow) {
     duration: duration,
     delay: delay,
     timingFunction: timingFunction
-  }, transition ? transition(props.domElements) : undefined);
+  }, transition ? transition(props.domElement) : undefined);
 };
 
 function createCommonjsModule(fn, module) {
@@ -2670,8 +2670,8 @@ function () {
   };
 }();
 
-var setTransitionOptions = function setTransitionOptions(transitionOptions, item) {
-  item.instanceTransitionOptions = transitionOptions;
+var setDomElement = function setDomElement(domElement, item) {
+  item.transitionOptions.domElement = domElement;
 };
 
 var dialogical = function dialogical(_ref8) {
@@ -2732,7 +2732,7 @@ var handleDispatch = function handleDispatch(ns) {
     var maybeItem = selectors.find(ns, event.detail.spawnOptions);
 
     if (maybeItem.just) {
-      setTransitionOptions(event.detail.transitionOptions, maybeItem.just);
+      setDomElement(event.detail.domElement, maybeItem.just);
     } // Find item to transition:
 
 
@@ -2771,13 +2771,7 @@ var Instance = function Instance(_ref9) {
     dispatchFn({
       detail: {
         spawnOptions: attrs.spawnOptions,
-        transitionOptions: {
-          className: attrs.transitionOptions.className,
-          showClassName: attrs.transitionOptions.showClassName,
-          domElements: {
-            domElement: domElement
-          }
-        }
+        domElement: domElement
       }
     });
   };
@@ -4851,19 +4845,17 @@ const dialogThreeProps = {
 };
 const dialogFourProps = {
     transitions: {
-        show: (domElements) => {
-            const el = domElements.domElement;
+        show: (domElement) => {
             return {
                 duration: 0.5,
-                before: () => ((el.style.opacity = "0"),
-                    (el.style.transform = "translate3d(0, 20px, 0)")),
-                transition: () => ((el.style.opacity = "1"),
-                    (el.style.transform = "translate3d(0, 0px,  0)"))
+                before: () => ((domElement.style.opacity = "0"),
+                    (domElement.style.transform = "translate3d(0, 20px, 0)")),
+                transition: () => ((domElement.style.opacity = "1"),
+                    (domElement.style.transform = "translate3d(0, 0px,  0)"))
             };
         },
-        hide: (domElements) => {
-            const el = domElements.domElement;
-            return { duration: 0.5, transition: () => el.style.opacity = "0" };
+        hide: (domElement) => {
+            return { duration: 0.5, transition: () => domElement.style.opacity = "0" };
         },
     },
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
@@ -4872,9 +4864,8 @@ const dialogFourProps = {
 };
 const clearOptions = {
     transitions: {
-        hide: (domElements) => {
-            const el = domElements.domElement;
-            return { duration: 0.5, delay: 0, transition: () => el.style.opacity = "0" };
+        hide: (domElement) => {
+            return { duration: 0.5, delay: 0, transition: () => domElement.style.opacity = "0" };
         }
     }
 };
