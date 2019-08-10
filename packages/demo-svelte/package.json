@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
     "build": "rollup -c",
     "autobuild": "rollup -c -w",
     "dev": "run-p start:dev autobuild",

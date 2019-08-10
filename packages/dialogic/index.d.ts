@@ -26,10 +26,11 @@ export namespace Dialogic {
     show: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
     hide: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
     toggle: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
+    hideAll: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => void;
+    resetAll: () => Promise<void>;
+    // Timer commands
     pause: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
     resume: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: Dialogic.TimerResumeOptions) => Promise<string>;
-    resetAll: () => Promise<any>;
-    hideAll: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => void;
     // State
     isDisplayed: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean;
     getCount: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number;

@@ -8,9 +8,6 @@ const Notification = Dialogical(notification);
 
 export { Dialogical, dialog, Dialog, notification, Notification };
 
-const DEBUG = false;
-
 states.map(state => (
-  DEBUG && console.log(JSON.stringify(state, null, 2)),
   m.redraw()
 ));

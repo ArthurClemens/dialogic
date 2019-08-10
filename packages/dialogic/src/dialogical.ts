@@ -7,11 +7,11 @@ export const dialogical = ({ ns, queued, timeout } : { ns: string, queued?: bool
   const defaultSpawnOptions: Dialogic.DefaultSpawnOptions = {
     id: defaultId,
     spawn: defaultSpawn,
-    queued
+    ...(queued && { queued })
   };
 
   const defaultTransitionOptions: Dialogic.DefaultTransitionOptions = {
-    timeout
+    ...(timeout !== undefined && { timeout })
   };
 
   return {
@@ -25,10 +25,11 @@ export const dialogical = ({ ns, queued, timeout } : { ns: string, queued?: bool
     show: show(ns)(defaultSpawnOptions)(defaultTransitionOptions),
     toggle: toggle(ns)(defaultSpawnOptions)(defaultTransitionOptions),
     hide: hide(ns)(defaultSpawnOptions),
-    pause: pause(ns)(defaultSpawnOptions),
-    resume: resume(ns)(defaultSpawnOptions),
     hideAll: hideAll(ns)(defaultSpawnOptions),
     resetAll: resetAll(ns),
+    // Timer commands
+    pause: pause(ns)(defaultSpawnOptions),
+    resume: resume(ns)(defaultSpawnOptions),
     // State
     isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
     getCount: getCount(ns),

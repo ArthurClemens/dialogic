@@ -51,7 +51,7 @@ export const transition = (props: TransitionProps, mode?: string) => {
 		? props.domElements.domElement
 		: null;
 	if (!domElement) {
-		throw new Error("No DOM element");
+		return Promise.resolve("no domElement");
 	}
 	return new Promise(resolve => {
 		const style = domElement.style;

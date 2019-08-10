@@ -71,8 +71,8 @@ const getOptionsByKind: TGetOptionsByKind = options => {
   }, initial );
 };
 
-const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (defaultTransitionOptions: Dialogic.DefaultTransitionOptions) => (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => {
-  return new Promise((resolve) => {
+const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (defaultTransitionOptions: Dialogic.DefaultTransitionOptions) => (options: Dialogic.Options = {}, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => {
+  return new Promise(resolve => {
 
     const spawnOptions = {
       ...defaultSpawnOptions,
@@ -87,15 +87,22 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
       ...defaultTransitionOptions,
       ...instanceTransitionOptions,
     };
+    
+    const hasTransitionOptions = Object.keys(transitionOptions as Dialogic.TransitionOptions).reduce((acc, key) => {
+      const value = (transitionOptions as Dialogic.TransitionOptions)[key];
+      return value !== undefined
+        ? acc + 1
+        : acc;
+    }, 0) > 0;
 
-    transitionOptions.didShow = (id) => {
+    transitionOptions.didShow = id => {
       if (options.didShow) {
         options.didShow(id);
       }
       return resolve(id);
     };
 
-    transitionOptions.didHide = (id) => {
+    transitionOptions.didHide = id => {
       if (options.didHide) {
         options.didHide(id);
       }
@@ -111,7 +118,7 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
       id,
       timer: transitionOptions.timeout
         ? Timer()
-        : undefined,
+        : undefined, // when timeout is undefined or 0
       key: uid, // Uniquely identify each item for keyed display
       transitionState: transitionStates.none as Dialogic.ItemTransitionState,
     };
@@ -127,11 +134,15 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
       };
       actions.replace(ns, existingItem.id, replacingItem);
       // While this is a replace action, mimic a show
-      transitionOptions.didShow(spawnOptions.id);
+      transitionOptions.didShow(id);
     } else {
       actions.add(ns, item);
       // This will instantiate and draw the instance
       // The instance will call `showDialog` in `onMount`
+    }
+
+    if (!hasTransitionOptions) {
+      resolve(id);
     }
   });
 };
@@ -170,7 +181,7 @@ export const hide: PerformOnItemNsFn =
       item.transitionState = transitionStates.hiding as Dialogic.ItemTransitionState;
       return hideItem(ns, item);
     } else {
-      return Promise.resolve();
+      return Promise.resolve(item.id);
     }
   });
 
@@ -179,7 +190,7 @@ export const pause: PerformOnItemNsFn =
     if (item && item.timer) {
       item.timer.actions.pause();
     }
-    return Promise.resolve();
+    return Promise.resolve(item.id);
   });
 
 export const resume: PerformOnItemNsFn =
@@ -187,7 +198,7 @@ export const resume: PerformOnItemNsFn =
     if (item && item.timer) {
       item.timer.actions.resume(fnOptions.minimumDuration);
     }
-    return Promise.resolve();
+    return Promise.resolve(item.id);
   });
 
 export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getResultPromise") => (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
@@ -262,17 +273,13 @@ export const getCount = (ns: string) => (instanceSpawnOptions?: Dialogic.Instanc
   selectors.getCount(ns, instanceSpawnOptions);
 
 const transitionItem = (item: Dialogic.Item, mode: string) => {
-  try {
-    return transition(
-      {
-        ...item.instanceTransitionOptions,
-        ...item.transitionOptions,
-      },
-      mode
-    );
-  } catch(e) {
-    throw new Error(`Transition error: ${e}`);
-  }
+  return transition(
+    {
+      ...item.instanceTransitionOptions,
+      ...item.transitionOptions,
+    },
+    mode
+  );
 };
 
 const deferredHideItem = async function(ns: string, item: Dialogic.Item, timer: Dialogic.Timer, timeout: number) {
@@ -284,11 +291,11 @@ const deferredHideItem = async function(ns: string, item: Dialogic.Item, timer: 
 
 export const showItem: Dialogic.InitiateItemTransitionFn = async function(ns, item) {
   await(transitionItem(item, MODE.SHOW));
-  item.transitionOptions.didShow && await(item.transitionOptions.didShow(item.spawnOptions.id));
+  item.transitionOptions.didShow && await(item.transitionOptions.didShow(item.id));
   if (item.transitionOptions.timeout && item.timer) {
     await(deferredHideItem(ns, item, item.timer, item.transitionOptions.timeout));
   }
-  return item.spawnOptions.id;
+  return Promise.resolve(item.id);
 };
 
 export const hideItem: Dialogic.InitiateItemTransitionFn = async function(ns, item) {
@@ -297,8 +304,9 @@ export const hideItem: Dialogic.InitiateItemTransitionFn = async function(ns, it
     item.timer.actions.stop();
   }
   await(transitionItem(item, MODE.HIDE));
-  item.transitionOptions.didHide && await(item.transitionOptions.didHide(item.spawnOptions.id));
+  item.transitionOptions.didHide && await(item.transitionOptions.didHide(item.id));
+  const itemId = item.id;
   actions.remove(ns, item.id);
-  return item.spawnOptions.id;
+  return Promise.resolve(itemId);
 };
 

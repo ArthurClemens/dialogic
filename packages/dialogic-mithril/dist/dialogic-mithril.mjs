@@ -28,7 +28,7 @@ const transition = (props, mode) => {
         ? props.domElements.domElement
         : null;
     if (!domElement) {
-        throw new Error("No DOM element");
+        return Promise.resolve("no domElement");
     }
     return new Promise(resolve => {
         const style = domElement.style;
@@ -651,8 +651,8 @@ const getOptionsByKind = options => {
         return acc;
     }, initial);
 };
-const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOptions) => (options, instanceSpawnOptions) => {
-    return new Promise((resolve) => {
+const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOptions) => (options = {}, instanceSpawnOptions) => {
+    return new Promise(resolve => {
         const spawnOptions = {
             ...defaultSpawnOptions,
             ...instanceSpawnOptions,
@@ -663,13 +663,19 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
             ...defaultTransitionOptions,
             ...instanceTransitionOptions,
         };
-        transitionOptions.didShow = (id) => {
+        const hasTransitionOptions = Object.keys(transitionOptions).reduce((acc, key) => {
+            const value = transitionOptions[key];
+            return value !== undefined
+                ? acc + 1
+                : acc;
+        }, 0) > 0;
+        transitionOptions.didShow = id => {
             if (options.didShow) {
                 options.didShow(id);
             }
             return resolve(id);
         };
-        transitionOptions.didHide = (id) => {
+        transitionOptions.didHide = id => {
             if (options.didHide) {
                 options.didHide(id);
             }
@@ -699,12 +705,15 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
             };
             actions.replace(ns, existingItem.id, replacingItem);
             // While this is a replace action, mimic a show
-            transitionOptions.didShow(spawnOptions.id);
+            transitionOptions.didShow(id);
         }
         else {
             actions.add(ns, item);
             // This will instantiate and draw the instance
             // The instance will call `showDialog` in `onMount`
+        }
+        if (!hasTransitionOptions) {
+            resolve(id);
         }
     });
 };
@@ -740,20 +749,20 @@ const hide = performOnItem((ns, item) => {
         return hideItem(ns, item);
     }
     else {
-        return Promise.resolve();
+        return Promise.resolve(item.id);
     }
 });
 const pause = performOnItem((ns, item) => {
     if (item && item.timer) {
         item.timer.actions.pause();
     }
-    return Promise.resolve();
+    return Promise.resolve(item.id);
 });
 const resume = performOnItem((ns, item, fnOptions = {}) => {
     if (item && item.timer) {
         item.timer.actions.resume(fnOptions.minimumDuration);
     }
-    return Promise.resolve();
+    return Promise.resolve(item.id);
 });
 const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
     const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
@@ -815,15 +824,10 @@ const hideAll = (ns) => (defaultSpawnOptions) => (options, instanceSpawnOptions)
 };
 const getCount = (ns) => (instanceSpawnOptions) => selectors.getCount(ns, instanceSpawnOptions);
 const transitionItem = (item, mode) => {
-    try {
-        return transition({
-            ...item.instanceTransitionOptions,
-            ...item.transitionOptions,
-        }, mode);
-    }
-    catch (e) {
-        throw new Error(`Transition error: ${e}`);
-    }
+    return transition({
+        ...item.instanceTransitionOptions,
+        ...item.transitionOptions,
+    }, mode);
 };
 const deferredHideItem = async function (ns, item, timer, timeout) {
     timer.actions.start(() => (hideItem(ns, item)), timeout);
@@ -831,11 +835,11 @@ const deferredHideItem = async function (ns, item, timer, timeout) {
 };
 const showItem = async function (ns, item) {
     await (transitionItem(item, MODE.SHOW));
-    item.transitionOptions.didShow && await (item.transitionOptions.didShow(item.spawnOptions.id));
+    item.transitionOptions.didShow && await (item.transitionOptions.didShow(item.id));
     if (item.transitionOptions.timeout && item.timer) {
         await (deferredHideItem(ns, item, item.timer, item.transitionOptions.timeout));
     }
-    return item.spawnOptions.id;
+    return Promise.resolve(item.id);
 };
 const hideItem = async function (ns, item) {
     // Stop any running timer
@@ -843,9 +847,10 @@ const hideItem = async function (ns, item) {
         item.timer.actions.stop();
     }
     await (transitionItem(item, MODE.HIDE));
-    item.transitionOptions.didHide && await (item.transitionOptions.didHide(item.spawnOptions.id));
+    item.transitionOptions.didHide && await (item.transitionOptions.didHide(item.id));
+    const itemId = item.id;
     actions.remove(ns, item.id);
-    return item.spawnOptions.id;
+    return Promise.resolve(itemId);
 };
 
 const dialogical = ({ ns, queued, timeout }) => {
@@ -854,10 +859,10 @@ const dialogical = ({ ns, queued, timeout }) => {
     const defaultSpawnOptions = {
         id: defaultId,
         spawn: defaultSpawn,
-        queued
+        ...(queued && { queued })
     };
     const defaultTransitionOptions = {
-        timeout
+        ...(timeout !== undefined && { timeout })
     };
     return {
         // Identification
@@ -870,10 +875,11 @@ const dialogical = ({ ns, queued, timeout }) => {
         show: show(ns)(defaultSpawnOptions)(defaultTransitionOptions),
         toggle: toggle(ns)(defaultSpawnOptions)(defaultTransitionOptions),
         hide: hide(ns)(defaultSpawnOptions),
-        pause: pause(ns)(defaultSpawnOptions),
-        resume: resume(ns)(defaultSpawnOptions),
         hideAll: hideAll(ns)(defaultSpawnOptions),
         resetAll: resetAll(ns),
+        // Timer commands
+        pause: pause(ns)(defaultSpawnOptions),
+        resume: resume(ns)(defaultSpawnOptions),
         // State
         isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
         getCount: getCount(ns),

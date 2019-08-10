@@ -1,0 +1,23 @@
+{
+  "name": "test-dialogic",
+  "private": true,
+  "description": "Test Dialogic",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
+    "test": "ava"
+  },
+  "ava": {
+		"require": [
+			"./test/_setup-browser-env.js"
+		]
+	},
+  "dependencies": {
+    "dialogic": "0.0.1"
+  },
+  "devDependencies": {
+    "ava": "^2.2.0",
+    "browser-env": "^3.2.6"
+  }
+}

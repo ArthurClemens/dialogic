@@ -5,6 +5,7 @@
   "main": "dist/dialogic-svelte",
   "module": "dist/dialogic-svelte.mjs",
   "scripts": {
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
     "clean": "rm -rf dist/*",
     "rollup": "ENTRY=./src/index.js ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.svelte.js && ENTRY=./src/index.js ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.svelte.js ",
     "build": "npm run clean && npm run rollup && npm run size",

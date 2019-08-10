@@ -5,6 +5,7 @@
   "main": "dist/dialogic",
   "module": "dist/dialogic.mjs",
   "scripts": {
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
     "clean": "rm -rf dist/*",
     "rollup": "TYPESCRIPT=1 MODULE=1 ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js && TYPESCRIPT=1 ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js ",
     "build": "npm run clean && npm run rollup && npm run size",
