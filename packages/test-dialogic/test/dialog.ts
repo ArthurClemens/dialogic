@@ -12,10 +12,10 @@ test("show: should resolve when no transition options passed", t => {
     timeout: undefined
   };
   const spawnOptions = undefined;
-  const showPromise = dialog.show(options, spawnOptions);
-  return showPromise.then(item => {
-    t.is(item.id, defaultItemId);
-  });
+  return dialog.show(options, spawnOptions)
+    .then(item => {
+      t.is(item.id, defaultItemId);
+    });
 });
 
 test("show, getCount: when no spawn options are specified, the state should contain 1 item", t => {
@@ -64,12 +64,12 @@ test("show, hide: should hide the item", t => {
   const spawnOptions = {
     id: "show-hide"
   }
-  const showPromise = dialog.show(options, spawnOptions);
-  return showPromise.then(() => {
-    t.is(dialog.isDisplayed(spawnOptions), true);
-    return dialog.hide(spawnOptions).then(item => {
-      t.is(item.id, "dialog-show-hide-default_dialog");
-      t.is(dialog.isDisplayed(spawnOptions), false);
-    })
-  });
+  return dialog.show(options, spawnOptions)
+    .then(() => {
+      t.is(dialog.isDisplayed(spawnOptions), true);
+      return dialog.hide(spawnOptions).then(item => {
+        t.is(item.id, "dialog-show-hide-default_dialog");
+        t.is(dialog.isDisplayed(spawnOptions), false);
+      })
+    });
 });

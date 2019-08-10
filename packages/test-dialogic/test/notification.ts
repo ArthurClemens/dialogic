@@ -12,10 +12,10 @@ test("show: should resolve when no transition options passed", t => {
     timeout: undefined
   };
   const spawnOptions = undefined;
-  const showPromise = notification.show(options, spawnOptions);
-  return showPromise.then(item => {
-    t.is(item.id, defaultItemId);
-  });
+  return notification.show(options, spawnOptions)
+    .then(item => {
+      t.is(item.id, defaultItemId);
+    });
 });
 
 test("show, getCount: even when no spawn options are specified, the state should contain multiple (queued) items", t => {
@@ -71,14 +71,14 @@ test("show, hide: should hide the item", t => {
   const spawnOptions = {
     id: "show-hide"
   }
-  const showPromise = notification.show(options, spawnOptions);
-  return showPromise.then(() => {
-    t.is(notification.isDisplayed(spawnOptions), true);
-    return notification.hide(spawnOptions).then(item => {
-      t.is(item.id, "notification-show-hide-default_notification");
-      t.is(notification.isDisplayed(spawnOptions), false);
-    })
-  });
+  return notification.show(options, spawnOptions)
+    .then(() => {
+      t.is(notification.isDisplayed(spawnOptions), true);
+      return notification.hide(spawnOptions).then(item => {
+        t.is(item.id, "notification-show-hide-default_notification");
+        t.is(notification.isDisplayed(spawnOptions), false);
+      })
+    });
 });
 
 test("show, toggle: should hide the item", t => {
@@ -89,13 +89,13 @@ test("show, toggle: should hide the item", t => {
   const spawnOptions = {
     id: "show-toggle"
   }
-  const showPromise = notification.show(options, spawnOptions);
-  return showPromise.then(() => {
-    t.is(notification.isDisplayed(spawnOptions), true);
-    return notification.toggle(options, spawnOptions).then(item => {
-      t.is(item.id, "notification-show-toggle-default_notification");
-      t.is(notification.isDisplayed(spawnOptions), false);
-    })
-  });
+  return notification.show(options, spawnOptions)
+    .then(() => {
+      t.is(notification.isDisplayed(spawnOptions), true);
+      return notification.toggle(options, spawnOptions).then(item => {
+        t.is(item.id, "notification-show-toggle-default_notification");
+        t.is(notification.isDisplayed(spawnOptions), false);
+      })
+    });
 });
 
