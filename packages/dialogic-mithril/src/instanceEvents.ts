@@ -9,7 +9,7 @@ export const handleDispatch = (ns: string) => (event: Dialogic.InstanceEvent, fn
   // Find item to transition:
   const maybeTransitioningItem: Dialogic.MaybeItem = selectors.find(ns, event.detail.spawnOptions);
   if (maybeTransitioningItem.just) {
-    fn(ns, maybeTransitioningItem.just);
+    fn(maybeTransitioningItem.just);
   }
 };
 

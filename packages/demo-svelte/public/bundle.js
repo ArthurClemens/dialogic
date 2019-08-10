@@ -1140,6 +1140,7 @@ var app = (function () {
             };
             const uid = getUid().toString();
             const item = {
+                ns,
                 spawnOptions,
                 transitionOptions,
                 instanceTransitionOptions,
@@ -1201,7 +1202,7 @@ var app = (function () {
     const hide = performOnItem((ns, item) => {
         if (item.transitionState !== transitionStates.hiding) {
             item.transitionState = transitionStates.hiding;
-            return hideItem(ns, item);
+            return hideItem(item);
         }
         else {
             return Promise.resolve(item);
@@ -1267,13 +1268,13 @@ var app = (function () {
         const allItems = selectors.getAll(ns);
         const regularItems = allItems.filter((item) => !spawnOptions.queued && !item.spawnOptions.queued);
         const queuedItems = allItems.filter((item) => spawnOptions.queued || item.spawnOptions.queued);
-        regularItems.forEach((item) => hideItem(ns, getOverridingTransitionOptions(item, options)));
+        regularItems.forEach((item) => hideItem(getOverridingTransitionOptions(item, options)));
         if (queuedItems.length > 0) {
             const [current,] = queuedItems;
             // Make sure that any remaining items don't suddenly appear
             actions.store(ns, [current]);
             // Transition the current item
-            hideItem(ns, getOverridingTransitionOptions(current, options))
+            hideItem(getOverridingTransitionOptions(current, options))
                 .then(() => actions.removeAll(ns));
         }
     };
@@ -1284,19 +1285,19 @@ var app = (function () {
             ...item.transitionOptions,
         }, mode);
     };
-    const deferredHideItem = async function (ns, item, timer, timeout) {
-        timer.actions.start(() => (hideItem(ns, item)), timeout);
+    const deferredHideItem = async function (item, timer, timeout) {
+        timer.actions.start(() => (hideItem(item)), timeout);
         return getTimerProperty("getResultPromise");
     };
-    const showItem = async function (ns, item) {
+    const showItem = async function (item) {
         await (transitionItem(item, MODE.SHOW));
         item.transitionOptions.didShow && await (item.transitionOptions.didShow(item));
         if (item.transitionOptions.timeout && item.timer) {
-            await (deferredHideItem(ns, item, item.timer, item.transitionOptions.timeout));
+            await (deferredHideItem(item, item.timer, item.transitionOptions.timeout));
         }
         return Promise.resolve(item);
     };
-    const hideItem = async function (ns, item) {
+    const hideItem = async function (item) {
         // Stop any running timer
         if (item.timer) {
             item.timer.actions.stop();
@@ -1304,7 +1305,7 @@ var app = (function () {
         await (transitionItem(item, MODE.HIDE));
         item.transitionOptions.didHide && await (item.transitionOptions.didHide(item));
         const copy = JSON.parse(JSON.stringify(item));
-        actions.remove(ns, item.id);
+        actions.remove(item.ns, item.id);
         return Promise.resolve(copy);
     };
 
@@ -1512,7 +1513,7 @@ var app = (function () {
       // Find item to transition:
       const maybeTransitioningItem = selectors.find(ns, event.detail.spawnOptions);
       if (maybeTransitioningItem.just) {
-        fn(ns, maybeTransitioningItem.just);
+        fn(maybeTransitioningItem.just);
       }
     };
 

@@ -1,7 +1,7 @@
 import Stream from "mithril/stream";
 
-export const showItem: (ns: string, item: Dialogic.Item) => Promise<Dialogic.Item>;
-export const hideItem: (ns: string, item: Dialogic.Item) => Promise<Dialogic.Item>;
+export const showItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
+export const hideItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
 export const filterCandidates: (ns: string, items: Dialogic.NamespaceStore, spawnOptions: Dialogic.SpawnOptions) => Dialogic.Item[];
 export const states: Dialogic.States;
 export const selectors: Dialogic.StateSelectors;
@@ -120,6 +120,7 @@ export namespace Dialogic {
     "hiding";
 
   type Item = {
+    ns: string;
     id: string;
     instanceOptions: InstanceOptions;
     instanceTransitionOptions: TransitionOptions;
@@ -138,7 +139,7 @@ export namespace Dialogic {
     store: NamespaceStore;
   }
 
-  type InitiateItemTransitionFn = (ns: string, item: Item) => Promise<Item>;
+  type InitiateItemTransitionFn = (item: Item) => Promise<Item>;
 
   type TimerCallback = () => any;
   type TOnFinishFn = () => void;

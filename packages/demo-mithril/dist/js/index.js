@@ -2322,13 +2322,7 @@ var createInstance = function createInstance(ns) {
               instanceTransitionOptions = _getOptionsByKind.transitionOptions,
               instanceOptions = _getOptionsByKind.instanceOptions;
 
-          var transitionOptions = _objectSpread({}, defaultTransitionOptions, {}, instanceTransitionOptions); // const hasTransitionOptions = Object.keys(transitionOptions as Dialogic.TransitionOptions).reduce((acc, key) => {
-          //   const value = (transitionOptions as Dialogic.TransitionOptions)[key];
-          //   return value !== undefined
-          //     ? acc + 1
-          //     : acc;
-          // }, 0) > 0;
-
+          var transitionOptions = _objectSpread({}, defaultTransitionOptions, {}, instanceTransitionOptions);
 
           transitionOptions.didShow = function (item) {
             if (options.didShow) {
@@ -2348,6 +2342,7 @@ var createInstance = function createInstance(ns) {
 
           var uid = getUid().toString();
           var item = {
+            ns: ns,
             spawnOptions: spawnOptions,
             transitionOptions: transitionOptions,
             instanceTransitionOptions: instanceTransitionOptions,
@@ -2374,10 +2369,9 @@ var createInstance = function createInstance(ns) {
           } else {
             actions.add(ns, item); // This will instantiate and draw the instance
             // The instance will call `showDialog` in `onMount`
-          } // if (!hasTransitionOptions) {
+          }
 
-
-          resolve(item); // }
+          resolve(item);
         });
       };
     };
@@ -2431,7 +2425,7 @@ var performOnItem = function performOnItem(fn) {
 var hide = performOnItem(function (ns, item) {
   if (item.transitionState !== transitionStates.hiding) {
     item.transitionState = transitionStates.hiding;
-    return hideItem(ns, item);
+    return hideItem(item);
   } else {
     return Promise.resolve(item);
   }
@@ -2476,7 +2470,7 @@ var getTimerProperty = function getTimerProperty(timerProp) {
 var isPaused = getTimerProperty("isPaused");
 var getRemaining$1 = getTimerProperty("getRemaining");
 
-var isDisplayed = function isDisplayed(ns) {
+var exists = function exists(ns) {
   return function (defaultSpawnOptions) {
     return function (instanceSpawnOptions) {
       var maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
@@ -2523,7 +2517,7 @@ var hideAll = function hideAll(ns) {
         return spawnOptions.queued || item.spawnOptions.queued;
       });
       regularItems.forEach(function (item) {
-        return hideItem(ns, getOverridingTransitionOptions(item, options));
+        return hideItem(getOverridingTransitionOptions(item, options));
       });
 
       if (queuedItems.length > 0) {
@@ -2533,7 +2527,7 @@ var hideAll = function hideAll(ns) {
 
         actions.store(ns, [current]); // Transition the current item
 
-        hideItem(ns, getOverridingTransitionOptions(current, options)).then(function () {
+        hideItem(getOverridingTransitionOptions(current, options)).then(function () {
           return actions.removeAll(ns);
         });
       }
@@ -2556,13 +2550,13 @@ var deferredHideItem =
 function () {
   var _ref5 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
   /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(ns, item, timer, timeout) {
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(item, timer, timeout) {
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             timer.actions.start(function () {
-              return hideItem(ns, item);
+              return hideItem(item);
             }, timeout);
             return _context.abrupt("return", getTimerProperty("getResultPromise"));
 
@@ -2574,7 +2568,7 @@ function () {
     }, _callee);
   }));
 
-  return function deferredHideItem(_x, _x2, _x3, _x4) {
+  return function deferredHideItem(_x, _x2, _x3) {
     return _ref5.apply(this, arguments);
   };
 }();
@@ -2584,7 +2578,7 @@ var showItem =
 function () {
   var _ref6 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
   /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(ns, item) {
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(item) {
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -2610,7 +2604,7 @@ function () {
             }
 
             _context2.next = 9;
-            return deferredHideItem(ns, item, item.timer, item.transitionOptions.timeout);
+            return deferredHideItem(item, item.timer, item.transitionOptions.timeout);
 
           case 9:
             return _context2.abrupt("return", Promise.resolve(item));
@@ -2623,7 +2617,7 @@ function () {
     }, _callee2);
   }));
 
-  return function showItem(_x5, _x6) {
+  return function showItem(_x4) {
     return _ref6.apply(this, arguments);
   };
 }();
@@ -2633,7 +2627,7 @@ var hideItem =
 function () {
   var _ref7 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
   /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(ns, item) {
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(item) {
     var copy;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
       while (1) {
@@ -2660,7 +2654,7 @@ function () {
 
           case 7:
             copy = JSON.parse(JSON.stringify(item));
-            actions.remove(ns, item.id);
+            actions.remove(item.ns, item.id);
             return _context3.abrupt("return", Promise.resolve(copy));
 
           case 10:
@@ -2671,7 +2665,7 @@ function () {
     }, _callee3);
   }));
 
-  return function hideItem(_x7, _x8) {
+  return function hideItem(_x5) {
     return _ref7.apply(this, arguments);
   };
 }();
@@ -2711,7 +2705,7 @@ var dialogical = function dialogical(_ref8) {
     pause: pause(ns)(defaultSpawnOptions),
     resume: resume(ns)(defaultSpawnOptions),
     // State
-    isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
+    exists: exists(ns)(defaultSpawnOptions),
     getCount: getCount(ns),
     // Timer state
     isPaused: isPaused(ns)(defaultSpawnOptions),
@@ -2741,7 +2735,7 @@ var handleDispatch = function handleDispatch(ns) {
     var maybeTransitioningItem = selectors.find(ns, event.detail.spawnOptions);
 
     if (maybeTransitioningItem.just) {
-      fn(ns, maybeTransitioningItem.just);
+      fn(maybeTransitioningItem.just);
     }
   };
 };
@@ -4971,7 +4965,7 @@ const App = {
                 })
             }, "With timeout"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", `Is paused: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].isPaused({ id: "timer" })}`),
-            dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].isDisplayed({ id: "timer" })
+            dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].exists({ id: "timer" })
                 ? mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()(_Remaining__WEBPACK_IMPORTED_MODULE_3__["Remaining"], { getRemaining: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].getRemaining({ id: "timer" }) }))
                 : null,
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
@@ -5094,9 +5088,9 @@ const App = {
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", { className: "title is-2" }, "Notification"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", `Notification count: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getCount()}`),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", `Is shown: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].isDisplayed({ spawn: "NO" })}`),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", `Is shown: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].exists({ spawn: "NO" })}`),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", `Is paused: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].isPaused({ spawn: "NO" })}`),
-            dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].isDisplayed({ spawn: "NO" })
+            dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].exists({ spawn: "NO" })
                 ? mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", mithril__WEBPACK_IMPORTED_MODULE_0___default()(_Remaining__WEBPACK_IMPORTED_MODULE_3__["Remaining"], { getRemaining: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getRemaining({ spawn: "NO" }) }))
                 : null,
         ]),

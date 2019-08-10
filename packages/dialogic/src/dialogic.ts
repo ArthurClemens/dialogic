@@ -104,6 +104,7 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
 
     const uid = getUid().toString();
     const item: Dialogic.Item = {
+      ns,
       spawnOptions,
       transitionOptions,
       instanceTransitionOptions,
@@ -170,7 +171,7 @@ export const hide: PerformOnItemNsFn =
   performOnItem((ns, item) => {
     if (item.transitionState !== transitionStates.hiding as Dialogic.ItemTransitionState) {
       item.transitionState = transitionStates.hiding as Dialogic.ItemTransitionState;
-      return hideItem(ns, item);
+      return hideItem(item);
     } else {
       return Promise.resolve(item);
     }
@@ -247,7 +248,7 @@ export const hideAll = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
   const queuedItems = allItems.filter((item: Dialogic.Item) => spawnOptions.queued || item.spawnOptions.queued);
 
   regularItems.forEach((item: Dialogic.Item) =>
-    hideItem(ns, getOverridingTransitionOptions(item, options))
+    hideItem(getOverridingTransitionOptions(item, options))
   );
 
   if (queuedItems.length > 0) {
@@ -255,7 +256,7 @@ export const hideAll = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
     // Make sure that any remaining items don't suddenly appear
     actions.store(ns, [current]);
     // Transition the current item
-    hideItem(ns, getOverridingTransitionOptions(current, options))
+    hideItem(getOverridingTransitionOptions(current, options))
       .then(() => actions.removeAll(ns))
   };
 };
@@ -273,23 +274,23 @@ const transitionItem = (item: Dialogic.Item, mode: string) => {
   );
 };
 
-const deferredHideItem = async function(ns: string, item: Dialogic.Item, timer: Dialogic.Timer, timeout: number) {
+const deferredHideItem = async function(item: Dialogic.Item, timer: Dialogic.Timer, timeout: number) {
   timer.actions.start(() => (
-    hideItem(ns, item)
+    hideItem(item)
   ), timeout);
   return getTimerProperty("getResultPromise")
 };
 
-export const showItem: Dialogic.InitiateItemTransitionFn = async function(ns, item) {
+export const showItem: Dialogic.InitiateItemTransitionFn = async function(item) {
   await(transitionItem(item, MODE.SHOW));
   item.transitionOptions.didShow && await(item.transitionOptions.didShow(item));
   if (item.transitionOptions.timeout && item.timer) {
-    await(deferredHideItem(ns, item, item.timer, item.transitionOptions.timeout));
+    await(deferredHideItem(item, item.timer, item.transitionOptions.timeout));
   }
   return Promise.resolve(item);
 };
 
-export const hideItem: Dialogic.InitiateItemTransitionFn = async function(ns, item) {
+export const hideItem: Dialogic.InitiateItemTransitionFn = async function(item) {
   // Stop any running timer
   if (item.timer) {
     item.timer.actions.stop();
@@ -297,6 +298,6 @@ export const hideItem: Dialogic.InitiateItemTransitionFn = async function(ns, it
   await(transitionItem(item, MODE.HIDE));
   item.transitionOptions.didHide && await(item.transitionOptions.didHide(item));
   const copy = JSON.parse(JSON.stringify(item));
-  actions.remove(ns, item.id);
+  actions.remove(item.ns, item.id);
   return Promise.resolve(copy);
 };

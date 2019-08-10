@@ -120,7 +120,7 @@ test("Insert to DOM", t => {
           domElement: div
         },
       };
-      return showItem("notification", item).then(item => {
+      return showItem(item).then(item => {
         t.is(item.id, "notification-dom-default_notification");
         t.is(notification.exists(spawnOptions), true);
       })
