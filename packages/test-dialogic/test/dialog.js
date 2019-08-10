@@ -13,8 +13,8 @@ test("show: should resolve when no transition options passed", t => {
   };
   const spawnOptions = undefined;
   const showPromise = dialog.show(options, spawnOptions);
-  return showPromise.then(result => {
-    t.is(result, defaultItemId);
+  return showPromise.then(item => {
+    t.is(item.id, defaultItemId);
   });
 });
 
@@ -67,8 +67,8 @@ test("show, hide: should hide the item", t => {
   const showPromise = dialog.show(options, spawnOptions);
   return showPromise.then(() => {
     t.is(dialog.isDisplayed(spawnOptions), true);
-    return dialog.hide(spawnOptions).then(result => {
-      t.is(result, "dialog-show-hide-default_dialog");
+    return dialog.hide(spawnOptions).then(item => {
+      t.is(item.id, "dialog-show-hide-default_dialog");
       t.is(dialog.isDisplayed(spawnOptions), false);
     })
   });

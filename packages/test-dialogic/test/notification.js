@@ -13,8 +13,8 @@ test("show: should resolve when no transition options passed", t => {
   };
   const spawnOptions = undefined;
   const showPromise = notification.show(options, spawnOptions);
-  return showPromise.then(result => {
-    t.is(result, defaultItemId);
+  return showPromise.then(item => {
+    t.is(item.id, defaultItemId);
   });
 });
 
@@ -74,8 +74,8 @@ test("show, hide: should hide the item", t => {
   const showPromise = notification.show(options, spawnOptions);
   return showPromise.then(() => {
     t.is(notification.isDisplayed(spawnOptions), true);
-    return notification.hide(spawnOptions).then(result => {
-      t.is(result, "notification-show-hide-default_notification");
+    return notification.hide(spawnOptions).then(item => {
+      t.is(item.id, "notification-show-hide-default_notification");
       t.is(notification.isDisplayed(spawnOptions), false);
     })
   });
@@ -92,8 +92,8 @@ test("show, toggle: should hide the item", t => {
   const showPromise = notification.show(options, spawnOptions);
   return showPromise.then(() => {
     t.is(notification.isDisplayed(spawnOptions), true);
-    return notification.toggle(options, spawnOptions).then(result => {
-      t.is(result, "notification-show-toggle-default_notification");
+    return notification.toggle(options, spawnOptions).then(item => {
+      t.is(item.id, "notification-show-toggle-default_notification");
       t.is(notification.isDisplayed(spawnOptions), false);
     })
   });

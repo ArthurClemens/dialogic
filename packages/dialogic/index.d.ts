@@ -1,7 +1,7 @@
 import Stream from "mithril/stream";
 
-export const showItem: (ns: string, item: Dialogic.Item) => Promise<string>;
-export const hideItem: (ns: string, item: Dialogic.Item) => Promise<string>;
+export const showItem: (ns: string, item: Dialogic.Item) => Promise<Dialogic.Item>;
+export const hideItem: (ns: string, item: Dialogic.Item) => Promise<Dialogic.Item>;
 export const filterCandidates: (ns: string, items: Dialogic.NamespaceStore, spawnOptions: Dialogic.SpawnOptions) => Dialogic.Item[];
 export const states: Dialogic.States;
 export const selectors: Dialogic.StateSelectors;
@@ -10,7 +10,7 @@ export const dialog: Dialogic.DialogicInstance;
 export const notification: Dialogic.DialogicInstance;
 
 type ConfirmFn = {
-  (spawnId: string):  void;
+  (item: Dialogic.Item):  void;
 }
 
 export namespace Dialogic {
@@ -23,14 +23,14 @@ export namespace Dialogic {
     // Configuration
     defaultSpawnOptions: DefaultSpawnOptions;
     // Commands
-    show: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
-    hide: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
-    toggle: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
+    show: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<Dialogic.Item>;
+    hide: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<Dialogic.Item>;
+    toggle: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<Dialogic.Item>;
     hideAll: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => void;
     resetAll: () => Promise<void>;
     // Timer commands
-    pause: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
-    resume: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: Dialogic.TimerResumeOptions) => Promise<string>;
+    pause: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<Dialogic.Item>;
+    resume: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: Dialogic.TimerResumeOptions) => Promise<Dialogic.Item>;
     // State
     isDisplayed: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean;
     getCount: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number;
@@ -138,7 +138,7 @@ export namespace Dialogic {
     store: NamespaceStore;
   }
 
-  type InitiateItemTransitionFn = (ns: string, item: Item) => Promise<string>;
+  type InitiateItemTransitionFn = (ns: string, item: Item) => Promise<Item>;
 
   type TimerCallback = () => any;
   type TOnFinishFn = () => void;

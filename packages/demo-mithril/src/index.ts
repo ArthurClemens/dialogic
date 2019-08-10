@@ -169,8 +169,8 @@ const App = {
             onclick: () =>
               dialog.show(
                 {
-                  didShow: (id: string) => console.log("didShow", id),
-                  didHide: (id: string) => console.log("didHide", id),
+                  didShow: (item: Dialogic.Item) => console.log("didShow", item),
+                  didHide: (item: Dialogic.Item) => console.log("didHide", item),
                   showDuration: 0.5,
                   showDelay: 0.25,
                   component: DefaultContent,
@@ -179,7 +179,7 @@ const App = {
                 {
                   id: "withPromise"
                 }
-              ).then((id: string) => console.log("dialog shown", id)) 
+              ).then((item: Dialogic.Item) => console.log("dialog shown", item)) 
           },
           "Show with promises"
         ),
@@ -188,7 +188,7 @@ const App = {
             className: "button",
             onclick: () =>
               dialog.hide({ id: "withPromise" })
-                .then((id: string) => console.log("dialog hidden", id))
+                .then((item: Dialogic.Item) => console.log("dialog hidden", item))
           },
           "Hide"
         ),
@@ -440,8 +440,8 @@ const App = {
               const title = "N " + getRandomId();
               return notification.show(
                 {
-                  didShow: (id: string) => console.log("didShow", id, title),
-                  didHide: (id: string) => console.log("didHide", id, title),
+                  didShow: (item: Dialogic.Item) => console.log("didShow", item, title),
+                  didHide: (item: Dialogic.Item) => console.log("didHide", item, title),
                   component: DefaultContent,
                   className: "xxx-timings",
                   showClassName: "xxx-visible-timings",
@@ -450,7 +450,7 @@ const App = {
                 {
                   spawn: "NO"
                 }
-              ).then((id: string) => console.log("notification shown", id, title))
+              ).then((item: Dialogic.Item) => console.log("notification shown", item, title))
             } 
           },
           "Show notification"
@@ -475,7 +475,7 @@ const App = {
           {
             className: "button",
             onclick: () =>
-              notification.hide({ spawn: "NO" }).then((id: string) => console.log("notification hidden from App", id))
+              notification.hide({ spawn: "NO" }).then((item: Dialogic.Item) => console.log("notification hidden from App", item))
           },
           "Hide"
         ),

@@ -7,7 +7,7 @@ import { pipe } from "./utils";
 export { states, actions, selectors } from "./state";
 
 type PerformFn = (ns:string, item: Dialogic.Item, fnOptions?: any) => any;
-type PerformOnItemNsFn = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<any>;
+type PerformOnItemNsFn = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<Dialogic.Item>;
 type PerformOnItemFn = (fn: PerformFn) => PerformOnItemNsFn;
 
 let uid = 0;
@@ -95,18 +95,18 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
         : acc;
     }, 0) > 0;
 
-    transitionOptions.didShow = id => {
+    transitionOptions.didShow = item => {
       if (options.didShow) {
-        options.didShow(id);
+        options.didShow(item);
       }
-      return resolve(id);
+      return resolve(item);
     };
 
-    transitionOptions.didHide = id => {
+    transitionOptions.didHide = item => {
       if (options.didHide) {
-        options.didHide(id);
+        options.didHide(item);
       }
-      return resolve(id);
+      return resolve(item);
     };
 
     const uid = getUid().toString();
@@ -134,7 +134,7 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
       };
       actions.replace(ns, existingItem.id, replacingItem);
       // While this is a replace action, mimic a show
-      transitionOptions.didShow(id);
+      transitionOptions.didShow(item);
     } else {
       actions.add(ns, item);
       // This will instantiate and draw the instance
@@ -142,7 +142,7 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
     }
 
     if (!hasTransitionOptions) {
-      resolve(id);
+      resolve(item);
     }
   });
 };
@@ -181,7 +181,7 @@ export const hide: PerformOnItemNsFn =
       item.transitionState = transitionStates.hiding as Dialogic.ItemTransitionState;
       return hideItem(ns, item);
     } else {
-      return Promise.resolve(item.id);
+      return Promise.resolve(item);
     }
   });
 
@@ -190,7 +190,7 @@ export const pause: PerformOnItemNsFn =
     if (item && item.timer) {
       item.timer.actions.pause();
     }
-    return Promise.resolve(item.id);
+    return Promise.resolve(item);
   });
 
 export const resume: PerformOnItemNsFn =
@@ -198,7 +198,7 @@ export const resume: PerformOnItemNsFn =
     if (item && item.timer) {
       item.timer.actions.resume(fnOptions.minimumDuration);
     }
-    return Promise.resolve(item.id);
+    return Promise.resolve(item);
   });
 
 export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getResultPromise") => (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
@@ -286,16 +286,16 @@ const deferredHideItem = async function(ns: string, item: Dialogic.Item, timer: 
   timer.actions.start(() => (
     hideItem(ns, item)
   ), timeout);
-  return getTimerProperty("getResultPromise") // timer.selectors.getResultPromise();
+  return getTimerProperty("getResultPromise")
 };
 
 export const showItem: Dialogic.InitiateItemTransitionFn = async function(ns, item) {
   await(transitionItem(item, MODE.SHOW));
-  item.transitionOptions.didShow && await(item.transitionOptions.didShow(item.id));
+  item.transitionOptions.didShow && await(item.transitionOptions.didShow(item));
   if (item.transitionOptions.timeout && item.timer) {
     await(deferredHideItem(ns, item, item.timer, item.transitionOptions.timeout));
   }
-  return Promise.resolve(item.id);
+  return Promise.resolve(item);
 };
 
 export const hideItem: Dialogic.InitiateItemTransitionFn = async function(ns, item) {
@@ -304,9 +304,9 @@ export const hideItem: Dialogic.InitiateItemTransitionFn = async function(ns, it
     item.timer.actions.stop();
   }
   await(transitionItem(item, MODE.HIDE));
-  item.transitionOptions.didHide && await(item.transitionOptions.didHide(item.id));
-  const itemId = item.id;
+  item.transitionOptions.didHide && await(item.transitionOptions.didHide(item));
+  const copy = JSON.parse(JSON.stringify(item));
   actions.remove(ns, item.id);
-  return Promise.resolve(itemId);
+  return Promise.resolve(copy);
 };
 

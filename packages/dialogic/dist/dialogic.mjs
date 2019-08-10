@@ -667,17 +667,17 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
                 ? acc + 1
                 : acc;
         }, 0) > 0;
-        transitionOptions.didShow = id => {
+        transitionOptions.didShow = item => {
             if (options.didShow) {
-                options.didShow(id);
+                options.didShow(item);
             }
-            return resolve(id);
+            return resolve(item);
         };
-        transitionOptions.didHide = id => {
+        transitionOptions.didHide = item => {
             if (options.didHide) {
-                options.didHide(id);
+                options.didHide(item);
             }
-            return resolve(id);
+            return resolve(item);
         };
         const uid = getUid().toString();
         const item = {
@@ -703,7 +703,7 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
             };
             actions.replace(ns, existingItem.id, replacingItem);
             // While this is a replace action, mimic a show
-            transitionOptions.didShow(id);
+            transitionOptions.didShow(item);
         }
         else {
             actions.add(ns, item);
@@ -711,7 +711,7 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
             // The instance will call `showDialog` in `onMount`
         }
         if (!hasTransitionOptions) {
-            resolve(id);
+            resolve(item);
         }
     });
 };
@@ -747,20 +747,20 @@ const hide = performOnItem((ns, item) => {
         return hideItem(ns, item);
     }
     else {
-        return Promise.resolve(item.id);
+        return Promise.resolve(item);
     }
 });
 const pause = performOnItem((ns, item) => {
     if (item && item.timer) {
         item.timer.actions.pause();
     }
-    return Promise.resolve(item.id);
+    return Promise.resolve(item);
 });
 const resume = performOnItem((ns, item, fnOptions = {}) => {
     if (item && item.timer) {
         item.timer.actions.resume(fnOptions.minimumDuration);
     }
-    return Promise.resolve(item.id);
+    return Promise.resolve(item);
 });
 const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
     const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
@@ -829,15 +829,15 @@ const transitionItem = (item, mode) => {
 };
 const deferredHideItem = async function (ns, item, timer, timeout) {
     timer.actions.start(() => (hideItem(ns, item)), timeout);
-    return getTimerProperty("getResultPromise"); // timer.selectors.getResultPromise();
+    return getTimerProperty("getResultPromise");
 };
 const showItem = async function (ns, item) {
     await (transitionItem(item, MODE.SHOW));
-    item.transitionOptions.didShow && await (item.transitionOptions.didShow(item.id));
+    item.transitionOptions.didShow && await (item.transitionOptions.didShow(item));
     if (item.transitionOptions.timeout && item.timer) {
         await (deferredHideItem(ns, item, item.timer, item.transitionOptions.timeout));
     }
-    return Promise.resolve(item.id);
+    return Promise.resolve(item);
 };
 const hideItem = async function (ns, item) {
     // Stop any running timer
@@ -845,10 +845,10 @@ const hideItem = async function (ns, item) {
         item.timer.actions.stop();
     }
     await (transitionItem(item, MODE.HIDE));
-    item.transitionOptions.didHide && await (item.transitionOptions.didHide(item.id));
-    const itemId = item.id;
+    item.transitionOptions.didHide && await (item.transitionOptions.didHide(item));
+    const copy = JSON.parse(JSON.stringify(item));
     actions.remove(ns, item.id);
-    return Promise.resolve(itemId);
+    return Promise.resolve(copy);
 };
 
 const dialogical = ({ ns, queued, timeout }) => {

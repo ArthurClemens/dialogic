@@ -1643,7 +1643,7 @@ var transition = function transition(props, mode) {
   var domElement = props.domElements ? props.domElements.domElement : null;
 
   if (!domElement) {
-    throw new Error("No DOM element");
+    return Promise.resolve("no domElement");
   }
 
   return new Promise(function (resolve) {
@@ -2310,7 +2310,9 @@ var getOptionsByKind = function getOptionsByKind(options) {
 var createInstance = function createInstance(ns) {
   return function (defaultSpawnOptions) {
     return function (defaultTransitionOptions) {
-      return function (options, instanceSpawnOptions) {
+      return function () {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var instanceSpawnOptions = arguments.length > 1 ? arguments[1] : undefined;
         return new Promise(function (resolve) {
           var spawnOptions = _objectSpread({}, defaultSpawnOptions, {}, instanceSpawnOptions);
 
@@ -2322,20 +2324,25 @@ var createInstance = function createInstance(ns) {
 
           var transitionOptions = _objectSpread({}, defaultTransitionOptions, {}, instanceTransitionOptions);
 
-          transitionOptions.didShow = function (id) {
+          var hasTransitionOptions = Object.keys(transitionOptions).reduce(function (acc, key) {
+            var value = transitionOptions[key];
+            return value !== undefined ? acc + 1 : acc;
+          }, 0) > 0;
+
+          transitionOptions.didShow = function (item) {
             if (options.didShow) {
-              options.didShow(id);
+              options.didShow(item);
             }
 
-            return resolve(id);
+            return resolve(item);
           };
 
-          transitionOptions.didHide = function (id) {
+          transitionOptions.didHide = function (item) {
             if (options.didHide) {
-              options.didHide(id);
+              options.didHide(item);
             }
 
-            return resolve(id);
+            return resolve(item);
           };
 
           var uid = getUid().toString();
@@ -2362,10 +2369,14 @@ var createInstance = function createInstance(ns) {
 
             actions.replace(ns, existingItem.id, replacingItem); // While this is a replace action, mimic a show
 
-            transitionOptions.didShow(spawnOptions.id);
+            transitionOptions.didShow(item);
           } else {
             actions.add(ns, item); // This will instantiate and draw the instance
             // The instance will call `showDialog` in `onMount`
+          }
+
+          if (!hasTransitionOptions) {
+            resolve(item);
           }
         });
       };
@@ -2422,7 +2433,7 @@ var hide = performOnItem(function (ns, item) {
     item.transitionState = transitionStates.hiding;
     return hideItem(ns, item);
   } else {
-    return Promise.resolve();
+    return Promise.resolve(item);
   }
 });
 var pause = performOnItem(function (ns, item) {
@@ -2430,7 +2441,7 @@ var pause = performOnItem(function (ns, item) {
     item.timer.actions.pause();
   }
 
-  return Promise.resolve();
+  return Promise.resolve(item);
 });
 var resume = performOnItem(function (ns, item) {
   var fnOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
@@ -2439,7 +2450,7 @@ var resume = performOnItem(function (ns, item) {
     item.timer.actions.resume(fnOptions.minimumDuration);
   }
 
-  return Promise.resolve();
+  return Promise.resolve(item);
 });
 
 var getTimerProperty = function getTimerProperty(timerProp) {
@@ -2537,11 +2548,7 @@ var getCount = function getCount(ns) {
 };
 
 var transitionItem = function transitionItem(item, mode) {
-  try {
-    return transition(_objectSpread({}, item.instanceTransitionOptions, {}, item.transitionOptions), mode);
-  } catch (e) {
-    throw new Error("Transition error: ".concat(e));
-  }
+  return transition(_objectSpread({}, item.instanceTransitionOptions, {}, item.transitionOptions), mode);
 };
 
 var deferredHideItem =
@@ -2594,7 +2601,7 @@ function () {
             }
 
             _context2.next = 6;
-            return item.transitionOptions.didShow(item.spawnOptions.id);
+            return item.transitionOptions.didShow(item);
 
           case 6:
             if (!(item.transitionOptions.timeout && item.timer)) {
@@ -2606,7 +2613,7 @@ function () {
             return deferredHideItem(ns, item, item.timer, item.transitionOptions.timeout);
 
           case 9:
-            return _context2.abrupt("return", item.spawnOptions.id);
+            return _context2.abrupt("return", Promise.resolve(item));
 
           case 10:
           case "end":
@@ -2627,6 +2634,7 @@ function () {
   var _ref7 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
   /*#__PURE__*/
   _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(ns, item) {
+    var copy;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -2648,13 +2656,14 @@ function () {
             }
 
             _context3.next = 7;
-            return item.transitionOptions.didHide(item.spawnOptions.id);
+            return item.transitionOptions.didHide(item);
 
           case 7:
+            copy = JSON.parse(JSON.stringify(item));
             actions.remove(ns, item.id);
-            return _context3.abrupt("return", item.spawnOptions.id);
+            return _context3.abrupt("return", Promise.resolve(copy));
 
-          case 9:
+          case 10:
           case "end":
             return _context3.stop();
         }
@@ -2673,14 +2682,18 @@ var dialogical = function dialogical(_ref8) {
       timeout = _ref8.timeout;
   var defaultId = "default_".concat(ns);
   var defaultSpawn = "default_".concat(ns);
-  var defaultSpawnOptions = {
+
+  var defaultSpawnOptions = _objectSpread({
     id: defaultId,
-    spawn: defaultSpawn,
+    spawn: defaultSpawn
+  }, queued && {
     queued: queued
-  };
-  var defaultTransitionOptions = {
+  });
+
+  var defaultTransitionOptions = _objectSpread({}, timeout !== undefined && {
     timeout: timeout
-  };
+  });
+
   return {
     // Identification
     ns: ns,
@@ -2692,10 +2705,11 @@ var dialogical = function dialogical(_ref8) {
     show: show(ns)(defaultSpawnOptions)(defaultTransitionOptions),
     toggle: toggle(ns)(defaultSpawnOptions)(defaultTransitionOptions),
     hide: hide(ns)(defaultSpawnOptions),
-    pause: pause(ns)(defaultSpawnOptions),
-    resume: resume(ns)(defaultSpawnOptions),
     hideAll: hideAll(ns)(defaultSpawnOptions),
     resetAll: resetAll(ns),
+    // Timer commands
+    pause: pause(ns)(defaultSpawnOptions),
+    resume: resume(ns)(defaultSpawnOptions),
     // State
     isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
     getCount: getCount(ns),
@@ -4911,20 +4925,20 @@ const App = {
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
-                    didShow: (id) => console.log("didShow", id),
-                    didHide: (id) => console.log("didHide", id),
+                    didShow: (item) => console.log("didShow", item),
+                    didHide: (item) => console.log("didHide", item),
                     showDuration: 0.5,
                     showDelay: 0.25,
                     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
                     title: "With Promise"
                 }, {
                     id: "withPromise"
-                }).then((id) => console.log("dialog shown", id))
+                }).then((item) => console.log("dialog shown", item))
             }, "Show with promises"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ id: "withPromise" })
-                    .then((id) => console.log("dialog hidden", id))
+                    .then((item) => console.log("dialog hidden", item))
             }, "Hide"),
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
@@ -5092,15 +5106,15 @@ const App = {
                 onclick: () => {
                     const title = "N " + getRandomId();
                     return dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].show({
-                        didShow: (id) => console.log("didShow", id, title),
-                        didHide: (id) => console.log("didHide", id, title),
+                        didShow: (item) => console.log("didShow", item, title),
+                        didHide: (item) => console.log("didHide", item, title),
                         component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
                         className: "xxx-timings",
                         showClassName: "xxx-visible-timings",
                         title,
                     }, {
                         spawn: "NO"
-                    }).then((id) => console.log("notification shown", id, title));
+                    }).then((item) => console.log("notification shown", item, title));
                 }
             }, "Show notification"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
@@ -5113,7 +5127,7 @@ const App = {
             }, "Resume"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
-                onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].hide({ spawn: "NO" }).then((id) => console.log("notification hidden from App", id))
+                onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].hide({ spawn: "NO" }).then((item) => console.log("notification hidden from App", item))
             }, "Hide"),
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [

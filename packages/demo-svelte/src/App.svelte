@@ -187,8 +187,8 @@
   <button
     on:click={() => dialog.show(
       {
-        didShow: id => console.log("didShow", id),
-        didHide: id => console.log("didHide", id),
+        didShow: item => console.log("didShow", item),
+        didHide: item => console.log("didHide", item),
         showDuration: 0.5,
         showDelay: 0.25,
         component: DefaultContent,
@@ -197,13 +197,13 @@
       {
         id: "withPromise"
       }
-    ).then(id => console.log("dialog shown", id))}>
+    ).then(item => console.log("dialog shown", item))}>
     Show with promises
   </button>
   <button on:click={() => dialog.hide(
     {
       id: "withPromise"
-    }).then(id => console.log("dialog hidden", id))}>Hide</button>
+    }).then(item => console.log("dialog hidden", item))}>Hide</button>
 </div>
 
 <div>
@@ -308,8 +308,8 @@ Initially shown dialog
       const title = "N " + getRandomId();
       notification.show(
         {
-          didShow: id => console.log("didShow", id, title),
-          didHide: id => console.log("didHide", id, title),
+          didShow: item => console.log("didShow", item, title),
+          didHide: item => console.log("didHide", item, title),
           component: DefaultContent,
           className: "xxx-timings",
           showClassName: "xxx-visible-timings",
@@ -318,7 +318,7 @@ Initially shown dialog
         {
           spawn: "NO"
         }
-      ).then(id => console.log("notification shown", id, title))}
+      ).then(item => console.log("notification shown", item, title))}
     }
     >
     Queued
@@ -328,7 +328,7 @@ Initially shown dialog
       {
         spawn: "NO"
       }
-    )).then(id => console.log("notification hidden from App", id))}>Hide</button>
+    )).then(item => console.log("notification hidden from App", item))}>Hide</button>
   <button on:click={() => notification.pause(
       {
         spawn: "NO"

@@ -491,7 +491,7 @@ var app = (function () {
             ? props.domElements.domElement
             : null;
         if (!domElement) {
-            throw new Error("No DOM element");
+            return Promise.resolve("no domElement");
         }
         return new Promise(resolve => {
             const style = domElement.style;
@@ -1114,8 +1114,8 @@ var app = (function () {
             return acc;
         }, initial);
     };
-    const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOptions) => (options, instanceSpawnOptions) => {
-        return new Promise((resolve) => {
+    const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOptions) => (options = {}, instanceSpawnOptions) => {
+        return new Promise(resolve => {
             const spawnOptions = {
                 ...defaultSpawnOptions,
                 ...instanceSpawnOptions,
@@ -1126,17 +1126,23 @@ var app = (function () {
                 ...defaultTransitionOptions,
                 ...instanceTransitionOptions,
             };
-            transitionOptions.didShow = (id) => {
+            const hasTransitionOptions = Object.keys(transitionOptions).reduce((acc, key) => {
+                const value = transitionOptions[key];
+                return value !== undefined
+                    ? acc + 1
+                    : acc;
+            }, 0) > 0;
+            transitionOptions.didShow = item => {
                 if (options.didShow) {
-                    options.didShow(id);
+                    options.didShow(item);
                 }
-                return resolve(id);
+                return resolve(item);
             };
-            transitionOptions.didHide = (id) => {
+            transitionOptions.didHide = item => {
                 if (options.didHide) {
-                    options.didHide(id);
+                    options.didHide(item);
                 }
-                return resolve(id);
+                return resolve(item);
             };
             const uid = getUid().toString();
             const item = {
@@ -1162,12 +1168,15 @@ var app = (function () {
                 };
                 actions.replace(ns, existingItem.id, replacingItem);
                 // While this is a replace action, mimic a show
-                transitionOptions.didShow(spawnOptions.id);
+                transitionOptions.didShow(item);
             }
             else {
                 actions.add(ns, item);
                 // This will instantiate and draw the instance
                 // The instance will call `showDialog` in `onMount`
+            }
+            if (!hasTransitionOptions) {
+                resolve(item);
             }
         });
     };
@@ -1203,20 +1212,20 @@ var app = (function () {
             return hideItem(ns, item);
         }
         else {
-            return Promise.resolve();
+            return Promise.resolve(item);
         }
     });
     const pause = performOnItem((ns, item) => {
         if (item && item.timer) {
             item.timer.actions.pause();
         }
-        return Promise.resolve();
+        return Promise.resolve(item);
     });
     const resume = performOnItem((ns, item, fnOptions = {}) => {
         if (item && item.timer) {
             item.timer.actions.resume(fnOptions.minimumDuration);
         }
-        return Promise.resolve();
+        return Promise.resolve(item);
     });
     const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
         const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
@@ -1278,27 +1287,22 @@ var app = (function () {
     };
     const getCount = (ns) => (instanceSpawnOptions) => selectors.getCount(ns, instanceSpawnOptions);
     const transitionItem = (item, mode) => {
-        try {
-            return transition({
-                ...item.instanceTransitionOptions,
-                ...item.transitionOptions,
-            }, mode);
-        }
-        catch (e) {
-            throw new Error(`Transition error: ${e}`);
-        }
+        return transition({
+            ...item.instanceTransitionOptions,
+            ...item.transitionOptions,
+        }, mode);
     };
     const deferredHideItem = async function (ns, item, timer, timeout) {
         timer.actions.start(() => (hideItem(ns, item)), timeout);
-        return getTimerProperty("getResultPromise"); // timer.selectors.getResultPromise();
+        return getTimerProperty("getResultPromise");
     };
     const showItem = async function (ns, item) {
         await (transitionItem(item, MODE.SHOW));
-        item.transitionOptions.didShow && await (item.transitionOptions.didShow(item.spawnOptions.id));
+        item.transitionOptions.didShow && await (item.transitionOptions.didShow(item));
         if (item.transitionOptions.timeout && item.timer) {
             await (deferredHideItem(ns, item, item.timer, item.transitionOptions.timeout));
         }
-        return item.spawnOptions.id;
+        return Promise.resolve(item);
     };
     const hideItem = async function (ns, item) {
         // Stop any running timer
@@ -1306,9 +1310,10 @@ var app = (function () {
             item.timer.actions.stop();
         }
         await (transitionItem(item, MODE.HIDE));
-        item.transitionOptions.didHide && await (item.transitionOptions.didHide(item.spawnOptions.id));
+        item.transitionOptions.didHide && await (item.transitionOptions.didHide(item));
+        const copy = JSON.parse(JSON.stringify(item));
         actions.remove(ns, item.id);
-        return item.spawnOptions.id;
+        return Promise.resolve(copy);
     };
 
     const dialogical = ({ ns, queued, timeout }) => {
@@ -1317,10 +1322,10 @@ var app = (function () {
         const defaultSpawnOptions = {
             id: defaultId,
             spawn: defaultSpawn,
-            queued
+            ...(queued && { queued })
         };
         const defaultTransitionOptions = {
-            timeout
+            ...(timeout !== undefined && { timeout })
         };
         return {
             // Identification
@@ -1333,10 +1338,11 @@ var app = (function () {
             show: show(ns)(defaultSpawnOptions)(defaultTransitionOptions),
             toggle: toggle(ns)(defaultSpawnOptions)(defaultTransitionOptions),
             hide: hide(ns)(defaultSpawnOptions),
-            pause: pause(ns)(defaultSpawnOptions),
-            resume: resume(ns)(defaultSpawnOptions),
             hideAll: hideAll(ns)(defaultSpawnOptions),
             resetAll: resetAll(ns),
+            // Timer commands
+            pause: pause(ns)(defaultSpawnOptions),
+            resume: resume(ns)(defaultSpawnOptions),
             // State
             isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
             getCount: getCount(ns),
@@ -2657,36 +2663,36 @@ var app = (function () {
     			add_location(button5, file$4, 182, 2, 4038);
     			add_location(div1, file$4, 149, 0, 3458);
     			add_location(button6, file$4, 186, 2, 4157);
-    			add_location(button7, file$4, 202, 2, 4565);
+    			add_location(button7, file$4, 202, 2, 4577);
     			add_location(div2, file$4, 185, 0, 4149);
-    			add_location(button8, file$4, 209, 2, 4715);
-    			add_location(button9, file$4, 218, 2, 4944);
-    			add_location(div3, file$4, 208, 0, 4707);
-    			add_location(button10, file$4, 221, 2, 5037);
-    			add_location(button11, file$4, 225, 2, 5155);
-    			add_location(div4, file$4, 220, 0, 5029);
-    			add_location(button12, file$4, 228, 2, 5248);
-    			add_location(button13, file$4, 232, 2, 5369);
-    			add_location(div5, file$4, 227, 0, 5240);
-    			add_location(button14, file$4, 235, 2, 5463);
-    			add_location(button15, file$4, 242, 2, 5637);
-    			add_location(div6, file$4, 234, 0, 5455);
-    			add_location(hr1, file$4, 245, 0, 5718);
-    			add_location(p1, file$4, 248, 2, 5734);
-    			add_location(div7, file$4, 247, 0, 5726);
-    			add_location(p2, file$4, 253, 2, 5778);
-    			add_location(div8, file$4, 252, 0, 5770);
-    			add_location(hr2, file$4, 257, 0, 5841);
-    			add_location(button16, file$4, 260, 2, 5870);
-    			add_location(button17, file$4, 267, 2, 6067);
-    			add_location(div9, file$4, 259, 0, 5862);
-    			add_location(p3, file$4, 271, 2, 6150);
-    			add_location(div10, file$4, 270, 0, 6142);
-    			add_location(hr3, file$4, 275, 0, 6203);
-    			add_location(button18, file$4, 278, 2, 6241);
-    			add_location(button19, file$4, 282, 2, 6319);
-    			add_location(div11, file$4, 277, 0, 6233);
-    			add_location(div12, file$4, 285, 0, 6400);
+    			add_location(button8, file$4, 209, 2, 4731);
+    			add_location(button9, file$4, 218, 2, 4960);
+    			add_location(div3, file$4, 208, 0, 4723);
+    			add_location(button10, file$4, 221, 2, 5053);
+    			add_location(button11, file$4, 225, 2, 5171);
+    			add_location(div4, file$4, 220, 0, 5045);
+    			add_location(button12, file$4, 228, 2, 5264);
+    			add_location(button13, file$4, 232, 2, 5385);
+    			add_location(div5, file$4, 227, 0, 5256);
+    			add_location(button14, file$4, 235, 2, 5479);
+    			add_location(button15, file$4, 242, 2, 5653);
+    			add_location(div6, file$4, 234, 0, 5471);
+    			add_location(hr1, file$4, 245, 0, 5734);
+    			add_location(p1, file$4, 248, 2, 5750);
+    			add_location(div7, file$4, 247, 0, 5742);
+    			add_location(p2, file$4, 253, 2, 5794);
+    			add_location(div8, file$4, 252, 0, 5786);
+    			add_location(hr2, file$4, 257, 0, 5857);
+    			add_location(button16, file$4, 260, 2, 5886);
+    			add_location(button17, file$4, 267, 2, 6083);
+    			add_location(div9, file$4, 259, 0, 5878);
+    			add_location(p3, file$4, 271, 2, 6166);
+    			add_location(div10, file$4, 270, 0, 6158);
+    			add_location(hr3, file$4, 275, 0, 6219);
+    			add_location(button18, file$4, 278, 2, 6257);
+    			add_location(button19, file$4, 282, 2, 6335);
+    			add_location(div11, file$4, 277, 0, 6249);
+    			add_location(div12, file$4, 285, 0, 6416);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_5),
@@ -3000,16 +3006,16 @@ var app = (function () {
     			notification_1.$$.fragment.c();
     			t19 = space();
     			hr = element("hr");
-    			add_location(h2, file$4, 299, 0, 6635);
-    			add_location(p0, file$4, 300, 0, 6657);
-    			add_location(p1, file$4, 301, 0, 6706);
-    			add_location(p2, file$4, 302, 0, 6763);
-    			add_location(button0, file$4, 305, 2, 6819);
-    			add_location(button1, file$4, 325, 2, 7339);
-    			add_location(button2, file$4, 331, 2, 7507);
-    			add_location(button3, file$4, 336, 2, 7611);
-    			add_location(div, file$4, 304, 0, 6811);
-    			add_location(hr, file$4, 345, 0, 7744);
+    			add_location(h2, file$4, 299, 0, 6651);
+    			add_location(p0, file$4, 300, 0, 6673);
+    			add_location(p1, file$4, 301, 0, 6722);
+    			add_location(p2, file$4, 302, 0, 6779);
+    			add_location(button0, file$4, 305, 2, 6835);
+    			add_location(button1, file$4, 325, 2, 7367);
+    			add_location(button2, file$4, 331, 2, 7539);
+    			add_location(button3, file$4, 336, 2, 7643);
+    			add_location(div, file$4, 304, 0, 6827);
+    			add_location(hr, file$4, 345, 0, 7776);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_26),
@@ -3142,8 +3148,8 @@ var app = (function () {
     			add_location(button3, file$4, 124, 0, 3005);
     			add_location(hr0, file$4, 126, 0, 3088);
     			add_location(button4, file$4, 128, 0, 3096);
-    			add_location(hr1, file$4, 293, 0, 6507);
-    			add_location(button5, file$4, 295, 0, 6515);
+    			add_location(hr1, file$4, 293, 0, 6523);
+    			add_location(button5, file$4, 295, 0, 6531);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler),
@@ -3444,8 +3450,8 @@ var app = (function () {
     	function click_handler_11() {
     		return dialog$1.show(
     	      {
-    	        didShow: id => console.log("didShow", id),
-    	        didHide: id => console.log("didHide", id),
+    	        didShow: item => console.log("didShow", item),
+    	        didHide: item => console.log("didHide", item),
     	        showDuration: 0.5,
     	        showDelay: 0.25,
     	        component: Content,
@@ -3454,14 +3460,14 @@ var app = (function () {
     	      {
     	        id: "withPromise"
     	      }
-    	    ).then(id => console.log("dialog shown", id));
+    	    ).then(item => console.log("dialog shown", item));
     	}
 
     	function click_handler_12() {
     		return dialog$1.hide(
     	    {
     	      id: "withPromise"
-    	    }).then(id => console.log("dialog hidden", id));
+    	    }).then(item => console.log("dialog hidden", item));
     	}
 
     	function click_handler_13() {
@@ -3537,8 +3543,8 @@ var app = (function () {
     	      const title = "N " + getRandomId();
     	      notification$1.show(
     	        {
-    	          didShow: id => console.log("didShow", id, title),
-    	          didHide: id => console.log("didHide", id, title),
+    	          didShow: item => console.log("didShow", item, title),
+    	          didHide: item => console.log("didHide", item, title),
     	          component: Content,
     	          className: "xxx-timings",
     	          showClassName: "xxx-visible-timings",
@@ -3547,7 +3553,7 @@ var app = (function () {
     	        {
     	          spawn: "NO"
     	        }
-    	      ).then(id => console.log("notification shown", id, title));}
+    	      ).then(item => console.log("notification shown", item, title));}
 
     	function click_handler_27(e) {
     		return (
@@ -3555,7 +3561,7 @@ var app = (function () {
     	      {
     	        spawn: "NO"
     	      }
-    	    )).then(id => console.log("notification hidden from App", id));
+    	    )).then(item => console.log("notification hidden from App", item));
     	}
 
     	function click_handler_28() {
