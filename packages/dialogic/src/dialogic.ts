@@ -1,10 +1,10 @@
 import { transition, transitionOptionKeys, MODE } from "./transition";
-import { actions, selectors, createId } from "./state/state";
+import { actions, selectors, createId } from "./state/store";
 import { Timer } from "./state/timer";
 import { Dialogic } from "../index";
 import { pipe } from "./utils";
 
-export { states, actions, selectors } from "./state/state";
+export { states, actions, selectors } from "./state/store";
 
 type PerformFn = (ns:string, item: Dialogic.Item, fnOptions?: any) => any;
 type PerformOnItemNsFn = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<Dialogic.Item>;
