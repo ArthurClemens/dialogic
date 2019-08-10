@@ -25,6 +25,7 @@ export namespace Dialogic {
     // Commands
     show: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
     hide: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
+    toggle: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
     pause: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<string>;
     resume: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: Dialogic.TimerResumeOptions) => Promise<string>;
     resetAll: () => Promise<any>;

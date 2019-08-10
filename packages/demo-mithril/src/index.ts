@@ -24,6 +24,20 @@ const showInitial = ({ isOnMount } : { isOnMount?: boolean } = {} ) => dialog.sh
   }
 );
 
+const toggleDialog = () => dialog.toggle(
+  {
+    title: getRandomId(),
+    component: DefaultContent,
+    showDuration: 0.5,
+    hideDuration: 0.5,
+    className: "xxx",
+    showClassName: "xxx-visible",
+  },
+  {
+    spawn: "toggle",
+  }
+);
+
 const dialogOneProps: Dialogic.Options = {
   component: DefaultContent,
   showDuration: 0.5,
@@ -387,6 +401,25 @@ const App = {
         m(Dialog, {
           spawn: "initial",
           onMount: () => showInitial({ isOnMount: true })
+        }),
+      ]),
+
+      // Toggle
+      m("section", { className: "section"}, [
+        m("h2", { className: "title is-2"}, "Toggle"),
+      ]),
+      m("section", { className: "section"}, [
+        m("button",
+          {
+            className: "button",
+            onclick: toggleDialog
+          },
+          "Toggle"
+        ),
+      ]),
+      m("section", { className: "section"}, [
+        m(Dialog, {
+          spawn: "toggle",
         }),
       ]),
       

@@ -707,6 +707,15 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
     });
 };
 const show = createInstance;
+const toggle = (ns) => (defaultSpawnOptions) => (defaultTransitionOptions) => (options, instanceSpawnOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+    if (maybeItem.just) {
+        return hide(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+    }
+    else {
+        return show(ns)(defaultSpawnOptions)(defaultTransitionOptions)(options, instanceSpawnOptions);
+    }
+};
 const getMaybeItem = (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
     const spawnOptions = {
         ...defaultSpawnOptions,
@@ -857,6 +866,7 @@ const dialogical = ({ ns, queued, timeout }) => {
         defaultSpawnOptions,
         // Commands
         show: show(ns)(defaultSpawnOptions)(defaultTransitionOptions),
+        toggle: toggle(ns)(defaultSpawnOptions)(defaultTransitionOptions),
         hide: hide(ns)(defaultSpawnOptions),
         pause: pause(ns)(defaultSpawnOptions),
         resume: resume(ns)(defaultSpawnOptions),
@@ -875,5 +885,5 @@ const dialog = dialogical({ ns: "dialog" });
 
 const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
 
-export { actions, dialog, dialogical, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isDisplayed, isPaused, notification, pause, performOnItem, resetAll, resume, selectors, show, showItem, states };
+export { actions, dialog, dialogical, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isDisplayed, isPaused, notification, pause, performOnItem, resetAll, resume, selectors, show, showItem, states, toggle };
 //# sourceMappingURL=dialogic.mjs.map

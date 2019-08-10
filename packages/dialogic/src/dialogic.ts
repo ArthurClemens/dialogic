@@ -138,7 +138,16 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
 
 export const show = createInstance;
 
-const getMaybeItem = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+export const toggle = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (defaultTransitionOptions: Dialogic.DefaultTransitionOptions) => (options: Dialogic.Options, instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+  if (maybeItem.just) {
+    return hide(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+  } else {
+    return show(ns)(defaultSpawnOptions)(defaultTransitionOptions)(options, instanceSpawnOptions);
+  }
+}
+
+const getMaybeItem = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => {
   const spawnOptions = {
     ...defaultSpawnOptions,
     ...instanceSpawnOptions,
