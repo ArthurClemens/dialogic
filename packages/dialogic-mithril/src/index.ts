@@ -3,9 +3,10 @@ import { states } from "dialogic";
 import { dialog, notification } from "dialogic";
 import { Dialogical } from "./Dialogical";
 
-export { dialog, notification };
-export const Dialog = Dialogical(dialog);
-export const Notification = Dialogical(notification);
+const Dialog = Dialogical(dialog);
+const Notification = Dialogical(notification);
+
+export { Dialogical, dialog, Dialog, notification, Notification };
 
 const DEBUG = false;
 

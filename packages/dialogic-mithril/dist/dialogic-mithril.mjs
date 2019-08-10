@@ -983,4 +983,4 @@ const Dialog = Dialogical(dialog);
 const Notification = Dialogical(notification);
 states.map(state => (m.redraw()));
 
-export { Dialog, Notification, dialog, notification };
+export { Dialog, Dialogical, Notification, dialog, notification };
