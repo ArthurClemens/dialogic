@@ -1,5 +1,5 @@
 import Stream from "mithril/stream";
-import { Dialogic } from "..";
+import { Dialogic } from "../..";
 
 type PatchFn = (state: Dialogic.State) => Dialogic.State;
 

@@ -2670,6 +2670,10 @@ function () {
   };
 }();
 
+var setTransitionOptions = function setTransitionOptions(transitionOptions, item) {
+  item.instanceTransitionOptions = transitionOptions;
+};
+
 var dialogical = function dialogical(_ref8) {
   var ns = _ref8.ns,
       queued = _ref8.queued,
@@ -2728,7 +2732,7 @@ var handleDispatch = function handleDispatch(ns) {
     var maybeItem = selectors.find(ns, event.detail.spawnOptions);
 
     if (maybeItem.just) {
-      maybeItem.just.instanceTransitionOptions = event.detail.transitionOptions;
+      setTransitionOptions(event.detail.transitionOptions, maybeItem.just);
     } // Find item to transition:
 
 

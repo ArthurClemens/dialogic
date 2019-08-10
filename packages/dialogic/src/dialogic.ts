@@ -1,10 +1,10 @@
 import { transition, transitionOptionKeys, MODE } from "./transition";
-import { actions, selectors, createId } from "./state";
-import { Timer } from "./timer";
+import { actions, selectors, createId } from "./state/state";
+import { Timer } from "./state/timer";
 import { Dialogic } from "../index";
 import { pipe } from "./utils";
 
-export { states, actions, selectors } from "./state";
+export { states, actions, selectors } from "./state/state";
 
 type PerformFn = (ns:string, item: Dialogic.Item, fnOptions?: any) => any;
 type PerformOnItemNsFn = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (instanceSpawnOptions: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<Dialogic.Item>;
@@ -302,7 +302,6 @@ export const hideItem: Dialogic.InitiateItemTransitionFn = async function(item) 
   return Promise.resolve(copy);
 };
 
-export const setTransitionOptions = (transitionOptions: Dialogic.TransitionOptions, item: Dialogic.Item) => ({
-  ...item,
-  instanceTransitionOptions: transitionOptions
-});
+export const setTransitionOptions = (transitionOptions: Dialogic.TransitionOptions, item: Dialogic.Item) => {
+  item.instanceTransitionOptions = transitionOptions;
+};

@@ -1308,6 +1308,9 @@ var app = (function () {
         actions.remove(item.ns, item.id);
         return Promise.resolve(copy);
     };
+    const setTransitionOptions = (transitionOptions, item) => {
+        item.instanceTransitionOptions = transitionOptions;
+    };
 
     const dialogical = ({ ns, queued, timeout }) => {
         const defaultId = `default_${ns}`;
@@ -1508,7 +1511,7 @@ var app = (function () {
       // Update dispatching item:
       const maybeItem = selectors.find(ns, event.detail.spawnOptions);
       if (maybeItem.just) {
-        maybeItem.just.instanceTransitionOptions = event.detail.transitionOptions;
+        setTransitionOptions(event.detail.transitionOptions, maybeItem.just);
       }
       // Find item to transition:
       const maybeTransitioningItem = selectors.find(ns, event.detail.spawnOptions);
@@ -2520,7 +2523,7 @@ var app = (function () {
     function create_if_block_1(ctx) {
     	var h2, t1, p0, t2, t3, t4, hr0, t5, div0, button0, t7, button1, t9, div1, t10, button2, t12, button3, t14, button4, t16, button5, t18, div2, button6, t20, button7, t22, div3, button8, t24, button9, t26, div4, button10, t28, button11, t30, div5, button12, t32, button13, t34, div6, button14, t36, button15, t38, hr1, t39, div7, p1, t41, t42, div8, p2, t44, t45, hr2, t46, div9, button16, t48, button17, t50, div10, p3, t52, t53, hr3, t54, div11, button18, t56, button19, t58, div12, current, dispose;
 
-    	var if_block = (ctx.$timerDialogDisplayed) && create_if_block_2(ctx);
+    	var if_block = (ctx.$timerDialogExists) && create_if_block_2(ctx);
 
     	var dialog0 = new Dialog({ $$inline: true });
 
@@ -2644,48 +2647,48 @@ var app = (function () {
     			t58 = space();
     			div12 = element("div");
     			dialog3.$$.fragment.c();
-    			add_location(h2, file$4, 132, 0, 3182);
-    			add_location(p0, file$4, 134, 0, 3199);
-    			add_location(hr0, file$4, 136, 0, 3238);
-    			add_location(button0, file$4, 139, 2, 3254);
-    			add_location(button1, file$4, 146, 2, 3387);
-    			add_location(div0, file$4, 138, 0, 3246);
-    			add_location(button2, file$4, 157, 2, 3584);
-    			add_location(button3, file$4, 169, 2, 3797);
-    			add_location(button4, file$4, 174, 2, 3895);
-    			add_location(button5, file$4, 182, 2, 4028);
-    			add_location(div1, file$4, 149, 0, 3448);
-    			add_location(button6, file$4, 186, 2, 4147);
-    			add_location(button7, file$4, 202, 2, 4567);
-    			add_location(div2, file$4, 185, 0, 4139);
-    			add_location(button8, file$4, 209, 2, 4721);
-    			add_location(button9, file$4, 218, 2, 4950);
-    			add_location(div3, file$4, 208, 0, 4713);
-    			add_location(button10, file$4, 221, 2, 5043);
-    			add_location(button11, file$4, 225, 2, 5161);
-    			add_location(div4, file$4, 220, 0, 5035);
-    			add_location(button12, file$4, 228, 2, 5254);
-    			add_location(button13, file$4, 232, 2, 5375);
-    			add_location(div5, file$4, 227, 0, 5246);
-    			add_location(button14, file$4, 235, 2, 5469);
-    			add_location(button15, file$4, 242, 2, 5643);
-    			add_location(div6, file$4, 234, 0, 5461);
-    			add_location(hr1, file$4, 245, 0, 5724);
-    			add_location(p1, file$4, 248, 2, 5740);
-    			add_location(div7, file$4, 247, 0, 5732);
-    			add_location(p2, file$4, 253, 2, 5784);
-    			add_location(div8, file$4, 252, 0, 5776);
-    			add_location(hr2, file$4, 257, 0, 5847);
-    			add_location(button16, file$4, 260, 2, 5876);
-    			add_location(button17, file$4, 267, 2, 6073);
-    			add_location(div9, file$4, 259, 0, 5868);
-    			add_location(p3, file$4, 271, 2, 6156);
-    			add_location(div10, file$4, 270, 0, 6148);
-    			add_location(hr3, file$4, 275, 0, 6209);
-    			add_location(button18, file$4, 278, 2, 6247);
-    			add_location(button19, file$4, 282, 2, 6325);
-    			add_location(div11, file$4, 277, 0, 6239);
-    			add_location(div12, file$4, 285, 0, 6406);
+    			add_location(h2, file$4, 132, 0, 3176);
+    			add_location(p0, file$4, 134, 0, 3193);
+    			add_location(hr0, file$4, 136, 0, 3232);
+    			add_location(button0, file$4, 139, 2, 3248);
+    			add_location(button1, file$4, 146, 2, 3381);
+    			add_location(div0, file$4, 138, 0, 3240);
+    			add_location(button2, file$4, 157, 2, 3575);
+    			add_location(button3, file$4, 169, 2, 3788);
+    			add_location(button4, file$4, 174, 2, 3886);
+    			add_location(button5, file$4, 182, 2, 4019);
+    			add_location(div1, file$4, 149, 0, 3442);
+    			add_location(button6, file$4, 186, 2, 4138);
+    			add_location(button7, file$4, 202, 2, 4558);
+    			add_location(div2, file$4, 185, 0, 4130);
+    			add_location(button8, file$4, 209, 2, 4712);
+    			add_location(button9, file$4, 218, 2, 4941);
+    			add_location(div3, file$4, 208, 0, 4704);
+    			add_location(button10, file$4, 221, 2, 5034);
+    			add_location(button11, file$4, 225, 2, 5152);
+    			add_location(div4, file$4, 220, 0, 5026);
+    			add_location(button12, file$4, 228, 2, 5245);
+    			add_location(button13, file$4, 232, 2, 5366);
+    			add_location(div5, file$4, 227, 0, 5237);
+    			add_location(button14, file$4, 235, 2, 5460);
+    			add_location(button15, file$4, 242, 2, 5634);
+    			add_location(div6, file$4, 234, 0, 5452);
+    			add_location(hr1, file$4, 245, 0, 5715);
+    			add_location(p1, file$4, 248, 2, 5731);
+    			add_location(div7, file$4, 247, 0, 5723);
+    			add_location(p2, file$4, 253, 2, 5775);
+    			add_location(div8, file$4, 252, 0, 5767);
+    			add_location(hr2, file$4, 257, 0, 5838);
+    			add_location(button16, file$4, 260, 2, 5867);
+    			add_location(button17, file$4, 267, 2, 6064);
+    			add_location(div9, file$4, 259, 0, 5859);
+    			add_location(p3, file$4, 271, 2, 6147);
+    			add_location(div10, file$4, 270, 0, 6139);
+    			add_location(hr3, file$4, 275, 0, 6200);
+    			add_location(button18, file$4, 278, 2, 6238);
+    			add_location(button19, file$4, 282, 2, 6316);
+    			add_location(div11, file$4, 277, 0, 6230);
+    			add_location(div12, file$4, 285, 0, 6397);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_5),
@@ -2802,7 +2805,7 @@ var app = (function () {
     				set_data(t3, ctx.$dialogCount);
     			}
 
-    			if (ctx.$timerDialogDisplayed) {
+    			if (ctx.$timerDialogExists) {
     				if (if_block) {
     					if_block.p(changed, ctx);
     					transition_in(if_block, 1);
@@ -2917,7 +2920,7 @@ var app = (function () {
     	};
     }
 
-    // (152:2) {#if $timerDialogDisplayed}
+    // (152:2) {#if $timerDialogExists}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -2976,8 +2979,8 @@ var app = (function () {
     			t3 = text(ctx.$notificationCount);
     			t4 = space();
     			p1 = element("p");
-    			t5 = text("Notification displayed: ");
-    			t6 = text(ctx.$notificationDisplayed);
+    			t5 = text("Notification exists: ");
+    			t6 = text(ctx.$notificationExists);
     			t7 = space();
     			p2 = element("p");
     			t8 = text("Is paused: ");
@@ -2999,16 +3002,16 @@ var app = (function () {
     			notification_1.$$.fragment.c();
     			t19 = space();
     			hr = element("hr");
-    			add_location(h2, file$4, 299, 0, 6641);
-    			add_location(p0, file$4, 300, 0, 6663);
-    			add_location(p1, file$4, 301, 0, 6712);
-    			add_location(p2, file$4, 302, 0, 6769);
-    			add_location(button0, file$4, 305, 2, 6825);
-    			add_location(button1, file$4, 325, 2, 7357);
-    			add_location(button2, file$4, 331, 2, 7529);
-    			add_location(button3, file$4, 336, 2, 7633);
-    			add_location(div, file$4, 304, 0, 6817);
-    			add_location(hr, file$4, 345, 0, 7766);
+    			add_location(h2, file$4, 299, 0, 6632);
+    			add_location(p0, file$4, 300, 0, 6654);
+    			add_location(p1, file$4, 301, 0, 6703);
+    			add_location(p2, file$4, 302, 0, 6754);
+    			add_location(button0, file$4, 305, 2, 6810);
+    			add_location(button1, file$4, 325, 2, 7342);
+    			add_location(button2, file$4, 331, 2, 7514);
+    			add_location(button3, file$4, 336, 2, 7618);
+    			add_location(div, file$4, 304, 0, 6802);
+    			add_location(hr, file$4, 345, 0, 7751);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_26),
@@ -3053,8 +3056,8 @@ var app = (function () {
     				set_data(t3, ctx.$notificationCount);
     			}
 
-    			if (!current || changed.$notificationDisplayed) {
-    				set_data(t6, ctx.$notificationDisplayed);
+    			if (!current || changed.$notificationExists) {
+    				set_data(t6, ctx.$notificationExists);
     			}
 
     			if (!current || changed.$notificationItemIsPaused) {
@@ -3135,14 +3138,14 @@ var app = (function () {
     			t14 = space();
     			if (if_block1) if_block1.c();
     			if_block1_anchor = empty();
-    			add_location(button0, file$4, 118, 0, 2711);
-    			add_location(button1, file$4, 120, 0, 2823);
-    			add_location(button2, file$4, 122, 0, 2918);
-    			add_location(button3, file$4, 124, 0, 2995);
-    			add_location(hr0, file$4, 126, 0, 3078);
-    			add_location(button4, file$4, 128, 0, 3086);
-    			add_location(hr1, file$4, 293, 0, 6513);
-    			add_location(button5, file$4, 295, 0, 6521);
+    			add_location(button0, file$4, 118, 0, 2705);
+    			add_location(button1, file$4, 120, 0, 2817);
+    			add_location(button2, file$4, 122, 0, 2912);
+    			add_location(button3, file$4, 124, 0, 2989);
+    			add_location(hr0, file$4, 126, 0, 3072);
+    			add_location(button4, file$4, 128, 0, 3080);
+    			add_location(hr1, file$4, 293, 0, 6504);
+    			add_location(button5, file$4, 295, 0, 6512);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler),
@@ -3271,14 +3274,14 @@ var app = (function () {
     }
 
     function instance$7($$self, $$props, $$invalidate) {
-    	let $dialogCount, $timerDialogDisplayed, $notificationCount, $notificationDisplayed, $notificationItemIsPaused;
+    	let $dialogCount, $timerDialogExists, $notificationCount, $notificationExists, $notificationItemIsPaused;
 
     	
 
       const dialogCount = dialog$1.getCount(); validate_store(dialogCount, 'dialogCount'); component_subscribe($$self, dialogCount, $$value => { $dialogCount = $$value; $$invalidate('$dialogCount', $dialogCount); });
-      const timerDialogDisplayed = dialog$1.exists({
+      const timerDialogExists = dialog$1.exists({
         id: "timer"
-      }); validate_store(timerDialogDisplayed, 'timerDialogDisplayed'); component_subscribe($$self, timerDialogDisplayed, $$value => { $timerDialogDisplayed = $$value; $$invalidate('$timerDialogDisplayed', $timerDialogDisplayed); });
+      }); validate_store(timerDialogExists, 'timerDialogExists'); component_subscribe($$self, timerDialogExists, $$value => { $timerDialogExists = $$value; $$invalidate('$timerDialogExists', $timerDialogExists); });
 
       const notificationCount = notification$1.getCount({
         spawn: "NO"
@@ -3287,9 +3290,9 @@ var app = (function () {
       const notificationItemIsPaused = notification$1.isPaused({
         spawn: "NO"
       }); validate_store(notificationItemIsPaused, 'notificationItemIsPaused'); component_subscribe($$self, notificationItemIsPaused, $$value => { $notificationItemIsPaused = $$value; $$invalidate('$notificationItemIsPaused', $notificationItemIsPaused); });
-      const notificationDisplayed = notification$1.exists({
+      const notificationExists = notification$1.exists({
         spawn: "NO"
-      }); validate_store(notificationDisplayed, 'notificationDisplayed'); component_subscribe($$self, notificationDisplayed, $$value => { $notificationDisplayed = $$value; $$invalidate('$notificationDisplayed', $notificationDisplayed); });
+      }); validate_store(notificationExists, 'notificationExists'); component_subscribe($$self, notificationExists, $$value => { $notificationExists = $$value; $$invalidate('$notificationExists', $notificationExists); });
 
       const getRandomId = () => Math.round(1000 * Math.random()).toString();
 
@@ -3580,10 +3583,10 @@ var app = (function () {
 
     	return {
     		dialogCount,
-    		timerDialogDisplayed,
+    		timerDialogExists,
     		notificationCount,
     		notificationItemIsPaused,
-    		notificationDisplayed,
+    		notificationExists,
     		getRandomId,
     		showInitial,
     		dialogOneProps,
@@ -3594,9 +3597,9 @@ var app = (function () {
     		showDialogs,
     		showNotifications,
     		$dialogCount,
-    		$timerDialogDisplayed,
+    		$timerDialogExists,
     		$notificationCount,
-    		$notificationDisplayed,
+    		$notificationExists,
     		$notificationItemIsPaused,
     		click_handler,
     		click_handler_1,

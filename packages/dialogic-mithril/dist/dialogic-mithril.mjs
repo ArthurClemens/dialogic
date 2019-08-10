@@ -845,10 +845,9 @@ const hideItem = async function (item) {
     actions.remove(item.ns, item.id);
     return Promise.resolve(copy);
 };
-const setTransitionOptions = (transitionOptions, item) => ({
-    ...item,
-    instanceTransitionOptions: transitionOptions
-});
+const setTransitionOptions = (transitionOptions, item) => {
+    item.instanceTransitionOptions = transitionOptions;
+};
 
 const dialogical = ({ ns, queued, timeout }) => {
     const defaultId = `default_${ns}`;
