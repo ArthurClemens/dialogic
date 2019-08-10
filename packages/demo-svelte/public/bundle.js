@@ -1314,20 +1314,25 @@ var app = (function () {
             timeout
         };
         return {
+            // Identification
             ns,
             defaultId,
             defaultSpawn,
+            // Configuration
             defaultSpawnOptions,
+            // Commands
             show: show(ns)(defaultSpawnOptions)(defaultTransitionOptions),
             hide: hide(ns)(defaultSpawnOptions),
             pause: pause(ns)(defaultSpawnOptions),
             resume: resume(ns)(defaultSpawnOptions),
-            isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
-            isPaused: isPaused(ns)(defaultSpawnOptions),
-            getRemaining: getRemaining$1(ns)(defaultSpawnOptions),
             hideAll: hideAll(ns)(defaultSpawnOptions),
             resetAll: resetAll(ns),
+            // State
+            isDisplayed: isDisplayed(ns)(defaultSpawnOptions),
             getCount: getCount(ns),
+            // Timer state
+            isPaused: isPaused(ns)(defaultSpawnOptions),
+            getRemaining: getRemaining$1(ns)(defaultSpawnOptions),
         };
     };
 
@@ -2093,15 +2098,16 @@ var app = (function () {
     function create_fragment$3(ctx) {
     	var current;
 
-    	var dialogical = new Dialogical({
-    		props: {
-    		spawn: ctx.spawn,
-    		id: ctx.id,
-    		type: dialog$1,
-    		onMount: ctx.onMount
-    	},
-    		$$inline: true
-    	});
+    	var dialogical_spread_levels = [
+    		ctx.$$props,
+    		{ type: dialog$1 }
+    	];
+
+    	let dialogical_props = {};
+    	for (var i = 0; i < dialogical_spread_levels.length; i += 1) {
+    		dialogical_props = assign(dialogical_props, dialogical_spread_levels[i]);
+    	}
+    	var dialogical = new Dialogical({ props: dialogical_props, $$inline: true });
 
     	return {
     		c: function create() {
@@ -2118,11 +2124,10 @@ var app = (function () {
     		},
 
     		p: function update(changed, ctx) {
-    			var dialogical_changes = {};
-    			if (changed.spawn) dialogical_changes.spawn = ctx.spawn;
-    			if (changed.id) dialogical_changes.id = ctx.id;
-    			if (changed.dialog) dialogical_changes.type = dialog$1;
-    			if (changed.onMount) dialogical_changes.onMount = ctx.onMount;
+    			var dialogical_changes = (changed.$$props || changed.dialog) ? get_spread_update(dialogical_spread_levels, [
+    				(changed.$$props) && ctx.$$props,
+    				(changed.dialog) && { type: dialog$1 }
+    			]) : {};
     			dialogical.$set(dialogical_changes);
     		},
 
@@ -2145,52 +2150,20 @@ var app = (function () {
     }
 
     function instance$2($$self, $$props, $$invalidate) {
-    	
-
-      let { spawn = undefined, id = undefined, onMount = undefined } = $$props;
-
-    	const writable_props = ['spawn', 'id', 'onMount'];
-    	Object.keys($$props).forEach(key => {
-    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<Dialog> was created with unknown prop '${key}'`);
-    	});
-
-    	$$self.$set = $$props => {
-    		if ('spawn' in $$props) $$invalidate('spawn', spawn = $$props.spawn);
-    		if ('id' in $$props) $$invalidate('id', id = $$props.id);
-    		if ('onMount' in $$props) $$invalidate('onMount', onMount = $$props.onMount);
+    	$$self.$set = $$new_props => {
+    		$$invalidate('$$props', $$props = assign(assign({}, $$props), $$new_props));
     	};
 
-    	return { spawn, id, onMount };
+    	return {
+    		$$props,
+    		$$props: $$props = exclude_internal_props($$props)
+    	};
     }
 
     class Dialog extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$2, create_fragment$3, safe_not_equal, ["spawn", "id", "onMount"]);
-    	}
-
-    	get spawn() {
-    		throw new Error("<Dialog>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set spawn(value) {
-    		throw new Error("<Dialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get id() {
-    		throw new Error("<Dialog>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set id(value) {
-    		throw new Error("<Dialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get onMount() {
-    		throw new Error("<Dialog>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set onMount(value) {
-    		throw new Error("<Dialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		init(this, options, instance$2, create_fragment$3, safe_not_equal, []);
     	}
     }
 
@@ -2199,15 +2172,16 @@ var app = (function () {
     function create_fragment$4(ctx) {
     	var current;
 
-    	var dialogical = new Dialogical({
-    		props: {
-    		spawn: ctx.spawn,
-    		id: ctx.id,
-    		type: notification$1,
-    		onMount: ctx.onMount
-    	},
-    		$$inline: true
-    	});
+    	var dialogical_spread_levels = [
+    		ctx.$$props,
+    		{ type: notification$1 }
+    	];
+
+    	let dialogical_props = {};
+    	for (var i = 0; i < dialogical_spread_levels.length; i += 1) {
+    		dialogical_props = assign(dialogical_props, dialogical_spread_levels[i]);
+    	}
+    	var dialogical = new Dialogical({ props: dialogical_props, $$inline: true });
 
     	return {
     		c: function create() {
@@ -2224,11 +2198,10 @@ var app = (function () {
     		},
 
     		p: function update(changed, ctx) {
-    			var dialogical_changes = {};
-    			if (changed.spawn) dialogical_changes.spawn = ctx.spawn;
-    			if (changed.id) dialogical_changes.id = ctx.id;
-    			if (changed.notification) dialogical_changes.type = notification$1;
-    			if (changed.onMount) dialogical_changes.onMount = ctx.onMount;
+    			var dialogical_changes = (changed.$$props || changed.notification) ? get_spread_update(dialogical_spread_levels, [
+    				(changed.$$props) && ctx.$$props,
+    				(changed.notification) && { type: notification$1 }
+    			]) : {};
     			dialogical.$set(dialogical_changes);
     		},
 
@@ -2251,52 +2224,20 @@ var app = (function () {
     }
 
     function instance$3($$self, $$props, $$invalidate) {
-    	
-
-      let { spawn = undefined, id = undefined, onMount = undefined } = $$props;
-
-    	const writable_props = ['spawn', 'id', 'onMount'];
-    	Object.keys($$props).forEach(key => {
-    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<Notification> was created with unknown prop '${key}'`);
-    	});
-
-    	$$self.$set = $$props => {
-    		if ('spawn' in $$props) $$invalidate('spawn', spawn = $$props.spawn);
-    		if ('id' in $$props) $$invalidate('id', id = $$props.id);
-    		if ('onMount' in $$props) $$invalidate('onMount', onMount = $$props.onMount);
+    	$$self.$set = $$new_props => {
+    		$$invalidate('$$props', $$props = assign(assign({}, $$props), $$new_props));
     	};
 
-    	return { spawn, id, onMount };
+    	return {
+    		$$props,
+    		$$props: $$props = exclude_internal_props($$props)
+    	};
     }
 
     class Notification extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$3, create_fragment$4, safe_not_equal, ["spawn", "id", "onMount"]);
-    	}
-
-    	get spawn() {
-    		throw new Error("<Notification>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set spawn(value) {
-    		throw new Error("<Notification>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get id() {
-    		throw new Error("<Notification>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set id(value) {
-    		throw new Error("<Notification>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get onMount() {
-    		throw new Error("<Notification>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set onMount(value) {
-    		throw new Error("<Notification>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		init(this, options, instance$3, create_fragment$4, safe_not_equal, []);
     	}
     }
 
