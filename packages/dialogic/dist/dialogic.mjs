@@ -843,6 +843,10 @@ const hideItem = async function (item) {
     actions.remove(item.ns, item.id);
     return Promise.resolve(copy);
 };
+const setTransitionOptions = (transitionOptions, item) => ({
+    ...item,
+    instanceTransitionOptions: transitionOptions
+});
 
 const dialogical = ({ ns, queued, timeout }) => {
     const defaultId = `default_${ns}`;
@@ -884,5 +888,5 @@ const dialog = dialogical({ ns: "dialog" });
 
 const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
 
-export { actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, performOnItem, resetAll, resume, selectors, show, showItem, states, toggle };
+export { actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, performOnItem, resetAll, resume, selectors, setTransitionOptions, show, showItem, states, toggle };
 //# sourceMappingURL=dialogic.mjs.map

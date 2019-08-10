@@ -301,3 +301,8 @@ export const hideItem: Dialogic.InitiateItemTransitionFn = async function(item) 
   actions.remove(item.ns, item.id);
   return Promise.resolve(copy);
 };
+
+export const setTransitionOptions = (transitionOptions: Dialogic.TransitionOptions, item: Dialogic.Item) => ({
+  ...item,
+  instanceTransitionOptions: transitionOptions
+});

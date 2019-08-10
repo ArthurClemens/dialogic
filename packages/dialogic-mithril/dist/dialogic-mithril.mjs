@@ -845,6 +845,10 @@ const hideItem = async function (item) {
     actions.remove(item.ns, item.id);
     return Promise.resolve(copy);
 };
+const setTransitionOptions = (transitionOptions, item) => ({
+    ...item,
+    instanceTransitionOptions: transitionOptions
+});
 
 const dialogical = ({ ns, queued, timeout }) => {
     const defaultId = `default_${ns}`;
@@ -890,7 +894,7 @@ const handleDispatch = (ns) => (event, fn) => {
     // Update dispatching item:
     const maybeItem = selectors.find(ns, event.detail.spawnOptions);
     if (maybeItem.just) {
-        maybeItem.just.instanceTransitionOptions = event.detail.transitionOptions;
+        setTransitionOptions(event.detail.transitionOptions, maybeItem.just);
     }
     // Find item to transition:
     const maybeTransitioningItem = selectors.find(ns, event.detail.spawnOptions);

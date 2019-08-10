@@ -2,6 +2,7 @@ import Stream from "mithril/stream";
 
 export const showItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
 export const hideItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
+export const setTransitionOptions: (transitionOptions: Dialogic.TransitionOptions, item: Dialogic.Item) => Dialogic.Item;
 export const filterCandidates: (ns: string, items: Dialogic.NamespaceStore, spawnOptions: Dialogic.SpawnOptions) => Dialogic.Item[];
 export const states: Dialogic.States;
 export const selectors: Dialogic.StateSelectors;
