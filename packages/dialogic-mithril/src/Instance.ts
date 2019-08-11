@@ -9,10 +9,7 @@ type InstanceFn = ({ attrs } : { attrs: Dialogic.DialogicalInstanceOptions }) =>
 export const Instance: InstanceFn = ({ attrs }) => {
   let domElement: HTMLElement;
 
-  const classNames = [
-    attrs.transitionOptions.className,
-    attrs.instanceOptions.className
-  ].join(" ");
+  const className = attrs.transitionOptions.transitionClassName;
   
   const dispatchTransition = (dispatchFn: Dialogic.DialogicalInstanceDispatchFn) => {
     dispatchFn({
@@ -42,9 +39,7 @@ export const Instance: InstanceFn = ({ attrs }) => {
     },
     view: () => {
       return m("div",
-        {
-          className: classNames,
-        },
+        { className },
         m(attrs.transitionOptions.component,
           {
             ...attrs.instanceOptions,

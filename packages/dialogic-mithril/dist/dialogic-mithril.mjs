@@ -1,27 +1,39 @@
 import m from 'mithril';
 
-const isClient = typeof document !== "undefined";
 const pipe = (...fns) => (x) => fns.filter(Boolean).reduce((y, f) => f(y), x);
+const getStyleValue = ({ domElement, prop }) => {
+    if (window.getComputedStyle) {
+        const defaultView = document.defaultView;
+        if (defaultView) {
+            const style = defaultView.getComputedStyle(domElement);
+            if (style) {
+                return style.getPropertyValue(prop);
+            }
+        }
+    }
+    return undefined;
+};
 
 const MODE = {
     SHOW: "show",
     HIDE: "hide"
 };
 const transitionOptionKeys = {
-    className: true,
     component: true,
     didHide: true,
     didShow: true,
-    hideDelay: true,
-    hideDuration: true,
-    hideTimingFunction: true,
-    showClassName: true,
-    showDelay: true,
-    showDuration: true,
-    showTimingFunction: true,
     timeout: true,
     transitionClassName: true,
-    transitions: true,
+    transitionStyles: true,
+};
+const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(transitionClassNames.enter, transitionClassNames.enterActive, transitionClassNames.exit, transitionClassNames.exitActive);
+const applyTransitionStyles = (domElement, stateName, transitionStyles) => {
+    const transitionStyle = transitionStyles[stateName];
+    if (transitionStyle) {
+        Object.keys(transitionStyle).forEach((key) => {
+            domElement.style[key] = transitionStyle[key];
+        });
+    }
 };
 const transition = (props, mode) => {
     const domElement = props.domElement;
@@ -29,69 +41,77 @@ const transition = (props, mode) => {
         return Promise.resolve("no domElement");
     }
     return new Promise(resolve => {
-        const style = domElement.style;
-        const computedStyle = isClient
-            ? window.getComputedStyle(domElement)
-            : null;
-        const isShow = mode === MODE.SHOW;
-        const transitionProps = getTransitionProps(props, isShow);
-        const duration = transitionProps.duration !== undefined
-            ? transitionProps.duration * 1000
-            : computedStyle
-                ? styleDurationToMs(computedStyle.transitionDuration)
-                : 0;
-        const delay = transitionProps.delay !== undefined
-            ? transitionProps.delay * 1000
-            : computedStyle
-                ? styleDurationToMs(computedStyle.transitionDelay)
-                : 0;
-        const totalDuration = duration + delay;
-        const before = () => {
-            if (transitionProps.before && typeof transitionProps.before === "function") {
-                style.transitionDuration = "0ms";
-                style.transitionDelay = "0ms";
-                transitionProps.before();
-            }
+        const state = {
+            isShow: mode === MODE.SHOW,
+            name: mode === MODE.SHOW
+                ? "enter"
+                : "exit"
         };
-        const after = () => {
-            if (transitionProps.after && typeof transitionProps.after === "function") {
-                transitionProps.after();
+        if (props.transitionStyles) {
+            applyTransitionStyles(domElement, "default", props.transitionStyles);
+            applyTransitionStyles(domElement, state.name, props.transitionStyles);
+        }
+        const transitionClassNames = props.transitionClassName
+            ? {
+                enter: `${props.transitionClassName}-enter`,
+                enterActive: `${props.transitionClassName}-enter-active`,
+                exit: `${props.transitionClassName}-exit`,
+                exitActive: `${props.transitionClassName}-exit-active`
+            }
+            : undefined;
+        // reflow
+        domElement.scrollTop;
+        const before = () => {
+            if (transitionClassNames) {
+                removeTransitionClassNames(domElement, transitionClassNames);
+                domElement.classList.add(state.isShow
+                    ? transitionClassNames.enter
+                    : transitionClassNames.exit);
+                domElement.scrollTop;
+            }
+            if (state.isShow) {
+                // reflow
+                domElement.scrollTop;
             }
         };
         const applyTransition = () => {
-            // Set styles
-            const timingFunction = transitionProps.timingFunction
-                // or when set in CSS:
-                || (computedStyle
-                    ? computedStyle.transitionTimingFunction
-                    : undefined);
-            if (timingFunction) {
-                style.transitionTimingFunction = timingFunction;
+            if (props.transitionStyles) {
+                applyTransitionStyles(domElement, "default", props.transitionStyles);
+                applyTransitionStyles(domElement, state.name, props.transitionStyles);
             }
-            style.transitionDuration = duration + "ms";
-            style.transitionDelay = delay + "ms";
             // Set classes (need to be set after styles)
-            if (props.transitionClassName) {
-                domElement.classList.add(props.transitionClassName);
-            }
-            if (props.showClassName) {
-                const showClassElement = props.showClassElement || domElement;
-                showClassElement.classList[isShow ? "add" : "remove"](props.showClassName);
-            }
-            // Call transition function
-            if (transitionProps.transition) {
-                transitionProps.transition();
+            if (transitionClassNames) {
+                removeTransitionClassNames(domElement, transitionClassNames);
+                domElement.classList.add(state.isShow
+                    ? transitionClassNames.enterActive
+                    : transitionClassNames.exitActive);
             }
         };
-        before();
-        applyTransition();
-        setTimeout(() => {
-            after();
-            if (props.transitionClassName) {
-                domElement.classList.remove(props.transitionClassName);
-            }
+        const onEnd = () => {
+            domElement.removeEventListener("transitionend", onEnd, false);
             resolve();
-        }, totalDuration);
+        };
+        domElement.addEventListener("transitionend", onEnd, false);
+        before();
+        state.name = state.isShow
+            ? "enterActive"
+            : "exitActive";
+        applyTransition();
+        const durationStyleValue = getStyleValue({ domElement, prop: "transition-duration" });
+        const durationValue = durationStyleValue !== undefined
+            ? styleDurationToMs(durationStyleValue)
+            : 0;
+        const delayStyleValue = getStyleValue({ domElement, prop: "transition-delay" });
+        const delayValue = delayStyleValue !== undefined
+            ? styleDurationToMs(delayStyleValue)
+            : 0;
+        const duration = durationValue + delayValue;
+        // console.log("duration", duration);
+        // Due to incorrect CSS usage, ontransitionend may not be fired
+        // Using a timeout ensures completion
+        if (duration == 0) {
+            setTimeout(onEnd, duration);
+        }
     });
 };
 const styleDurationToMs = (durationStr) => {
@@ -99,19 +119,6 @@ const styleDurationToMs = (durationStr) => {
     return isNaN(parsed)
         ? 0
         : parsed;
-};
-const getTransitionProps = (props, isShow) => {
-    const [duration, delay, timingFunction, transition] = isShow
-        ? [props.showDuration, props.showDelay, props.showTimingFunction, props.transitions ? props.transitions.show : undefined]
-        : [props.hideDuration, props.hideDelay, props.hideTimingFunction, props.transitions ? props.transitions.hide : undefined];
-    return {
-        duration,
-        delay,
-        timingFunction,
-        ...(transition
-            ? transition(props.domElement)
-            : undefined)
-    };
 };
 
 function createCommonjsModule(fn, module) {
@@ -905,10 +912,7 @@ const onHideInstance = (ns) => (event) => handleDispatch(ns)(event, hideItem);
 
 const Instance = ({ attrs }) => {
     let domElement;
-    const classNames = [
-        attrs.transitionOptions.className,
-        attrs.instanceOptions.className
-    ].join(" ");
+    const className = attrs.transitionOptions.transitionClassName;
     const dispatchTransition = (dispatchFn) => {
         dispatchFn({
             detail: {
@@ -932,9 +936,7 @@ const Instance = ({ attrs }) => {
             onMount();
         },
         view: () => {
-            return m("div", {
-                className: classNames,
-            }, m(attrs.transitionOptions.component, {
+            return m("div", { className }, m(attrs.transitionOptions.component, {
                 ...attrs.instanceOptions,
                 show,
                 hide,

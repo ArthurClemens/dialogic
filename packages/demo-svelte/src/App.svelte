@@ -30,8 +30,8 @@
       ? 0
       : .5,
     hideDuration: 0.5,
-    className: "xxx",
-    showClassName: "xxx-visible",
+    className: "xxx-content",
+    transitionClassName: "xxx",
   },
   {
     spawn: "initial",
@@ -47,19 +47,19 @@
     hideDuration: 0.5,
     hideDelay: .25,
     component: IntervalContent,
-    className: "xxx",
-    showClassName: "xxx-visible",
+    className: "xxx-content",
+    transitionClassName: "xxx",
     title: "Clock",
     id: getRandomId()
   };
-  const dialogTwoProps = {
-    showDuration: 0.75,
+  const dialogSlowFadeProps = {
+    showDuration: 1,
     showDelay: 0,
-    hideDuration: 0.75,
+    hideDuration: 1,
     hideDelay: 0,
     component: DefaultContent,
-    className: "xxx",
-    showClassName: "xxx-visible",
+    className: "xxx-content",
+    transitionClassName: "xxx",
     title: "Fade",
     id: getRandomId()
   };
@@ -100,16 +100,28 @@
   :global(.xxx) {
     opacity: 0;
   }
-  :global(.xxx-visible) {
+  :global(.xxx-enter) {
+    opacity: 0;
+  }
+  :global(.xxx-enter-active) {
     opacity: 1;
   }
-  :global(.xxx-timings) {
+  :global(.xxx-exit) {
+    opacity: 1;
+  }
+  :global(.xxx-exit-active) {
+    opacity: 0;
+  }
+  :global(.xxx-timings-enter) {
     opacity: 0;
     transition-duration: 500ms;
     transition-delay: 0;
   }
-  :global(.xxx-visible-timings) {
+  :global(.xxx-timings-enter-active) {
     opacity: 1;
+  }
+  :global(.xxx-timings-exit-active) {
+    opacity: 0;
   }
 </style>
 
@@ -137,7 +149,10 @@
   <button
     on:click={() => dialog.show({
       component: DefaultContent,
-      title: "Default"
+      title: "Default",
+      transitionClassName: "xxx",
+      showDuration: .5,
+      hideDuration: .5,
     })}>
     Default
   </button>
@@ -189,6 +204,7 @@
         showDuration: 0.5,
         showDelay: 0.25,
         component: DefaultContent,
+        transitionClassName: "xxx",
         title: "With Promise"
       },
       {
@@ -208,7 +224,9 @@
     on:click={() => dialog.show({
       ...dialogOneProps,
       showDelay: .5,
+      showDuration: .5,
       hideDelay: 0,
+      hideDuration: .5,
       title: dialogOneProps.title + " " + getRandomId()
     }, { id: dialogOneProps.id })}>
     Show delay
@@ -217,10 +235,10 @@
 </div>
 <div>
   <button
-    on:click={() => dialog.show(dialogTwoProps, { id: dialogTwoProps.id })}>
+    on:click={() => dialog.show(dialogSlowFadeProps, { id: dialogSlowFadeProps.id })}>
     Show slow fade
   </button>
-  <button on:click={() => dialog.hide({ id: dialogTwoProps.id })}>Hide</button>
+  <button on:click={() => dialog.hide({ id: dialogSlowFadeProps.id })}>Hide</button>
 </div>
 <div>
   <button
@@ -308,8 +326,8 @@ Initially shown dialog
           didShow: item => console.log("didShow", item, title),
           didHide: item => console.log("didHide", item, title),
           component: DefaultContent,
-          className: "xxx-timings",
-          showClassName: "xxx-visible-timings",
+          className: "xxx-timings-content",
+          transitionClassName: "xxx-timings",
           title
         },
         {

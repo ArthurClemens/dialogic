@@ -12,12 +12,21 @@ const showInitial = ({ isOnMount } : { isOnMount?: boolean } = {} ) => dialog.sh
   {
     title: getRandomId(),
     component: DefaultContent,
-    showDuration: isOnMount
-      ? 0
-      : .5,
-    hideDuration: 0.5,
-    className: "xxx",
-    showClassName: "xxx-visible",
+    transitionStyles: {
+      enter: {
+        opacity: isOnMount ? 1 : 0,
+      },
+      enterActive: {
+        transitionDuration: isOnMount ? 0 : "500ms",
+        opacity: 1
+      },
+      exitActive: {
+        transitionDuration: "500ms",
+        opacity: 0
+      }
+    },
+    className: "xxx-content",
+    transitionClassName: "xxx",
   },
   {
     spawn: "initial",
@@ -28,10 +37,16 @@ const toggleDialog = () => dialog.toggle(
   {
     title: getRandomId(),
     component: DefaultContent,
-    showDuration: 0.5,
-    hideDuration: 0.5,
-    className: "xxx",
-    showClassName: "xxx-visible",
+    transitionStyles: {
+      enterActive: {
+        transitionDuration: "500ms",
+      },
+      exitActive: {
+        transitionDuration: "500ms",
+      },
+    },
+    className: "xxx-content",
+    transitionClassName: "xxx"
   },
   {
     spawn: "toggle",
@@ -40,43 +55,50 @@ const toggleDialog = () => dialog.toggle(
 
 const dialogOneProps: Dialogic.Options = {
   component: DefaultContent,
-  showDuration: 0.5,
-  hideDuration: 0.5,
-  className: "xxx",
-  showClassName: "xxx-visible",
+  transitionStyles: {
+    enterActive: {
+      transitionDuration: "500ms",
+    },
+    exitActive: {
+      transitionDuration: "500ms",
+    },
+  },
+  className: "xxx-content",
+  transitionClassName: "xxx",
   title: "Clock",
   id: getRandomId(),
 };
 
-const dialogThreeProps: Dialogic.Options = {
-  showDuration: 0.75,
-  showDelay: 0.25,
-  hideDuration: 0.75,
-  hideDelay: .25,
+const dialogDelayProps: Dialogic.Options = {
+  // transitionStyles: {
+  //   default: {
+  //     transitionDuration: "750ms",
+  //     transitionDelay: "250ms",
+  //   },
+  // },
   component: DefaultContent,
-  className: "xxx",
-  showClassName: "xxx-visible",
+  className: "xxx-content",
+  transitionClassName: "xxx-delay",
   title: "Delay",
   id: getRandomId(),
 };
 
-const dialogFourProps = {
-  transitions: {
-    show: (domElement: HTMLElement ) => {
-      return {
-        duration: 0.5,
-        before: () => (
-          (domElement.style.opacity = "0"),
-          (domElement.style.transform = "translate3d(0, 20px, 0)")
-        ),
-        transition: () => (
-          (domElement.style.opacity = "1"),
-          (domElement.style.transform = "translate3d(0, 0px,  0)")
-        )
-      };
+const dialogTransitionProps = {
+  transitionStyles: {
+    default: {
+      transition: `all ${300}ms ease-in-out`,
     },
-    hide: (domElement: HTMLElement) => {
-      return { duration: 0.5, transition: () => domElement.style.opacity = "0" };
+    enter: {
+      opacity: 0,
+      transform: "translate3d(0, 20px, 0)",
+    },
+    enterActive: {
+      opacity: 1,
+      transform: "translate3d(0, 0px,  0)"
+    },
+    exitActive: {
+      transitionDuration: "750ms",
+      opacity: 0,
     },
   },
   component: DefaultContent,
@@ -168,9 +190,19 @@ const App = {
                 {
                   didShow: (item: Dialogic.Item) => console.log("didShow", item),
                   didHide: (item: Dialogic.Item) => console.log("didHide", item),
-                  showDuration: 0.5,
-                  showDelay: 0.25,
+                  transitionStyles: {
+                    enterActive: {
+                      transitionDuration: "500ms",
+                      transitionDelay: "500ms",
+                    },
+                    exitActive: {
+                      transitionDuration: "250ms",
+                      transitionDelay: "0ms",
+                    },
+                  },
                   component: DefaultContent,
+                  className: "xxx-content",
+                  transitionClassName: "xxx",
                   title: "With Promise"
                 },
                 {
@@ -197,13 +229,11 @@ const App = {
             onclick: () =>
               dialog.show(
                 {
-                  ...dialogOneProps,
-                  showDelay: .5,
-                  hideDelay: 0,
-                  title: dialogThreeProps.title + " " + getRandomId()
+                  ...dialogDelayProps,
+                  title: dialogDelayProps.title + " " + getRandomId()
                 },
                 {
-                  id: dialogThreeProps.id
+                  id: dialogDelayProps.id
                 }
               )    
           },
@@ -213,7 +243,7 @@ const App = {
           {
             className: "button",
             onclick: () =>
-              dialog.hide({ id: dialogThreeProps.id })
+              dialog.hide({ id: dialogDelayProps.id })
           },
           "Hide"
         ),
@@ -229,7 +259,7 @@ const App = {
                 {
                   ...dialogOneProps,
                   timeout: 2000,
-                  title: dialogThreeProps.title + " " + getRandomId()
+                  title: dialogDelayProps.title + " " + getRandomId()
                 },
                 {
                   id: "timer"
@@ -275,9 +305,9 @@ const App = {
             className: "button",
             onclick: () =>
               dialog.show(
-                dialogFourProps,
+                dialogTransitionProps,
                 {
-                  id: dialogFourProps.id
+                  id: dialogTransitionProps.id
                 }
               )    
           },
@@ -287,7 +317,7 @@ const App = {
           {
             className: "button",
             onclick: () =>
-              dialog.hide({ id: dialogFourProps.id })
+              dialog.hide({ id: dialogTransitionProps.id })
           },
           "Hide"
         ),
@@ -350,7 +380,6 @@ const App = {
                   showDuration: 0.5,
                   hideDuration: 0.5,
                   className: "xxx",
-                  showClassName: "xxx-visible",
                 },
                 {
                   spawn: "Q",
@@ -440,8 +469,8 @@ const App = {
                   didShow: (item: Dialogic.Item) => console.log("didShow", item, title),
                   didHide: (item: Dialogic.Item) => console.log("didHide", item, title),
                   component: DefaultContent,
-                  className: "xxx-timings",
-                  showClassName: "xxx-visible-timings",
+                  className: "xxx-timings-content",
+                  transitionClassName: "xxx-timings",
                   title,
                 },
                 {

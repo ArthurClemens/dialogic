@@ -3,7 +3,7 @@ import { Dialogic } from "dialogic";
 
 export const Content = {
   view: ({ attrs } : { attrs: Dialogic.ContentComponentOptions }) => {
-    return m("div", [
+    return m("div", { className: attrs.className }, [
       "Content",
       m("h2", attrs.title),
       m("button",

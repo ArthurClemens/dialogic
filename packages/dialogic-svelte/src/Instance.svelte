@@ -10,10 +10,7 @@
   export let instanceOptions = undefined;
   export let transitionOptions = undefined;
 
-  $: R_classNames = [,
-    transitionOptions.className,
-    instanceOptions.className
-	].join(" ");
+  const className = transitionOptions.transitionClassName;
 
   const dispatchTransition = (name) =>
     dispatch(name, {
@@ -33,15 +30,11 @@
     dispatchTransition("mount");
   });
 
-  $: elementProps = {
-    class: R_classNames,
-  };
 </script>
 
 <div 
-  class={R_classNames}
+  class={className}
   bind:this={domElement}
-  {...elementProps}
 >
   <svelte:component this={transitionOptions.component} {show} {hide} {...instanceOptions} />
 </div>

@@ -77,31 +77,37 @@ export namespace Dialogic {
     [key:string]: any;
   }
   
-  // Transitions
+  // TransitionFns
 
-  type Transitions = {
-    show?: (domElement?: HTMLElement) => any;
-    hide?: (domElement?: HTMLElement) => any;
+  type TransitionFn = (domElement?: HTMLElement) => any;
+
+  type TransitionFns = {
+    show?: TransitionFn;
+    hide?: TransitionFn;
   }
 
   type DefaultTransitionOptions = {
     timeout?: number;
   }
 
+  type TransitionStyles = {
+    [key:string]: CSSStyleDeclaration | undefined;
+    default?: CSSStyleDeclaration;
+    enter?: CSSStyleDeclaration;
+    enterActive?: CSSStyleDeclaration;
+    exit?: CSSStyleDeclaration;
+    exitActive?: CSSStyleDeclaration;
+  }
+
   type TransitionOptions = {
-    [key:string]: string | number | Transitions | HTMLElement | ConfirmFn | undefined;
+    [key:string]: string | number | TransitionFns | HTMLElement | TransitionStyles | ConfirmFn | undefined;
     didHide?: ConfirmFn;
     didShow?: ConfirmFn;
     domElement?: HTMLElement;
-    hideDelay?: number;
-    hideDuration?: number;
-    hideTimingFunction?: string;
-    showDelay?: number;
-    showDuration?: number;
-    showTimingFunction?: string;
     timeout?: number;
-    transitions?: Transitions;
-    showClassName?: string;
+    transitions?: TransitionFns;
+    transitionClassName?: string;
+    transitionStyles?: TransitionStyles;
     component?: any;
   } & DefaultTransitionOptions;
 

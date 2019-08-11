@@ -1585,12 +1585,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../../../node_modules/@babel/runtime/helpers/asyncToGenerator.js");
 /* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../../node_modules/@babel/runtime/helpers/toConsumableArray.js");
-/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../../node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../../node_modules/@babel/runtime/helpers/defineProperty.js");
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../../node_modules/@babel/runtime/helpers/slicedToArray.js");
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../../node_modules/@babel/runtime/helpers/toConsumableArray.js");
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_5__);
 
@@ -1604,7 +1604,6 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 
-var isClient = typeof document !== "undefined";
 
 var pipe = function pipe() {
   for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -1618,25 +1617,50 @@ var pipe = function pipe() {
   };
 };
 
+var getStyleValue = function getStyleValue(_ref) {
+  var domElement = _ref.domElement,
+      prop = _ref.prop;
+
+  if (window.getComputedStyle) {
+    var defaultView = document.defaultView;
+
+    if (defaultView) {
+      var style = defaultView.getComputedStyle(domElement);
+
+      if (style) {
+        return style.getPropertyValue(prop);
+      }
+    }
+  }
+
+  return undefined;
+};
+
 var MODE = {
   SHOW: "show",
   HIDE: "hide"
 };
 var transitionOptionKeys = {
-  className: true,
   component: true,
   didHide: true,
   didShow: true,
-  hideDelay: true,
-  hideDuration: true,
-  hideTimingFunction: true,
-  showClassName: true,
-  showDelay: true,
-  showDuration: true,
-  showTimingFunction: true,
   timeout: true,
   transitionClassName: true,
-  transitions: true
+  transitionStyles: true
+};
+
+var removeTransitionClassNames = function removeTransitionClassNames(domElement, transitionClassNames) {
+  return domElement.classList.remove(transitionClassNames.enter, transitionClassNames.enterActive, transitionClassNames.exit, transitionClassNames.exitActive);
+};
+
+var applyTransitionStyles = function applyTransitionStyles(domElement, stateName, transitionStyles) {
+  var transitionStyle = transitionStyles[stateName];
+
+  if (transitionStyle) {
+    Object.keys(transitionStyle).forEach(function (key) {
+      domElement.style[key] = transitionStyle[key];
+    });
+  }
 };
 
 var transition = function transition(props, mode) {
@@ -1647,87 +1671,83 @@ var transition = function transition(props, mode) {
   }
 
   return new Promise(function (resolve) {
-    var style = domElement.style;
-    var computedStyle = isClient ? window.getComputedStyle(domElement) : null;
-    var isShow = mode === MODE.SHOW;
-    var transitionProps = getTransitionProps(props, isShow);
-    var duration = transitionProps.duration !== undefined ? transitionProps.duration * 1000 : computedStyle ? styleDurationToMs(computedStyle.transitionDuration) : 0;
-    var delay = transitionProps.delay !== undefined ? transitionProps.delay * 1000 : computedStyle ? styleDurationToMs(computedStyle.transitionDelay) : 0;
-    var totalDuration = duration + delay;
-
-    var before = function before() {
-      if (transitionProps.before && typeof transitionProps.before === "function") {
-        style.transitionDuration = "0ms";
-        style.transitionDelay = "0ms";
-        transitionProps.before();
-      }
+    var state = {
+      isShow: mode === MODE.SHOW,
+      name: mode === MODE.SHOW ? "enter" : "exit"
     };
 
-    var after = function after() {
-      if (transitionProps.after && typeof transitionProps.after === "function") {
-        transitionProps.after();
+    if (props.transitionStyles) {
+      applyTransitionStyles(domElement, "default", props.transitionStyles);
+      applyTransitionStyles(domElement, state.name, props.transitionStyles);
+    }
+
+    var transitionClassNames = props.transitionClassName ? {
+      enter: "".concat(props.transitionClassName, "-enter"),
+      enterActive: "".concat(props.transitionClassName, "-enter-active"),
+      exit: "".concat(props.transitionClassName, "-exit"),
+      exitActive: "".concat(props.transitionClassName, "-exit-active")
+    } : undefined; // reflow
+
+    domElement.scrollTop;
+
+    var before = function before() {
+      if (transitionClassNames) {
+        removeTransitionClassNames(domElement, transitionClassNames);
+        domElement.classList.add(state.isShow ? transitionClassNames.enter : transitionClassNames.exit);
+        domElement.scrollTop;
+      }
+
+      if (state.isShow) {
+        // reflow
+        domElement.scrollTop;
       }
     };
 
     var applyTransition = function applyTransition() {
-      // Set styles
-      var timingFunction = transitionProps.timingFunction // or when set in CSS:
-      || (computedStyle ? computedStyle.transitionTimingFunction : undefined);
-
-      if (timingFunction) {
-        style.transitionTimingFunction = timingFunction;
-      }
-
-      style.transitionDuration = duration + "ms";
-      style.transitionDelay = delay + "ms"; // Set classes (need to be set after styles)
-
-      if (props.transitionClassName) {
-        domElement.classList.add(props.transitionClassName);
-      }
-
-      if (props.showClassName) {
-        var showClassElement = props.showClassElement || domElement;
-        showClassElement.classList[isShow ? "add" : "remove"](props.showClassName);
-      } // Call transition function
+      if (props.transitionStyles) {
+        applyTransitionStyles(domElement, "default", props.transitionStyles);
+        applyTransitionStyles(domElement, state.name, props.transitionStyles);
+      } // Set classes (need to be set after styles)
 
 
-      if (transitionProps.transition) {
-        transitionProps.transition();
+      if (transitionClassNames) {
+        removeTransitionClassNames(domElement, transitionClassNames);
+        domElement.classList.add(state.isShow ? transitionClassNames.enterActive : transitionClassNames.exitActive);
       }
     };
 
-    before();
-    applyTransition();
-    setTimeout(function () {
-      after();
-
-      if (props.transitionClassName) {
-        domElement.classList.remove(props.transitionClassName);
-      }
-
+    var onEnd = function onEnd() {
+      domElement.removeEventListener("transitionend", onEnd, false);
       resolve();
-    }, totalDuration);
+    };
+
+    domElement.addEventListener("transitionend", onEnd, false);
+    before();
+    state.name = state.isShow ? "enterActive" : "exitActive";
+    applyTransition();
+    var durationStyleValue = getStyleValue({
+      domElement: domElement,
+      prop: "transition-duration"
+    });
+    var durationValue = durationStyleValue !== undefined ? styleDurationToMs(durationStyleValue) : 0;
+    var delayStyleValue = getStyleValue({
+      domElement: domElement,
+      prop: "transition-delay"
+    });
+    var delayValue = delayStyleValue !== undefined ? styleDurationToMs(delayStyleValue) : 0;
+    var duration = durationValue + delayValue; // console.log("duration", duration);
+    // Due to incorrect CSS usage, ontransitionend may not be fired
+    // Using a timeout ensures completion
+
+    if (duration == 0) {
+      setTimeout(onEnd, duration);
+    }
   });
 };
 
 var styleDurationToMs = function styleDurationToMs(durationStr) {
   var parsed = parseFloat(durationStr) * (durationStr.indexOf("ms") === -1 ? 1000 : 1);
   return isNaN(parsed) ? 0 : parsed;
-};
-
-var getTransitionProps = function getTransitionProps(props, isShow) {
-  var _ref = isShow ? [props.showDuration, props.showDelay, props.showTimingFunction, props.transitions ? props.transitions.show : undefined] : [props.hideDuration, props.hideDelay, props.hideTimingFunction, props.transitions ? props.transitions.hide : undefined],
-      _ref2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_4___default()(_ref, 4),
-      duration = _ref2[0],
-      delay = _ref2[1],
-      timingFunction = _ref2[2],
-      transition = _ref2[3];
-
-  return _objectSpread({
-    duration: duration,
-    delay: delay,
-    timingFunction: timingFunction
-  }, transition ? transition(props.domElement) : undefined);
 };
 
 function createCommonjsModule(fn, module) {
@@ -1970,7 +1990,7 @@ var store = {
       add: function add(ns, item) {
         update(function (state) {
           var items = state.store[ns] || [];
-          state.store[ns] = [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(items), [item]);
+          state.store[ns] = [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(items), [item]);
 
           if (item.timer) {
             // When the timer state updates, refresh the store so that UI can pick up the change
@@ -2007,7 +2027,7 @@ var store = {
 
             if (index !== -1) {
               items[index] = newItem;
-              state.store[ns] = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(items);
+              state.store[ns] = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(items);
             }
           }
 
@@ -2030,7 +2050,7 @@ var store = {
        */
       store: function store(ns, newItems) {
         update(function (state) {
-          state.store[ns] = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(newItems);
+          state.store[ns] = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(newItems);
           return state;
         });
       },
@@ -2274,11 +2294,11 @@ var filterFirstInQueue = function filterFirstInQueue(nsItems) {
       item: item,
       queueCount: item.spawnOptions.queued ? queuedCount++ : 0
     };
-  }).filter(function (_ref3) {
-    var queueCount = _ref3.queueCount;
+  }).filter(function (_ref2) {
+    var queueCount = _ref2.queueCount;
     return queueCount === 0;
-  }).map(function (_ref4) {
-    var item = _ref4.item;
+  }).map(function (_ref3) {
+    var item = _ref3.item;
     return item;
   });
 };
@@ -2521,7 +2541,7 @@ var hideAll = function hideAll(ns) {
       });
 
       if (queuedItems.length > 0) {
-        var _queuedItems = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_4___default()(queuedItems, 1),
+        var _queuedItems = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default()(queuedItems, 1),
             current = _queuedItems[0]; // Make sure that any remaining items don't suddenly appear
 
 
@@ -2548,7 +2568,7 @@ var transitionItem = function transitionItem(item, mode) {
 var deferredHideItem =
 /*#__PURE__*/
 function () {
-  var _ref5 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+  var _ref4 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
   /*#__PURE__*/
   _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(item, timer, timeout) {
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
@@ -2569,14 +2589,14 @@ function () {
   }));
 
   return function deferredHideItem(_x, _x2, _x3) {
-    return _ref5.apply(this, arguments);
+    return _ref4.apply(this, arguments);
   };
 }();
 
 var showItem =
 /*#__PURE__*/
 function () {
-  var _ref6 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+  var _ref5 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
   /*#__PURE__*/
   _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(item) {
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
@@ -2618,14 +2638,14 @@ function () {
   }));
 
   return function showItem(_x4) {
-    return _ref6.apply(this, arguments);
+    return _ref5.apply(this, arguments);
   };
 }();
 
 var hideItem =
 /*#__PURE__*/
 function () {
-  var _ref7 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+  var _ref6 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
   /*#__PURE__*/
   _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(item) {
     var copy;
@@ -2666,7 +2686,7 @@ function () {
   }));
 
   return function hideItem(_x5) {
-    return _ref7.apply(this, arguments);
+    return _ref6.apply(this, arguments);
   };
 }();
 
@@ -2674,10 +2694,10 @@ var setDomElement = function setDomElement(domElement, item) {
   item.transitionOptions.domElement = domElement;
 };
 
-var dialogical = function dialogical(_ref8) {
-  var ns = _ref8.ns,
-      queued = _ref8.queued,
-      timeout = _ref8.timeout;
+var dialogical = function dialogical(_ref7) {
+  var ns = _ref7.ns,
+      queued = _ref7.queued,
+      timeout = _ref7.timeout;
   var defaultId = "default_".concat(ns);
   var defaultSpawn = "default_".concat(ns);
 
@@ -2762,10 +2782,10 @@ var onHideInstance = function onHideInstance(ns) {
   };
 };
 
-var Instance = function Instance(_ref9) {
-  var attrs = _ref9.attrs;
+var Instance = function Instance(_ref8) {
+  var attrs = _ref8.attrs;
   var domElement;
-  var classNames = [attrs.transitionOptions.className, attrs.instanceOptions.className].join(" ");
+  var className = attrs.transitionOptions.transitionClassName;
 
   var dispatchTransition = function dispatchTransition(dispatchFn) {
     dispatchFn({
@@ -2795,7 +2815,7 @@ var Instance = function Instance(_ref9) {
     },
     view: function view() {
       return mithril__WEBPACK_IMPORTED_MODULE_5___default()("div", {
-        className: classNames
+        className: className
       }, mithril__WEBPACK_IMPORTED_MODULE_5___default()(attrs.transitionOptions.component, _objectSpread({}, attrs.instanceOptions, {
         show: show,
         hide: hide
@@ -2809,8 +2829,8 @@ var Instance = function Instance(_ref9) {
 };
 
 var Wrapper = {
-  view: function view(_ref10) {
-    var attrs = _ref10.attrs;
+  view: function view(_ref9) {
+    var attrs = _ref9.attrs;
     var nsOnInstanceMounted = onInstanceMounted(attrs.ns);
     var nsOnShowInstance = onShowInstance(attrs.ns);
     var nsOnHideInstance = onHideInstance(attrs.ns);
@@ -2832,15 +2852,15 @@ var Wrapper = {
 
 var Dialogical = function Dialogical(type) {
   return {
-    oncreate: function oncreate(_ref11) {
-      var attrs = _ref11.attrs;
+    oncreate: function oncreate(_ref10) {
+      var attrs = _ref10.attrs;
 
       if (typeof attrs.onMount === "function") {
         attrs.onMount();
       }
     },
-    view: function view(_ref12) {
-      var attrs = _ref12.attrs;
+    view: function view(_ref11) {
+      var attrs = _ref11.attrs;
       var spawnOptions = {
         id: attrs.id || type.defaultId,
         spawn: attrs.spawn || type.defaultSpawn
@@ -4765,7 +4785,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const Content = {
     view: ({ attrs }) => {
-        return mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", [
+        return mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", { className: attrs.className }, [
             "Content",
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", attrs.title),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
@@ -4804,58 +4824,84 @@ const getRandomId = () => Math.round(1000 * Math.random()).toString();
 const showInitial = ({ isOnMount } = {}) => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
     title: getRandomId(),
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
-    showDuration: isOnMount
-        ? 0
-        : .5,
-    hideDuration: 0.5,
-    className: "xxx",
-    showClassName: "xxx-visible",
+    transitionStyles: {
+        enter: {
+            opacity: isOnMount ? 1 : 0,
+        },
+        enterActive: {
+            transitionDuration: isOnMount ? 0 : "500ms",
+            opacity: 1
+        },
+        exitActive: {
+            transitionDuration: "500ms",
+            opacity: 0
+        }
+    },
+    className: "xxx-content",
+    transitionClassName: "xxx",
 }, {
     spawn: "initial",
 });
 const toggleDialog = () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].toggle({
     title: getRandomId(),
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
-    showDuration: 0.5,
-    hideDuration: 0.5,
-    className: "xxx",
-    showClassName: "xxx-visible",
+    transitionStyles: {
+        enterActive: {
+            transitionDuration: "500ms",
+        },
+        exitActive: {
+            transitionDuration: "500ms",
+        },
+    },
+    className: "xxx-content",
+    transitionClassName: "xxx"
 }, {
     spawn: "toggle",
 });
 const dialogOneProps = {
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
-    showDuration: 0.5,
-    hideDuration: 0.5,
-    className: "xxx",
-    showClassName: "xxx-visible",
+    transitionStyles: {
+        enterActive: {
+            transitionDuration: "500ms",
+        },
+        exitActive: {
+            transitionDuration: "500ms",
+        },
+    },
+    className: "xxx-content",
+    transitionClassName: "xxx",
     title: "Clock",
     id: getRandomId(),
 };
-const dialogThreeProps = {
-    showDuration: 0.75,
-    showDelay: 0.25,
-    hideDuration: 0.75,
-    hideDelay: .25,
+const dialogDelayProps = {
+    // transitionStyles: {
+    //   default: {
+    //     transitionDuration: "750ms",
+    //     transitionDelay: "250ms",
+    //   },
+    // },
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
-    className: "xxx",
-    showClassName: "xxx-visible",
+    className: "xxx-content",
+    transitionClassName: "xxx-delay",
     title: "Delay",
     id: getRandomId(),
 };
-const dialogFourProps = {
-    transitions: {
-        show: (domElement) => {
-            return {
-                duration: 0.5,
-                before: () => ((domElement.style.opacity = "0"),
-                    (domElement.style.transform = "translate3d(0, 20px, 0)")),
-                transition: () => ((domElement.style.opacity = "1"),
-                    (domElement.style.transform = "translate3d(0, 0px,  0)"))
-            };
+const dialogTransitionProps = {
+    transitionStyles: {
+        default: {
+            transition: `all ${300}ms ease-in-out`,
         },
-        hide: (domElement) => {
-            return { duration: 0.5, transition: () => domElement.style.opacity = "0" };
+        enter: {
+            opacity: 0,
+            transform: "translate3d(0, 20px, 0)",
+        },
+        enterActive: {
+            opacity: 1,
+            transform: "translate3d(0, 0px,  0)"
+        },
+        exitActive: {
+            transitionDuration: "750ms",
+            opacity: 0,
         },
     },
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
@@ -4916,9 +4962,19 @@ const App = {
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
                     didShow: (item) => console.log("didShow", item),
                     didHide: (item) => console.log("didHide", item),
-                    showDuration: 0.5,
-                    showDelay: 0.25,
+                    transitionStyles: {
+                        enterActive: {
+                            transitionDuration: "500ms",
+                            transitionDelay: "500ms",
+                        },
+                        exitActive: {
+                            transitionDuration: "250ms",
+                            transitionDelay: "0ms",
+                        },
+                    },
                     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+                    className: "xxx-content",
+                    transitionClassName: "xxx",
                     title: "With Promise"
                 }, {
                     id: "withPromise"
@@ -4934,17 +4990,15 @@ const App = {
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
-                    ...dialogOneProps,
-                    showDelay: .5,
-                    hideDelay: 0,
-                    title: dialogThreeProps.title + " " + getRandomId()
+                    ...dialogDelayProps,
+                    title: dialogDelayProps.title + " " + getRandomId()
                 }, {
-                    id: dialogThreeProps.id
+                    id: dialogDelayProps.id
                 })
             }, "Show delay"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
-                onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ id: dialogThreeProps.id })
+                onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ id: dialogDelayProps.id })
             }, "Hide"),
         ]),
         // Timer
@@ -4954,7 +5008,7 @@ const App = {
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
                     ...dialogOneProps,
                     timeout: 2000,
-                    title: dialogThreeProps.title + " " + getRandomId()
+                    title: dialogDelayProps.title + " " + getRandomId()
                 }, {
                     id: "timer"
                 })
@@ -4980,13 +5034,13 @@ const App = {
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
-                onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show(dialogFourProps, {
-                    id: dialogFourProps.id
+                onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show(dialogTransitionProps, {
+                    id: dialogTransitionProps.id
                 })
             }, "Show transition"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
-                onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ id: dialogFourProps.id })
+                onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide({ id: dialogTransitionProps.id })
             }, "Hide"),
         ]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
@@ -5031,7 +5085,6 @@ const App = {
                     showDuration: 0.5,
                     hideDuration: 0.5,
                     className: "xxx",
-                    showClassName: "xxx-visible",
                 }, {
                     spawn: "Q",
                     queued: true
@@ -5098,8 +5151,8 @@ const App = {
                         didShow: (item) => console.log("didShow", item, title),
                         didHide: (item) => console.log("didHide", item, title),
                         component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
-                        className: "xxx-timings",
-                        showClassName: "xxx-visible-timings",
+                        className: "xxx-timings-content",
+                        transitionClassName: "xxx-timings",
                         title,
                     }, {
                         spawn: "NO"

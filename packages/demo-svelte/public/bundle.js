@@ -79,19 +79,6 @@ var app = (function () {
         else
             node.setAttribute(attribute, value);
     }
-    function set_attributes(node, attributes) {
-        for (const key in attributes) {
-            if (key === 'style') {
-                node.style.cssText = attributes[key];
-            }
-            else if (key in node) {
-                node[key] = attributes[key];
-            }
-            else {
-                attr(node, key, attributes[key]);
-            }
-        }
-    }
     function children(element) {
         return Array.from(element.childNodes);
     }
@@ -471,25 +458,22 @@ var app = (function () {
         HIDE: "hide"
     };
     const transitionOptionKeys = {
-        className: true,
         component: true,
         didHide: true,
         didShow: true,
         hideDelay: true,
         hideDuration: true,
         hideTimingFunction: true,
-        showClassName: true,
         showDelay: true,
         showDuration: true,
         showTimingFunction: true,
         timeout: true,
-        transitionClassName: true,
         transitions: true,
+        transitionClassName: true,
     };
+    const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(transitionClassNames.enter, transitionClassNames.enterActive, transitionClassNames.exit, transitionClassNames.exitActive);
     const transition = (props, mode) => {
-        const domElement = props.domElements
-            ? props.domElements.domElement
-            : null;
+        const domElement = props.domElement;
         if (!domElement) {
             return Promise.resolve("no domElement");
         }
@@ -517,6 +501,16 @@ var app = (function () {
                     style.transitionDelay = "0ms";
                     transitionProps.before();
                 }
+                if (transitionProps.transitionClassNames) {
+                    removeTransitionClassNames(domElement, transitionProps.transitionClassNames);
+                    domElement.classList.add(isShow
+                        ? transitionProps.transitionClassNames.enter
+                        : transitionProps.transitionClassNames.exit);
+                }
+                if (isShow) {
+                    // reflow
+                    domElement.scrollTop;
+                }
             };
             const after = () => {
                 if (transitionProps.after && typeof transitionProps.after === "function") {
@@ -536,12 +530,11 @@ var app = (function () {
                 style.transitionDuration = duration + "ms";
                 style.transitionDelay = delay + "ms";
                 // Set classes (need to be set after styles)
-                if (props.transitionClassName) {
-                    domElement.classList.add(props.transitionClassName);
-                }
-                if (props.showClassName) {
-                    const showClassElement = props.showClassElement || domElement;
-                    showClassElement.classList[isShow ? "add" : "remove"](props.showClassName);
+                if (transitionProps.transitionClassNames) {
+                    removeTransitionClassNames(domElement, transitionProps.transitionClassNames);
+                    domElement.classList.add(isShow
+                        ? transitionProps.transitionClassNames.enterActive
+                        : transitionProps.transitionClassNames.exitActive);
                 }
                 // Call transition function
                 if (transitionProps.transition) {
@@ -552,9 +545,6 @@ var app = (function () {
             applyTransition();
             setTimeout(() => {
                 after();
-                if (props.transitionClassName) {
-                    domElement.classList.remove(props.transitionClassName);
-                }
                 resolve();
             }, totalDuration);
         });
@@ -569,13 +559,22 @@ var app = (function () {
         const [duration, delay, timingFunction, transition] = isShow
             ? [props.showDuration, props.showDelay, props.showTimingFunction, props.transitions ? props.transitions.show : undefined]
             : [props.hideDuration, props.hideDelay, props.hideTimingFunction, props.transitions ? props.transitions.hide : undefined];
+        const transitionClassNames = props.transitionClassName
+            ? {
+                enter: `${props.transitionClassName}-enter`,
+                enterActive: `${props.transitionClassName}-enter-active`,
+                exit: `${props.transitionClassName}-exit`,
+                exitActive: `${props.transitionClassName}-exit-active`
+            }
+            : undefined;
         return {
             duration,
             delay,
             timingFunction,
             ...(transition
-                ? transition(props.domElements)
-                : undefined)
+                ? transition(props.domElement)
+                : undefined),
+            transitionClassNames
         };
     };
 
@@ -1308,8 +1307,8 @@ var app = (function () {
         actions.remove(item.ns, item.id);
         return Promise.resolve(copy);
     };
-    const setTransitionOptions = (transitionOptions, item) => {
-        item.instanceTransitionOptions = transitionOptions;
+    const setDomElement = (domElement, item) => {
+        item.transitionOptions.domElement = domElement;
     };
 
     const dialogical = ({ ns, queued, timeout }) => {
@@ -1351,6 +1350,7 @@ var app = (function () {
     const dialog = dialogical({ ns: "dialog" });
 
     const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
+    //# sourceMappingURL=dialogic.mjs.map
 
     const subscriber_queue = [];
     /**
@@ -1511,7 +1511,7 @@ var app = (function () {
       // Update dispatching item:
       const maybeItem = selectors.find(ns, event.detail.spawnOptions);
       if (maybeItem.just) {
-        setTransitionOptions(event.detail.transitionOptions, maybeItem.just);
+        setDomElement(event.detail.domElement, maybeItem.just);
       }
       // Find item to transition:
       const maybeTransitioningItem = selectors.find(ns, event.detail.spawnOptions);
@@ -1559,22 +1559,12 @@ var app = (function () {
     		var switch_instance = new switch_value(switch_props());
     	}
 
-    	var div_levels = [
-    		{ class: ctx.R_classNames },
-    		ctx.elementProps
-    	];
-
-    	var div_data = {};
-    	for (var i = 0; i < div_levels.length; i += 1) {
-    		div_data = assign(div_data, div_levels[i]);
-    	}
-
     	return {
     		c: function create() {
     			div = element("div");
     			if (switch_instance) switch_instance.$$.fragment.c();
-    			set_attributes(div, div_data);
-    			add_location(div, file, 46, 0, 905);
+    			attr(div, "class", ctx.className);
+    			add_location(div, file, 34, 0, 656);
     		},
 
     		l: function claim(nodes) {
@@ -1623,11 +1613,6 @@ var app = (function () {
     			else if (switch_value) {
     				switch_instance.$set(switch_instance_changes);
     			}
-
-    			set_attributes(div, get_spread_update(div_levels, [
-    				(changed.R_classNames) && { class: ctx.R_classNames },
-    				(changed.elementProps) && ctx.elementProps
-    			]));
     		},
 
     		i: function intro(local) {
@@ -1661,16 +1646,12 @@ var app = (function () {
 
       let { spawnOptions = undefined, instanceOptions = undefined, transitionOptions = undefined } = $$props;
 
+      const className = transitionOptions.transitionClassName;
+
       const dispatchTransition = (name) =>
         dispatch(name, {
-          spawnOptions,
-          transitionOptions: {
-            className: transitionOptions.className,
-            showClassName: transitionOptions.showClassName,
-            domElements: {
-              domElement
-            },
-          },
+          spawnOptions, // for identification
+          domElement
         });
 
       const show = () => {
@@ -1702,27 +1683,14 @@ var app = (function () {
     		if ('transitionOptions' in $$props) $$invalidate('transitionOptions', transitionOptions = $$props.transitionOptions);
     	};
 
-    	let R_classNames, elementProps;
-
-    	$$self.$$.update = ($$dirty = { transitionOptions: 1, instanceOptions: 1, R_classNames: 1 }) => {
-    		if ($$dirty.transitionOptions || $$dirty.instanceOptions) { $$invalidate('R_classNames', R_classNames = [,
-            transitionOptions.className,
-            instanceOptions.className
-        	].join(" ")); }
-    		if ($$dirty.R_classNames) { $$invalidate('elementProps', elementProps = {
-            class: R_classNames,
-          }); }
-    	};
-
     	return {
     		domElement,
     		spawnOptions,
     		instanceOptions,
     		transitionOptions,
+    		className,
     		show,
     		hide,
-    		R_classNames,
-    		elementProps,
     		div_binding
     	};
     }
@@ -2519,7 +2487,7 @@ var app = (function () {
 
     const file$4 = "src/App.svelte";
 
-    // (131:0) {#if showDialogs}
+    // (137:0) {#if showDialogs}
     function create_if_block_1(ctx) {
     	var h2, t1, p0, t2, t3, t4, hr0, t5, div0, button0, t7, button1, t9, div1, t10, button2, t12, button3, t14, button4, t16, button5, t18, div2, button6, t20, button7, t22, div3, button8, t24, button9, t26, div4, button10, t28, button11, t30, div5, button12, t32, button13, t34, div6, button14, t36, button15, t38, hr1, t39, div7, p1, t41, t42, div8, p2, t44, t45, hr2, t46, div9, button16, t48, button17, t50, div10, p3, t52, t53, hr3, t54, div11, button18, t56, button19, t58, div12, current, dispose;
 
@@ -2647,48 +2615,48 @@ var app = (function () {
     			t58 = space();
     			div12 = element("div");
     			dialog3.$$.fragment.c();
-    			add_location(h2, file$4, 132, 0, 3176);
-    			add_location(p0, file$4, 134, 0, 3193);
-    			add_location(hr0, file$4, 136, 0, 3232);
-    			add_location(button0, file$4, 139, 2, 3248);
-    			add_location(button1, file$4, 146, 2, 3381);
-    			add_location(div0, file$4, 138, 0, 3240);
-    			add_location(button2, file$4, 157, 2, 3575);
-    			add_location(button3, file$4, 169, 2, 3788);
-    			add_location(button4, file$4, 174, 2, 3886);
-    			add_location(button5, file$4, 182, 2, 4019);
-    			add_location(div1, file$4, 149, 0, 3442);
-    			add_location(button6, file$4, 186, 2, 4138);
-    			add_location(button7, file$4, 202, 2, 4558);
-    			add_location(div2, file$4, 185, 0, 4130);
-    			add_location(button8, file$4, 209, 2, 4712);
-    			add_location(button9, file$4, 218, 2, 4941);
-    			add_location(div3, file$4, 208, 0, 4704);
-    			add_location(button10, file$4, 221, 2, 5034);
-    			add_location(button11, file$4, 225, 2, 5152);
-    			add_location(div4, file$4, 220, 0, 5026);
-    			add_location(button12, file$4, 228, 2, 5245);
-    			add_location(button13, file$4, 232, 2, 5366);
-    			add_location(div5, file$4, 227, 0, 5237);
-    			add_location(button14, file$4, 235, 2, 5460);
-    			add_location(button15, file$4, 242, 2, 5634);
-    			add_location(div6, file$4, 234, 0, 5452);
-    			add_location(hr1, file$4, 245, 0, 5715);
-    			add_location(p1, file$4, 248, 2, 5731);
-    			add_location(div7, file$4, 247, 0, 5723);
-    			add_location(p2, file$4, 253, 2, 5775);
-    			add_location(div8, file$4, 252, 0, 5767);
-    			add_location(hr2, file$4, 257, 0, 5838);
-    			add_location(button16, file$4, 260, 2, 5867);
-    			add_location(button17, file$4, 267, 2, 6064);
-    			add_location(div9, file$4, 259, 0, 5859);
-    			add_location(p3, file$4, 271, 2, 6147);
-    			add_location(div10, file$4, 270, 0, 6139);
-    			add_location(hr3, file$4, 275, 0, 6200);
-    			add_location(button18, file$4, 278, 2, 6238);
-    			add_location(button19, file$4, 282, 2, 6316);
-    			add_location(div11, file$4, 277, 0, 6230);
-    			add_location(div12, file$4, 285, 0, 6397);
+    			add_location(h2, file$4, 138, 0, 3251);
+    			add_location(p0, file$4, 140, 0, 3268);
+    			add_location(hr0, file$4, 142, 0, 3307);
+    			add_location(button0, file$4, 145, 2, 3323);
+    			add_location(button1, file$4, 155, 2, 3539);
+    			add_location(div0, file$4, 144, 0, 3315);
+    			add_location(button2, file$4, 166, 2, 3733);
+    			add_location(button3, file$4, 178, 2, 3946);
+    			add_location(button4, file$4, 183, 2, 4044);
+    			add_location(button5, file$4, 191, 2, 4177);
+    			add_location(div1, file$4, 158, 0, 3600);
+    			add_location(button6, file$4, 195, 2, 4296);
+    			add_location(button7, file$4, 212, 2, 4752);
+    			add_location(div2, file$4, 194, 0, 4288);
+    			add_location(button8, file$4, 219, 2, 4906);
+    			add_location(button9, file$4, 230, 2, 5183);
+    			add_location(div3, file$4, 218, 0, 4898);
+    			add_location(button10, file$4, 233, 2, 5276);
+    			add_location(button11, file$4, 237, 2, 5404);
+    			add_location(div4, file$4, 232, 0, 5268);
+    			add_location(button12, file$4, 240, 2, 5502);
+    			add_location(button13, file$4, 244, 2, 5623);
+    			add_location(div5, file$4, 239, 0, 5494);
+    			add_location(button14, file$4, 247, 2, 5717);
+    			add_location(button15, file$4, 254, 2, 5891);
+    			add_location(div6, file$4, 246, 0, 5709);
+    			add_location(hr1, file$4, 257, 0, 5972);
+    			add_location(p1, file$4, 260, 2, 5988);
+    			add_location(div7, file$4, 259, 0, 5980);
+    			add_location(p2, file$4, 265, 2, 6032);
+    			add_location(div8, file$4, 264, 0, 6024);
+    			add_location(hr2, file$4, 269, 0, 6095);
+    			add_location(button16, file$4, 272, 2, 6124);
+    			add_location(button17, file$4, 279, 2, 6321);
+    			add_location(div9, file$4, 271, 0, 6116);
+    			add_location(p3, file$4, 283, 2, 6404);
+    			add_location(div10, file$4, 282, 0, 6396);
+    			add_location(hr3, file$4, 287, 0, 6457);
+    			add_location(button18, file$4, 290, 2, 6495);
+    			add_location(button19, file$4, 294, 2, 6573);
+    			add_location(div11, file$4, 289, 0, 6487);
+    			add_location(div12, file$4, 297, 0, 6654);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_5),
@@ -2920,7 +2888,7 @@ var app = (function () {
     	};
     }
 
-    // (152:2) {#if $timerDialogExists}
+    // (161:2) {#if $timerDialogExists}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -2963,7 +2931,7 @@ var app = (function () {
     	};
     }
 
-    // (298:0) {#if showNotifications}
+    // (310:0) {#if showNotifications}
     function create_if_block(ctx) {
     	var h2, t1, p0, t2, t3, t4, p1, t5, t6, t7, p2, t8, t9, t10, div, button0, t12, button1, t14, button2, t16, button3, t18, t19, hr, current, dispose;
 
@@ -3002,16 +2970,16 @@ var app = (function () {
     			notification_1.$$.fragment.c();
     			t19 = space();
     			hr = element("hr");
-    			add_location(h2, file$4, 299, 0, 6632);
-    			add_location(p0, file$4, 300, 0, 6654);
-    			add_location(p1, file$4, 301, 0, 6703);
-    			add_location(p2, file$4, 302, 0, 6754);
-    			add_location(button0, file$4, 305, 2, 6810);
-    			add_location(button1, file$4, 325, 2, 7342);
-    			add_location(button2, file$4, 331, 2, 7514);
-    			add_location(button3, file$4, 336, 2, 7618);
-    			add_location(div, file$4, 304, 0, 6802);
-    			add_location(hr, file$4, 345, 0, 7751);
+    			add_location(h2, file$4, 311, 0, 6889);
+    			add_location(p0, file$4, 312, 0, 6911);
+    			add_location(p1, file$4, 313, 0, 6960);
+    			add_location(p2, file$4, 314, 0, 7011);
+    			add_location(button0, file$4, 317, 2, 7067);
+    			add_location(button1, file$4, 337, 2, 7599);
+    			add_location(button2, file$4, 343, 2, 7771);
+    			add_location(button3, file$4, 348, 2, 7875);
+    			add_location(div, file$4, 316, 0, 7059);
+    			add_location(hr, file$4, 357, 0, 8008);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_26),
@@ -3138,14 +3106,14 @@ var app = (function () {
     			t14 = space();
     			if (if_block1) if_block1.c();
     			if_block1_anchor = empty();
-    			add_location(button0, file$4, 118, 0, 2705);
-    			add_location(button1, file$4, 120, 0, 2817);
-    			add_location(button2, file$4, 122, 0, 2912);
-    			add_location(button3, file$4, 124, 0, 2989);
-    			add_location(hr0, file$4, 126, 0, 3072);
-    			add_location(button4, file$4, 128, 0, 3080);
-    			add_location(hr1, file$4, 293, 0, 6504);
-    			add_location(button5, file$4, 295, 0, 6512);
+    			add_location(button0, file$4, 124, 0, 2780);
+    			add_location(button1, file$4, 126, 0, 2892);
+    			add_location(button2, file$4, 128, 0, 2987);
+    			add_location(button3, file$4, 130, 0, 3064);
+    			add_location(hr0, file$4, 132, 0, 3147);
+    			add_location(button4, file$4, 134, 0, 3155);
+    			add_location(hr1, file$4, 305, 0, 6761);
+    			add_location(button5, file$4, 307, 0, 6769);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler),
@@ -3304,8 +3272,8 @@ var app = (function () {
           ? 0
           : .5,
         hideDuration: 0.5,
-        className: "xxx",
-        showClassName: "xxx-visible",
+        className: "xxx-content",
+        transitionClassName: "xxx",
       },
       {
         spawn: "initial",
@@ -3318,41 +3286,39 @@ var app = (function () {
         hideDuration: 0.5,
         hideDelay: .25,
         component: Content$1,
-        className: "xxx",
-        showClassName: "xxx-visible",
+        className: "xxx-content",
+        transitionClassName: "xxx",
         title: "Clock",
         id: getRandomId()
       };
-      const dialogTwoProps = {
-        showDuration: 0.75,
+      const dialogSlowFadeProps = {
+        showDuration: 1,
         showDelay: 0,
-        hideDuration: 0.75,
+        hideDuration: 1,
         hideDelay: 0,
         component: Content,
-        className: "xxx",
-        showClassName: "xxx-visible",
+        className: "xxx-content",
+        transitionClassName: "xxx",
         title: "Fade",
         id: getRandomId()
       };
       const dialogFourProps = {
         transitions: {
-          show: domElements => {
-            const el = domElements.domElement;
+          show: domElement => {
             return {
               duration: 0.5,
               before: () => (
-                (el.style.opacity = 0),
-                (el.style.transform = "translate3d(0, 20px, 0)")
+                (domElement.style.opacity = 0),
+                (domElement.style.transform = "translate3d(0, 20px, 0)")
               ),
               transition: () => (
-                (el.style.opacity = 1),
-                (el.style.transform = "translate3d(0, 0px,  0)")
+                (domElement.style.opacity = 1),
+                (domElement.style.transform = "translate3d(0, 0px,  0)")
               )
             };
           },
-          hide: domElements => {
-            const el = domElements.domElement;
-            return { duration: 0.5, transition: () => el.style.opacity = 0 };
+          hide: domElement => {
+            return { duration: 0.5, transition: () => domElement.style.opacity = 0 };
           },
         },
         component: Content,
@@ -3362,9 +3328,8 @@ var app = (function () {
 
       const clearOptions = {
         transitions: {
-          hide: domElements => {
-            const el = domElements.domElement;
-            return { duration: 0.5, delay: 0, transition: () => el.style.opacity = 0 };
+          hide: domElement => {
+            return { duration: 0.5, delay: 0, transition: () => domElement.style.opacity = 0 };
           }
         }
       };
@@ -3394,7 +3359,10 @@ var app = (function () {
     	function click_handler_5() {
     		return dialog$1.show({
     	      component: Content,
-    	      title: "Default"
+    	      title: "Default",
+    	      transitionClassName: "xxx",
+    	      showDuration: .5,
+    	      hideDuration: .5,
     	    });
     	}
 
@@ -3451,6 +3419,7 @@ var app = (function () {
     	        showDuration: 0.5,
     	        showDelay: 0.25,
     	        component: Content,
+    	        transitionClassName: "xxx",
     	        title: "With Promise"
     	      },
     	      {
@@ -3470,7 +3439,9 @@ var app = (function () {
     		return dialog$1.show({
     	      ...dialogOneProps,
     	      showDelay: .5,
+    	      showDuration: .5,
     	      hideDelay: 0,
+    	      hideDuration: .5,
     	      title: dialogOneProps.title + " " + getRandomId()
     	    }, { id: dialogOneProps.id });
     	}
@@ -3480,11 +3451,11 @@ var app = (function () {
     	}
 
     	function click_handler_15() {
-    		return dialog$1.show(dialogTwoProps, { id: dialogTwoProps.id });
+    		return dialog$1.show(dialogSlowFadeProps, { id: dialogSlowFadeProps.id });
     	}
 
     	function click_handler_16() {
-    		return dialog$1.hide({ id: dialogTwoProps.id });
+    		return dialog$1.hide({ id: dialogSlowFadeProps.id });
     	}
 
     	function click_handler_17() {
@@ -3590,7 +3561,7 @@ var app = (function () {
     		getRandomId,
     		showInitial,
     		dialogOneProps,
-    		dialogTwoProps,
+    		dialogSlowFadeProps,
     		dialogFourProps,
     		clearOptions,
     		Math,
