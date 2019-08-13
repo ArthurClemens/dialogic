@@ -99,15 +99,17 @@ export namespace Dialogic {
     exitActive?: CSSStyleDeclaration;
   }
 
+  type TransitionStylesFn = (domElement: HTMLElement) => TransitionStyles;
+
   type TransitionOptions = {
-    [key:string]: string | number | TransitionFns | HTMLElement | TransitionStyles | ConfirmFn | undefined;
+    [key:string]: string | number | TransitionFns | HTMLElement | TransitionStyles | TransitionStylesFn | ConfirmFn | undefined;
     didHide?: ConfirmFn;
     didShow?: ConfirmFn;
     domElement?: HTMLElement;
     timeout?: number;
     transitions?: TransitionFns;
     transitionClassName?: string;
-    transitionStyles?: TransitionStyles;
+    transitionStyles?: TransitionStyles | TransitionStylesFn; 
     component?: any;
   } & DefaultTransitionOptions;
 

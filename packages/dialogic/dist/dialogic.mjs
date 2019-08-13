@@ -25,90 +25,86 @@ const transitionOptionKeys = {
     transitionStyles: true,
 };
 const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(transitionClassNames.enter, transitionClassNames.enterActive, transitionClassNames.exit, transitionClassNames.exitActive);
-const applyTransitionStyles = (domElement, stateName, transitionStyles) => {
-    const transitionStyle = transitionStyles[stateName];
-    if (transitionStyle) {
-        Object.keys(transitionStyle).forEach((key) => {
-            domElement.style[key] = transitionStyle[key];
-        });
+const applyTransitionStyles = (domElement, step, transitionStyles) => {
+    const transitionStyle = transitionStyles[step] || {};
+    Object.keys(transitionStyle).forEach((key) => {
+        domElement.style[key] = transitionStyle[key];
+    });
+};
+const applyNoDurationTransitionStyle = (domElement) => domElement.style.transitionDuration = "0ms";
+const getTransitionStyles = (domElement, transitionStyles) => (typeof transitionStyles === "function"
+    ? transitionStyles(domElement)
+    : transitionStyles) || {};
+const applyStylesForState = (domElement, props, step, isEnterStep) => {
+    if (props.transitionStyles) {
+        const transitionStyles = getTransitionStyles(domElement, props.transitionStyles);
+        applyTransitionStyles(domElement, "default", transitionStyles);
+        isEnterStep && applyNoDurationTransitionStyle(domElement);
+        applyTransitionStyles(domElement, step, transitionStyles);
     }
+    if (props.transitionClassName) {
+        const transitionClassNames = {
+            enter: `${props.transitionClassName}-enter`,
+            enterActive: `${props.transitionClassName}-enter-active`,
+            exit: `${props.transitionClassName}-exit`,
+            exitActive: `${props.transitionClassName}-exit-active`
+        };
+        removeTransitionClassNames(domElement, transitionClassNames);
+        transitionClassNames && domElement.classList.add(transitionClassNames[step]);
+    }
+};
+const getDuration = (domElement) => {
+    const durationStyleValue = getStyleValue({ domElement, prop: "transition-duration" });
+    const durationValue = durationStyleValue !== undefined
+        ? styleDurationToMs(durationStyleValue)
+        : 0;
+    const delayStyleValue = getStyleValue({ domElement, prop: "transition-delay" });
+    const delayValue = delayStyleValue !== undefined
+        ? styleDurationToMs(delayStyleValue)
+        : 0;
+    return durationValue + delayValue;
+};
+const steps = {
+    enter: {
+        nextStep: "enterActive"
+    },
+    enterActive: {
+        nextStep: undefined
+    },
+    exit: {
+        nextStep: "exitActive"
+    },
+    exitActive: {
+        nextStep: undefined
+    },
 };
 const transition = (props, mode) => {
     const domElement = props.domElement;
     if (!domElement) {
-        return Promise.resolve("no domElement");
+        return Promise.reject("no domElement");
     }
+    let currentStep = mode === MODE.SHOW
+        ? "enter"
+        : "exit";
     return new Promise(resolve => {
-        const state = {
-            isShow: mode === MODE.SHOW,
-            name: mode === MODE.SHOW
-                ? "enter"
-                : "exit"
-        };
-        if (props.transitionStyles) {
-            applyTransitionStyles(domElement, "default", props.transitionStyles);
-            applyTransitionStyles(domElement, state.name, props.transitionStyles);
-        }
-        const transitionClassNames = props.transitionClassName
-            ? {
-                enter: `${props.transitionClassName}-enter`,
-                enterActive: `${props.transitionClassName}-enter-active`,
-                exit: `${props.transitionClassName}-exit`,
-                exitActive: `${props.transitionClassName}-exit-active`
-            }
-            : undefined;
-        // reflow
-        domElement.scrollTop;
-        const before = () => {
-            if (transitionClassNames) {
-                removeTransitionClassNames(domElement, transitionClassNames);
-                domElement.classList.add(state.isShow
-                    ? transitionClassNames.enter
-                    : transitionClassNames.exit);
-                domElement.scrollTop;
-            }
-            if (state.isShow) {
-                // reflow
-                domElement.scrollTop;
-            }
-        };
-        const applyTransition = () => {
-            if (props.transitionStyles) {
-                applyTransitionStyles(domElement, "default", props.transitionStyles);
-                applyTransitionStyles(domElement, state.name, props.transitionStyles);
-            }
-            // Set classes (need to be set after styles)
-            if (transitionClassNames) {
-                removeTransitionClassNames(domElement, transitionClassNames);
-                domElement.classList.add(state.isShow
-                    ? transitionClassNames.enterActive
-                    : transitionClassNames.exitActive);
-            }
-        };
         const onEnd = () => {
             domElement.removeEventListener("transitionend", onEnd, false);
             resolve();
         };
-        domElement.addEventListener("transitionend", onEnd, false);
-        before();
-        state.name = state.isShow
-            ? "enterActive"
-            : "exitActive";
-        applyTransition();
-        const durationStyleValue = getStyleValue({ domElement, prop: "transition-duration" });
-        const durationValue = durationStyleValue !== undefined
-            ? styleDurationToMs(durationStyleValue)
-            : 0;
-        const delayStyleValue = getStyleValue({ domElement, prop: "transition-delay" });
-        const delayValue = delayStyleValue !== undefined
-            ? styleDurationToMs(delayStyleValue)
-            : 0;
-        const duration = durationValue + delayValue;
-        // console.log("duration", duration);
-        // Due to incorrect CSS usage, ontransitionend may not be fired
-        // Using a timeout ensures completion
-        if (duration == 0) {
-            setTimeout(onEnd, duration);
+        applyStylesForState(domElement, props, currentStep, currentStep === "enter");
+        const nextStep = steps[currentStep].nextStep;
+        if (nextStep) {
+            setTimeout(() => {
+                currentStep = nextStep;
+                domElement.addEventListener("transitionend", onEnd, false);
+                applyStylesForState(domElement, props, currentStep);
+                // Due to incorrect CSS usage, ontransitionend may not be fired
+                // Using a timeout ensures completion
+                const duration = getDuration(domElement);
+                if (duration == 0) {
+                    setTimeout(onEnd, duration);
+                }
+            }, 0);
         }
     });
 };

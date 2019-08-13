@@ -84,23 +84,45 @@ const dialogDelayProps: Dialogic.Options = {
 };
 
 const dialogTransitionProps = {
-  transitionStyles: {
-    default: {
-      transition: `all ${300}ms ease-in-out`,
-    },
-    enter: {
-      opacity: 0,
-      transform: "translate3d(0, 20px, 0)",
-    },
-    enterActive: {
-      opacity: 1,
-      transform: "translate3d(0, 0px,  0)"
-    },
-    exitActive: {
-      transitionDuration: "750ms",
-      opacity: 0,
-    },
+  transitionStyles: (domElement: HTMLElement) => {
+    const height = domElement.getBoundingClientRect().height;
+    return {
+      default: {
+        transition: "all 300ms ease-in-out",
+      },
+      enter: {
+        opacity: 0,
+        transform: `translate3d(0, ${height}px, 0)`,
+      },
+      enterActive: {
+        opacity: 1,
+        transform: "translate3d(0, 0px,  0)",
+      },
+      exitActive: {
+        transitionDuration: "750ms",
+        transform: `translate3d(0, ${height}px, 0)`,
+        opacity: 0,
+      },
+    }
   },
+  // transitionStyles: {
+  //   default: {
+  //     transition: `all ${300}ms ease-in-out`,
+  //   },
+  //   enter: {
+  //     opacity: 0,
+  //     transform: `translate3d(0, ${84}px, 0)`,
+  //     transitionDuration: "0ms"
+  //   },
+  //   enterActive: {
+  //     opacity: 1,
+  //     transform: "translate3d(0, 0px,  0)"
+  //   },
+  //   exitActive: {
+  //     transitionDuration: "750ms",
+  //     opacity: 0,
+  //   },
+  // },
   component: DefaultContent,
   title: "Transitions",
   id: getRandomId(),

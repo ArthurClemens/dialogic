@@ -1653,13 +1653,67 @@ var removeTransitionClassNames = function removeTransitionClassNames(domElement,
   return domElement.classList.remove(transitionClassNames.enter, transitionClassNames.enterActive, transitionClassNames.exit, transitionClassNames.exitActive);
 };
 
-var applyTransitionStyles = function applyTransitionStyles(domElement, stateName, transitionStyles) {
-  var transitionStyle = transitionStyles[stateName];
+var applyTransitionStyles = function applyTransitionStyles(domElement, step, transitionStyles) {
+  var transitionStyle = transitionStyles[step] || {};
+  Object.keys(transitionStyle).forEach(function (key) {
+    domElement.style[key] = transitionStyle[key];
+  });
+};
 
-  if (transitionStyle) {
-    Object.keys(transitionStyle).forEach(function (key) {
-      domElement.style[key] = transitionStyle[key];
-    });
+var applyNoDurationTransitionStyle = function applyNoDurationTransitionStyle(domElement) {
+  return domElement.style.transitionDuration = "0ms";
+};
+
+var getTransitionStyles = function getTransitionStyles(domElement, transitionStyles) {
+  return (typeof transitionStyles === "function" ? transitionStyles(domElement) : transitionStyles) || {};
+};
+
+var applyStylesForState = function applyStylesForState(domElement, props, step, isEnterStep) {
+  if (props.transitionStyles) {
+    var transitionStyles = getTransitionStyles(domElement, props.transitionStyles);
+    applyTransitionStyles(domElement, "default", transitionStyles);
+    isEnterStep && applyNoDurationTransitionStyle(domElement);
+    applyTransitionStyles(domElement, step, transitionStyles);
+  }
+
+  if (props.transitionClassName) {
+    var transitionClassNames = {
+      enter: "".concat(props.transitionClassName, "-enter"),
+      enterActive: "".concat(props.transitionClassName, "-enter-active"),
+      exit: "".concat(props.transitionClassName, "-exit"),
+      exitActive: "".concat(props.transitionClassName, "-exit-active")
+    };
+    removeTransitionClassNames(domElement, transitionClassNames);
+    transitionClassNames && domElement.classList.add(transitionClassNames[step]);
+  }
+};
+
+var getDuration = function getDuration(domElement) {
+  var durationStyleValue = getStyleValue({
+    domElement: domElement,
+    prop: "transition-duration"
+  });
+  var durationValue = durationStyleValue !== undefined ? styleDurationToMs(durationStyleValue) : 0;
+  var delayStyleValue = getStyleValue({
+    domElement: domElement,
+    prop: "transition-delay"
+  });
+  var delayValue = delayStyleValue !== undefined ? styleDurationToMs(delayStyleValue) : 0;
+  return durationValue + delayValue;
+};
+
+var steps = {
+  enter: {
+    nextStep: "enterActive"
+  },
+  enterActive: {
+    nextStep: undefined
+  },
+  exit: {
+    nextStep: "exitActive"
+  },
+  exitActive: {
+    nextStep: undefined
   }
 };
 
@@ -1667,80 +1721,32 @@ var transition = function transition(props, mode) {
   var domElement = props.domElement;
 
   if (!domElement) {
-    return Promise.resolve("no domElement");
+    return Promise.reject("no domElement");
   }
 
+  var currentStep = mode === MODE.SHOW ? "enter" : "exit";
   return new Promise(function (resolve) {
-    var state = {
-      isShow: mode === MODE.SHOW,
-      name: mode === MODE.SHOW ? "enter" : "exit"
-    };
-
-    if (props.transitionStyles) {
-      applyTransitionStyles(domElement, "default", props.transitionStyles);
-      applyTransitionStyles(domElement, state.name, props.transitionStyles);
-    }
-
-    var transitionClassNames = props.transitionClassName ? {
-      enter: "".concat(props.transitionClassName, "-enter"),
-      enterActive: "".concat(props.transitionClassName, "-enter-active"),
-      exit: "".concat(props.transitionClassName, "-exit"),
-      exitActive: "".concat(props.transitionClassName, "-exit-active")
-    } : undefined; // reflow
-
-    domElement.scrollTop;
-
-    var before = function before() {
-      if (transitionClassNames) {
-        removeTransitionClassNames(domElement, transitionClassNames);
-        domElement.classList.add(state.isShow ? transitionClassNames.enter : transitionClassNames.exit);
-        domElement.scrollTop;
-      }
-
-      if (state.isShow) {
-        // reflow
-        domElement.scrollTop;
-      }
-    };
-
-    var applyTransition = function applyTransition() {
-      if (props.transitionStyles) {
-        applyTransitionStyles(domElement, "default", props.transitionStyles);
-        applyTransitionStyles(domElement, state.name, props.transitionStyles);
-      } // Set classes (need to be set after styles)
-
-
-      if (transitionClassNames) {
-        removeTransitionClassNames(domElement, transitionClassNames);
-        domElement.classList.add(state.isShow ? transitionClassNames.enterActive : transitionClassNames.exitActive);
-      }
-    };
-
     var onEnd = function onEnd() {
       domElement.removeEventListener("transitionend", onEnd, false);
       resolve();
     };
 
-    domElement.addEventListener("transitionend", onEnd, false);
-    before();
-    state.name = state.isShow ? "enterActive" : "exitActive";
-    applyTransition();
-    var durationStyleValue = getStyleValue({
-      domElement: domElement,
-      prop: "transition-duration"
-    });
-    var durationValue = durationStyleValue !== undefined ? styleDurationToMs(durationStyleValue) : 0;
-    var delayStyleValue = getStyleValue({
-      domElement: domElement,
-      prop: "transition-delay"
-    });
-    var delayValue = delayStyleValue !== undefined ? styleDurationToMs(delayStyleValue) : 0;
-    var duration = durationValue + delayValue; // console.log("duration", duration);
-    // Due to incorrect CSS usage, ontransitionend may not be fired
-    // Using a timeout ensures completion
+    applyStylesForState(domElement, props, currentStep, currentStep === "enter");
+    var nextStep = steps[currentStep].nextStep;
 
-    if (duration == 0) {
-      setTimeout(onEnd, duration);
+    if (nextStep) {
+      setTimeout(function () {
+        currentStep = nextStep;
+        domElement.addEventListener("transitionend", onEnd, false);
+        applyStylesForState(domElement, props, currentStep); // Due to incorrect CSS usage, ontransitionend may not be fired
+        // Using a timeout ensures completion
+
+        var duration = getDuration(domElement);
+
+        if (duration == 0) {
+          setTimeout(onEnd, duration);
+        }
+      }, 0);
     }
   });
 };
@@ -4887,23 +4893,45 @@ const dialogDelayProps = {
     id: getRandomId(),
 };
 const dialogTransitionProps = {
-    transitionStyles: {
-        default: {
-            transition: `all ${300}ms ease-in-out`,
-        },
-        enter: {
-            opacity: 0,
-            transform: "translate3d(0, 20px, 0)",
-        },
-        enterActive: {
-            opacity: 1,
-            transform: "translate3d(0, 0px,  0)"
-        },
-        exitActive: {
-            transitionDuration: "750ms",
-            opacity: 0,
-        },
+    transitionStyles: (domElement) => {
+        const height = domElement.getBoundingClientRect().height;
+        return {
+            default: {
+                transition: "all 300ms ease-in-out",
+            },
+            enter: {
+                opacity: 0,
+                transform: `translate3d(0, ${height}px, 0)`,
+            },
+            enterActive: {
+                opacity: 1,
+                transform: "translate3d(0, 0px,  0)",
+            },
+            exitActive: {
+                transitionDuration: "750ms",
+                transform: `translate3d(0, ${height}px, 0)`,
+                opacity: 0,
+            },
+        };
     },
+    // transitionStyles: {
+    //   default: {
+    //     transition: `all ${300}ms ease-in-out`,
+    //   },
+    //   enter: {
+    //     opacity: 0,
+    //     transform: `translate3d(0, ${84}px, 0)`,
+    //     transitionDuration: "0ms"
+    //   },
+    //   enterActive: {
+    //     opacity: 1,
+    //     transform: "translate3d(0, 0px,  0)"
+    //   },
+    //   exitActive: {
+    //     transitionDuration: "750ms",
+    //     opacity: 0,
+    //   },
+    // },
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
     title: "Transitions",
     id: getRandomId(),
