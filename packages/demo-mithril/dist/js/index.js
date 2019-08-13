@@ -2542,7 +2542,6 @@ var hideAll = function hideAll(ns) {
       var queuedItems = allItems.filter(function (item) {
         return spawnOptions.queued || item.spawnOptions.queued;
       });
-      console.log("hideAll regularItems", regularItems);
       regularItems.forEach(function (item) {
         return hideItem(getOverridingTransitionOptions(item, options));
       });
@@ -4942,14 +4941,9 @@ const hideAllOptions = {
         hideEnd: {
             transitionDuration: "500ms",
             transitionDelay: "0ms",
-            opacity: "0ms"
+            opacity: 0,
         }
     }
-    // transitions: {
-    //   hide: (domElement: HTMLElement ) => {
-    //     return { duration: 0.5, delay: 0, transition: () => domElement.style.opacity = "0" };
-    //   }
-    // }
 };
 const App = {
     view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()(".demo", [

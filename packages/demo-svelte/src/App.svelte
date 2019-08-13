@@ -79,24 +79,26 @@
 };
 
   const dialogFourProps = {
-    // transitions: {
-    //   show: domElement => {
-    //     return {
-    //       duration: 0.5,
-    //       before: () => (
-    //         (domElement.style.opacity = 0),
-    //         (domElement.style.transform = "translate3d(0, 20px, 0)")
-    //       ),
-    //       transition: () => (
-    //         (domElement.style.opacity = 1),
-    //         (domElement.style.transform = "translate3d(0, 0px,  0)")
-    //       )
-    //     };
-    //   },
-    //   hide: domElement => {
-    //     return { duration: 0.5, transition: () => domElement.style.opacity = 0 };
-    //   },
-    // },
+    transitionStyles: domElement => {
+      const height = domElement.getBoundingClientRect().height;
+      return {
+        default: {
+          transition: "all 300ms ease-in-out",
+        },
+        showStart: {
+          opacity: 0,
+          transform: `translate3d(0, ${height}px, 0)`,
+        },
+        showEnd: {
+          opacity: 1,
+          transform: "translate3d(0, 0px,  0)",
+        },
+        hideEnd: {
+          transform: `translate3d(0, ${height}px, 0)`,
+          opacity: 0,
+        },
+      }
+    },
     component: DefaultContent,
     title: "Transitions",
     id: getRandomId()
@@ -107,14 +109,9 @@
       hideEnd: {
         transitionDuration: "500ms",
         transitionDelay: "0ms",
-        opacity: "0ms"
+        opacity: 0,
       }
     }
-    // transitions: {
-    //   hide: domElement => {
-    //     return { duration: 0.5, delay: 0, transition: () => domElement.style.opacity = 0 };
-    //   }
-    // }
   };
 </script>
 

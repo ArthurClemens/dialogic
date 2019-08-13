@@ -81,7 +81,7 @@ const steps = {
 const transition = (props, mode) => {
     const domElement = props.domElement;
     if (!domElement) {
-        return Promise.reject("no domElement");
+        return Promise.resolve("no domElement");
     }
     let currentStep = mode === MODE.SHOW
         ? "showStart"

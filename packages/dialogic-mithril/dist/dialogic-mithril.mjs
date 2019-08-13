@@ -806,7 +806,6 @@ const hideAll = (ns) => (defaultSpawnOptions) => (options, instanceSpawnOptions)
     const allItems = selectors.getAll(ns);
     const regularItems = allItems.filter((item) => !spawnOptions.queued && !item.spawnOptions.queued);
     const queuedItems = allItems.filter((item) => spawnOptions.queued || item.spawnOptions.queued);
-    console.log("hideAll regularItems", regularItems);
     regularItems.forEach((item) => hideItem(getOverridingTransitionOptions(item, options)));
     if (queuedItems.length > 0) {
         const [current,] = queuedItems;

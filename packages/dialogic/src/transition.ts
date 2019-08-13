@@ -122,7 +122,7 @@ const steps: Steps = {
 export const transition = (props: TransitionProps, mode?: string) => {
 	const domElement = props.domElement;
 	if (!domElement) {
-		return Promise.reject("no domElement");
+		return Promise.resolve("no domElement");
 	}
 
 	let currentStep: TransitionStep = mode === MODE.SHOW

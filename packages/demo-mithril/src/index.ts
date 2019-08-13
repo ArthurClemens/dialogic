@@ -133,14 +133,9 @@ const hideAllOptions = {
     hideEnd: {
       transitionDuration: "500ms",
       transitionDelay: "0ms",
-      opacity: "0ms"
+      opacity: 0,
     }
   }
-  // transitions: {
-  //   hide: (domElement: HTMLElement ) => {
-  //     return { duration: 0.5, delay: 0, transition: () => domElement.style.opacity = "0" };
-  //   }
-  // }
 };
 
 const App = {

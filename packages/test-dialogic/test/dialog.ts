@@ -1,4 +1,4 @@
-import { dialog, Dialogic } from "dialogic";
+import { dialog } from "dialogic";
 import test from "ava";
 
 const getDefaultItemId = name => `${name}-default_${name}-default_${name}`;
