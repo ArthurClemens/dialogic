@@ -450,8 +450,19 @@ var app = (function () {
         }
     }
 
-    const isClient = typeof document !== "undefined";
     const pipe = (...fns) => (x) => fns.filter(Boolean).reduce((y, f) => f(y), x);
+    const getStyleValue = ({ domElement, prop }) => {
+        if (window.getComputedStyle) {
+            const defaultView = document.defaultView;
+            if (defaultView) {
+                const style = defaultView.getComputedStyle(domElement);
+                if (style) {
+                    return style.getPropertyValue(prop);
+                }
+            }
+        }
+        return undefined;
+    };
 
     const MODE = {
         SHOW: "show",
@@ -461,92 +472,92 @@ var app = (function () {
         component: true,
         didHide: true,
         didShow: true,
-        hideDelay: true,
-        hideDuration: true,
-        hideTimingFunction: true,
-        showDelay: true,
-        showDuration: true,
-        showTimingFunction: true,
         timeout: true,
-        transitions: true,
         transitionClassName: true,
+        transitionStyles: true,
     };
-    const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(transitionClassNames.enter, transitionClassNames.enterActive, transitionClassNames.exit, transitionClassNames.exitActive);
+    const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(transitionClassNames.showStart, transitionClassNames.showEnd, transitionClassNames.hideStart, transitionClassNames.hideEnd);
+    const applyTransitionStyles = (domElement, step, transitionStyles) => {
+        const transitionStyle = transitionStyles[step] || {};
+        Object.keys(transitionStyle).forEach((key) => {
+            domElement.style[key] = transitionStyle[key];
+        });
+    };
+    const applyNoDurationTransitionStyle = (domElement) => domElement.style.transitionDuration = "0ms";
+    const getTransitionStyles = (domElement, transitionStyles) => (typeof transitionStyles === "function"
+        ? transitionStyles(domElement)
+        : transitionStyles) || {};
+    const applyStylesForState = (domElement, props, step, isEnterStep) => {
+        if (props.transitionStyles) {
+            const transitionStyles = getTransitionStyles(domElement, props.transitionStyles);
+            applyTransitionStyles(domElement, "default", transitionStyles);
+            isEnterStep && applyNoDurationTransitionStyle(domElement);
+            applyTransitionStyles(domElement, step, transitionStyles);
+        }
+        if (props.transitionClassName) {
+            const transitionClassNames = {
+                showStart: `${props.transitionClassName}-show-start`,
+                showEnd: `${props.transitionClassName}-show-end`,
+                hideStart: `${props.transitionClassName}-hide-start`,
+                hideEnd: `${props.transitionClassName}-hide-end`
+            };
+            removeTransitionClassNames(domElement, transitionClassNames);
+            transitionClassNames && domElement.classList.add(transitionClassNames[step]);
+        }
+    };
+    const getDuration = (domElement) => {
+        const durationStyleValue = getStyleValue({ domElement, prop: "transition-duration" });
+        const durationValue = durationStyleValue !== undefined
+            ? styleDurationToMs(durationStyleValue)
+            : 0;
+        const delayStyleValue = getStyleValue({ domElement, prop: "transition-delay" });
+        const delayValue = delayStyleValue !== undefined
+            ? styleDurationToMs(delayStyleValue)
+            : 0;
+        return durationValue + delayValue;
+    };
+    const steps = {
+        showStart: {
+            nextStep: "showEnd"
+        },
+        showEnd: {
+            nextStep: undefined
+        },
+        hideStart: {
+            nextStep: "hideEnd"
+        },
+        hideEnd: {
+            nextStep: undefined
+        },
+    };
     const transition = (props, mode) => {
         const domElement = props.domElement;
         if (!domElement) {
-            return Promise.resolve("no domElement");
+            return Promise.reject("no domElement");
         }
+        let currentStep = mode === MODE.SHOW
+            ? "showStart"
+            : "hideStart";
         return new Promise(resolve => {
-            const style = domElement.style;
-            const computedStyle = isClient
-                ? window.getComputedStyle(domElement)
-                : null;
-            const isShow = mode === MODE.SHOW;
-            const transitionProps = getTransitionProps(props, isShow);
-            const duration = transitionProps.duration !== undefined
-                ? transitionProps.duration * 1000
-                : computedStyle
-                    ? styleDurationToMs(computedStyle.transitionDuration)
-                    : 0;
-            const delay = transitionProps.delay !== undefined
-                ? transitionProps.delay * 1000
-                : computedStyle
-                    ? styleDurationToMs(computedStyle.transitionDelay)
-                    : 0;
-            const totalDuration = duration + delay;
-            const before = () => {
-                if (transitionProps.before && typeof transitionProps.before === "function") {
-                    style.transitionDuration = "0ms";
-                    style.transitionDelay = "0ms";
-                    transitionProps.before();
-                }
-                if (transitionProps.transitionClassNames) {
-                    removeTransitionClassNames(domElement, transitionProps.transitionClassNames);
-                    domElement.classList.add(isShow
-                        ? transitionProps.transitionClassNames.enter
-                        : transitionProps.transitionClassNames.exit);
-                }
-                if (isShow) {
-                    // reflow
-                    domElement.scrollTop;
-                }
-            };
-            const after = () => {
-                if (transitionProps.after && typeof transitionProps.after === "function") {
-                    transitionProps.after();
-                }
-            };
-            const applyTransition = () => {
-                // Set styles
-                const timingFunction = transitionProps.timingFunction
-                    // or when set in CSS:
-                    || (computedStyle
-                        ? computedStyle.transitionTimingFunction
-                        : undefined);
-                if (timingFunction) {
-                    style.transitionTimingFunction = timingFunction;
-                }
-                style.transitionDuration = duration + "ms";
-                style.transitionDelay = delay + "ms";
-                // Set classes (need to be set after styles)
-                if (transitionProps.transitionClassNames) {
-                    removeTransitionClassNames(domElement, transitionProps.transitionClassNames);
-                    domElement.classList.add(isShow
-                        ? transitionProps.transitionClassNames.enterActive
-                        : transitionProps.transitionClassNames.exitActive);
-                }
-                // Call transition function
-                if (transitionProps.transition) {
-                    transitionProps.transition();
-                }
-            };
-            before();
-            applyTransition();
-            setTimeout(() => {
-                after();
+            const onEnd = () => {
+                domElement.removeEventListener("transitionend", onEnd, false);
                 resolve();
-            }, totalDuration);
+            };
+            applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
+            const nextStep = steps[currentStep].nextStep;
+            if (nextStep) {
+                setTimeout(() => {
+                    currentStep = nextStep;
+                    domElement.addEventListener("transitionend", onEnd, false);
+                    applyStylesForState(domElement, props, currentStep);
+                    // Due to incorrect CSS usage, ontransitionend may not be fired
+                    // Using a timeout ensures completion
+                    const duration = getDuration(domElement);
+                    if (duration == 0) {
+                        setTimeout(onEnd, duration);
+                    }
+                }, 0);
+            }
         });
     };
     const styleDurationToMs = (durationStr) => {
@@ -554,28 +565,6 @@ var app = (function () {
         return isNaN(parsed)
             ? 0
             : parsed;
-    };
-    const getTransitionProps = (props, isShow) => {
-        const [duration, delay, timingFunction, transition] = isShow
-            ? [props.showDuration, props.showDelay, props.showTimingFunction, props.transitions ? props.transitions.show : undefined]
-            : [props.hideDuration, props.hideDelay, props.hideTimingFunction, props.transitions ? props.transitions.hide : undefined];
-        const transitionClassNames = props.transitionClassName
-            ? {
-                enter: `${props.transitionClassName}-enter`,
-                enterActive: `${props.transitionClassName}-enter-active`,
-                exit: `${props.transitionClassName}-exit`,
-                exitActive: `${props.transitionClassName}-exit-active`
-            }
-            : undefined;
-        return {
-            duration,
-            delay,
-            timingFunction,
-            ...(transition
-                ? transition(props.domElement)
-                : undefined),
-            transitionClassNames
-        };
     };
 
     function createCommonjsModule(fn, module) {
@@ -2487,7 +2476,7 @@ var app = (function () {
 
     const file$4 = "src/App.svelte";
 
-    // (137:0) {#if showDialogs}
+    // (183:0) {#if showDialogs}
     function create_if_block_1(ctx) {
     	var h2, t1, p0, t2, t3, t4, hr0, t5, div0, button0, t7, button1, t9, div1, t10, button2, t12, button3, t14, button4, t16, button5, t18, div2, button6, t20, button7, t22, div3, button8, t24, button9, t26, div4, button10, t28, button11, t30, div5, button12, t32, button13, t34, div6, button14, t36, button15, t38, hr1, t39, div7, p1, t41, t42, div8, p2, t44, t45, hr2, t46, div9, button16, t48, button17, t50, div10, p3, t52, t53, hr3, t54, div11, button18, t56, button19, t58, div12, current, dispose;
 
@@ -2615,48 +2604,48 @@ var app = (function () {
     			t58 = space();
     			div12 = element("div");
     			dialog3.$$.fragment.c();
-    			add_location(h2, file$4, 138, 0, 3251);
-    			add_location(p0, file$4, 140, 0, 3268);
-    			add_location(hr0, file$4, 142, 0, 3307);
-    			add_location(button0, file$4, 145, 2, 3323);
-    			add_location(button1, file$4, 155, 2, 3539);
-    			add_location(div0, file$4, 144, 0, 3315);
-    			add_location(button2, file$4, 166, 2, 3733);
-    			add_location(button3, file$4, 178, 2, 3946);
-    			add_location(button4, file$4, 183, 2, 4044);
-    			add_location(button5, file$4, 191, 2, 4177);
-    			add_location(div1, file$4, 158, 0, 3600);
-    			add_location(button6, file$4, 195, 2, 4296);
-    			add_location(button7, file$4, 212, 2, 4752);
-    			add_location(div2, file$4, 194, 0, 4288);
-    			add_location(button8, file$4, 219, 2, 4906);
-    			add_location(button9, file$4, 230, 2, 5183);
-    			add_location(div3, file$4, 218, 0, 4898);
-    			add_location(button10, file$4, 233, 2, 5276);
-    			add_location(button11, file$4, 237, 2, 5404);
-    			add_location(div4, file$4, 232, 0, 5268);
-    			add_location(button12, file$4, 240, 2, 5502);
-    			add_location(button13, file$4, 244, 2, 5623);
-    			add_location(div5, file$4, 239, 0, 5494);
-    			add_location(button14, file$4, 247, 2, 5717);
-    			add_location(button15, file$4, 254, 2, 5891);
-    			add_location(div6, file$4, 246, 0, 5709);
-    			add_location(hr1, file$4, 257, 0, 5972);
-    			add_location(p1, file$4, 260, 2, 5988);
-    			add_location(div7, file$4, 259, 0, 5980);
-    			add_location(p2, file$4, 265, 2, 6032);
-    			add_location(div8, file$4, 264, 0, 6024);
-    			add_location(hr2, file$4, 269, 0, 6095);
-    			add_location(button16, file$4, 272, 2, 6124);
-    			add_location(button17, file$4, 279, 2, 6321);
-    			add_location(div9, file$4, 271, 0, 6116);
-    			add_location(p3, file$4, 283, 2, 6404);
-    			add_location(div10, file$4, 282, 0, 6396);
-    			add_location(hr3, file$4, 287, 0, 6457);
-    			add_location(button18, file$4, 290, 2, 6495);
-    			add_location(button19, file$4, 294, 2, 6573);
-    			add_location(div11, file$4, 289, 0, 6487);
-    			add_location(div12, file$4, 297, 0, 6654);
+    			add_location(h2, file$4, 184, 0, 4240);
+    			add_location(p0, file$4, 186, 0, 4257);
+    			add_location(hr0, file$4, 188, 0, 4296);
+    			add_location(button0, file$4, 191, 2, 4312);
+    			add_location(button1, file$4, 201, 2, 4528);
+    			add_location(div0, file$4, 190, 0, 4304);
+    			add_location(button2, file$4, 212, 2, 4722);
+    			add_location(button3, file$4, 224, 2, 4935);
+    			add_location(button4, file$4, 229, 2, 5033);
+    			add_location(button5, file$4, 237, 2, 5166);
+    			add_location(div1, file$4, 204, 0, 4589);
+    			add_location(button6, file$4, 241, 2, 5285);
+    			add_location(button7, file$4, 258, 2, 5741);
+    			add_location(div2, file$4, 240, 0, 5277);
+    			add_location(button8, file$4, 265, 2, 5895);
+    			add_location(button9, file$4, 272, 2, 6085);
+    			add_location(div3, file$4, 264, 0, 5887);
+    			add_location(button10, file$4, 275, 2, 6178);
+    			add_location(button11, file$4, 279, 2, 6306);
+    			add_location(div4, file$4, 274, 0, 6170);
+    			add_location(button12, file$4, 282, 2, 6404);
+    			add_location(button13, file$4, 286, 2, 6525);
+    			add_location(div5, file$4, 281, 0, 6396);
+    			add_location(button14, file$4, 289, 2, 6619);
+    			add_location(button15, file$4, 296, 2, 6793);
+    			add_location(div6, file$4, 288, 0, 6611);
+    			add_location(hr1, file$4, 299, 0, 6874);
+    			add_location(p1, file$4, 302, 2, 6890);
+    			add_location(div7, file$4, 301, 0, 6882);
+    			add_location(p2, file$4, 307, 2, 6934);
+    			add_location(div8, file$4, 306, 0, 6926);
+    			add_location(hr2, file$4, 311, 0, 6997);
+    			add_location(button16, file$4, 314, 2, 7026);
+    			add_location(button17, file$4, 321, 2, 7223);
+    			add_location(div9, file$4, 313, 0, 7018);
+    			add_location(p3, file$4, 325, 2, 7306);
+    			add_location(div10, file$4, 324, 0, 7298);
+    			add_location(hr3, file$4, 329, 0, 7359);
+    			add_location(button18, file$4, 332, 2, 7397);
+    			add_location(button19, file$4, 336, 2, 7475);
+    			add_location(div11, file$4, 331, 0, 7389);
+    			add_location(div12, file$4, 339, 0, 7556);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_5),
@@ -2888,7 +2877,7 @@ var app = (function () {
     	};
     }
 
-    // (161:2) {#if $timerDialogExists}
+    // (207:2) {#if $timerDialogExists}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -2931,7 +2920,7 @@ var app = (function () {
     	};
     }
 
-    // (310:0) {#if showNotifications}
+    // (352:0) {#if showNotifications}
     function create_if_block(ctx) {
     	var h2, t1, p0, t2, t3, t4, p1, t5, t6, t7, p2, t8, t9, t10, div, button0, t12, button1, t14, button2, t16, button3, t18, t19, hr, current, dispose;
 
@@ -2970,16 +2959,16 @@ var app = (function () {
     			notification_1.$$.fragment.c();
     			t19 = space();
     			hr = element("hr");
-    			add_location(h2, file$4, 311, 0, 6889);
-    			add_location(p0, file$4, 312, 0, 6911);
-    			add_location(p1, file$4, 313, 0, 6960);
-    			add_location(p2, file$4, 314, 0, 7011);
-    			add_location(button0, file$4, 317, 2, 7067);
-    			add_location(button1, file$4, 337, 2, 7599);
-    			add_location(button2, file$4, 343, 2, 7771);
-    			add_location(button3, file$4, 348, 2, 7875);
-    			add_location(div, file$4, 316, 0, 7059);
-    			add_location(hr, file$4, 357, 0, 8008);
+    			add_location(h2, file$4, 353, 0, 7791);
+    			add_location(p0, file$4, 354, 0, 7813);
+    			add_location(p1, file$4, 355, 0, 7862);
+    			add_location(p2, file$4, 356, 0, 7913);
+    			add_location(button0, file$4, 359, 2, 7969);
+    			add_location(button1, file$4, 379, 2, 8507);
+    			add_location(button2, file$4, 385, 2, 8679);
+    			add_location(button3, file$4, 390, 2, 8783);
+    			add_location(div, file$4, 358, 0, 7961);
+    			add_location(hr, file$4, 399, 0, 8916);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler_26),
@@ -3106,14 +3095,14 @@ var app = (function () {
     			t14 = space();
     			if (if_block1) if_block1.c();
     			if_block1_anchor = empty();
-    			add_location(button0, file$4, 124, 0, 2780);
-    			add_location(button1, file$4, 126, 0, 2892);
-    			add_location(button2, file$4, 128, 0, 2987);
-    			add_location(button3, file$4, 130, 0, 3064);
-    			add_location(hr0, file$4, 132, 0, 3147);
-    			add_location(button4, file$4, 134, 0, 3155);
-    			add_location(hr1, file$4, 305, 0, 6761);
-    			add_location(button5, file$4, 307, 0, 6769);
+    			add_location(button0, file$4, 170, 0, 3767);
+    			add_location(button1, file$4, 172, 0, 3879);
+    			add_location(button2, file$4, 174, 0, 3974);
+    			add_location(button3, file$4, 176, 0, 4053);
+    			add_location(hr0, file$4, 178, 0, 4136);
+    			add_location(button4, file$4, 180, 0, 4144);
+    			add_location(hr1, file$4, 347, 0, 7663);
+    			add_location(button5, file$4, 349, 0, 7671);
 
     			dispose = [
     				listen(button0, "click", ctx.click_handler),
@@ -3302,36 +3291,58 @@ var app = (function () {
         title: "Fade",
         id: getRandomId()
       };
+
+      const dialogDelayProps = {
+      // transitionStyles: {
+      //   default: {
+      //     transitionDuration: "750ms",
+      //     transitionDelay: "250ms",
+      //   },
+      // },
+      component: Content,
+      className: "xxx-content",
+      transitionClassName: "xxx-delay",
+      title: "Delay",
+      id: getRandomId(),
+    };
+
       const dialogFourProps = {
-        transitions: {
-          show: domElement => {
-            return {
-              duration: 0.5,
-              before: () => (
-                (domElement.style.opacity = 0),
-                (domElement.style.transform = "translate3d(0, 20px, 0)")
-              ),
-              transition: () => (
-                (domElement.style.opacity = 1),
-                (domElement.style.transform = "translate3d(0, 0px,  0)")
-              )
-            };
-          },
-          hide: domElement => {
-            return { duration: 0.5, transition: () => domElement.style.opacity = 0 };
-          },
-        },
+        // transitions: {
+        //   show: domElement => {
+        //     return {
+        //       duration: 0.5,
+        //       before: () => (
+        //         (domElement.style.opacity = 0),
+        //         (domElement.style.transform = "translate3d(0, 20px, 0)")
+        //       ),
+        //       transition: () => (
+        //         (domElement.style.opacity = 1),
+        //         (domElement.style.transform = "translate3d(0, 0px,  0)")
+        //       )
+        //     };
+        //   },
+        //   hide: domElement => {
+        //     return { duration: 0.5, transition: () => domElement.style.opacity = 0 };
+        //   },
+        // },
         component: Content,
         title: "Transitions",
         id: getRandomId()
       };
 
-      const clearOptions = {
-        transitions: {
-          hide: domElement => {
-            return { duration: 0.5, delay: 0, transition: () => domElement.style.opacity = 0 };
+      const hideAllOptions = {
+        transitionStyles: {
+          hideEnd: {
+            transitionDuration: "500ms",
+            transitionDelay: "0ms",
+            opacity: "0ms"
           }
         }
+        // transitions: {
+        //   hide: domElement => {
+        //     return { duration: 0.5, delay: 0, transition: () => domElement.style.opacity = 0 };
+        //   }
+        // }
       };
 
     	function click_handler() {
@@ -3343,7 +3354,7 @@ var app = (function () {
     	}
 
     	function click_handler_2() {
-    		return dialog$1.hideAll(clearOptions);
+    		return dialog$1.hideAll(hideAllOptions);
     	}
 
     	function click_handler_3() {
@@ -3437,11 +3448,7 @@ var app = (function () {
 
     	function click_handler_13() {
     		return dialog$1.show({
-    	      ...dialogOneProps,
-    	      showDelay: .5,
-    	      showDuration: .5,
-    	      hideDelay: 0,
-    	      hideDuration: .5,
+    	      ...dialogDelayProps,
     	      title: dialogOneProps.title + " " + getRandomId()
     	    }, { id: dialogOneProps.id });
     	}
@@ -3513,8 +3520,8 @@ var app = (function () {
     	          didShow: item => console.log("didShow", item, title),
     	          didHide: item => console.log("didHide", item, title),
     	          component: Content,
-    	          className: "xxx-timings",
-    	          showClassName: "xxx-visible-timings",
+    	          className: "xxx-timings-content",
+    	          transitionClassName: "xxx-timings",
     	          title
     	        },
     	        {
@@ -3562,8 +3569,9 @@ var app = (function () {
     		showInitial,
     		dialogOneProps,
     		dialogSlowFadeProps,
+    		dialogDelayProps,
     		dialogFourProps,
-    		clearOptions,
+    		hideAllOptions,
     		Math,
     		showDialogs,
     		showNotifications,

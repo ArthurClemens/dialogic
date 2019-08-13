@@ -13,14 +13,14 @@ const showInitial = ({ isOnMount } : { isOnMount?: boolean } = {} ) => dialog.sh
     title: getRandomId(),
     component: DefaultContent,
     transitionStyles: {
-      enter: {
+      showStart: {
         opacity: isOnMount ? 1 : 0,
       },
-      enterActive: {
+      showEnd: {
         transitionDuration: isOnMount ? 0 : "500ms",
         opacity: 1
       },
-      exitActive: {
+      hideEnd: {
         transitionDuration: "500ms",
         opacity: 0
       }
@@ -38,10 +38,10 @@ const toggleDialog = () => dialog.toggle(
     title: getRandomId(),
     component: DefaultContent,
     transitionStyles: {
-      enterActive: {
+      showEnd: {
         transitionDuration: "500ms",
       },
-      exitActive: {
+      hideEnd: {
         transitionDuration: "500ms",
       },
     },
@@ -56,10 +56,10 @@ const toggleDialog = () => dialog.toggle(
 const dialogOneProps: Dialogic.Options = {
   component: DefaultContent,
   transitionStyles: {
-    enterActive: {
+    showEnd: {
       transitionDuration: "500ms",
     },
-    exitActive: {
+    hideEnd: {
       transitionDuration: "500ms",
     },
   },
@@ -90,15 +90,15 @@ const dialogTransitionProps = {
       default: {
         transition: "all 300ms ease-in-out",
       },
-      enter: {
+      showStart: {
         opacity: 0,
         transform: `translate3d(0, ${height}px, 0)`,
       },
-      enterActive: {
+      showEnd: {
         opacity: 1,
         transform: "translate3d(0, 0px,  0)",
       },
-      exitActive: {
+      hideEnd: {
         transitionDuration: "750ms",
         transform: `translate3d(0, ${height}px, 0)`,
         opacity: 0,
@@ -109,16 +109,16 @@ const dialogTransitionProps = {
   //   default: {
   //     transition: `all ${300}ms ease-in-out`,
   //   },
-  //   enter: {
+  //   showStart: {
   //     opacity: 0,
   //     transform: `translate3d(0, ${84}px, 0)`,
   //     transitionDuration: "0ms"
   //   },
-  //   enterActive: {
+  //   showEnd: {
   //     opacity: 1,
   //     transform: "translate3d(0, 0px,  0)"
   //   },
-  //   exitActive: {
+  //   hideEnd: {
   //     transitionDuration: "750ms",
   //     opacity: 0,
   //   },
@@ -128,12 +128,19 @@ const dialogTransitionProps = {
   id: getRandomId(),
 };
 
-const clearOptions = {
-  transitions: {
-    hide: (domElement: HTMLElement ) => {
-      return { duration: 0.5, delay: 0, transition: () => domElement.style.opacity = "0" };
+const hideAllOptions = {
+  transitionStyles: {
+    hideEnd: {
+      transitionDuration: "500ms",
+      transitionDelay: "0ms",
+      opacity: "0ms"
     }
   }
+  // transitions: {
+  //   hide: (domElement: HTMLElement ) => {
+  //     return { duration: 0.5, delay: 0, transition: () => domElement.style.opacity = "0" };
+  //   }
+  // }
 };
 
 const App = {
@@ -143,7 +150,7 @@ const App = {
         m("button",
           {
             className: "button",
-            onclick: () => notification.hideAll(clearOptions)
+            onclick: () => notification.hideAll(hideAllOptions)
           },
           "Hide notifications"
         ),
@@ -157,7 +164,7 @@ const App = {
         m("button",
           {
             className: "button",
-            onclick: () => dialog.hideAll(clearOptions)
+            onclick: () => dialog.hideAll(hideAllOptions)
           },
           "Hide dialogs"
         ),
@@ -213,11 +220,11 @@ const App = {
                   didShow: (item: Dialogic.Item) => console.log("didShow", item),
                   didHide: (item: Dialogic.Item) => console.log("didHide", item),
                   transitionStyles: {
-                    enterActive: {
+                    showEnd: {
                       transitionDuration: "500ms",
                       transitionDelay: "500ms",
                     },
-                    exitActive: {
+                    hideEnd: {
                       transitionDuration: "250ms",
                       transitionDelay: "0ms",
                     },

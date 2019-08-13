@@ -63,64 +63,107 @@
     title: "Fade",
     id: getRandomId()
   };
+
+  const dialogDelayProps = {
+  // transitionStyles: {
+  //   default: {
+  //     transitionDuration: "750ms",
+  //     transitionDelay: "250ms",
+  //   },
+  // },
+  component: DefaultContent,
+  className: "xxx-content",
+  transitionClassName: "xxx-delay",
+  title: "Delay",
+  id: getRandomId(),
+};
+
   const dialogFourProps = {
-    transitions: {
-      show: domElement => {
-        return {
-          duration: 0.5,
-          before: () => (
-            (domElement.style.opacity = 0),
-            (domElement.style.transform = "translate3d(0, 20px, 0)")
-          ),
-          transition: () => (
-            (domElement.style.opacity = 1),
-            (domElement.style.transform = "translate3d(0, 0px,  0)")
-          )
-        };
-      },
-      hide: domElement => {
-        return { duration: 0.5, transition: () => domElement.style.opacity = 0 };
-      },
-    },
+    // transitions: {
+    //   show: domElement => {
+    //     return {
+    //       duration: 0.5,
+    //       before: () => (
+    //         (domElement.style.opacity = 0),
+    //         (domElement.style.transform = "translate3d(0, 20px, 0)")
+    //       ),
+    //       transition: () => (
+    //         (domElement.style.opacity = 1),
+    //         (domElement.style.transform = "translate3d(0, 0px,  0)")
+    //       )
+    //     };
+    //   },
+    //   hide: domElement => {
+    //     return { duration: 0.5, transition: () => domElement.style.opacity = 0 };
+    //   },
+    // },
     component: DefaultContent,
     title: "Transitions",
     id: getRandomId()
   };
 
-  const clearOptions = {
-    transitions: {
-      hide: domElement => {
-        return { duration: 0.5, delay: 0, transition: () => domElement.style.opacity = 0 };
+  const hideAllOptions = {
+    transitionStyles: {
+      hideEnd: {
+        transitionDuration: "500ms",
+        transitionDelay: "0ms",
+        opacity: "0ms"
       }
     }
+    // transitions: {
+    //   hide: domElement => {
+    //     return { duration: 0.5, delay: 0, transition: () => domElement.style.opacity = 0 };
+    //   }
+    // }
   };
 </script>
 
 <style>
   :global(.xxx) {
     opacity: 0;
+    transition: opacity 200ms;
   }
-  :global(.xxx-enter) {
+  :global(.xxx-show-start) {
     opacity: 0;
   }
-  :global(.xxx-enter-active) {
+  :global(.xxx-show-end) {
     opacity: 1;
   }
   :global(.xxx-exit) {
     opacity: 1;
   }
-  :global(.xxx-exit-active) {
+  :global(.xxx-hide-end) {
     opacity: 0;
   }
-  :global(.xxx-timings-enter) {
+
+  :global(.xxx-delay-show-start) {
+    opacity: 0;
+  }
+  :global(.xxx-delay-show-end) {
+    opacity: 1;
+    transition: opacity 750ms 250ms;
+  }
+  :global(.xxx-delay-exit) {
+    opacity: 1;
+  }
+  :global(.xxx-delay-hide-end) {
+    opacity: 0;
+    transition: opacity 750ms 250ms;
+  }
+
+  :global(.xxx-timings) {
+    transition-duration: 500ms;
+    transition-delay: 0;
+  }
+  :global(.xxx-timings-show-start) {
     opacity: 0;
     transition-duration: 500ms;
     transition-delay: 0;
   }
-  :global(.xxx-timings-enter-active) {
+  :global(.xxx-timings-show-end) {
     opacity: 1;
   }
-  :global(.xxx-timings-exit-active) {
+  :global(.xxx-timings-hide-end) {
     opacity: 0;
   }
 </style>
@@ -129,7 +172,7 @@
 
 <button on:click={() => notification.resetAll().catch(() => {})}>Reset notifications</button>
 
-<button on:click={() => dialog.hideAll(clearOptions)}>Hide dialogs</button>
+<button on:click={() => dialog.hideAll(hideAllOptions)}>Hide dialogs</button>
 
 <button on:click={() => dialog.resetAll().catch(() => {})}>Reset dialogs</button>
 
@@ -222,11 +265,7 @@
 <div>
   <button
     on:click={() => dialog.show({
-      ...dialogOneProps,
-      showDelay: .5,
-      showDuration: .5,
-      hideDelay: 0,
-      hideDuration: .5,
+      ...dialogDelayProps,
       title: dialogOneProps.title + " " + getRandomId()
     }, { id: dialogOneProps.id })}>
     Show delay

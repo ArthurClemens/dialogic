@@ -24,7 +24,7 @@ const transitionOptionKeys = {
     transitionClassName: true,
     transitionStyles: true,
 };
-const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(transitionClassNames.enter, transitionClassNames.enterActive, transitionClassNames.exit, transitionClassNames.exitActive);
+const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(transitionClassNames.showStart, transitionClassNames.showEnd, transitionClassNames.hideStart, transitionClassNames.hideEnd);
 const applyTransitionStyles = (domElement, step, transitionStyles) => {
     const transitionStyle = transitionStyles[step] || {};
     Object.keys(transitionStyle).forEach((key) => {
@@ -44,10 +44,10 @@ const applyStylesForState = (domElement, props, step, isEnterStep) => {
     }
     if (props.transitionClassName) {
         const transitionClassNames = {
-            enter: `${props.transitionClassName}-enter`,
-            enterActive: `${props.transitionClassName}-enter-active`,
-            exit: `${props.transitionClassName}-exit`,
-            exitActive: `${props.transitionClassName}-exit-active`
+            showStart: `${props.transitionClassName}-show-start`,
+            showEnd: `${props.transitionClassName}-show-end`,
+            hideStart: `${props.transitionClassName}-hide-start`,
+            hideEnd: `${props.transitionClassName}-hide-end`
         };
         removeTransitionClassNames(domElement, transitionClassNames);
         transitionClassNames && domElement.classList.add(transitionClassNames[step]);
@@ -65,16 +65,16 @@ const getDuration = (domElement) => {
     return durationValue + delayValue;
 };
 const steps = {
-    enter: {
-        nextStep: "enterActive"
+    showStart: {
+        nextStep: "showEnd"
     },
-    enterActive: {
+    showEnd: {
         nextStep: undefined
     },
-    exit: {
-        nextStep: "exitActive"
+    hideStart: {
+        nextStep: "hideEnd"
     },
-    exitActive: {
+    hideEnd: {
         nextStep: undefined
     },
 };
@@ -84,14 +84,14 @@ const transition = (props, mode) => {
         return Promise.reject("no domElement");
     }
     let currentStep = mode === MODE.SHOW
-        ? "enter"
-        : "exit";
+        ? "showStart"
+        : "hideStart";
     return new Promise(resolve => {
         const onEnd = () => {
             domElement.removeEventListener("transitionend", onEnd, false);
             resolve();
         };
-        applyStylesForState(domElement, props, currentStep, currentStep === "enter");
+        applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
         const nextStep = steps[currentStep].nextStep;
         if (nextStep) {
             setTimeout(() => {

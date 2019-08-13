@@ -1650,7 +1650,7 @@ var transitionOptionKeys = {
 };
 
 var removeTransitionClassNames = function removeTransitionClassNames(domElement, transitionClassNames) {
-  return domElement.classList.remove(transitionClassNames.enter, transitionClassNames.enterActive, transitionClassNames.exit, transitionClassNames.exitActive);
+  return domElement.classList.remove(transitionClassNames.showStart, transitionClassNames.showEnd, transitionClassNames.hideStart, transitionClassNames.hideEnd);
 };
 
 var applyTransitionStyles = function applyTransitionStyles(domElement, step, transitionStyles) {
@@ -1678,10 +1678,10 @@ var applyStylesForState = function applyStylesForState(domElement, props, step, 
 
   if (props.transitionClassName) {
     var transitionClassNames = {
-      enter: "".concat(props.transitionClassName, "-enter"),
-      enterActive: "".concat(props.transitionClassName, "-enter-active"),
-      exit: "".concat(props.transitionClassName, "-exit"),
-      exitActive: "".concat(props.transitionClassName, "-exit-active")
+      showStart: "".concat(props.transitionClassName, "-show-start"),
+      showEnd: "".concat(props.transitionClassName, "-show-end"),
+      hideStart: "".concat(props.transitionClassName, "-hide-start"),
+      hideEnd: "".concat(props.transitionClassName, "-hide-end")
     };
     removeTransitionClassNames(domElement, transitionClassNames);
     transitionClassNames && domElement.classList.add(transitionClassNames[step]);
@@ -1703,16 +1703,16 @@ var getDuration = function getDuration(domElement) {
 };
 
 var steps = {
-  enter: {
-    nextStep: "enterActive"
+  showStart: {
+    nextStep: "showEnd"
   },
-  enterActive: {
+  showEnd: {
     nextStep: undefined
   },
-  exit: {
-    nextStep: "exitActive"
+  hideStart: {
+    nextStep: "hideEnd"
   },
-  exitActive: {
+  hideEnd: {
     nextStep: undefined
   }
 };
@@ -1724,14 +1724,14 @@ var transition = function transition(props, mode) {
     return Promise.reject("no domElement");
   }
 
-  var currentStep = mode === MODE.SHOW ? "enter" : "exit";
+  var currentStep = mode === MODE.SHOW ? "showStart" : "hideStart";
   return new Promise(function (resolve) {
     var onEnd = function onEnd() {
       domElement.removeEventListener("transitionend", onEnd, false);
       resolve();
     };
 
-    applyStylesForState(domElement, props, currentStep, currentStep === "enter");
+    applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
     var nextStep = steps[currentStep].nextStep;
 
     if (nextStep) {
@@ -2542,6 +2542,7 @@ var hideAll = function hideAll(ns) {
       var queuedItems = allItems.filter(function (item) {
         return spawnOptions.queued || item.spawnOptions.queued;
       });
+      console.log("hideAll regularItems", regularItems);
       regularItems.forEach(function (item) {
         return hideItem(getOverridingTransitionOptions(item, options));
       });
@@ -4831,14 +4832,14 @@ const showInitial = ({ isOnMount } = {}) => dialogic_mithril__WEBPACK_IMPORTED_M
     title: getRandomId(),
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
     transitionStyles: {
-        enter: {
+        showStart: {
             opacity: isOnMount ? 1 : 0,
         },
-        enterActive: {
+        showEnd: {
             transitionDuration: isOnMount ? 0 : "500ms",
             opacity: 1
         },
-        exitActive: {
+        hideEnd: {
             transitionDuration: "500ms",
             opacity: 0
         }
@@ -4852,10 +4853,10 @@ const toggleDialog = () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog
     title: getRandomId(),
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
     transitionStyles: {
-        enterActive: {
+        showEnd: {
             transitionDuration: "500ms",
         },
-        exitActive: {
+        hideEnd: {
             transitionDuration: "500ms",
         },
     },
@@ -4867,10 +4868,10 @@ const toggleDialog = () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog
 const dialogOneProps = {
     component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
     transitionStyles: {
-        enterActive: {
+        showEnd: {
             transitionDuration: "500ms",
         },
-        exitActive: {
+        hideEnd: {
             transitionDuration: "500ms",
         },
     },
@@ -4899,15 +4900,15 @@ const dialogTransitionProps = {
             default: {
                 transition: "all 300ms ease-in-out",
             },
-            enter: {
+            showStart: {
                 opacity: 0,
                 transform: `translate3d(0, ${height}px, 0)`,
             },
-            enterActive: {
+            showEnd: {
                 opacity: 1,
                 transform: "translate3d(0, 0px,  0)",
             },
-            exitActive: {
+            hideEnd: {
                 transitionDuration: "750ms",
                 transform: `translate3d(0, ${height}px, 0)`,
                 opacity: 0,
@@ -4918,16 +4919,16 @@ const dialogTransitionProps = {
     //   default: {
     //     transition: `all ${300}ms ease-in-out`,
     //   },
-    //   enter: {
+    //   showStart: {
     //     opacity: 0,
     //     transform: `translate3d(0, ${84}px, 0)`,
     //     transitionDuration: "0ms"
     //   },
-    //   enterActive: {
+    //   showEnd: {
     //     opacity: 1,
     //     transform: "translate3d(0, 0px,  0)"
     //   },
-    //   exitActive: {
+    //   hideEnd: {
     //     transitionDuration: "750ms",
     //     opacity: 0,
     //   },
@@ -4936,19 +4937,26 @@ const dialogTransitionProps = {
     title: "Transitions",
     id: getRandomId(),
 };
-const clearOptions = {
-    transitions: {
-        hide: (domElement) => {
-            return { duration: 0.5, delay: 0, transition: () => domElement.style.opacity = "0" };
+const hideAllOptions = {
+    transitionStyles: {
+        hideEnd: {
+            transitionDuration: "500ms",
+            transitionDelay: "0ms",
+            opacity: "0ms"
         }
     }
+    // transitions: {
+    //   hide: (domElement: HTMLElement ) => {
+    //     return { duration: 0.5, delay: 0, transition: () => domElement.style.opacity = "0" };
+    //   }
+    // }
 };
 const App = {
     view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()(".demo", [
         mithril__WEBPACK_IMPORTED_MODULE_0___default()("section", { className: "section" }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
-                onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].hideAll(clearOptions)
+                onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].hideAll(hideAllOptions)
             }, "Hide notifications"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
@@ -4956,7 +4964,7 @@ const App = {
             }, "Reset notifications"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
-                onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hideAll(clearOptions)
+                onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hideAll(hideAllOptions)
             }, "Hide dialogs"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
@@ -4991,11 +4999,11 @@ const App = {
                     didShow: (item) => console.log("didShow", item),
                     didHide: (item) => console.log("didHide", item),
                     transitionStyles: {
-                        enterActive: {
+                        showEnd: {
                             transitionDuration: "500ms",
                             transitionDelay: "500ms",
                         },
-                        exitActive: {
+                        hideEnd: {
                             transitionDuration: "250ms",
                             transitionDelay: "0ms",
                         },

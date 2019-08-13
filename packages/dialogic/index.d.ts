@@ -93,10 +93,10 @@ export namespace Dialogic {
   type TransitionStyles = {
     [key:string]: CSSStyleDeclaration | undefined;
     default?: CSSStyleDeclaration;
-    enter?: CSSStyleDeclaration;
-    enterActive?: CSSStyleDeclaration;
-    exit?: CSSStyleDeclaration;
-    exitActive?: CSSStyleDeclaration;
+    showStart?: CSSStyleDeclaration;
+    showEnd?: CSSStyleDeclaration;
+    hideStart?: CSSStyleDeclaration;
+    hideEnd?: CSSStyleDeclaration;
   }
 
   type TransitionStylesFn = (domElement: HTMLElement) => TransitionStyles;
