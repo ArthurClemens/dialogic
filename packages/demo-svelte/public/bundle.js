@@ -533,7 +533,7 @@ var app = (function () {
     const transition = (props, mode) => {
         const domElement = props.domElement;
         if (!domElement) {
-            return Promise.reject("no domElement");
+            return Promise.resolve("no domElement");
         }
         let currentStep = mode === MODE.SHOW
             ? "showStart"
@@ -1339,7 +1339,6 @@ var app = (function () {
     const dialog = dialogical({ ns: "dialog" });
 
     const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
-    //# sourceMappingURL=dialogic.mjs.map
 
     const subscriber_queue = [];
     /**
