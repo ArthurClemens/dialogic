@@ -99,18 +99,21 @@ test("show, toggle: should hide the item", t => {
     });
 });
 
-test("Insert to DOM", t => {
+test.serial("transitionClassName-x", t => {
 	const div = document.createElement("div");
-	document.body.appendChild(div);
+  document.body.appendChild(div);
+  div.classList.add("yyy");
+  t.is(div.classList.contains("yyy"), true);
   t.is(document.querySelector("div"), div);
   
   const options = {
     title: "Test", // not a transition option
+    transitionClassName: "xxx"
   };
   const spawnOptions = {
     id: "dom"
   };
-  notification.show(options, spawnOptions)
+  return notification.show(options, spawnOptions)
     .then(item => {
       t.is(item.id, "notification-dom-default_notification");
       t.is(notification.exists(spawnOptions), true);
@@ -118,6 +121,8 @@ test("Insert to DOM", t => {
       return showItem(item).then(item => {
         t.is(item.id, "notification-dom-default_notification");
         t.is(notification.exists(spawnOptions), true);
+        t.is(div.classList.contains("yyy"), true);
+        t.is(div.classList.contains("xxx-show-end"), true);
       })
     })
 });

@@ -107,7 +107,6 @@ export namespace Dialogic {
     didShow?: ConfirmFn;
     domElement?: HTMLElement;
     timeout?: number;
-    transitions?: TransitionFns;
     transitionClassName?: string;
     transitionStyles?: TransitionStyles | TransitionStylesFn; 
     component?: any;
