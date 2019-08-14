@@ -42,7 +42,7 @@ export const Instance: InstanceFn = ({ attrs }) => {
         { className },
         m(attrs.transitionOptions.component,
           {
-            ...attrs.instanceOptions,
+            ...attrs.passThroughOptions,
             show,
             hide,
           },

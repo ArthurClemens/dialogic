@@ -7,7 +7,7 @@
   let domElement;
 
   export let spawnOptions = undefined;
-  export let instanceOptions = undefined;
+  export let passThroughOptions = undefined;
   export let transitionOptions = undefined;
 
   const className = transitionOptions.transitionClassName;
@@ -36,6 +36,6 @@
   class={className}
   bind:this={domElement}
 >
-  <svelte:component this={transitionOptions.component} {show} {hide} {...instanceOptions} />
+  <svelte:component this={transitionOptions.component} {show} {hide} {...passThroughOptions} />
 </div>
 

@@ -24,20 +24,20 @@ export namespace Dialogic {
     // Configuration
     defaultSpawnOptions: DefaultSpawnOptions;
     // Commands
-    show: (options: Options, instanceSpawnOptions?: InstanceSpawnOptions, fnOptions?: any) => Promise<Item>;
-    hide: (instanceSpawnOptions?: InstanceSpawnOptions, fnOptions?: any) => Promise<Item>;
-    toggle: (options: Options, instanceSpawnOptions?: InstanceSpawnOptions, fnOptions?: any) => Promise<Item>;
-    hideAll: (options: Options, instanceSpawnOptions?: InstanceSpawnOptions) => void;
+    show: (options: Options, identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
+    hide: (identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
+    toggle: (options: Options, identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
+    hideAll: (options: Options, identityOptions?: IdentityOptions) => void;
     resetAll: () => Promise<void>;
     // Timer commands
-    pause: (instanceSpawnOptions?: InstanceSpawnOptions, fnOptions?: any) => Promise<Item>;
-    resume: (instanceSpawnOptions?: InstanceSpawnOptions, fnOptions?: TimerResumeOptions) => Promise<Item>;
+    pause: (identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
+    resume: (identityOptions?: IdentityOptions, fnOptions?: TimerResumeOptions) => Promise<Item>;
     // State
-    exists: (instanceSpawnOptions?: InstanceSpawnOptions) => boolean;
-    getCount: (instanceSpawnOptions?: InstanceSpawnOptions) => number;
+    exists: (identityOptions?: IdentityOptions) => boolean;
+    getCount: (identityOptions?: IdentityOptions) => number;
     // Timer state
-    isPaused: (instanceSpawnOptions?: InstanceSpawnOptions) => boolean | undefined;
-    getRemaining: (instanceSpawnOptions?: InstanceSpawnOptions) => number | undefined;
+    isPaused: (identityOptions?: IdentityOptions) => boolean | undefined;
+    getRemaining: (identityOptions?: IdentityOptions) => number | undefined;
   };
 
   type DefaultSpawnOptions = {
@@ -47,14 +47,14 @@ export namespace Dialogic {
     timeout?: number;
   }
 
-  type InstanceSpawnOptions = {
+  type IdentityOptions = {
     id?: string;
     spawn?: string;
     queued?: boolean;
     onMount?: (args?: any) => any;
   }
 
-  type SpawnOptions = InstanceSpawnOptions & DefaultSpawnOptions;
+  type SpawnOptions = IdentityOptions & DefaultSpawnOptions;
 
   // Components
 
@@ -68,13 +68,13 @@ export namespace Dialogic {
   type DialogicalInstanceOptions = {
     spawnOptions: SpawnOptions;
     transitionOptions: TransitionOptions;
-    instanceOptions: InstanceOptions;
+    passThroughOptions: PassThroughOptions;
     onMount: DialogicalInstanceDispatchFn;
     onShow: DialogicalInstanceDispatchFn;
     onHide: DialogicalInstanceDispatchFn;
   }
   
-  interface InstanceOptions {
+  interface PassThroughOptions {
     [key:string]: any;
   }
   
@@ -106,10 +106,15 @@ export namespace Dialogic {
     timeout?: number;
     transitionClassName?: string;
     transitionStyles?: TransitionStyles | TransitionStylesFn; 
-    component?: any;
   };
+  
+  type DialogicOptions = {
+    [key:string]: string | TransitionOptions | undefined;
+    component?: any;
+    transition?: TransitionOptions; 
+  }
 
-  type Options = InstanceOptions | TransitionOptions;
+  type Options = PassThroughOptions | DialogicOptions;
 
   type MaybeItem = {
     just?: Item;
@@ -123,7 +128,7 @@ export namespace Dialogic {
   type Item = {
     ns: string;
     id: string;
-    instanceOptions: InstanceOptions;
+    passThroughOptions: PassThroughOptions;
     key: string;
     spawnOptions: SpawnOptions;
     timer?: Timer;
@@ -226,8 +231,8 @@ export namespace Dialogic {
   type StateSelectors = {
     getStore: () => NamespaceStore;
     find: (ns: string, spawnOptions: SpawnOptions) => MaybeItem;
-    getAll: (ns: string, instanceSpawnOptions?: InstanceSpawnOptions) => Item[];
-    getCount: (ns: string, instanceSpawnOptions?: InstanceSpawnOptions) => number;
+    getAll: (ns: string, identityOptions?: IdentityOptions) => Item[];
+    getCount: (ns: string, identityOptions?: IdentityOptions) => number;
   }
 
   type InstanceEvent = {

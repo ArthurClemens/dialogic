@@ -11,6 +11,7 @@ const getRandomId = () => Math.round(1000 * Math.random()).toString();
 const showInitial = ({ isOnMount } : { isOnMount?: boolean } = {} ) => dialog.show(
   {
     title: getRandomId(),
+    className: "xxx-content",
     component: DefaultContent,
     transitionStyles: {
       showStart: {
@@ -25,7 +26,6 @@ const showInitial = ({ isOnMount } : { isOnMount?: boolean } = {} ) => dialog.sh
         opacity: 0
       }
     },
-    className: "xxx-content",
     transitionClassName: "xxx",
   },
   {
@@ -401,9 +401,7 @@ const App = {
                 {
                   title: getRandomId(),
                   component: DefaultContent,
-                  showDuration: 0.5,
-                  hideDuration: 0.5,
-                  className: "xxx",
+                  transitionClassName: "xxx",
                 },
                 {
                   spawn: "Q",

@@ -11,17 +11,17 @@ states.map(state => appState.set({
   ...selectors
 }));
 
-export const getCount = ns => instanceSpawnOptions => derived(
+export const getCount = ns => identityOptions => derived(
 	appState,
-	() => selectors.getCount(ns, instanceSpawnOptions)
+	() => selectors.getCount(ns, identityOptions)
 );
 
-export const isPaused = ns => defaultSpawnOptions => instanceSpawnOptions => derived(
+export const isPaused = ns => defaultSpawnOptions => identityOptions => derived(
 	appState,
-	() => getTimerProperty("isPaused")(ns)(defaultSpawnOptions)(instanceSpawnOptions)
+	() => getTimerProperty("isPaused")(ns)(defaultSpawnOptions)(identityOptions)
 );
 
-export const exists = ns => defaultSpawnOptions => instanceSpawnOptions => derived(
+export const exists = ns => defaultSpawnOptions => identityOptions => derived(
 	appState,
-	() => _isDisplayed(ns)(defaultSpawnOptions)(instanceSpawnOptions)
+	() => _isDisplayed(ns)(defaultSpawnOptions)(identityOptions)
 );

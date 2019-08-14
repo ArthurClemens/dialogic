@@ -401,14 +401,14 @@ const store = {
                     ? { just: item }
                     : { nothing: undefined };
             },
-            getAll: (ns, instanceSpawnOptions) => {
+            getAll: (ns, identityOptions) => {
                 const state = states();
                 const items = state.store[ns] || [];
-                const spawn = instanceSpawnOptions !== undefined
-                    ? instanceSpawnOptions.spawn
+                const spawn = identityOptions !== undefined
+                    ? identityOptions.spawn
                     : undefined;
-                const id = instanceSpawnOptions !== undefined
-                    ? instanceSpawnOptions.id
+                const id = identityOptions !== undefined
+                    ? identityOptions.id
                     : undefined;
                 const itemsBySpawn = spawn !== undefined
                     ? items.filter(item => item.spawnOptions.spawn === spawn)
@@ -418,7 +418,7 @@ const store = {
                     : itemsBySpawn;
                 return itemsById;
             },
-            getCount: (ns, instanceSpawnOptions) => fns.getAll(ns, instanceSpawnOptions).length,
+            getCount: (ns, identityOptions) => fns.getAll(ns, identityOptions).length,
         };
         return fns;
     },
@@ -636,7 +636,7 @@ const filterCandidates = (ns, items, spawnOptions) => {
 const getOptionsByKind = options => {
     const initial = {
         transitionOptions: {},
-        instanceOptions: {}
+        passThroughOptions: {}
     };
     return Object.keys(options).reduce((acc, key) => {
         const value = options[key];
@@ -645,19 +645,19 @@ const getOptionsByKind = options => {
             acc.transitionOptions[key] = value;
         }
         else {
-            acc.instanceOptions[key] = value;
+            acc.passThroughOptions[key] = value;
         }
         return acc;
     }, initial);
 };
-const createInstance = (ns) => (defaultSpawnOptions) => (options = {}, instanceSpawnOptions) => {
+const createInstance = (ns) => (defaultSpawnOptions) => (options = {}, identityOptions) => {
     return new Promise(resolve => {
         const spawnOptions = {
             ...defaultSpawnOptions,
-            ...instanceSpawnOptions,
+            ...identityOptions,
         };
         const id = createId(spawnOptions, ns);
-        const { transitionOptions: instanceTransitionOptions, instanceOptions } = getOptionsByKind(options);
+        const { transitionOptions: instanceTransitionOptions, passThroughOptions } = getOptionsByKind(options);
         const transitionOptions = {
             ...instanceTransitionOptions,
         };
@@ -679,7 +679,7 @@ const createInstance = (ns) => (defaultSpawnOptions) => (options = {}, instanceS
             spawnOptions,
             transitionOptions,
             instanceTransitionOptions,
-            instanceOptions,
+            passThroughOptions,
             id,
             timer: transitionOptions.timeout
                 ? Timer()
@@ -709,24 +709,24 @@ const createInstance = (ns) => (defaultSpawnOptions) => (options = {}, instanceS
     });
 };
 const show = createInstance;
-const toggle = (ns) => (defaultSpawnOptions) => (options, instanceSpawnOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+const toggle = (ns) => (defaultSpawnOptions) => (options, identityOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(identityOptions);
     if (maybeItem.just) {
-        return hide(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+        return hide(ns)(defaultSpawnOptions)(identityOptions);
     }
     else {
-        return show(ns)(defaultSpawnOptions)(options, instanceSpawnOptions);
+        return show(ns)(defaultSpawnOptions)(options, identityOptions);
     }
 };
-const getMaybeItem = (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
+const getMaybeItem = (ns) => (defaultSpawnOptions) => (identityOptions) => {
     const spawnOptions = {
         ...defaultSpawnOptions,
-        ...instanceSpawnOptions,
+        ...identityOptions,
     };
     return selectors.find(ns, spawnOptions);
 };
-const performOnItem = fn => ns => defaultSpawnOptions => (instanceSpawnOptions, fnOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+const performOnItem = fn => ns => defaultSpawnOptions => (identityOptions, fnOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(identityOptions);
     if (maybeItem.just) {
         return fn(ns, maybeItem.just, fnOptions);
     }
@@ -755,8 +755,8 @@ const resume = performOnItem((ns, item, fnOptions = {}) => {
     }
     return Promise.resolve(item);
 });
-const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (identityOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(identityOptions);
     if (maybeItem.just) {
         if (maybeItem.just && maybeItem.just.timer) {
             return maybeItem.just.timer.selectors[timerProp]();
@@ -771,8 +771,8 @@ const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (instan
 };
 const isPaused = getTimerProperty("isPaused");
 const getRemaining$1 = getTimerProperty("getRemaining");
-const exists = (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+const exists = (ns) => (defaultSpawnOptions) => (identityOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(identityOptions);
     return !!maybeItem.just;
 };
 const resetAll = (ns) => () => {
@@ -795,10 +795,10 @@ const getOverridingTransitionOptions = (item, options) => {
  * Queued items: will trigger `hideItem` only for the first item, then reset the store.
  * `options` may contain specific transition options. This comes in handy when all items should hide in the same manner.
  * */
-const hideAll = (ns) => (defaultSpawnOptions) => (options, instanceSpawnOptions) => {
+const hideAll = (ns) => (defaultSpawnOptions) => (options, identityOptions) => {
     const spawnOptions = {
         ...defaultSpawnOptions,
-        ...instanceSpawnOptions,
+        ...identityOptions,
     };
     const allItems = selectors.getAll(ns);
     const regularItems = allItems.filter((item) => !spawnOptions.queued && !item.spawnOptions.queued);
@@ -813,7 +813,7 @@ const hideAll = (ns) => (defaultSpawnOptions) => (options, instanceSpawnOptions)
             .then(() => actions.removeAll(ns));
     }
 };
-const getCount = (ns) => (instanceSpawnOptions) => selectors.getCount(ns, instanceSpawnOptions);
+const getCount = (ns) => (identityOptions) => selectors.getCount(ns, identityOptions);
 const transitionItem = (item, mode) => {
     return transition({
         ...item.instanceTransitionOptions,

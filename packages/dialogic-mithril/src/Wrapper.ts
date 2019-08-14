@@ -20,7 +20,7 @@ export const Wrapper: Component<Dialogic.DialogicalWrapperOptions> = {
         key: item.key,
         spawnOptions: item.spawnOptions,
         transitionOptions: item.transitionOptions,
-        instanceOptions: item.instanceOptions,
+        passThroughOptions: item.passThroughOptions,
         onMount: nsOnInstanceMounted,
         onShow: nsOnShowInstance,
         onHide: nsOnHideInstance,

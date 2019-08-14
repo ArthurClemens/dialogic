@@ -3,8 +3,8 @@ import { dialog, notification, Dialogic } from "dialogic";
 
 export { dialog, notification };
 
-interface Dialog extends Dialogic.InstanceSpawnOptions{}
-export const Dialog: Component<Dialogic.InstanceSpawnOptions>;
+interface Dialog extends Dialogic.IdentityOptions{}
+export const Dialog: Component<Dialogic.IdentityOptions>;
 
-interface Notification extends Dialogic.InstanceSpawnOptions{}
-export const Notification: Component<Dialogic.InstanceSpawnOptions>;
+interface Notification extends Dialogic.IdentityOptions{}
+export const Notification: Component<Dialogic.IdentityOptions>;

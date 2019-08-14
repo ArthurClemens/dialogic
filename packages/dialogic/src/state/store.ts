@@ -126,14 +126,14 @@ const store = {
           : { nothing: undefined }
       },
 
-      getAll: (ns: string, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => {
+      getAll: (ns: string, identityOptions?: Dialogic.IdentityOptions) => {
         const state = states();
         const items = state.store[ns] || [];
-        const spawn = instanceSpawnOptions !== undefined
-          ? instanceSpawnOptions.spawn
+        const spawn = identityOptions !== undefined
+          ? identityOptions.spawn
           : undefined;
-        const id = instanceSpawnOptions !== undefined
-          ? instanceSpawnOptions.id
+        const id = identityOptions !== undefined
+          ? identityOptions.id
           : undefined;
         const itemsBySpawn = spawn !== undefined
           ? items.filter(item => item.spawnOptions.spawn === spawn)
@@ -144,8 +144,8 @@ const store = {
         return itemsById;
       },
 
-      getCount: (ns: string, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) =>
-        fns.getAll(ns, instanceSpawnOptions).length,
+      getCount: (ns: string, identityOptions?: Dialogic.IdentityOptions) =>
+        fns.getAll(ns, identityOptions).length,
 
     };
 
