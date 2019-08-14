@@ -12,14 +12,14 @@ export const Wrapper: Component<Dialogic.DialogicalWrapperOptions> = {
     const nsOnShowInstance = onShowInstance(attrs.ns);
     const nsOnHideInstance = onHideInstance(attrs.ns);
     
-    const spawnOptions: Dialogic.SpawnOptions = attrs.spawnOptions || {} as Dialogic.SpawnOptions;
-    const filtered = filterCandidates(attrs.ns, selectors.getStore(), spawnOptions);
+    const identityOptions: Dialogic.IdentityOptions = attrs.identityOptions || {} as Dialogic.IdentityOptions;
+    const filtered = filterCandidates(attrs.ns, selectors.getStore(), identityOptions);
 
     return filtered.map(item =>
       m(Instance, {
         key: item.key,
-        spawnOptions: item.spawnOptions,
-        transitionOptions: item.transitionOptions,
+        identityOptions: item.identityOptions,
+        dialogicOptions: item.dialogicOptions,
         passThroughOptions: item.passThroughOptions,
         onMount: nsOnInstanceMounted,
         onShow: nsOnShowInstance,

@@ -11,8 +11,8 @@ test("show: should resolve when no transition options passed", t => {
     title: "Test", // not a transition option
     timeout: undefined
   };
-  const spawnOptions = undefined;
-  return notification.show(options, spawnOptions)
+  const identityOptions = undefined;
+  return notification.show(options, identityOptions)
     .then(item => {
       t.is(item.id, defaultItemId);
     });
@@ -24,8 +24,8 @@ test("show, getCount: even when no spawn options are specified, the state should
     title: "Test", // not a transition option
     timeout: undefined
   };
-  const spawnOptions = undefined;
-  [1,2,3].forEach(n => notification.show(options, spawnOptions));
+  const identityOptions = undefined;
+  [1,2,3].forEach(n => notification.show(options, identityOptions));
   t.is(notification.exists(), true);
 });
 
@@ -68,15 +68,15 @@ test("show, hide: should hide the item", t => {
   const options = {
     timeout: undefined
   };
-  const spawnOptions = {
+  const identityOptions = {
     id: "show-hide"
   }
-  return notification.show(options, spawnOptions)
+  return notification.show(options, identityOptions)
     .then(() => {
-      t.is(notification.exists(spawnOptions), true);
-      return notification.hide(spawnOptions).then(item => {
+      t.is(notification.exists(identityOptions), true);
+      return notification.hide(identityOptions).then(item => {
         t.is(item.id, "notification-show-hide-default_notification");
-        t.is(notification.exists(spawnOptions), false);
+        t.is(notification.exists(identityOptions), false);
       })
     });
 });
@@ -86,20 +86,20 @@ test("show, toggle: should hide the item", t => {
   const options = {
     timeout: undefined
   };
-  const spawnOptions = {
+  const identityOptions = {
     id: "show-toggle"
   }
-  return notification.show(options, spawnOptions)
+  return notification.show(options, identityOptions)
     .then(() => {
-      t.is(notification.exists(spawnOptions), true);
-      return notification.toggle(options, spawnOptions).then(item => {
+      t.is(notification.exists(identityOptions), true);
+      return notification.toggle(options, identityOptions).then(item => {
         t.is(item.id, "notification-show-toggle-default_notification");
-        t.is(notification.exists(spawnOptions), false);
+        t.is(notification.exists(identityOptions), false);
       })
     });
 });
 
-test.serial("transitionClassName-x", t => {
+test.serial("transition className", t => {
 	const div = document.createElement("div");
   document.body.appendChild(div);
   div.classList.add("yyy");
@@ -107,20 +107,22 @@ test.serial("transitionClassName-x", t => {
   t.is(document.querySelector("div"), div);
   
   const options = {
-    title: "Test", // not a transition option
-    transitionClassName: "xxx"
+    title: "Test",
+    dialogic: {
+      className: "xxx"
+    }
   };
-  const spawnOptions = {
+  const identityOptions = {
     id: "dom"
   };
-  return notification.show(options, spawnOptions)
+  return notification.show(options, identityOptions)
     .then(item => {
       t.is(item.id, "notification-dom-default_notification");
-      t.is(notification.exists(spawnOptions), true);
+      t.is(notification.exists(identityOptions), true);
       setDomElement(div, item);
       return showItem(item).then(item => {
         t.is(item.id, "notification-dom-default_notification");
-        t.is(notification.exists(spawnOptions), true);
+        t.is(notification.exists(identityOptions), true);
         t.is(div.classList.contains("yyy"), true);
         t.is(div.classList.contains("xxx-show-end"), true);
       })

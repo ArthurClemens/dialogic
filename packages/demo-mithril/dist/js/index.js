@@ -1640,21 +1640,13 @@ var MODE = {
   SHOW: "show",
   HIDE: "hide"
 };
-var transitionOptionKeys = {
-  component: true,
-  didHide: true,
-  didShow: true,
-  timeout: true,
-  transitionClassName: true,
-  transitionStyles: true
-};
 
 var removeTransitionClassNames = function removeTransitionClassNames(domElement, transitionClassNames) {
   return domElement.classList.remove(transitionClassNames.showStart, transitionClassNames.showEnd, transitionClassNames.hideStart, transitionClassNames.hideEnd);
 };
 
-var applyTransitionStyles = function applyTransitionStyles(domElement, step, transitionStyles) {
-  var transitionStyle = transitionStyles[step] || {};
+var applyTransitionStyles = function applyTransitionStyles(domElement, step, styles) {
+  var transitionStyle = styles[step] || {};
   Object.keys(transitionStyle).forEach(function (key) {
     domElement.style[key] = transitionStyle[key];
   });
@@ -1664,24 +1656,24 @@ var applyNoDurationTransitionStyle = function applyNoDurationTransitionStyle(dom
   return domElement.style.transitionDuration = "0ms";
 };
 
-var getTransitionStyles = function getTransitionStyles(domElement, transitionStyles) {
-  return (typeof transitionStyles === "function" ? transitionStyles(domElement) : transitionStyles) || {};
+var getTransitionStyles = function getTransitionStyles(domElement, styles) {
+  return (typeof styles === "function" ? styles(domElement) : styles) || {};
 };
 
 var applyStylesForState = function applyStylesForState(domElement, props, step, isEnterStep) {
-  if (props.transitionStyles) {
-    var transitionStyles = getTransitionStyles(domElement, props.transitionStyles);
-    applyTransitionStyles(domElement, "default", transitionStyles);
+  if (props.styles) {
+    var styles = getTransitionStyles(domElement, props.styles);
+    applyTransitionStyles(domElement, "default", styles);
     isEnterStep && applyNoDurationTransitionStyle(domElement);
-    applyTransitionStyles(domElement, step, transitionStyles);
+    applyTransitionStyles(domElement, step, styles);
   }
 
-  if (props.transitionClassName) {
+  if (props.className) {
     var transitionClassNames = {
-      showStart: "".concat(props.transitionClassName, "-show-start"),
-      showEnd: "".concat(props.transitionClassName, "-show-end"),
-      hideStart: "".concat(props.transitionClassName, "-hide-start"),
-      hideEnd: "".concat(props.transitionClassName, "-hide-end")
+      showStart: "".concat(props.className, "-show-start"),
+      showEnd: "".concat(props.className, "-show-end"),
+      hideStart: "".concat(props.className, "-hide-start"),
+      hideEnd: "".concat(props.className, "-hide-end")
     };
     removeTransitionClassNames(domElement, transitionClassNames);
     transitionClassNames && domElement.classList.add(transitionClassNames[step]);
@@ -1980,8 +1972,8 @@ var removeItem = function removeItem(id, items) {
   return items;
 };
 
-var createId = function createId(spawnOptions, ns) {
-  return [ns, spawnOptions.id, spawnOptions.spawn].filter(Boolean).join("-");
+var createId = function createId(identityOptions, ns) {
+  return [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join("-");
 };
 
 var store = {
@@ -2073,10 +2065,10 @@ var store = {
         var state = states();
         return state.store;
       },
-      find: function find(ns, spawnOptions) {
+      find: function find(ns, identityOptions) {
         var state = states();
         var items = state.store[ns] || [];
-        var id = createId(spawnOptions, ns);
+        var id = createId(identityOptions, ns);
         var item = items.find(function (item) {
           return item.id === id;
         });
@@ -2086,21 +2078,21 @@ var store = {
           nothing: undefined
         };
       },
-      getAll: function getAll(ns, instanceSpawnOptions) {
+      getAll: function getAll(ns, identityOptions) {
         var state = states();
         var items = state.store[ns] || [];
-        var spawn = instanceSpawnOptions !== undefined ? instanceSpawnOptions.spawn : undefined;
-        var id = instanceSpawnOptions !== undefined ? instanceSpawnOptions.id : undefined;
+        var spawn = identityOptions !== undefined ? identityOptions.spawn : undefined;
+        var id = identityOptions !== undefined ? identityOptions.id : undefined;
         var itemsBySpawn = spawn !== undefined ? items.filter(function (item) {
-          return item.spawnOptions.spawn === spawn;
+          return item.identityOptions.spawn === spawn;
         }) : items;
         var itemsById = id !== undefined ? itemsBySpawn.filter(function (item) {
-          return item.spawnOptions.id === id;
+          return item.identityOptions.id === id;
         }) : itemsBySpawn;
         return itemsById;
       },
-      getCount: function getCount(ns, instanceSpawnOptions) {
-        return fns.getAll(ns, instanceSpawnOptions).length;
+      getCount: function getCount(ns, identityOptions) {
+        return fns.getAll(ns, identityOptions).length;
       }
     };
     return fns;
@@ -2280,10 +2272,10 @@ var transitionStates = {
   hiding: "hiding"
 };
 
-var filterBySpawnOption = function filterBySpawnOption(spawnOptions) {
+var filterBySpawnOption = function filterBySpawnOption(identityOptions) {
   return function (nsItems) {
     return nsItems.filter(function (item) {
-      return item.spawnOptions.spawn === spawnOptions.spawn;
+      return item.identityOptions.spawn === identityOptions.spawn;
     });
   };
 };
@@ -2298,7 +2290,7 @@ var filterFirstInQueue = function filterFirstInQueue(nsItems) {
   return nsItems.map(function (item) {
     return {
       item: item,
-      queueCount: item.spawnOptions.queued ? queuedCount++ : 0
+      queueCount: item.dialogicOptions.queued ? queuedCount++ : 0
     };
   }).filter(function (_ref2) {
     var queueCount = _ref2.queueCount;
@@ -2309,97 +2301,83 @@ var filterFirstInQueue = function filterFirstInQueue(nsItems) {
   });
 };
 
-var filterCandidates = function filterCandidates(ns, items, spawnOptions) {
+var filterCandidates = function filterCandidates(ns, items, identityOptions) {
   var nsItems = items[ns] || [];
-  return pipe(filterFirstInQueue, filterBySpawnOption(spawnOptions))(nsItems);
+  return pipe(filterFirstInQueue, filterBySpawnOption(identityOptions))(nsItems);
 };
 
-var getOptionsByKind = function getOptionsByKind(options) {
-  var initial = {
-    transitionOptions: {},
-    instanceOptions: {}
-  };
-  return Object.keys(options).reduce(function (acc, key) {
-    var value = options[key];
-    var isTransitionKey = transitionOptionKeys[key];
+var getPassThroughOptions = function getPassThroughOptions(options) {
+  return _objectSpread({}, options, {
+    dialogicOptions: undefined
+  });
+};
 
-    if (isTransitionKey) {
-      acc.transitionOptions[key] = value;
-    } else {
-      acc.instanceOptions[key] = value;
-    }
-
-    return acc;
-  }, initial);
+var getMergedIdentityOptions = function getMergedIdentityOptions(defaultOptions, identityOptions) {
+  return _objectSpread({
+    id: defaultOptions.id,
+    spawn: defaultOptions.spawn
+  }, identityOptions);
 };
 
 var createInstance = function createInstance(ns) {
-  return function (defaultSpawnOptions) {
-    return function (defaultTransitionOptions) {
-      return function () {
-        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        var instanceSpawnOptions = arguments.length > 1 ? arguments[1] : undefined;
-        return new Promise(function (resolve) {
-          var spawnOptions = _objectSpread({}, defaultSpawnOptions, {}, instanceSpawnOptions);
+  return function (defaultOptions) {
+    return function () {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var identityOptions = arguments.length > 1 ? arguments[1] : undefined;
+      return new Promise(function (resolve) {
+        var mergedIdentityOptions = getMergedIdentityOptions(defaultOptions, identityOptions);
 
-          var id = createId(spawnOptions, ns);
+        var dialogicOptions = _objectSpread({}, defaultOptions.dialogic, {}, options.dialogic);
 
-          var _getOptionsByKind = getOptionsByKind(options),
-              instanceTransitionOptions = _getOptionsByKind.transitionOptions,
-              instanceOptions = _getOptionsByKind.instanceOptions;
-
-          var transitionOptions = _objectSpread({}, defaultTransitionOptions, {}, instanceTransitionOptions);
-
-          transitionOptions.didShow = function (item) {
-            if (options.didShow) {
-              options.didShow(item);
+        var passThroughOptions = getPassThroughOptions(options);
+        var callbacks = {
+          didShow: function didShow(item) {
+            if (dialogicOptions.didShow) {
+              dialogicOptions.didShow(item);
             }
 
             return resolve(item);
-          };
-
-          transitionOptions.didHide = function (item) {
-            if (options.didHide) {
-              options.didHide(item);
+          },
+          didHide: function didHide(item) {
+            if (dialogicOptions.didHide) {
+              dialogicOptions.didHide(item);
             }
 
             return resolve(item);
-          };
-
-          var uid = getUid().toString();
-          var item = {
-            ns: ns,
-            spawnOptions: spawnOptions,
-            transitionOptions: transitionOptions,
-            instanceTransitionOptions: instanceTransitionOptions,
-            instanceOptions: instanceOptions,
-            id: id,
-            timer: transitionOptions.timeout ? Timer() : undefined,
-            key: uid,
-            transitionState: transitionStates.none
-          };
-          var maybeExistingItem = selectors.find(ns, spawnOptions);
-
-          if (maybeExistingItem.just && !spawnOptions.queued) {
-            var existingItem = maybeExistingItem.just; // Preserve instanceTransitionOptions
-
-            var _instanceTransitionOptions = existingItem.instanceTransitionOptions;
-
-            var replacingItem = _objectSpread({}, item, {
-              instanceTransitionOptions: _instanceTransitionOptions
-            });
-
-            actions.replace(ns, existingItem.id, replacingItem); // While this is a replace action, mimic a show
-
-            transitionOptions.didShow(item);
-          } else {
-            actions.add(ns, item); // This will instantiate and draw the instance
-            // The instance will call `showDialog` in `onMount`
           }
+        };
+        var item = {
+          ns: ns,
+          identityOptions: mergedIdentityOptions,
+          dialogicOptions: dialogicOptions,
+          callbacks: callbacks,
+          passThroughOptions: passThroughOptions,
+          id: createId(mergedIdentityOptions, ns),
+          timer: dialogicOptions.timeout ? Timer() : undefined,
+          key: getUid().toString(),
+          transitionState: transitionStates.none
+        };
+        var maybeExistingItem = selectors.find(ns, mergedIdentityOptions);
 
-          resolve(item);
-        });
-      };
+        if (maybeExistingItem.just && !dialogicOptions.queued) {
+          var existingItem = maybeExistingItem.just; // Preserve dialogicOptions
+
+          var _dialogicOptions = existingItem.dialogicOptions;
+
+          var replacingItem = _objectSpread({}, item, {
+            dialogicOptions: _dialogicOptions
+          });
+
+          actions.replace(ns, existingItem.id, replacingItem); // While this is a replace action, mimic a show
+
+          callbacks.didShow && callbacks.didShow(item);
+        } else {
+          actions.add(ns, item); // This will instantiate and draw the instance
+          // The instance will call `showDialog` in `onMount`
+        }
+
+        resolve(item);
+      });
     };
   };
 };
@@ -2407,36 +2385,32 @@ var createInstance = function createInstance(ns) {
 var show = createInstance;
 
 var toggle = function toggle(ns) {
-  return function (defaultSpawnOptions) {
-    return function (defaultTransitionOptions) {
-      return function (options, instanceSpawnOptions) {
-        var maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+  return function (defaultOptions) {
+    return function (options, identityOptions) {
+      var maybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
 
-        if (maybeItem.just) {
-          return hide(ns)(defaultSpawnOptions)(instanceSpawnOptions);
-        } else {
-          return show(ns)(defaultSpawnOptions)(defaultTransitionOptions)(options, instanceSpawnOptions);
-        }
-      };
+      if (maybeItem.just) {
+        return hide(ns)(defaultOptions)(identityOptions);
+      } else {
+        return show(ns)(defaultOptions)(options, identityOptions);
+      }
     };
   };
 };
 
 var getMaybeItem = function getMaybeItem(ns) {
-  return function (defaultSpawnOptions) {
-    return function (instanceSpawnOptions) {
-      var spawnOptions = _objectSpread({}, defaultSpawnOptions, {}, instanceSpawnOptions);
-
-      return selectors.find(ns, spawnOptions);
+  return function (defaultOptions) {
+    return function (identityOptions) {
+      return selectors.find(ns, getMergedIdentityOptions(defaultOptions, identityOptions));
     };
   };
 };
 
 var performOnItem = function performOnItem(fn) {
   return function (ns) {
-    return function (defaultSpawnOptions) {
-      return function (instanceSpawnOptions, fnOptions) {
-        var maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+    return function (defaultOptions) {
+      return function (identityOptions, fnOptions) {
+        var maybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
 
         if (maybeItem.just) {
           return fn(ns, maybeItem.just, fnOptions);
@@ -2475,9 +2449,9 @@ var resume = performOnItem(function (ns, item) {
 
 var getTimerProperty = function getTimerProperty(timerProp) {
   return function (ns) {
-    return function (defaultSpawnOptions) {
-      return function (instanceSpawnOptions) {
-        var maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+    return function (defaultOptions) {
+      return function (identityOptions) {
+        var maybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
 
         if (maybeItem.just) {
           if (maybeItem.just && maybeItem.just.timer) {
@@ -2497,9 +2471,9 @@ var isPaused = getTimerProperty("isPaused");
 var getRemaining$1 = getTimerProperty("getRemaining");
 
 var exists = function exists(ns) {
-  return function (defaultSpawnOptions) {
-    return function (instanceSpawnOptions) {
-      var maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
+  return function (defaultOptions) {
+    return function (identityOptions) {
+      var maybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
       return !!maybeItem.just;
     };
   };
@@ -2516,11 +2490,8 @@ var resetAll = function resetAll(ns) {
 };
 
 var getOverridingTransitionOptions = function getOverridingTransitionOptions(item, options) {
-  var _getOptionsByKind2 = getOptionsByKind(options),
-      transitionOptions = _getOptionsByKind2.transitionOptions;
-
   return _objectSpread({}, item, {
-    transitionOptions: _objectSpread({}, item.transitionOptions, {}, transitionOptions)
+    dialogicOptions: _objectSpread({}, item.dialogicOptions, {}, options)
   });
 };
 /**
@@ -2531,44 +2502,40 @@ var getOverridingTransitionOptions = function getOverridingTransitionOptions(ite
 
 
 var hideAll = function hideAll(ns) {
-  return function (defaultSpawnOptions) {
-    return function (options, instanceSpawnOptions) {
-      var spawnOptions = _objectSpread({}, defaultSpawnOptions, {}, instanceSpawnOptions);
+  return function (dialogicOptions) {
+    var allItems = selectors.getAll(ns);
+    var regularItems = allItems.filter(function (item) {
+      return !dialogicOptions.queued && !item.dialogicOptions.queued;
+    });
+    var queuedItems = allItems.filter(function (item) {
+      return dialogicOptions.queued || item.dialogicOptions.queued;
+    });
+    regularItems.forEach(function (item) {
+      return hideItem(getOverridingTransitionOptions(item, dialogicOptions));
+    });
 
-      var allItems = selectors.getAll(ns);
-      var regularItems = allItems.filter(function (item) {
-        return !spawnOptions.queued && !item.spawnOptions.queued;
+    if (queuedItems.length > 0) {
+      var _queuedItems = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default()(queuedItems, 1),
+          current = _queuedItems[0]; // Make sure that any remaining items don't suddenly appear
+
+
+      actions.store(ns, [current]); // Transition the current item
+
+      hideItem(getOverridingTransitionOptions(current, dialogicOptions)).then(function () {
+        return actions.removeAll(ns);
       });
-      var queuedItems = allItems.filter(function (item) {
-        return spawnOptions.queued || item.spawnOptions.queued;
-      });
-      regularItems.forEach(function (item) {
-        return hideItem(getOverridingTransitionOptions(item, options));
-      });
-
-      if (queuedItems.length > 0) {
-        var _queuedItems = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default()(queuedItems, 1),
-            current = _queuedItems[0]; // Make sure that any remaining items don't suddenly appear
-
-
-        actions.store(ns, [current]); // Transition the current item
-
-        hideItem(getOverridingTransitionOptions(current, options)).then(function () {
-          return actions.removeAll(ns);
-        });
-      }
-    };
+    }
   };
 };
 
 var getCount = function getCount(ns) {
-  return function (instanceSpawnOptions) {
-    return selectors.getCount(ns, instanceSpawnOptions);
+  return function (identityOptions) {
+    return selectors.getCount(ns, identityOptions);
   };
 };
 
 var transitionItem = function transitionItem(item, mode) {
-  return transition(_objectSpread({}, item.instanceTransitionOptions, {}, item.transitionOptions), mode);
+  return transition(item.dialogicOptions, mode);
 };
 
 var deferredHideItem =
@@ -2613,7 +2580,7 @@ function () {
             return transitionItem(item, MODE.SHOW);
 
           case 2:
-            _context2.t0 = item.transitionOptions.didShow;
+            _context2.t0 = item.callbacks.didShow;
 
             if (!_context2.t0) {
               _context2.next = 6;
@@ -2621,16 +2588,16 @@ function () {
             }
 
             _context2.next = 6;
-            return item.transitionOptions.didShow(item);
+            return item.callbacks.didShow(item);
 
           case 6:
-            if (!(item.transitionOptions.timeout && item.timer)) {
+            if (!(item.dialogicOptions.timeout && item.timer)) {
               _context2.next = 9;
               break;
             }
 
             _context2.next = 9;
-            return deferredHideItem(item, item.timer, item.transitionOptions.timeout);
+            return deferredHideItem(item, item.timer, item.dialogicOptions.timeout);
 
           case 9:
             return _context2.abrupt("return", Promise.resolve(item));
@@ -2668,7 +2635,7 @@ function () {
             return transitionItem(item, MODE.HIDE);
 
           case 3:
-            _context3.t0 = item.transitionOptions.didHide;
+            _context3.t0 = item.callbacks.didHide;
 
             if (!_context3.t0) {
               _context3.next = 7;
@@ -2676,7 +2643,7 @@ function () {
             }
 
             _context3.next = 7;
-            return item.transitionOptions.didHide(item);
+            return item.callbacks.didHide(item);
 
           case 7:
             copy = JSON.parse(JSON.stringify(item));
@@ -2697,7 +2664,7 @@ function () {
 }();
 
 var setDomElement = function setDomElement(domElement, item) {
-  item.transitionOptions.domElement = domElement;
+  item.dialogicOptions.domElement = domElement;
 };
 
 var dialogical = function dialogical(_ref7) {
@@ -2706,40 +2673,37 @@ var dialogical = function dialogical(_ref7) {
       timeout = _ref7.timeout;
   var defaultId = "default_".concat(ns);
   var defaultSpawn = "default_".concat(ns);
-
-  var defaultSpawnOptions = _objectSpread({
+  var defaultOptions = {
     id: defaultId,
-    spawn: defaultSpawn
-  }, queued && {
-    queued: queued
-  });
-
-  var defaultTransitionOptions = _objectSpread({}, timeout !== undefined && {
-    timeout: timeout
-  });
-
+    spawn: defaultSpawn,
+    dialogic: _objectSpread({}, queued && {
+      queued: queued
+    }, {}, timeout !== undefined && {
+      timeout: timeout
+    })
+  };
   return {
     // Identification
     ns: ns,
     defaultId: defaultId,
     defaultSpawn: defaultSpawn,
     // Configuration
-    defaultSpawnOptions: defaultSpawnOptions,
+    defaultOptions: defaultOptions,
     // Commands
-    show: show(ns)(defaultSpawnOptions)(defaultTransitionOptions),
-    toggle: toggle(ns)(defaultSpawnOptions)(defaultTransitionOptions),
-    hide: hide(ns)(defaultSpawnOptions),
-    hideAll: hideAll(ns)(defaultSpawnOptions),
+    show: show(ns)(defaultOptions),
+    toggle: toggle(ns)(defaultOptions),
+    hide: hide(ns)(defaultOptions),
+    hideAll: hideAll(ns),
     resetAll: resetAll(ns),
     // Timer commands
-    pause: pause(ns)(defaultSpawnOptions),
-    resume: resume(ns)(defaultSpawnOptions),
+    pause: pause(ns)(defaultOptions),
+    resume: resume(ns)(defaultOptions),
     // State
-    exists: exists(ns)(defaultSpawnOptions),
+    exists: exists(ns)(defaultOptions),
     getCount: getCount(ns),
     // Timer state
-    isPaused: isPaused(ns)(defaultSpawnOptions),
-    getRemaining: getRemaining$1(ns)(defaultSpawnOptions)
+    isPaused: isPaused(ns)(defaultOptions),
+    getRemaining: getRemaining$1(ns)(defaultOptions)
   };
 };
 
@@ -2755,14 +2719,14 @@ var notification = dialogical({
 var handleDispatch = function handleDispatch(ns) {
   return function (event, fn) {
     // Update dispatching item:
-    var maybeItem = selectors.find(ns, event.detail.spawnOptions);
+    var maybeItem = selectors.find(ns, event.detail.identityOptions);
 
     if (maybeItem.just) {
       setDomElement(event.detail.domElement, maybeItem.just);
     } // Find item to transition:
 
 
-    var maybeTransitioningItem = selectors.find(ns, event.detail.spawnOptions);
+    var maybeTransitioningItem = selectors.find(ns, event.detail.identityOptions);
 
     if (maybeTransitioningItem.just) {
       fn(maybeTransitioningItem.just);
@@ -2791,12 +2755,12 @@ var onHideInstance = function onHideInstance(ns) {
 var Instance = function Instance(_ref8) {
   var attrs = _ref8.attrs;
   var domElement;
-  var className = attrs.transitionOptions.transitionClassName;
+  var className = attrs.dialogicOptions.className;
 
   var dispatchTransition = function dispatchTransition(dispatchFn) {
     dispatchFn({
       detail: {
-        spawnOptions: attrs.spawnOptions,
+        identityOptions: attrs.identityOptions,
         domElement: domElement
       }
     });
@@ -2822,7 +2786,7 @@ var Instance = function Instance(_ref8) {
     view: function view() {
       return mithril__WEBPACK_IMPORTED_MODULE_5___default()("div", {
         className: className
-      }, mithril__WEBPACK_IMPORTED_MODULE_5___default()(attrs.transitionOptions.component, _objectSpread({}, attrs.instanceOptions, {
+      }, mithril__WEBPACK_IMPORTED_MODULE_5___default()(attrs.dialogicOptions.component, _objectSpread({}, attrs.passThroughOptions, {
         show: show,
         hide: hide
       }), [mithril__WEBPACK_IMPORTED_MODULE_5___default()("div", "Instance"), mithril__WEBPACK_IMPORTED_MODULE_5___default()("button", {
@@ -2840,14 +2804,14 @@ var Wrapper = {
     var nsOnInstanceMounted = onInstanceMounted(attrs.ns);
     var nsOnShowInstance = onShowInstance(attrs.ns);
     var nsOnHideInstance = onHideInstance(attrs.ns);
-    var spawnOptions = attrs.spawnOptions || {};
-    var filtered = filterCandidates(attrs.ns, selectors.getStore(), spawnOptions);
+    var identityOptions = attrs.identityOptions || {};
+    var filtered = filterCandidates(attrs.ns, selectors.getStore(), identityOptions);
     return filtered.map(function (item) {
       return mithril__WEBPACK_IMPORTED_MODULE_5___default()(Instance, {
         key: item.key,
-        spawnOptions: item.spawnOptions,
-        transitionOptions: item.transitionOptions,
-        instanceOptions: item.instanceOptions,
+        identityOptions: item.identityOptions,
+        dialogicOptions: item.dialogicOptions,
+        passThroughOptions: item.passThroughOptions,
         onMount: nsOnInstanceMounted,
         onShow: nsOnShowInstance,
         onHide: nsOnHideInstance
@@ -2867,12 +2831,12 @@ var Dialogical = function Dialogical(type) {
     },
     view: function view(_ref11) {
       var attrs = _ref11.attrs;
-      var spawnOptions = {
+      var identityOptions = {
         id: attrs.id || type.defaultId,
         spawn: attrs.spawn || type.defaultSpawn
       };
       return mithril__WEBPACK_IMPORTED_MODULE_5___default()(Wrapper, {
-        spawnOptions: spawnOptions,
+        identityOptions: identityOptions,
         ns: type.ns
       });
     }
@@ -4830,52 +4794,58 @@ const getRandomId = () => Math.round(1000 * Math.random()).toString();
 const showInitial = ({ isOnMount } = {}) => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
     title: getRandomId(),
     className: "xxx-content",
-    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
-    transitionStyles: {
-        showStart: {
-            opacity: isOnMount ? 1 : 0,
+    dialogic: {
+        component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+        styles: {
+            showStart: {
+                opacity: isOnMount ? 1 : 0,
+            },
+            showEnd: {
+                transitionDuration: isOnMount ? 0 : "500ms",
+                opacity: 1
+            },
+            hideEnd: {
+                transitionDuration: "500ms",
+                opacity: 0
+            }
         },
-        showEnd: {
-            transitionDuration: isOnMount ? 0 : "500ms",
-            opacity: 1
-        },
-        hideEnd: {
-            transitionDuration: "500ms",
-            opacity: 0
-        }
-    },
-    transitionClassName: "xxx",
+        className: "xxx",
+    }
 }, {
     spawn: "initial",
 });
 const toggleDialog = () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].toggle({
     title: getRandomId(),
-    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
-    transitionStyles: {
-        showEnd: {
-            transitionDuration: "500ms",
-        },
-        hideEnd: {
-            transitionDuration: "500ms",
-        },
-    },
     className: "xxx-content",
-    transitionClassName: "xxx"
+    dialogic: {
+        component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+        styles: {
+            showEnd: {
+                transitionDuration: "500ms",
+            },
+            hideEnd: {
+                transitionDuration: "500ms",
+            },
+        },
+        className: "xxx"
+    }
 }, {
     spawn: "toggle",
 });
 const dialogOneProps = {
-    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
-    transitionStyles: {
-        showEnd: {
-            transitionDuration: "500ms",
+    dialogic: {
+        component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+        styles: {
+            showEnd: {
+                transitionDuration: "500ms",
+            },
+            hideEnd: {
+                transitionDuration: "500ms",
+            },
         },
-        hideEnd: {
-            transitionDuration: "500ms",
-        },
+        className: "xxx",
     },
     className: "xxx-content",
-    transitionClassName: "xxx",
     title: "Clock",
     id: getRandomId(),
 };
@@ -4886,58 +4856,62 @@ const dialogDelayProps = {
     //     transitionDelay: "250ms",
     //   },
     // },
-    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+    dialogic: {
+        component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+        className: "xxx-delay",
+    },
     className: "xxx-content",
-    transitionClassName: "xxx-delay",
     title: "Delay",
     id: getRandomId(),
 };
 const dialogTransitionProps = {
-    transitionStyles: (domElement) => {
-        const height = domElement.getBoundingClientRect().height;
-        return {
-            default: {
-                transition: "all 300ms ease-in-out",
-            },
-            showStart: {
-                opacity: 0,
-                transform: `translate3d(0, ${height}px, 0)`,
-            },
-            showEnd: {
-                opacity: 1,
-                transform: "translate3d(0, 0px,  0)",
-            },
-            hideEnd: {
-                transitionDuration: "750ms",
-                transform: `translate3d(0, ${height}px, 0)`,
-                opacity: 0,
-            },
-        };
+    dialogic: {
+        styles: (domElement) => {
+            const height = domElement.getBoundingClientRect().height;
+            return {
+                default: {
+                    transition: "all 300ms ease-in-out",
+                },
+                showStart: {
+                    opacity: 0,
+                    transform: `translate3d(0, ${height}px, 0)`,
+                },
+                showEnd: {
+                    opacity: 1,
+                    transform: "translate3d(0, 0px,  0)",
+                },
+                hideEnd: {
+                    transitionDuration: "750ms",
+                    transform: `translate3d(0, ${height}px, 0)`,
+                    opacity: 0,
+                },
+            };
+        },
+        // styles: {
+        //   default: {
+        //     transition: `all ${300}ms ease-in-out`,
+        //   },
+        //   showStart: {
+        //     opacity: 0,
+        //     transform: `translate3d(0, ${84}px, 0)`,
+        //     transitionDuration: "0ms"
+        //   },
+        //   showEnd: {
+        //     opacity: 1,
+        //     transform: "translate3d(0, 0px,  0)"
+        //   },
+        //   hideEnd: {
+        //     transitionDuration: "750ms",
+        //     opacity: 0,
+        //   },
+        // },
+        component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
     },
-    // transitionStyles: {
-    //   default: {
-    //     transition: `all ${300}ms ease-in-out`,
-    //   },
-    //   showStart: {
-    //     opacity: 0,
-    //     transform: `translate3d(0, ${84}px, 0)`,
-    //     transitionDuration: "0ms"
-    //   },
-    //   showEnd: {
-    //     opacity: 1,
-    //     transform: "translate3d(0, 0px,  0)"
-    //   },
-    //   hideEnd: {
-    //     transitionDuration: "750ms",
-    //     opacity: 0,
-    //   },
-    // },
-    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
     title: "Transitions",
     id: getRandomId(),
 };
 const hideAllOptions = {
-    transitionStyles: {
+    styles: {
         hideEnd: {
             transitionDuration: "500ms",
             transitionDelay: "0ms",
@@ -4990,21 +4964,23 @@ const App = {
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                 className: "button",
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
-                    didShow: (item) => console.log("didShow", item),
-                    didHide: (item) => console.log("didHide", item),
-                    transitionStyles: {
-                        showEnd: {
-                            transitionDuration: "500ms",
-                            transitionDelay: "500ms",
-                        },
-                        hideEnd: {
-                            transitionDuration: "250ms",
-                            transitionDelay: "0ms",
+                    dialogic: {
+                        component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+                        className: "xxx",
+                        didShow: (item) => console.log("didShow", item),
+                        didHide: (item) => console.log("didHide", item),
+                        transitionStyles: {
+                            showEnd: {
+                                transitionDuration: "500ms",
+                                transitionDelay: "500ms",
+                            },
+                            hideEnd: {
+                                transitionDuration: "250ms",
+                                transitionDelay: "0ms",
+                            },
                         },
                     },
-                    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
                     className: "xxx-content",
-                    transitionClassName: "xxx",
                     title: "With Promise"
                 }, {
                     id: "withPromise"
@@ -5037,7 +5013,10 @@ const App = {
                 className: "button",
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
                     ...dialogOneProps,
-                    timeout: 2000,
+                    dialogic: {
+                        ...dialogOneProps.dialogic,
+                        timeout: 2000,
+                    },
                     title: dialogDelayProps.title + " " + getRandomId()
                 }, {
                     id: "timer"
@@ -5086,7 +5065,9 @@ const App = {
                 className: "button",
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
                     title: "Custom spawn",
-                    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+                    dialogic: {
+                        component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+                    }
                 }, {
                     spawn: "special"
                 })
@@ -5111,11 +5092,13 @@ const App = {
                 className: "button",
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
                     title: getRandomId(),
-                    component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
-                    transitionClassName: "xxx",
+                    dialogic: {
+                        component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+                        className: "xxx",
+                        queued: true,
+                    }
                 }, {
                     spawn: "Q",
-                    queued: true
                 })
             }, "Queued dialog"),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
@@ -5176,11 +5159,13 @@ const App = {
                 onclick: () => {
                     const title = "N " + getRandomId();
                     return dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].show({
-                        didShow: (item) => console.log("didShow", item, title),
-                        didHide: (item) => console.log("didHide", item, title),
-                        component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+                        dialogic: {
+                            didShow: (item) => console.log("didShow", item, title),
+                            didHide: (item) => console.log("didHide", item, title),
+                            component: _default_Content__WEBPACK_IMPORTED_MODULE_2__["Content"],
+                            className: "xxx-timings",
+                        },
                         className: "xxx-timings-content",
-                        transitionClassName: "xxx-timings",
                         title,
                     }, {
                         spawn: "NO"

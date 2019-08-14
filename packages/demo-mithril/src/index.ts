@@ -12,21 +12,23 @@ const showInitial = ({ isOnMount } : { isOnMount?: boolean } = {} ) => dialog.sh
   {
     title: getRandomId(),
     className: "xxx-content",
-    component: DefaultContent,
-    transitionStyles: {
-      showStart: {
-        opacity: isOnMount ? 1 : 0,
+    dialogic: {
+      component: DefaultContent,
+      styles: {
+        showStart: {
+          opacity: isOnMount ? 1 : 0,
+        },
+        showEnd: {
+          transitionDuration: isOnMount ? 0 : "500ms",
+          opacity: 1
+        },
+        hideEnd: {
+          transitionDuration: "500ms",
+          opacity: 0
+        }
       },
-      showEnd: {
-        transitionDuration: isOnMount ? 0 : "500ms",
-        opacity: 1
-      },
-      hideEnd: {
-        transitionDuration: "500ms",
-        opacity: 0
-      }
-    },
-    transitionClassName: "xxx",
+      className: "xxx",
+    }
   },
   {
     spawn: "initial",
@@ -36,17 +38,19 @@ const showInitial = ({ isOnMount } : { isOnMount?: boolean } = {} ) => dialog.sh
 const toggleDialog = () => dialog.toggle(
   {
     title: getRandomId(),
-    component: DefaultContent,
-    transitionStyles: {
-      showEnd: {
-        transitionDuration: "500ms",
-      },
-      hideEnd: {
-        transitionDuration: "500ms",
-      },
-    },
     className: "xxx-content",
-    transitionClassName: "xxx"
+    dialogic: {
+      component: DefaultContent,
+      styles: {
+        showEnd: {
+          transitionDuration: "500ms",
+        },
+        hideEnd: {
+          transitionDuration: "500ms",
+        },
+      }, 
+      className: "xxx"
+    }
   },
   {
     spawn: "toggle",
@@ -54,17 +58,19 @@ const toggleDialog = () => dialog.toggle(
 );
 
 const dialogOneProps: Dialogic.Options = {
-  component: DefaultContent,
-  transitionStyles: {
-    showEnd: {
-      transitionDuration: "500ms",
+  dialogic: {
+    component: DefaultContent,
+    styles: {
+      showEnd: {
+        transitionDuration: "500ms",
+      },
+      hideEnd: {
+        transitionDuration: "500ms",
+      },
     },
-    hideEnd: {
-      transitionDuration: "500ms",
-    },
+    className: "xxx",
   },
   className: "xxx-content",
-  transitionClassName: "xxx",
   title: "Clock",
   id: getRandomId(),
 };
@@ -76,60 +82,64 @@ const dialogDelayProps: Dialogic.Options = {
   //     transitionDelay: "250ms",
   //   },
   // },
-  component: DefaultContent,
+  dialogic: {
+    component: DefaultContent,
+    className: "xxx-delay",
+  },
   className: "xxx-content",
-  transitionClassName: "xxx-delay",
   title: "Delay",
   id: getRandomId(),
 };
 
 const dialogTransitionProps = {
-  transitionStyles: (domElement: HTMLElement) => {
-    const height = domElement.getBoundingClientRect().height;
-    return {
-      default: {
-        transition: "all 300ms ease-in-out",
-      },
-      showStart: {
-        opacity: 0,
-        transform: `translate3d(0, ${height}px, 0)`,
-      },
-      showEnd: {
-        opacity: 1,
-        transform: "translate3d(0, 0px,  0)",
-      },
-      hideEnd: {
-        transitionDuration: "750ms",
-        transform: `translate3d(0, ${height}px, 0)`,
-        opacity: 0,
-      },
-    }
+  dialogic: {
+    styles: (domElement: HTMLElement) => {
+      const height = domElement.getBoundingClientRect().height;
+      return {
+        default: {
+          transition: "all 300ms ease-in-out",
+        },
+        showStart: {
+          opacity: 0,
+          transform: `translate3d(0, ${height}px, 0)`,
+        },
+        showEnd: {
+          opacity: 1,
+          transform: "translate3d(0, 0px,  0)",
+        },
+        hideEnd: {
+          transitionDuration: "750ms",
+          transform: `translate3d(0, ${height}px, 0)`,
+          opacity: 0,
+        },
+      }
+    },
+    // styles: {
+    //   default: {
+    //     transition: `all ${300}ms ease-in-out`,
+    //   },
+    //   showStart: {
+    //     opacity: 0,
+    //     transform: `translate3d(0, ${84}px, 0)`,
+    //     transitionDuration: "0ms"
+    //   },
+    //   showEnd: {
+    //     opacity: 1,
+    //     transform: "translate3d(0, 0px,  0)"
+    //   },
+    //   hideEnd: {
+    //     transitionDuration: "750ms",
+    //     opacity: 0,
+    //   },
+    // },
+    component: DefaultContent,
   },
-  // transitionStyles: {
-  //   default: {
-  //     transition: `all ${300}ms ease-in-out`,
-  //   },
-  //   showStart: {
-  //     opacity: 0,
-  //     transform: `translate3d(0, ${84}px, 0)`,
-  //     transitionDuration: "0ms"
-  //   },
-  //   showEnd: {
-  //     opacity: 1,
-  //     transform: "translate3d(0, 0px,  0)"
-  //   },
-  //   hideEnd: {
-  //     transitionDuration: "750ms",
-  //     opacity: 0,
-  //   },
-  // },
-  component: DefaultContent,
   title: "Transitions",
   id: getRandomId(),
 };
 
 const hideAllOptions = {
-  transitionStyles: {
+  styles: {
     hideEnd: {
       transitionDuration: "500ms",
       transitionDelay: "0ms",
@@ -212,21 +222,23 @@ const App = {
             onclick: () =>
               dialog.show(
                 {
-                  didShow: (item: Dialogic.Item) => console.log("didShow", item),
-                  didHide: (item: Dialogic.Item) => console.log("didHide", item),
-                  transitionStyles: {
-                    showEnd: {
-                      transitionDuration: "500ms",
-                      transitionDelay: "500ms",
-                    },
-                    hideEnd: {
-                      transitionDuration: "250ms",
-                      transitionDelay: "0ms",
+                  dialogic: {
+                    component: DefaultContent,
+                    className: "xxx",
+                    didShow: (item: Dialogic.Item) => console.log("didShow", item),
+                    didHide: (item: Dialogic.Item) => console.log("didHide", item),
+                    transitionStyles: {
+                      showEnd: {
+                        transitionDuration: "500ms",
+                        transitionDelay: "500ms",
+                      },
+                      hideEnd: {
+                        transitionDuration: "250ms",
+                        transitionDelay: "0ms",
+                      },
                     },
                   },
-                  component: DefaultContent,
                   className: "xxx-content",
-                  transitionClassName: "xxx",
                   title: "With Promise"
                 },
                 {
@@ -282,7 +294,10 @@ const App = {
               dialog.show(
                 {
                   ...dialogOneProps,
-                  timeout: 2000,
+                  dialogic: {
+                    ...dialogOneProps.dialogic,
+                    timeout: 2000,
+                  },
                   title: dialogDelayProps.title + " " + getRandomId()
                 },
                 {
@@ -363,7 +378,9 @@ const App = {
               dialog.show(
                 {
                   title: "Custom spawn",
-                  component: DefaultContent,
+                  dialogic: {
+                    component: DefaultContent,
+                  }
                 },
                 {
                   spawn: "special"
@@ -400,12 +417,14 @@ const App = {
               dialog.show(
                 {
                   title: getRandomId(),
-                  component: DefaultContent,
-                  transitionClassName: "xxx",
+                  dialogic: {
+                    component: DefaultContent,
+                    className: "xxx",
+                    queued: true,
+                  }
                 },
                 {
                   spawn: "Q",
-                  queued: true
                 }
               )    
           },
@@ -488,11 +507,13 @@ const App = {
               const title = "N " + getRandomId();
               return notification.show(
                 {
-                  didShow: (item: Dialogic.Item) => console.log("didShow", item, title),
-                  didHide: (item: Dialogic.Item) => console.log("didHide", item, title),
-                  component: DefaultContent,
+                  dialogic: {
+                    didShow: (item: Dialogic.Item) => console.log("didShow", item, title),
+                    didHide: (item: Dialogic.Item) => console.log("didHide", item, title),
+                    component: DefaultContent,
+                    className: "xxx-timings",
+                  },
                   className: "xxx-timings-content",
-                  transitionClassName: "xxx-timings",
                   title,
                 },
                 {

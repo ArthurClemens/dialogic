@@ -11,8 +11,8 @@ test("show: should resolve when no transition options passed", t => {
     title: "Test", // not a transition option
     timeout: undefined
   };
-  const spawnOptions = undefined;
-  return dialog.show(options, spawnOptions)
+  const identityOptions = undefined;
+  return dialog.show(options, identityOptions)
     .then(item => {
       t.is(item.id, defaultItemId);
     });
@@ -61,15 +61,15 @@ test("show, hide: should hide the item", t => {
   const options = {
     timeout: undefined
   };
-  const spawnOptions = {
+  const identityOptions = {
     id: "show-hide"
   }
-  return dialog.show(options, spawnOptions)
+  return dialog.show(options, identityOptions)
     .then(() => {
-      t.is(dialog.exists(spawnOptions), true);
-      return dialog.hide(spawnOptions).then(item => {
+      t.is(dialog.exists(identityOptions), true);
+      return dialog.hide(identityOptions).then(item => {
         t.is(item.id, "dialog-show-hide-default_dialog");
-        t.is(dialog.exists(spawnOptions), false);
+        t.is(dialog.exists(identityOptions), false);
       })
     });
 });

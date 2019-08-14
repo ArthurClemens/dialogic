@@ -8,7 +8,7 @@
   export let id = undefined;
   export let onMount = undefined;
 
-  const spawnOptions = {
+  const identityOptions = {
     id: id || type.defaultId,
     spawn: spawn || type.defaultSpawn,
   };
@@ -20,4 +20,4 @@
   })
 </script>
 
-<Wrapper {spawnOptions} {ns} />
+<Wrapper {identityOptions} {ns} />

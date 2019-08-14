@@ -25,13 +25,24 @@
   const showInitial = ({ isOnMount } = {}) => dialog.show(
   {
     title: getRandomId(),
-    component: DefaultContent,
-    showDuration: isOnMount
-      ? 0
-      : .5,
-    hideDuration: 0.5,
     className: "xxx-content",
-    transitionClassName: "xxx",
+    dialogic: {
+      component: DefaultContent,
+      styles: {
+        showStart: {
+          opacity: isOnMount ? 1 : 0,
+        },
+        showEnd: {
+          transitionDuration: isOnMount ? 0 : "500ms",
+          opacity: 1
+        },
+        hideEnd: {
+          transitionDuration: "500ms",
+          opacity: 0
+        }
+      },
+      className: "xxx",
+    },
   },
   {
     spawn: "initial",
@@ -42,24 +53,38 @@
   $: showNotifications = false;
 
   const dialogOneProps = {
-    showDuration: 0.5,
-    showDelay: 0.25,
-    hideDuration: 0.5,
-    hideDelay: .25,
-    component: IntervalContent,
+    component: DefaultContent,
+    dialogic: {
+      styles: {
+        showEnd: {
+          transitionDuration: "500ms",
+        },
+        hideEnd: {
+          transitionDuration: "500ms",
+        },
+      },
+      className: "xxx",
+    },
     className: "xxx-content",
-    transitionClassName: "xxx",
     title: "Clock",
-    id: getRandomId()
+    id: getRandomId(),
   };
   const dialogSlowFadeProps = {
-    showDuration: 1,
-    showDelay: 0,
-    hideDuration: 1,
-    hideDelay: 0,
-    component: DefaultContent,
+    dialogic: {
+      component: DefaultContent,
+      className: "xxx",
+      styles: {
+        showEnd: {
+          transitionDelay: 0,
+          transitionDuration: "1s"
+        },
+        hideEnd: {
+          transitionDelay: 0,
+          transitionDuration: "1s"
+        },
+      }
+    },
     className: "xxx-content",
-    transitionClassName: "xxx",
     title: "Fade",
     id: getRandomId()
   };
@@ -71,41 +96,45 @@
   //     transitionDelay: "250ms",
   //   },
   // },
-  component: DefaultContent,
   className: "xxx-content",
-  transitionClassName: "xxx-delay",
+  dialogic: {
+    component: DefaultContent,
+    className: "xxx-delay",
+  },
   title: "Delay",
   id: getRandomId(),
 };
 
   const dialogFourProps = {
-    transitionStyles: domElement => {
-      const height = domElement.getBoundingClientRect().height;
-      return {
-        default: {
-          transition: "all 300ms ease-in-out",
-        },
-        showStart: {
-          opacity: 0,
-          transform: `translate3d(0, ${height}px, 0)`,
-        },
-        showEnd: {
-          opacity: 1,
-          transform: "translate3d(0, 0px,  0)",
-        },
-        hideEnd: {
-          transform: `translate3d(0, ${height}px, 0)`,
-          opacity: 0,
-        },
-      }
+    dialogic: {
+      styles: domElement => {
+        const height = domElement.getBoundingClientRect().height;
+        return {
+          default: {
+            transition: "all 300ms ease-in-out",
+          },
+          showStart: {
+            opacity: 0,
+            transform: `translate3d(0, ${height}px, 0)`,
+          },
+          showEnd: {
+            opacity: 1,
+            transform: "translate3d(0, 0px,  0)",
+          },
+          hideEnd: {
+            transform: `translate3d(0, ${height}px, 0)`,
+            opacity: 0,
+          },
+        }
+      },
+      component: DefaultContent,
     },
-    component: DefaultContent,
     title: "Transitions",
     id: getRandomId()
   };
 
   const hideAllOptions = {
-    transitionStyles: {
+    styles: {
       hideEnd: {
         transitionDuration: "500ms",
         transitionDelay: "0ms",
@@ -188,11 +217,11 @@
 <div>
   <button
     on:click={() => dialog.show({
-      component: DefaultContent,
       title: "Default",
-      transitionClassName: "xxx",
-      showDuration: .5,
-      hideDuration: .5,
+      dialogic: {
+        component: DefaultContent,
+        className: "xxx",
+      },
     })}>
     Default
   </button>
@@ -210,8 +239,10 @@
   <button
     on:click={() => dialog.show(
       {
-        timeout: 2000,
-        component: DefaultContent,
+        dialogic: {
+          timeout: 2000,
+          component: DefaultContent,
+        },
         title: "With timer",
       },
       {
@@ -239,12 +270,20 @@
   <button
     on:click={() => dialog.show(
       {
-        didShow: item => console.log("didShow", item),
-        didHide: item => console.log("didHide", item),
-        showDuration: 0.5,
-        showDelay: 0.25,
-        component: DefaultContent,
-        transitionClassName: "xxx",
+        dialogic: {
+          didShow: item => console.log("didShow", item),
+          didHide: item => console.log("didHide", item),
+          styles: {
+            startEnd: {
+              transitionDuration: "500ms",
+            },
+            hideEnd: {
+              transitionDuration: "250ms",
+            },
+          },
+          component: DefaultContent,
+          className: "xxx",
+        },
         title: "With Promise"
       },
       {
@@ -286,7 +325,9 @@
 <div>
   <button
     on:click={() => dialog.show({
-      component: DefaultContent,
+      dialogic: {
+        component: DefaultContent,
+      },
       title: "Custom spawn"
     }, { spawn: "special" })}>
     Show default in spawn
@@ -311,7 +352,9 @@ Queued dialog
 <div>
   <button
     on:click={() => dialog.show({
-      component: DefaultContent,
+      dialogic: {
+        component: DefaultContent,
+      },
       title: "Queued " + Math.round(1000 * Math.random())
     }, { spawn: "Q", queued: true })}>
     Queued
@@ -359,11 +402,13 @@ Initially shown dialog
       const title = "N " + getRandomId();
       notification.show(
         {
-          didShow: item => console.log("didShow", item, title),
-          didHide: item => console.log("didHide", item, title),
-          component: DefaultContent,
+          dialogic: {
+            didShow: item => console.log("didShow", item, title),
+            didHide: item => console.log("didHide", item, title),
+            component: DefaultContent,
+            className: "xxx-timings",
+          },
           className: "xxx-timings-content",
-          transitionClassName: "xxx-timings",
           title
         },
         {

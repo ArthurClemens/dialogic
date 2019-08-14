@@ -5,7 +5,7 @@
   import { onInstanceMounted, onShowInstance, onHideInstance } from "./instanceEvents";
   import Instance from "./Instance.svelte";
 
-  export let spawnOptions;
+  export let identityOptions;
   export let ns;
 
   const nsOnInstanceMounted = onInstanceMounted(ns);
@@ -14,10 +14,10 @@
   
 </script>
 
-{#each filterCandidates(ns, $appState.store, spawnOptions) as { spawnOptions, transitionOptions, passThroughOptions, key }, index(key)}
+{#each filterCandidates(ns, $appState.store, identityOptions) as { identityOptions, dialogicOptions, passThroughOptions, key }, index(key)}
   <Instance
-    {spawnOptions}
-    {transitionOptions}
+    {identityOptions}
+    {dialogicOptions}
     {passThroughOptions}
     on:mount={nsOnInstanceMounted}
     on:show={nsOnShowInstance}

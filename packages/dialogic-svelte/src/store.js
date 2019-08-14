@@ -16,12 +16,12 @@ export const getCount = ns => identityOptions => derived(
 	() => selectors.getCount(ns, identityOptions)
 );
 
-export const isPaused = ns => defaultSpawnOptions => identityOptions => derived(
+export const isPaused = ns => defaultOptions => identityOptions => derived(
 	appState,
-	() => getTimerProperty("isPaused")(ns)(defaultSpawnOptions)(identityOptions)
+	() => getTimerProperty("isPaused")(ns)(defaultOptions)(identityOptions)
 );
 
-export const exists = ns => defaultSpawnOptions => identityOptions => derived(
+export const exists = ns => defaultOptions => identityOptions => derived(
 	appState,
-	() => _isDisplayed(ns)(defaultSpawnOptions)(identityOptions)
+	() => _isDisplayed(ns)(defaultOptions)(identityOptions)
 );

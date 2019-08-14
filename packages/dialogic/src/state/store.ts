@@ -20,8 +20,8 @@ const removeItem = (id: string, items: any[]) => {
   return items;
 };
 
-export const createId = (spawnOptions: Dialogic.SpawnOptions, ns: string) =>
-  [ns, spawnOptions.id, spawnOptions.spawn].filter(Boolean).join("-");
+export const createId = (identityOptions: Dialogic.IdentityOptions, ns: string) =>
+  [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join("-");
 
 const store = {
 
@@ -116,10 +116,10 @@ const store = {
         return state.store;
       },
 
-      find: (ns: string, spawnOptions: Dialogic.SpawnOptions) => {
+      find: (ns: string, identityOptions: Dialogic.IdentityOptions) => {
         const state = states();
         const items = state.store[ns] || [];
-        const id = createId(spawnOptions, ns);
+        const id = createId(identityOptions, ns);
         const item = items.find((item: Dialogic.Item) => item.id === id);
         return item
           ? { just: item }
@@ -136,10 +136,10 @@ const store = {
           ? identityOptions.id
           : undefined;
         const itemsBySpawn = spawn !== undefined
-          ? items.filter(item => item.spawnOptions.spawn === spawn)
+          ? items.filter(item => item.identityOptions.spawn === spawn)
           : items;
         const itemsById = id !== undefined
-          ? itemsBySpawn.filter(item => item.spawnOptions.id === id)
+          ? itemsBySpawn.filter(item => item.identityOptions.id === id)
           : itemsBySpawn;
         return itemsById;
       },

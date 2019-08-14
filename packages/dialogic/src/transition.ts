@@ -7,23 +7,10 @@ export const MODE = {
 	HIDE: "hide"
 };
 
-type TransitionOptionKeys = {
-	[key: string]: boolean;
-}
-
-export const transitionOptionKeys: TransitionOptionKeys = {
-	component: true,
-	didHide: true,
-	didShow: true,
-	timeout: true,
-	transitionClassName: true,
-	transitionStyles: true,
-};
-
 type TransitionProps = {
 	domElement?: HTMLElement;
-	transitionClassName?: string;
-	transitionStyles?: Dialogic.TransitionStyles | Dialogic.TransitionStylesFn;
+	className?: string;
+	styles?: Dialogic.TransitionStyles | Dialogic.TransitionStylesFn;
 }
 
 type TransitionClassNames = {
@@ -45,8 +32,8 @@ const removeTransitionClassNames = (domElement: HTMLElement, transitionClassName
 		transitionClassNames.hideEnd,
 	);
 
-const applyTransitionStyles = (domElement: HTMLElement, step: TransitionStyleState, transitionStyles: Dialogic.TransitionStyles) => {
-	const transitionStyle = transitionStyles[step] as CSSStyleDeclaration || {};
+const applyTransitionStyles = (domElement: HTMLElement, step: TransitionStyleState, styles: Dialogic.TransitionStyles) => {
+	const transitionStyle = styles[step] as CSSStyleDeclaration || {};
 	Object.keys(transitionStyle).forEach((key: any) => {
 		domElement.style[key] = transitionStyle[key];
 	});
@@ -55,26 +42,26 @@ const applyTransitionStyles = (domElement: HTMLElement, step: TransitionStyleSta
 const applyNoDurationTransitionStyle = (domElement: HTMLElement) =>
 	domElement.style.transitionDuration = "0ms";
 
-const getTransitionStyles = (domElement: HTMLElement, transitionStyles: Dialogic.TransitionStyles | Dialogic.TransitionStylesFn) =>
-	(typeof transitionStyles === "function"
-		? transitionStyles(domElement)
-		: transitionStyles
+const getTransitionStyles = (domElement: HTMLElement, styles: Dialogic.TransitionStyles | Dialogic.TransitionStylesFn) =>
+	(typeof styles === "function"
+		? styles(domElement)
+		: styles
 	) || {};
 
 const applyStylesForState = (domElement: HTMLElement, props: TransitionProps, step: TransitionStep, isEnterStep?: boolean) => {
-	if (props.transitionStyles) {
-		const transitionStyles = getTransitionStyles(domElement, props.transitionStyles);
-		applyTransitionStyles(domElement, "default", transitionStyles);
+	if (props.styles) {
+		const styles = getTransitionStyles(domElement, props.styles);
+		applyTransitionStyles(domElement, "default", styles);
 		isEnterStep && applyNoDurationTransitionStyle(domElement);
-		applyTransitionStyles(domElement, step, transitionStyles);
+		applyTransitionStyles(domElement, step, styles);
 	}
 
-	if (props.transitionClassName) {
+	if (props.className) {
 		const transitionClassNames: TransitionClassNames = {
-			showStart: `${props.transitionClassName}-show-start`,
-			showEnd: `${props.transitionClassName}-show-end`,
-			hideStart: `${props.transitionClassName}-hide-start`,
-			hideEnd: `${props.transitionClassName}-hide-end`
+			showStart: `${props.className}-show-start`,
+			showEnd: `${props.className}-show-end`,
+			hideStart: `${props.className}-hide-start`,
+			hideEnd: `${props.className}-hide-end`
 		};
 		removeTransitionClassNames(domElement, transitionClassNames);
 		transitionClassNames && domElement.classList.add(transitionClassNames[step]);

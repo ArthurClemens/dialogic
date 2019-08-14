@@ -2,7 +2,7 @@ import m, { Component } from "mithril";
 import { Dialogic } from "dialogic";
 import { Wrapper } from "./Wrapper";
 
-type DialogicalFn = (type: Dialogic.DialogicInstance) => Component<Dialogic.IdentityOptions>;
+type DialogicalFn = (type: Dialogic.DialogicInstance) => Component<Dialogic.ComponentOptions>;
 
 export const Dialogical: DialogicalFn = type => ({
   oncreate: ({ attrs }) => {
@@ -11,12 +11,12 @@ export const Dialogical: DialogicalFn = type => ({
     }
   },
   view: ({ attrs }) => {
-    const spawnOptions = {
+    const identityOptions = {
       id: attrs.id || type.defaultId,
       spawn: attrs.spawn || type.defaultSpawn,
     };
     return m(Wrapper, {
-      spawnOptions,
+      identityOptions,
       ns: type.ns,
     });
   }

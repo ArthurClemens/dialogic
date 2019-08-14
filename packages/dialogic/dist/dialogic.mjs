@@ -16,38 +16,30 @@ const MODE = {
     SHOW: "show",
     HIDE: "hide"
 };
-const transitionOptionKeys = {
-    component: true,
-    didHide: true,
-    didShow: true,
-    timeout: true,
-    transitionClassName: true,
-    transitionStyles: true,
-};
 const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(transitionClassNames.showStart, transitionClassNames.showEnd, transitionClassNames.hideStart, transitionClassNames.hideEnd);
-const applyTransitionStyles = (domElement, step, transitionStyles) => {
-    const transitionStyle = transitionStyles[step] || {};
+const applyTransitionStyles = (domElement, step, styles) => {
+    const transitionStyle = styles[step] || {};
     Object.keys(transitionStyle).forEach((key) => {
         domElement.style[key] = transitionStyle[key];
     });
 };
 const applyNoDurationTransitionStyle = (domElement) => domElement.style.transitionDuration = "0ms";
-const getTransitionStyles = (domElement, transitionStyles) => (typeof transitionStyles === "function"
-    ? transitionStyles(domElement)
-    : transitionStyles) || {};
+const getTransitionStyles = (domElement, styles) => (typeof styles === "function"
+    ? styles(domElement)
+    : styles) || {};
 const applyStylesForState = (domElement, props, step, isEnterStep) => {
-    if (props.transitionStyles) {
-        const transitionStyles = getTransitionStyles(domElement, props.transitionStyles);
-        applyTransitionStyles(domElement, "default", transitionStyles);
+    if (props.styles) {
+        const styles = getTransitionStyles(domElement, props.styles);
+        applyTransitionStyles(domElement, "default", styles);
         isEnterStep && applyNoDurationTransitionStyle(domElement);
-        applyTransitionStyles(domElement, step, transitionStyles);
+        applyTransitionStyles(domElement, step, styles);
     }
-    if (props.transitionClassName) {
+    if (props.className) {
         const transitionClassNames = {
-            showStart: `${props.transitionClassName}-show-start`,
-            showEnd: `${props.transitionClassName}-show-end`,
-            hideStart: `${props.transitionClassName}-hide-start`,
-            hideEnd: `${props.transitionClassName}-hide-end`
+            showStart: `${props.className}-show-start`,
+            showEnd: `${props.className}-show-end`,
+            hideStart: `${props.className}-hide-start`,
+            hideEnd: `${props.className}-hide-end`
         };
         removeTransitionClassNames(domElement, transitionClassNames);
         transitionClassNames && domElement.classList.add(transitionClassNames[step]);
@@ -311,7 +303,7 @@ const removeItem = (id, items) => {
     }
     return items;
 };
-const createId = (spawnOptions, ns) => [ns, spawnOptions.id, spawnOptions.spawn].filter(Boolean).join("-");
+const createId = (identityOptions, ns) => [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join("-");
 const store = {
     initialState: {
         store: {},
@@ -392,10 +384,10 @@ const store = {
                 const state = states();
                 return state.store;
             },
-            find: (ns, spawnOptions) => {
+            find: (ns, identityOptions) => {
                 const state = states();
                 const items = state.store[ns] || [];
-                const id = createId(spawnOptions, ns);
+                const id = createId(identityOptions, ns);
                 const item = items.find((item) => item.id === id);
                 return item
                     ? { just: item }
@@ -411,10 +403,10 @@ const store = {
                     ? identityOptions.id
                     : undefined;
                 const itemsBySpawn = spawn !== undefined
-                    ? items.filter(item => item.spawnOptions.spawn === spawn)
+                    ? items.filter(item => item.identityOptions.spawn === spawn)
                     : items;
                 const itemsById = id !== undefined
-                    ? itemsBySpawn.filter(item => item.spawnOptions.id === id)
+                    ? itemsBySpawn.filter(item => item.identityOptions.id === id)
                     : itemsBySpawn;
                 return itemsById;
             },
@@ -612,7 +604,7 @@ const transitionStates = {
     none: "none",
     hiding: "hiding"
 };
-const filterBySpawnOption = (spawnOptions) => (nsItems) => nsItems.filter(item => item.spawnOptions.spawn === spawnOptions.spawn);
+const filterBySpawnOption = (identityOptions) => (nsItems) => nsItems.filter(item => item.identityOptions.spawn === identityOptions.spawn);
 /**
  * Gets a list of all non-queued items.
  * From the queued items only the first item is listed.
@@ -622,83 +614,73 @@ const filterFirstInQueue = (nsItems) => {
     return nsItems
         .map(item => ({
         item,
-        queueCount: item.spawnOptions.queued
+        queueCount: item.dialogicOptions.queued
             ? queuedCount++
             : 0
     }))
         .filter(({ queueCount }) => queueCount === 0)
         .map(({ item }) => item);
 };
-const filterCandidates = (ns, items, spawnOptions) => {
+const filterCandidates = (ns, items, identityOptions) => {
     const nsItems = items[ns] || [];
-    return pipe(filterFirstInQueue, filterBySpawnOption(spawnOptions))(nsItems);
+    return pipe(filterFirstInQueue, filterBySpawnOption(identityOptions))(nsItems);
 };
-const getOptionsByKind = options => {
-    const initial = {
-        transitionOptions: {},
-        passThroughOptions: {}
-    };
-    return Object.keys(options).reduce((acc, key) => {
-        const value = options[key];
-        const isTransitionKey = transitionOptionKeys[key];
-        if (isTransitionKey) {
-            acc.transitionOptions[key] = value;
-        }
-        else {
-            acc.passThroughOptions[key] = value;
-        }
-        return acc;
-    }, initial);
-};
-const createInstance = (ns) => (defaultSpawnOptions) => (options = {}, identityOptions) => {
+const getPassThroughOptions = options => ({
+    ...options,
+    dialogicOptions: undefined
+});
+const getMergedIdentityOptions = (defaultOptions, identityOptions) => ({
+    id: defaultOptions.id,
+    spawn: defaultOptions.spawn,
+    ...identityOptions,
+});
+const createInstance = (ns) => (defaultOptions) => (options = {}, identityOptions) => {
     return new Promise(resolve => {
-        const spawnOptions = {
-            ...defaultSpawnOptions,
-            ...identityOptions,
+        const mergedIdentityOptions = getMergedIdentityOptions(defaultOptions, identityOptions);
+        const dialogicOptions = {
+            ...defaultOptions.dialogic,
+            ...options.dialogic
         };
-        const id = createId(spawnOptions, ns);
-        const { transitionOptions: instanceTransitionOptions, passThroughOptions } = getOptionsByKind(options);
-        const transitionOptions = {
-            ...instanceTransitionOptions,
-        };
-        transitionOptions.didShow = item => {
-            if (options.didShow) {
-                options.didShow(item);
+        const passThroughOptions = getPassThroughOptions(options);
+        const callbacks = {
+            didShow: (item) => {
+                if (dialogicOptions.didShow) {
+                    dialogicOptions.didShow(item);
+                }
+                return resolve(item);
+            },
+            didHide: (item) => {
+                if (dialogicOptions.didHide) {
+                    dialogicOptions.didHide(item);
+                }
+                return resolve(item);
             }
-            return resolve(item);
         };
-        transitionOptions.didHide = item => {
-            if (options.didHide) {
-                options.didHide(item);
-            }
-            return resolve(item);
-        };
-        const uid = getUid().toString();
         const item = {
             ns,
-            spawnOptions,
-            transitionOptions,
-            instanceTransitionOptions,
+            identityOptions: mergedIdentityOptions,
+            dialogicOptions,
+            callbacks,
             passThroughOptions,
-            id,
-            timer: transitionOptions.timeout
+            id: createId(mergedIdentityOptions, ns),
+            timer: dialogicOptions.timeout
                 ? Timer()
                 : undefined,
-            key: uid,
+            key: getUid().toString(),
             transitionState: transitionStates.none,
         };
-        const maybeExistingItem = selectors.find(ns, spawnOptions);
-        if (maybeExistingItem.just && !spawnOptions.queued) {
+        const maybeExistingItem = selectors.find(ns, mergedIdentityOptions);
+        if (maybeExistingItem.just && !dialogicOptions.queued) {
             const existingItem = maybeExistingItem.just;
-            // Preserve instanceTransitionOptions
-            const instanceTransitionOptions = existingItem.instanceTransitionOptions;
+            // Preserve dialogicOptions
+            const dialogicOptions = existingItem.dialogicOptions;
             const replacingItem = {
                 ...item,
-                instanceTransitionOptions
+                dialogicOptions
             };
             actions.replace(ns, existingItem.id, replacingItem);
             // While this is a replace action, mimic a show
-            transitionOptions.didShow(item);
+            callbacks.didShow && callbacks.didShow(item);
         }
         else {
             actions.add(ns, item);
@@ -709,24 +691,18 @@ const createInstance = (ns) => (defaultSpawnOptions) => (options = {}, identityO
     });
 };
 const show = createInstance;
-const toggle = (ns) => (defaultSpawnOptions) => (options, identityOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(identityOptions);
+const toggle = (ns) => (defaultOptions) => (options, identityOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
     if (maybeItem.just) {
-        return hide(ns)(defaultSpawnOptions)(identityOptions);
+        return hide(ns)(defaultOptions)(identityOptions);
     }
     else {
-        return show(ns)(defaultSpawnOptions)(options, identityOptions);
+        return show(ns)(defaultOptions)(options, identityOptions);
     }
 };
-const getMaybeItem = (ns) => (defaultSpawnOptions) => (identityOptions) => {
-    const spawnOptions = {
-        ...defaultSpawnOptions,
-        ...identityOptions,
-    };
-    return selectors.find(ns, spawnOptions);
-};
-const performOnItem = fn => ns => defaultSpawnOptions => (identityOptions, fnOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(identityOptions);
+const getMaybeItem = (ns) => (defaultOptions) => (identityOptions) => selectors.find(ns, getMergedIdentityOptions(defaultOptions, identityOptions));
+const performOnItem = fn => ns => defaultOptions => (identityOptions, fnOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
     if (maybeItem.just) {
         return fn(ns, maybeItem.just, fnOptions);
     }
@@ -755,8 +731,8 @@ const resume = performOnItem((ns, item, fnOptions = {}) => {
     }
     return Promise.resolve(item);
 });
-const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (identityOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(identityOptions);
+const getTimerProperty = (timerProp) => (ns) => (defaultOptions) => (identityOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
     if (maybeItem.just) {
         if (maybeItem.just && maybeItem.just.timer) {
             return maybeItem.just.timer.selectors[timerProp]();
@@ -771,8 +747,8 @@ const getTimerProperty = (timerProp) => (ns) => (defaultSpawnOptions) => (identi
 };
 const isPaused = getTimerProperty("isPaused");
 const getRemaining$1 = getTimerProperty("getRemaining");
-const exists = (ns) => (defaultSpawnOptions) => (identityOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(identityOptions);
+const exists = (ns) => (defaultOptions) => (identityOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
     return !!maybeItem.just;
 };
 const resetAll = (ns) => () => {
@@ -781,12 +757,11 @@ const resetAll = (ns) => () => {
     return Promise.resolve();
 };
 const getOverridingTransitionOptions = (item, options) => {
-    const { transitionOptions } = getOptionsByKind(options);
     return {
         ...item,
-        transitionOptions: {
-            ...item.transitionOptions,
-            ...transitionOptions
+        dialogicOptions: {
+            ...item.dialogicOptions,
+            ...options
         }
     };
 };
@@ -795,30 +770,23 @@ const getOverridingTransitionOptions = (item, options) => {
  * Queued items: will trigger `hideItem` only for the first item, then reset the store.
  * `options` may contain specific transition options. This comes in handy when all items should hide in the same manner.
  * */
-const hideAll = (ns) => (defaultSpawnOptions) => (options, identityOptions) => {
-    const spawnOptions = {
-        ...defaultSpawnOptions,
-        ...identityOptions,
-    };
+const hideAll = (ns) => (dialogicOptions) => {
     const allItems = selectors.getAll(ns);
-    const regularItems = allItems.filter((item) => !spawnOptions.queued && !item.spawnOptions.queued);
-    const queuedItems = allItems.filter((item) => spawnOptions.queued || item.spawnOptions.queued);
-    regularItems.forEach((item) => hideItem(getOverridingTransitionOptions(item, options)));
+    const regularItems = allItems.filter((item) => !dialogicOptions.queued && !item.dialogicOptions.queued);
+    const queuedItems = allItems.filter((item) => dialogicOptions.queued || item.dialogicOptions.queued);
+    regularItems.forEach((item) => hideItem(getOverridingTransitionOptions(item, dialogicOptions)));
     if (queuedItems.length > 0) {
         const [current,] = queuedItems;
         // Make sure that any remaining items don't suddenly appear
         actions.store(ns, [current]);
         // Transition the current item
-        hideItem(getOverridingTransitionOptions(current, options))
+        hideItem(getOverridingTransitionOptions(current, dialogicOptions))
             .then(() => actions.removeAll(ns));
     }
 };
 const getCount = (ns) => (identityOptions) => selectors.getCount(ns, identityOptions);
 const transitionItem = (item, mode) => {
-    return transition({
-        ...item.instanceTransitionOptions,
-        ...item.transitionOptions,
-    }, mode);
+    return transition(item.dialogicOptions, mode);
 };
 const deferredHideItem = async function (item, timer, timeout) {
     timer.actions.start(() => (hideItem(item)), timeout);
@@ -826,9 +794,9 @@ const deferredHideItem = async function (item, timer, timeout) {
 };
 const showItem = async function (item) {
     await (transitionItem(item, MODE.SHOW));
-    item.transitionOptions.didShow && await (item.transitionOptions.didShow(item));
-    if (item.transitionOptions.timeout && item.timer) {
-        await (deferredHideItem(item, item.timer, item.transitionOptions.timeout));
+    item.callbacks.didShow && await (item.callbacks.didShow(item));
+    if (item.dialogicOptions.timeout && item.timer) {
+        await (deferredHideItem(item, item.timer, item.dialogicOptions.timeout));
     }
     return Promise.resolve(item);
 };
@@ -838,23 +806,25 @@ const hideItem = async function (item) {
         item.timer.actions.stop();
     }
     await (transitionItem(item, MODE.HIDE));
-    item.transitionOptions.didHide && await (item.transitionOptions.didHide(item));
+    item.callbacks.didHide && await (item.callbacks.didHide(item));
     const copy = JSON.parse(JSON.stringify(item));
     actions.remove(item.ns, item.id);
     return Promise.resolve(copy);
 };
 const setDomElement = (domElement, item) => {
-    item.transitionOptions.domElement = domElement;
+    item.dialogicOptions.domElement = domElement;
 };
 
 const dialogical = ({ ns, queued, timeout }) => {
     const defaultId = `default_${ns}`;
     const defaultSpawn = `default_${ns}`;
-    const defaultSpawnOptions = {
+    const defaultOptions = {
         id: defaultId,
         spawn: defaultSpawn,
-        ...(queued && { queued }),
-        ...(timeout !== undefined && { timeout }),
+        dialogic: {
+            ...(queued && { queued }),
+            ...(timeout !== undefined && { timeout }),
+        }
     };
     return {
         // Identification
@@ -862,22 +832,22 @@ const dialogical = ({ ns, queued, timeout }) => {
         defaultId,
         defaultSpawn,
         // Configuration
-        defaultSpawnOptions,
+        defaultOptions,
         // Commands
-        show: show(ns)(defaultSpawnOptions),
-        toggle: toggle(ns)(defaultSpawnOptions),
-        hide: hide(ns)(defaultSpawnOptions),
-        hideAll: hideAll(ns)(defaultSpawnOptions),
+        show: show(ns)(defaultOptions),
+        toggle: toggle(ns)(defaultOptions),
+        hide: hide(ns)(defaultOptions),
+        hideAll: hideAll(ns),
         resetAll: resetAll(ns),
         // Timer commands
-        pause: pause(ns)(defaultSpawnOptions),
-        resume: resume(ns)(defaultSpawnOptions),
+        pause: pause(ns)(defaultOptions),
+        resume: resume(ns)(defaultOptions),
         // State
-        exists: exists(ns)(defaultSpawnOptions),
+        exists: exists(ns)(defaultOptions),
         getCount: getCount(ns),
         // Timer state
-        isPaused: isPaused(ns)(defaultSpawnOptions),
-        getRemaining: getRemaining$1(ns)(defaultSpawnOptions),
+        isPaused: isPaused(ns)(defaultOptions),
+        getRemaining: getRemaining$1(ns)(defaultOptions),
     };
 };
 

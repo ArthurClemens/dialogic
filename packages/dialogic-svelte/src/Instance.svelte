@@ -6,15 +6,15 @@
   // DOM bindings
   let domElement;
 
-  export let spawnOptions = undefined;
+  export let identityOptions = undefined;
   export let passThroughOptions = undefined;
-  export let transitionOptions = undefined;
+  export let dialogicOptions = undefined;
 
-  const className = transitionOptions.transitionClassName;
+  const className = dialogicOptions.className;
 
   const dispatchTransition = (name) =>
     dispatch(name, {
-      spawnOptions, // for identification
+      identityOptions, // for identification
       domElement
     });
 
@@ -36,6 +36,6 @@
   class={className}
   bind:this={domElement}
 >
-  <svelte:component this={transitionOptions.component} {show} {hide} {...passThroughOptions} />
+  <svelte:component this={dialogicOptions.component} {show} {hide} {...passThroughOptions} />
 </div>
 

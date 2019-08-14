@@ -3,7 +3,7 @@ import Stream from "mithril/stream";
 export const showItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
 export const hideItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
 export const setDomElement: (domElement: HTMLElement, item: Dialogic.Item) => void;
-export const filterCandidates: (ns: string, items: Dialogic.NamespaceStore, spawnOptions: Dialogic.SpawnOptions) => Dialogic.Item[];
+export const filterCandidates: (ns: string, items: Dialogic.NamespaceStore, identityOptions: Dialogic.IdentityOptions) => Dialogic.Item[];
 export const states: Dialogic.States;
 export const selectors: Dialogic.StateSelectors;
 
@@ -22,12 +22,12 @@ export namespace Dialogic {
     defaultId: string;
     defaultSpawn: string;
     // Configuration
-    defaultSpawnOptions: DefaultSpawnOptions;
+    defaultOptions: DefaultOptions;
     // Commands
     show: (options: Options, identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
     hide: (identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
     toggle: (options: Options, identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
-    hideAll: (options: Options, identityOptions?: IdentityOptions) => void;
+    hideAll: (options: Options) => void;
     resetAll: () => Promise<void>;
     // Timer commands
     pause: (identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
@@ -40,34 +40,36 @@ export namespace Dialogic {
     getRemaining: (identityOptions?: IdentityOptions) => number | undefined;
   };
 
-  type DefaultSpawnOptions = {
+  type DefaultOptions = {
     id: string;
     spawn: string;
-    queued?: boolean;
-    timeout?: number;
+    dialogic?: {
+      queued?: boolean;
+      timeout?: number;
+    }
   }
 
   type IdentityOptions = {
     id?: string;
     spawn?: string;
-    queued?: boolean;
-    onMount?: (args?: any) => any;
   }
 
-  type SpawnOptions = IdentityOptions & DefaultSpawnOptions;
+  type ComponentOptions = {
+    onMount?: (args?: any) => any;
+  } & IdentityOptions;
 
   // Components
 
   type DialogicalWrapperOptions = {
     ns: string;
-    spawnOptions: SpawnOptions;
+    identityOptions: IdentityOptions;
   }
 
   type DialogicalInstanceDispatchFn = (event: InstanceEvent) => void;
 
   type DialogicalInstanceOptions = {
-    spawnOptions: SpawnOptions;
-    transitionOptions: TransitionOptions;
+    identityOptions: IdentityOptions;
+    dialogicOptions: DialogicOptions;
     passThroughOptions: PassThroughOptions;
     onMount: DialogicalInstanceDispatchFn;
     onShow: DialogicalInstanceDispatchFn;
@@ -100,18 +102,19 @@ export namespace Dialogic {
 
   type TransitionOptions = {
     [key:string]: string | number | TransitionFns | HTMLElement | TransitionStyles | TransitionStylesFn | ConfirmFn | undefined;
-    didHide?: ConfirmFn;
-    didShow?: ConfirmFn;
-    domElement?: HTMLElement;
-    timeout?: number;
-    transitionClassName?: string;
-    transitionStyles?: TransitionStyles | TransitionStylesFn; 
+    
   };
   
   type DialogicOptions = {
-    [key:string]: string | TransitionOptions | undefined;
+    [key:string]: string | number | TransitionFns | HTMLElement | TransitionStyles | TransitionStylesFn | ConfirmFn | boolean | undefined;
+    className?: string;
     component?: any;
-    transition?: TransitionOptions; 
+    didHide?: ConfirmFn;
+    didShow?: ConfirmFn;
+    domElement?: HTMLElement;
+    queued?: boolean;
+    styles?: TransitionStyles | TransitionStylesFn;
+    timeout?: number;
   }
 
   type Options = PassThroughOptions | DialogicOptions;
@@ -125,16 +128,21 @@ export namespace Dialogic {
     "none" |
     "hiding";
 
+  type Callbacks = {
+    didHide: ConfirmFn;
+    didShow: ConfirmFn;
+  }
+
   type Item = {
     ns: string;
     id: string;
     passThroughOptions: PassThroughOptions;
     key: string;
-    spawnOptions: SpawnOptions;
+    identityOptions: IdentityOptions;
     timer?: Timer;
-    transitionOptions: TransitionOptions;
-    instanceTransitionOptions: TransitionOptions;
+    dialogicOptions: DialogicOptions;
     transitionState: ItemTransitionState;
+    callbacks: Callbacks;
   }
 
   type NamespaceStore = {
@@ -230,15 +238,15 @@ export namespace Dialogic {
 
   type StateSelectors = {
     getStore: () => NamespaceStore;
-    find: (ns: string, spawnOptions: SpawnOptions) => MaybeItem;
+    find: (ns: string, identityOptions: IdentityOptions) => MaybeItem;
     getAll: (ns: string, identityOptions?: IdentityOptions) => Item[];
     getCount: (ns: string, identityOptions?: IdentityOptions) => number;
   }
 
   type InstanceEvent = {
     detail: {
-      spawnOptions: SpawnOptions;
-      // transitionOptions: TransitionOptions;
+      identityOptions: IdentityOptions;
+      // dialogicOptions: TransitionOptions;
       domElement: HTMLElement
     }
   }
