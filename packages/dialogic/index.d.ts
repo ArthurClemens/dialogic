@@ -44,6 +44,7 @@ export namespace Dialogic {
     id: string;
     spawn: string;
     queued?: boolean;
+    timeout?: number;
   }
 
   type InstanceSpawnOptions = {
@@ -86,10 +87,6 @@ export namespace Dialogic {
     hide?: TransitionFn;
   }
 
-  type DefaultTransitionOptions = {
-    timeout?: number;
-  }
-
   type TransitionStyles = {
     [key:string]: CSSStyleDeclaration | undefined;
     default?: CSSStyleDeclaration;
@@ -110,7 +107,7 @@ export namespace Dialogic {
     transitionClassName?: string;
     transitionStyles?: TransitionStyles | TransitionStylesFn; 
     component?: any;
-  } & DefaultTransitionOptions;
+  };
 
   type Options = InstanceOptions | TransitionOptions;
 

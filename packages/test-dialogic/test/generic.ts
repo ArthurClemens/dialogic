@@ -20,6 +20,7 @@ const targets = [
       id: "default_notification",
       spawn: "default_notification",
       queued: true,
+      timeout: 3000
     },
     defaultItemId: getDefaultItemId("notification"),
   }

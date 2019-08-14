@@ -71,7 +71,7 @@ const getOptionsByKind: TGetOptionsByKind = options => {
   }, initial );
 };
 
-const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (defaultTransitionOptions: Dialogic.DefaultTransitionOptions) => (options: Dialogic.Options = {}, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => {
+const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (options: Dialogic.Options = {}, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => {
   return new Promise(resolve => {
 
     const spawnOptions = {
@@ -84,7 +84,6 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
     const { transitionOptions: instanceTransitionOptions, instanceOptions } = getOptionsByKind(options);
     
     const transitionOptions = {
-      ...defaultTransitionOptions,
       ...instanceTransitionOptions,
     };
 
@@ -141,12 +140,12 @@ const createInstance = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpa
 
 export const show = createInstance;
 
-export const toggle = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (defaultTransitionOptions: Dialogic.DefaultTransitionOptions) => (options: Dialogic.Options, instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
+export const toggle = (ns: string) => (defaultSpawnOptions: Dialogic.DefaultSpawnOptions) => (options: Dialogic.Options, instanceSpawnOptions: Dialogic.InstanceSpawnOptions) => {
   const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
   if (maybeItem.just) {
     return hide(ns)(defaultSpawnOptions)(instanceSpawnOptions);
   } else {
-    return show(ns)(defaultSpawnOptions)(defaultTransitionOptions)(options, instanceSpawnOptions);
+    return show(ns)(defaultSpawnOptions)(options, instanceSpawnOptions);
   }
 }
 

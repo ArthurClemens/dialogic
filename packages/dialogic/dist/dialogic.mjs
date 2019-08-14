@@ -650,7 +650,7 @@ const getOptionsByKind = options => {
         return acc;
     }, initial);
 };
-const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOptions) => (options = {}, instanceSpawnOptions) => {
+const createInstance = (ns) => (defaultSpawnOptions) => (options = {}, instanceSpawnOptions) => {
     return new Promise(resolve => {
         const spawnOptions = {
             ...defaultSpawnOptions,
@@ -659,7 +659,6 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
         const id = createId(spawnOptions, ns);
         const { transitionOptions: instanceTransitionOptions, instanceOptions } = getOptionsByKind(options);
         const transitionOptions = {
-            ...defaultTransitionOptions,
             ...instanceTransitionOptions,
         };
         transitionOptions.didShow = item => {
@@ -710,13 +709,13 @@ const createInstance = (ns) => (defaultSpawnOptions) => (defaultTransitionOption
     });
 };
 const show = createInstance;
-const toggle = (ns) => (defaultSpawnOptions) => (defaultTransitionOptions) => (options, instanceSpawnOptions) => {
+const toggle = (ns) => (defaultSpawnOptions) => (options, instanceSpawnOptions) => {
     const maybeItem = getMaybeItem(ns)(defaultSpawnOptions)(instanceSpawnOptions);
     if (maybeItem.just) {
         return hide(ns)(defaultSpawnOptions)(instanceSpawnOptions);
     }
     else {
-        return show(ns)(defaultSpawnOptions)(defaultTransitionOptions)(options, instanceSpawnOptions);
+        return show(ns)(defaultSpawnOptions)(options, instanceSpawnOptions);
     }
 };
 const getMaybeItem = (ns) => (defaultSpawnOptions) => (instanceSpawnOptions) => {
@@ -854,10 +853,8 @@ const dialogical = ({ ns, queued, timeout }) => {
     const defaultSpawnOptions = {
         id: defaultId,
         spawn: defaultSpawn,
-        ...(queued && { queued })
-    };
-    const defaultTransitionOptions = {
-        ...(timeout !== undefined && { timeout })
+        ...(queued && { queued }),
+        ...(timeout !== undefined && { timeout }),
     };
     return {
         // Identification
@@ -867,8 +864,8 @@ const dialogical = ({ ns, queued, timeout }) => {
         // Configuration
         defaultSpawnOptions,
         // Commands
-        show: show(ns)(defaultSpawnOptions)(defaultTransitionOptions),
-        toggle: toggle(ns)(defaultSpawnOptions)(defaultTransitionOptions),
+        show: show(ns)(defaultSpawnOptions),
+        toggle: toggle(ns)(defaultSpawnOptions),
         hide: hide(ns)(defaultSpawnOptions),
         hideAll: hideAll(ns)(defaultSpawnOptions),
         resetAll: resetAll(ns),
