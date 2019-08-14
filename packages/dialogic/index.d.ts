@@ -24,20 +24,20 @@ export namespace Dialogic {
     // Configuration
     defaultSpawnOptions: DefaultSpawnOptions;
     // Commands
-    show: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<Dialogic.Item>;
-    hide: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<Dialogic.Item>;
-    toggle: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<Dialogic.Item>;
-    hideAll: (options: Dialogic.Options, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => void;
+    show: (options: Options, instanceSpawnOptions?: InstanceSpawnOptions, fnOptions?: any) => Promise<Item>;
+    hide: (instanceSpawnOptions?: InstanceSpawnOptions, fnOptions?: any) => Promise<Item>;
+    toggle: (options: Options, instanceSpawnOptions?: InstanceSpawnOptions, fnOptions?: any) => Promise<Item>;
+    hideAll: (options: Options, instanceSpawnOptions?: InstanceSpawnOptions) => void;
     resetAll: () => Promise<void>;
     // Timer commands
-    pause: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: any) => Promise<Dialogic.Item>;
-    resume: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions, fnOptions?: Dialogic.TimerResumeOptions) => Promise<Dialogic.Item>;
+    pause: (instanceSpawnOptions?: InstanceSpawnOptions, fnOptions?: any) => Promise<Item>;
+    resume: (instanceSpawnOptions?: InstanceSpawnOptions, fnOptions?: TimerResumeOptions) => Promise<Item>;
     // State
-    exists: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean;
-    getCount: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number;
+    exists: (instanceSpawnOptions?: InstanceSpawnOptions) => boolean;
+    getCount: (instanceSpawnOptions?: InstanceSpawnOptions) => number;
     // Timer state
-    isPaused: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => boolean | undefined;
-    getRemaining: (instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number | undefined;
+    isPaused: (instanceSpawnOptions?: InstanceSpawnOptions) => boolean | undefined;
+    getRemaining: (instanceSpawnOptions?: InstanceSpawnOptions) => number | undefined;
   };
 
   type DefaultSpawnOptions = {
@@ -60,15 +60,15 @@ export namespace Dialogic {
 
   type DialogicalWrapperOptions = {
     ns: string;
-    spawnOptions: Dialogic.SpawnOptions;
+    spawnOptions: SpawnOptions;
   }
 
-  type DialogicalInstanceDispatchFn = (event: Dialogic.InstanceEvent) => void;
+  type DialogicalInstanceDispatchFn = (event: InstanceEvent) => void;
 
   type DialogicalInstanceOptions = {
-    spawnOptions: Dialogic.SpawnOptions;
-    transitionOptions: Dialogic.TransitionOptions;
-    instanceOptions: Dialogic.InstanceOptions;
+    spawnOptions: SpawnOptions;
+    transitionOptions: TransitionOptions;
+    instanceOptions: InstanceOptions;
     onMount: DialogicalInstanceDispatchFn;
     onShow: DialogicalInstanceDispatchFn;
     onHide: DialogicalInstanceDispatchFn;
@@ -169,7 +169,7 @@ export namespace Dialogic {
     startTime?: number;
     remaining?: number;
     isPaused?: boolean;
-    callback: Dialogic.TimerCallback;
+    callback: TimerCallback;
     timeoutFn: () => void;
     promise?: Promise<any>;
     onDone: TOnFinishFn; 
@@ -186,7 +186,7 @@ export namespace Dialogic {
      * @param {callback} Function Callback function that is called after completion.
      * @param {duration} Number Timer duration in milliseconds.
      */
-    start: (callback: Dialogic.TimerCallback, duration: number) => void;
+    start: (callback: TimerCallback, duration: number) => void;
 
     /**
      * Stops the timer.
@@ -226,14 +226,14 @@ export namespace Dialogic {
   type StateSelectors = {
     getStore: () => NamespaceStore;
     find: (ns: string, spawnOptions: SpawnOptions) => MaybeItem;
-    getAll: (ns: string, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => Item[];
-    getCount: (ns: string, instanceSpawnOptions?: Dialogic.InstanceSpawnOptions) => number;
+    getAll: (ns: string, instanceSpawnOptions?: InstanceSpawnOptions) => Item[];
+    getCount: (ns: string, instanceSpawnOptions?: InstanceSpawnOptions) => number;
   }
 
   type InstanceEvent = {
     detail: {
-      spawnOptions: Dialogic.SpawnOptions;
-      // transitionOptions: Dialogic.TransitionOptions;
+      spawnOptions: SpawnOptions;
+      // transitionOptions: TransitionOptions;
       domElement: HTMLElement
     }
   }
