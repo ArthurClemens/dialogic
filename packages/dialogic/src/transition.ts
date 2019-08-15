@@ -35,7 +35,11 @@ const removeTransitionClassNames = (domElement: HTMLElement, transitionClassName
 const applyTransitionStyles = (domElement: HTMLElement, step: TransitionStyleState, styles: Dialogic.TransitionStyles) => {
 	const transitionStyle = styles[step] as CSSStyleDeclaration || {};
 	Object.keys(transitionStyle).forEach((key: any) => {
-		domElement.style[key] = transitionStyle[key];
+		const value = transitionStyle[key].toString();
+		domElement.style[key] = value;
+		// if (domElement.style[key] !== value) {
+		// 	console.warn(`Invalid style: ${key}: ${value} (${domElement.style[key]})`);
+		// }
 	});
 };
 

@@ -22,7 +22,11 @@ const removeTransitionClassNames = (domElement, transitionClassNames) => domElem
 const applyTransitionStyles = (domElement, step, styles) => {
     const transitionStyle = styles[step] || {};
     Object.keys(transitionStyle).forEach((key) => {
-        domElement.style[key] = transitionStyle[key];
+        const value = transitionStyle[key].toString();
+        domElement.style[key] = value;
+        // if (domElement.style[key] !== value) {
+        // 	console.warn(`Invalid style: ${key}: ${value} (${domElement.style[key]})`);
+        // }
     });
 };
 const applyNoDurationTransitionStyle = (domElement) => domElement.style.transitionDuration = "0ms";

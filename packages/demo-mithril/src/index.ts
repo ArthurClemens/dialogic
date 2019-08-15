@@ -19,7 +19,7 @@ const showInitial = ({ isOnMount } : { isOnMount?: boolean } = {} ) => dialog.sh
           opacity: isOnMount ? 1 : 0,
         },
         showEnd: {
-          transitionDuration: isOnMount ? 0 : "500ms",
+          transitionDuration: isOnMount ? "0ms" : "500ms",
           opacity: 1
         },
         hideEnd: {
