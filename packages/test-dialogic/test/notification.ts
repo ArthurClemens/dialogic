@@ -1,4 +1,4 @@
-import { notification, showItem, setDomElement } from "dialogic";
+import { notification, setDomElement, showItem, hideItem } from "dialogic";
 import test from "ava";
 
 const getDefaultItemId = (name: string) => `${name}-default_${name}-default_${name}`;
@@ -132,11 +132,19 @@ test.serial("transition className", t => {
       t.is(item.id, "notification-dom-default_notification");
       t.is(notification.exists(identityOptions), true);
       setDomElement(div, item);
+
       return showItem(item).then(item => {
         t.is(item.id, "notification-dom-default_notification");
         t.is(notification.exists(identityOptions), true);
         t.is(div.classList.contains("yyy"), true);
         t.is(div.classList.contains("xxx-show-end"), true);
+
+        return hideItem(item).then(item => {
+          t.is(item.id, "notification-dom-default_notification");
+          t.not(notification.exists(identityOptions), true);
+          t.is(div.classList.contains("yyy"), true);
+          t.is(div.classList.contains("xxx-hide-end"), true);
+        });
       })
     })
 });

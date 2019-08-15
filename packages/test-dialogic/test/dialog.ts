@@ -57,7 +57,7 @@ test("show, getCount: when dialogic option `spawn` is specified, the state shoul
   t.is(actual, expected);
 });
 
-test("show, hide: should hide the item", t => {
+test("hide: should hide the item", t => {
   // Can't use resetAll because this test is async
   const identityOptions = {
     id: "show-hide"
