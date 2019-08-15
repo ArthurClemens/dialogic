@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
-    "test": "ava"
+    "test": "ava --verbose"
   },
   "ava": {
     "compileEnhancements": false,

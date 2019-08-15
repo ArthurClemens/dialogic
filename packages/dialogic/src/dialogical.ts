@@ -21,8 +21,8 @@ export const dialogical = ({ ns, queued, timeout } : { ns: string, queued?: bool
     // Commands
     show: show(ns)(defaultDialogicOptions),
     hide: hide(ns)(defaultDialogicOptions),
-    hideAll: hideAll(ns),
-    resetAll: resetAll(ns),
+    hideAll: hideAll(ns)(defaultDialogicOptions),
+    resetAll: resetAll(ns)(defaultDialogicOptions),
     // Timer commands
     pause: pause(ns)(defaultDialogicOptions),
     resume: resume(ns)(defaultDialogicOptions),

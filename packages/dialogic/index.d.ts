@@ -26,10 +26,10 @@ export namespace Dialogic {
     // Commands
     show: (options: Options, fnOptions?: any) => Promise<Item>;
     hide: (identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
-    hideAll: (options: Options) => void;
-    resetAll: () => Promise<void>;
+    hideAll: (dialogicOptions?: DialogicOptions) => Promise<Item[]>;
+    resetAll: (dialogicOptions?: DialogicOptions) => Promise<Item[]>;
     // Timer commands
-    pause: (identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
+    pause: (identityOptions?: CommandOptions, fnOptions?: any) => Promise<Item>;
     resume: (commandOptions?: CommandOptions, fnOptions?: CommandOptions) => Promise<Item>;
     // State
     exists: (identityOptions?: IdentityOptions) => boolean;
@@ -89,44 +89,37 @@ export namespace Dialogic {
   }
 
   type TransitionStyles = {
-    [key:string]: CSSStyleDeclaration | undefined;
-    default?: CSSStyleDeclaration;
-    showStart?: CSSStyleDeclaration;
-    showEnd?: CSSStyleDeclaration;
-    hideStart?: CSSStyleDeclaration;
-    hideEnd?: CSSStyleDeclaration;
+    default?: Partial<CSSStyleDeclaration>;
+    showStart?: Partial<CSSStyleDeclaration>;
+    showEnd?: Partial<CSSStyleDeclaration>;
+    hideStart?: Partial<CSSStyleDeclaration>;
+    hideEnd?: Partial<CSSStyleDeclaration>;
   }
 
   type TransitionStylesFn = (domElement: HTMLElement) => TransitionStyles;
-
-  type TransitionOptions = {
-    [key:string]: string | number | TransitionFns | HTMLElement | TransitionStyles | TransitionStylesFn | ConfirmFn | undefined;
-    
-  };
   
   type DialogicOptions = {
-    [key:string]: string | number | TransitionFns | HTMLElement | TransitionStyles | TransitionStylesFn | ConfirmFn | boolean | undefined;
     className?: string;
     component?: any;
     didHide?: ConfirmFn;
     didShow?: ConfirmFn;
     domElement?: HTMLElement;
+    id?: string;
     queued?: boolean;
+    spawn?: string;
     styles?: TransitionStyles | TransitionStylesFn;
     timeout?: number;
     toggle?: boolean;
-  }
+  } & TimerResumeOptions;
 
-  type Options = PassThroughOptions | DialogicOptions;
+  type Options = {
+    dialogic?: DialogicOptions;
+  } & PassThroughOptions;
 
   type MaybeItem = {
     just?: Item;
     nothing?: undefined;
   }
-
-  type ItemTransitionState =
-    "none" |
-    "hiding";
 
   type Callbacks = {
     didHide: ConfirmFn;
@@ -141,7 +134,7 @@ export namespace Dialogic {
     identityOptions: IdentityOptions;
     timer?: Timer;
     dialogicOptions: DialogicOptions;
-    transitionState: ItemTransitionState;
+    transitionState: number;
     callbacks: Callbacks;
   }
 
@@ -246,15 +239,13 @@ export namespace Dialogic {
   type InstanceEvent = {
     detail: {
       identityOptions: IdentityOptions;
-      // dialogicOptions: TransitionOptions;
       domElement: HTMLElement
     }
   }
 
   type ContentComponentOptions = {
-    [key:string]: any;
     show: () => Promise<string>;
     hide: () => Promise<string>;
-  }
+  } & PassThroughOptions;
 
 }

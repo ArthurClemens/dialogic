@@ -5,8 +5,8 @@ const getDefaultItemId = name => `${name}-default_${name}-default_${name}`;
 
 const defaultItemId = getDefaultItemId("dialog");
 
-test("show: should resolve when no transition options passed", t => {
-  // Can't use resetAll because this test is async
+test.serial("show: should resolve when no transition options passed", t => {
+  dialog.resetAll();
   const options = {
     title: "Test", 
     dialogic: {
@@ -19,7 +19,7 @@ test("show: should resolve when no transition options passed", t => {
     });
 });
 
-test("show, getCount: when no dialogic options are specified, the state should contain 1 item", t => {
+test.serial("show, getCount: when no dialogic options are specified, the state should contain 1 item", t => {
   dialog.resetAll();
   [1,2,3].forEach(n => dialog.show({
     title: n
@@ -29,7 +29,7 @@ test("show, getCount: when no dialogic options are specified, the state should c
   t.is(actual, expected);
 });
 
-test("show, getCount: when dialogic option `id` is specified, the state should contain multiple items", t => {
+test.serial("show, getCount: when dialogic option `id` is specified, the state should contain multiple items", t => {
   dialog.resetAll();
   [1,2,3].forEach(n => dialog.show(
     {
@@ -43,7 +43,7 @@ test("show, getCount: when dialogic option `id` is specified, the state should c
   t.is(actual, expected);
 });
 
-test("show, getCount: when dialogic option `spawn` is specified, the state should contain multiple items", t => {
+test.serial("show, getCount: when dialogic option `spawn` is specified, the state should contain multiple items", t => {
   dialog.resetAll();
   [1,2,3].forEach(n => dialog.show(
     {
@@ -57,8 +57,8 @@ test("show, getCount: when dialogic option `spawn` is specified, the state shoul
   t.is(actual, expected);
 });
 
-test("hide: should hide the item", t => {
-  // Can't use resetAll because this test is async
+test.serial("hide: should hide the item", t => {
+  dialog.resetAll();
   const identityOptions = {
     id: "show-hide"
   };
@@ -78,8 +78,8 @@ test("hide: should hide the item", t => {
     });
 });
 
-test("toggle: should show and hide the item", t => {
-  // Cant use resetAll because this test is async
+test.serial("toggle: should show and hide the item", t => {
+  dialog.resetAll();
   const identityOptions = {
     id: "show-toggle"
   }
@@ -100,14 +100,14 @@ test("toggle: should show and hide the item", t => {
     });
 });
 
-test("resetAll: should remove all", t => {
-  // Cant use resetAll because this test is async
-
+test.serial("resetAll (no dialogic options specified): should remove all", t => {
+  dialog.resetAll();
+  const spawn = "reset-all";
   const createDialog = id => {
     const options = {
       dialogic: {
         id,
-        spawn: "reset-all"
+        spawn
       }
     };
     return dialog.show(options);
@@ -117,13 +117,101 @@ test("resetAll: should remove all", t => {
     createDialog("1"),
     createDialog("2")
   ]).then(items => {
-    t.is(dialog.exists({ id: "1", spawn: "reset-all" }), true);
-    t.is(dialog.exists({ id: "2", spawn: "reset-all" }), true);
+    t.is(items.length, 2);
+    t.is(dialog.exists({ id: "1", spawn }), true);
+    t.is(dialog.exists({ id: "2", spawn }), true);
 
     return dialog.resetAll()
       .then(() => {
-        t.is(dialog.exists({ id: "1", spawn: "reset-all" }), false);
-        t.is(dialog.exists({ id: "2", spawn: "reset-all" }), false);
+        t.is(dialog.exists({ id: "1", spawn }), false);
+        t.is(dialog.exists({ id: "2", spawn }), false);
+      });
+  });
+});
+
+test.serial("resetAll (different spawn specified): should remove some", t => {
+  dialog.resetAll();
+  const createDialog = id => {
+    const options = {
+      dialogic: {
+        id,
+        spawn: `reset-all-${id}`
+      }
+    };
+    return dialog.show(options);
+  }
+
+  return Promise.all([
+    createDialog("1"),
+    createDialog("2")
+  ]).then(items => {
+    t.is(items.length, 2);
+    t.is(dialog.exists({ id: "1", spawn: "reset-all-1" }), true);
+    t.is(dialog.exists({ id: "2", spawn: "reset-all-2" }), true);
+
+    return dialog.resetAll({ spawn: "reset-all-1" })
+      .then(() => {
+        t.is(dialog.exists({ id: "1", spawn: "reset-all-1" }), false);
+        t.is(dialog.exists({ id: "2", spawn: "reset-all-2" }), true);
+      });
+  });
+});
+
+test.serial("hideAll (no dialogic options specified): should hide all", t => {
+  dialog.resetAll();
+  const spawn = "hide-all";
+  const createDialog = id => {
+    const options = {
+      dialogic: {
+        id,
+        spawn
+      }
+    };
+    return dialog.show(options);
+  }
+
+  return Promise.all([
+    createDialog("1"),
+    createDialog("2")
+  ]).then(items => {
+    t.is(items.length, 2);
+    t.is(dialog.exists({ id: "1", spawn }), true);
+    t.is(dialog.exists({ id: "2", spawn }), true);
+
+    return dialog.hideAll({ spawn })
+      .then(items => {
+        t.is(items.length, 2);
+        t.is(dialog.exists({ id: "1", spawn }), false);
+        t.is(dialog.exists({ id: "2", spawn }), false);
+      });
+  });
+});
+
+test.serial("hideAll (different spawn specified): should hide some", t => {
+  dialog.resetAll();
+  const createDialog = id => {
+    const options = {
+      dialogic: {
+        id,
+        spawn: `hide-all-${id}`
+      }
+    };
+    return dialog.show(options);
+  }
+
+  return Promise.all([
+    createDialog("1"),
+    createDialog("2")
+  ]).then(items => {
+    t.is(items.length, 2);
+    t.is(dialog.exists({ id: "1", spawn: "hide-all-1" }), true);
+    t.is(dialog.exists({ id: "2", spawn: "hide-all-2" }), true);
+
+    return dialog.hideAll({ spawn: "hide-all-1" })
+      .then(items => {
+        t.is(items.length, 1);
+        t.is(dialog.exists({ id: "1", spawn: "hide-all-1" }), false);
+        t.is(dialog.exists({ id: "2", spawn: "hide-all-2" }), true);
       });
   });
 });

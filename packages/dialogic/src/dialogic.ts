@@ -17,9 +17,22 @@ const getUid = () =>
     : uid++;
 
 const transitionStates = {
-  none: "none",
-  hiding: "hiding"
+  default: 0,
+  displayed: 1,
+  hiding: 2,
 };
+
+export const performOnItem: PerformOnItemFn = fn => ns => defaultDialogicOptions => (options: Dialogic.IdentityOptions | Dialogic.CommandOptions) => {
+  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultDialogicOptions)(options);
+  if (maybeItem.just) {
+    return fn(ns, maybeItem.just, options);
+  } else {
+    return Promise.resolve();
+  }
+};
+
+const getMaybeItem = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions?: Dialogic.IdentityOptions) => 
+  selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
 
 const filterBySpawnOption = (identityOptions: Dialogic.IdentityOptions) => (nsItems: Dialogic.Item[]) => (
   nsItems.filter(item => (
@@ -112,7 +125,7 @@ const createInstance = (ns: string) => (defaultDialogicOptions: Dialogic.Default
         ? Timer()
         : undefined, // when timeout is undefined or 0
       key: getUid().toString(), // Uniquely identify each item for keyed display
-      transitionState: transitionStates.none as Dialogic.ItemTransitionState,
+      transitionState: transitionStates.default,
     };
     
     const maybeExistingItem: Dialogic.MaybeItem = selectors.find(ns, mergedIdentityOptions);
@@ -128,11 +141,10 @@ const createInstance = (ns: string) => (defaultDialogicOptions: Dialogic.Default
       const dialogicOptions = existingItem.dialogicOptions;
       const replacingItem = {
         ...item,
+        transitionState: existingItem.transitionState,
         dialogicOptions
       };
       actions.replace(ns, existingItem.id, replacingItem);
-      // While this is a replace action, mimic a show
-      callbacks.didShow && callbacks.didShow(item);
     } else {
       actions.add(ns, item);
       // This will instantiate and draw the instance
@@ -145,22 +157,10 @@ const createInstance = (ns: string) => (defaultDialogicOptions: Dialogic.Default
 
 export const show = createInstance;
 
-const getMaybeItem = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions?: Dialogic.IdentityOptions) => 
-  selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
-
-export const performOnItem: PerformOnItemFn = fn => ns => defaultDialogicOptions => (options: Dialogic.IdentityOptions | Dialogic.CommandOptions) => {
-  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultDialogicOptions)(options);
-  if (maybeItem.just) {
-    return fn(ns, maybeItem.just, options);
-  } else {
-    return Promise.resolve();
-  }
-};
-
 export const hide: PerformOnItemNsFn =
   performOnItem((ns, item) => {
-    if (item.transitionState !== transitionStates.hiding as Dialogic.ItemTransitionState) {
-      item.transitionState = transitionStates.hiding as Dialogic.ItemTransitionState;
+    if (item.transitionState !== transitionStates.hiding) {
+      item.transitionState = transitionStates.hiding;
       return hideItem(item);
     } else {
       return Promise.resolve(item);
@@ -204,12 +204,31 @@ export const exists = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultD
   return !!maybeItem.just;
 };
 
-export const resetAll = (ns: string) => () => {
-  selectors.getAll(ns).forEach((item: Dialogic.Item) =>
-    item.timer && item.timer.actions.abort()
-  );
-  actions.removeAll(ns);
-  return Promise.resolve();
+export const resetAll = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (dialogicOptions?: Dialogic.DialogicOptions) => {
+  const allItems = selectors.getAll(ns);
+  const validItems = dialogicOptions
+    ? filterBySpawnOption({
+      ...defaultDialogicOptions,
+      ...dialogicOptions,
+    })(allItems)
+    : allItems;
+
+  const items: Dialogic.Item[] = [];
+  
+  validItems.forEach((item: Dialogic.Item) => {
+    item.timer && item.timer.actions.abort();
+    items.push(item);
+  });
+
+  if (dialogicOptions) {
+    validItems.forEach((item: Dialogic.Item) => {
+      actions.remove(ns, item.id)
+    });
+  } else {
+    actions.removeAll(ns);
+  }
+
+  return Promise.resolve(items);
 };
 
 const getOverridingTransitionOptions = (item: Dialogic.Item, options: Dialogic.DialogicOptions) => {
@@ -225,15 +244,25 @@ const getOverridingTransitionOptions = (item: Dialogic.Item, options: Dialogic.D
 /**
  * Triggers a `hideItem` for each item in the store.
  * Queued items: will trigger `hideItem` only for the first item, then reset the store.
- * `options` may contain specific transition options. This comes in handy when all items should hide in the same manner.
+ * `dialogicOptions` may contain specific transition options. This comes in handy when all items should hide in the same manner.
  * */
-export const hideAll = (ns: string) => (dialogicOptions: Dialogic.DialogicOptions) => {
+export const hideAll = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (dialogicOptions?: Dialogic.DialogicOptions) => {
   const allItems = selectors.getAll(ns);
-  const regularItems = allItems.filter((item: Dialogic.Item) => !dialogicOptions.queued && !item.dialogicOptions.queued);
-  const queuedItems = allItems.filter((item: Dialogic.Item) => dialogicOptions.queued || item.dialogicOptions.queued);
+  const validItems = dialogicOptions
+    ? filterBySpawnOption({
+      ...defaultDialogicOptions,
+      ...dialogicOptions,
+    })(allItems)
+    : allItems;
+
+  const options = dialogicOptions || {};
+  const regularItems = validItems.filter((item: Dialogic.Item) => !options.queued && !item.dialogicOptions.queued);
+  const queuedItems = validItems.filter((item: Dialogic.Item) => options.queued || item.dialogicOptions.queued);
+
+  const items = [];
 
   regularItems.forEach((item: Dialogic.Item) =>
-    hideItem(getOverridingTransitionOptions(item, dialogicOptions))
+    items.push(hideItem(getOverridingTransitionOptions(item, options)))
   );
 
   if (queuedItems.length > 0) {
@@ -241,9 +270,12 @@ export const hideAll = (ns: string) => (dialogicOptions: Dialogic.DialogicOption
     // Make sure that any remaining items don't suddenly appear
     actions.store(ns, [current]);
     // Transition the current item
-    hideItem(getOverridingTransitionOptions(current, dialogicOptions))
-      .then(() => actions.removeAll(ns))
+    items.push(
+      hideItem(getOverridingTransitionOptions(current, options))
+    );
   };
+
+  return Promise.all(items);
 };
 
 export const getCount = (ns: string) => (identityOptions?: Dialogic.IdentityOptions) =>
@@ -261,7 +293,10 @@ const deferredHideItem = async function(item: Dialogic.Item, timer: Dialogic.Tim
 };
 
 export const showItem: Dialogic.InitiateItemTransitionFn = async function(item) {
-  await(transitionItem(item, MODE.SHOW));
+  if (item.transitionState != transitionStates.displayed) {
+    await(transitionItem(item, MODE.SHOW));
+    item.transitionState = transitionStates.displayed;
+  }
   item.callbacks.didShow && await(item.callbacks.didShow(item));
   if (item.dialogicOptions.timeout && item.timer) {
     await(deferredHideItem(item, item.timer, item.dialogicOptions.timeout));

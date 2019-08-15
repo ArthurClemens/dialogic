@@ -39,11 +39,7 @@ export const Instance: InstanceFn = ({ attrs }) => {
     },
     view: () => {
       return m("div",
-        {
-          className,
-          "data-spawn-id": attrs.identityOptions.spawn,
-          "data-id": attrs.identityOptions.id,
-        },
+        { className },
         m(attrs.dialogicOptions.component,
           {
             ...attrs.passThroughOptions,

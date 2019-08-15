@@ -16,15 +16,15 @@ const showInitial = ({ isOnMount } : { isOnMount?: boolean } = {} ) => dialog.sh
       component: DefaultContent,
       styles: {
         showStart: {
-          opacity: isOnMount ? 1 : 0,
+          opacity: isOnMount ? "1" : "0",
         },
         showEnd: {
           transitionDuration: isOnMount ? "0ms" : "500ms",
-          opacity: 1
+          opacity: "1"
         },
         hideEnd: {
           transitionDuration: "500ms",
-          opacity: 0
+          opacity: "0"
         }
       },
       className: "xxx",
@@ -97,17 +97,17 @@ const dialogTransitionProps = {
           transition: "all 300ms ease-in-out",
         },
         showStart: {
-          opacity: 0,
+          opacity: "0",
           transform: `translate3d(0, ${height}px, 0)`,
         },
         showEnd: {
-          opacity: 1,
+          opacity: "1",
           transform: "translate3d(0, 0px,  0)",
         },
         hideEnd: {
           transitionDuration: "750ms",
           transform: `translate3d(0, ${height}px, 0)`,
-          opacity: 0,
+          opacity: "0",
         },
       }
     },
@@ -140,7 +140,7 @@ const hideAllOptions = {
     hideEnd: {
       transitionDuration: "500ms",
       transitionDelay: "0ms",
-      opacity: 0,
+      opacity: "0",
     }
   }
 };
@@ -225,7 +225,7 @@ const App = {
                     className: "xxx",
                     didShow: (item: Dialogic.Item) => console.log("didShow", item),
                     didHide: (item: Dialogic.Item) => console.log("didHide", item),
-                    transitionStyles: {
+                    styles: {
                       showEnd: {
                         transitionDuration: "500ms",
                         transitionDelay: "500ms",
@@ -302,9 +302,12 @@ const App = {
           },
           "With timeout"
         ),
-        m("div", `Is paused: ${dialog.isPaused({ id: "timer" })}`),
+        
         dialog.exists({ id: "timer" })
-          ? m("div", m(Remaining, { getRemaining: () => dialog.getRemaining({ id: "timer" })}))
+          ? m.fragment({}, [
+              m("div", `Is paused: ${dialog.isPaused({ id: "timer" })}`),
+              m("div", m(Remaining, { getRemaining: () => dialog.getRemaining({ id: "timer" })})),
+            ])
           : null,
         m("button",
           {

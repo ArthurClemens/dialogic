@@ -5,8 +5,8 @@ const getDefaultItemId = (name: string) => `${name}-default_${name}-default_${na
 
 const defaultItemId = getDefaultItemId("notification");
 
-test("show: should resolve when no transition options passed", t => {
-  // Can't use resetAll because this test is async
+test.serial("show: should resolve when no transition options passed", t => {
+  notification.resetAll();
   const options = {
     title: "Test", 
     dialogic: {
@@ -19,8 +19,8 @@ test("show: should resolve when no transition options passed", t => {
     });
 });
 
-test("show, getCount: even when no dialogic options are specified, the state should contain multiple (queued) items", t => {
-  // Can't use resetAll because this test is async
+test.serial("show, getCount: even when no dialogic options are specified, the state should contain multiple (queued) items", t => {
+  notification.resetAll();
   const options = {
     title: "Test", 
     dialogic: {
@@ -31,7 +31,7 @@ test("show, getCount: even when no dialogic options are specified, the state sho
   t.is(notification.exists(), true);
 });
 
-test("show, getCount: when dialogic option `id` is specified, the state should contain multiple items", t => {
+test.serial("show, getCount: when dialogic option `id` is specified, the state should contain multiple items", t => {
   notification.resetAll();
   [1,2,3].forEach(n => notification.show(
     {
@@ -48,7 +48,7 @@ test("show, getCount: when dialogic option `id` is specified, the state should c
   t.is(notification.exists({ id: "3" }), true);
 });
 
-test("show, getCount: when dialogic option `spawn` is specified, the state should contain multiple items", t => {
+test.serial("show, getCount: when dialogic option `spawn` is specified, the state should contain multiple items", t => {
   notification.resetAll();
   [1,2,3].forEach(n => notification.show(
     {
@@ -65,8 +65,8 @@ test("show, getCount: when dialogic option `spawn` is specified, the state shoul
   t.is(actual, expected);
 });
 
-test("show, hide: should hide the item", t => {
-  // Can't use resetAll because this test is async
+test.serial("show, hide: should hide the item", t => {
+  notification.resetAll();
   const identityOptions = {
     id: "show-hide"
   }
@@ -86,8 +86,8 @@ test("show, hide: should hide the item", t => {
     });
 });
 
-test("show, toggle: should show and hide the item", t => {
-  // Cant use resetAll because this test is async
+test.serial("show, toggle: should show and hide the item", t => {
+  notification.resetAll();
   const identityOptions = {
     id: "show-toggle"
   }
@@ -147,4 +147,97 @@ test.serial("transition className", t => {
         });
       })
     })
+});
+
+test.serial("timeout: should hide after specified time", t => {
+  notification.resetAll();
+  const timeout = 500;
+  const identityOptions = {
+    id: "timeout"
+  }
+  const options = {
+    dialogic: {
+      ...identityOptions,
+      timeout
+    }
+  };
+  return notification.show(options)
+    .then(item => {
+      t.is(notification.exists(identityOptions), true);
+    
+      return showItem(item).then(() => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            t.is(notification.exists(identityOptions), false);
+            resolve();
+          }, timeout + 100);
+        });
+      });
+    });
+});
+
+test.serial("pause and resume", t => {
+  notification.resetAll();
+  const timeout = 500;
+  const identityOptions = {
+    id: "pause-resume"
+  }
+  const options = {
+    dialogic: {
+      ...identityOptions,
+      timeout
+    }
+  };
+  return notification.show(options)
+    .then(item => {
+      t.is(notification.exists(identityOptions), true);
+
+      return showItem(item).then(() => {
+        let remaining1;
+
+        return new Promise(resolve => {
+          setTimeout(() => {
+            notification.pause(identityOptions);
+            remaining1 = notification.getRemaining(identityOptions);
+            t.log(`remaining1: ${remaining1}`);
+            t.is(remaining1 <= timeout, true);
+            t.is(remaining1 > 0, true);
+            notification.resume(identityOptions);
+
+            setTimeout(() => {
+              notification.pause(identityOptions);
+              const remaining2 = notification.getRemaining(identityOptions);
+              t.log(`remaining2: ${remaining2}`);
+              t.is(remaining2 <= timeout, true);
+              t.is(remaining2 > 0, true);
+              t.is(remaining2 < remaining1, true);
+  
+              notification.resume({
+                ...identityOptions,
+                minimumDuration: timeout
+              });
+              notification.pause(identityOptions);
+              const remaining3 = notification.getRemaining(identityOptions);
+              t.log(`remaining3: ${remaining3}`);
+              t.is(remaining3 <= timeout, true);
+              t.is(remaining3 > 0, true);
+              t.is(remaining3 > remaining2, true);
+
+              notification.resume(identityOptions);
+
+              setTimeout(() => {
+                const remaining4 = notification.getRemaining(identityOptions);
+                t.log(`remaining4: ${remaining4}`);
+                t.is(remaining4 === undefined, true);
+                t.is(notification.exists(identityOptions), false);
+
+                resolve();
+              }, timeout + 10);
+            }, 50);
+
+          }, 50);
+
+        });
+      });
+    });
 });
