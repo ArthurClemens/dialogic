@@ -117,11 +117,6 @@ export const transition = (props: TransitionProps, mode?: string) => {
 		: "hideStart";
 
 	return new Promise(resolve => {
-		
-		const onEnd = () => {
-			domElement.removeEventListener("transitionend", onEnd, false);
-			resolve();
-		};
 
 		applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
 
@@ -129,14 +124,11 @@ export const transition = (props: TransitionProps, mode?: string) => {
 		if (nextStep) {
 			setTimeout(() => {
 				currentStep = nextStep;
-				domElement.addEventListener("transitionend", onEnd, false);
 				applyStylesForState(domElement, props, currentStep);
-				// Due to incorrect CSS usage, ontransitionend may not be fired
-				// Using a timeout ensures completion
+				// addEventListener sometimes hangs this function because it never finishes
+				// Using setTimeout instead of addEventListener gives more consistent results
 				const duration = getDuration(domElement);
-				if (duration == 0) {
-					setTimeout(onEnd, duration);
-				}
+				setTimeout(resolve, duration);
 			}, 0);
 		}
 	});

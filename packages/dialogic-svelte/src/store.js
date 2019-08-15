@@ -16,12 +16,12 @@ export const getCount = ns => identityOptions => derived(
 	() => selectors.getCount(ns, identityOptions)
 );
 
-export const isPaused = ns => defaultOptions => identityOptions => derived(
+export const isPaused = ns => defaultDialogicOptions => identityOptions => derived(
 	appState,
-	() => getTimerProperty("isPaused")(ns)(defaultOptions)(identityOptions)
+	() => getTimerProperty("isPaused")(ns)(defaultDialogicOptions)(identityOptions)
 );
 
-export const exists = ns => defaultOptions => identityOptions => derived(
+export const exists = ns => defaultDialogicOptions => identityOptions => derived(
 	appState,
-	() => _isDisplayed(ns)(defaultOptions)(identityOptions)
+	() => _isDisplayed(ns)(defaultDialogicOptions)(identityOptions)
 );

@@ -22,16 +22,15 @@ export namespace Dialogic {
     defaultId: string;
     defaultSpawn: string;
     // Configuration
-    defaultOptions: DefaultOptions;
+    defaultDialogicOptions: DefaultDialogicOptions;
     // Commands
-    show: (options: Options, identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
+    show: (options: Options, fnOptions?: any) => Promise<Item>;
     hide: (identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
-    toggle: (options: Options, identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
     hideAll: (options: Options) => void;
     resetAll: () => Promise<void>;
     // Timer commands
     pause: (identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
-    resume: (identityOptions?: IdentityOptions, fnOptions?: TimerResumeOptions) => Promise<Item>;
+    resume: (commandOptions?: CommandOptions, fnOptions?: CommandOptions) => Promise<Item>;
     // State
     exists: (identityOptions?: IdentityOptions) => boolean;
     getCount: (identityOptions?: IdentityOptions) => number;
@@ -40,13 +39,11 @@ export namespace Dialogic {
     getRemaining: (identityOptions?: IdentityOptions) => number | undefined;
   };
 
-  type DefaultOptions = {
+  type DefaultDialogicOptions = {
     id: string;
     spawn: string;
-    dialogic?: {
-      queued?: boolean;
-      timeout?: number;
-    }
+    queued?: boolean;
+    timeout?: number;
   }
 
   type IdentityOptions = {
@@ -57,6 +54,8 @@ export namespace Dialogic {
   type ComponentOptions = {
     onMount?: (args?: any) => any;
   } & IdentityOptions;
+
+  type CommandOptions = IdentityOptions & TimerResumeOptions;
 
   // Components
 
@@ -115,6 +114,7 @@ export namespace Dialogic {
     queued?: boolean;
     styles?: TransitionStyles | TransitionStylesFn;
     timeout?: number;
+    toggle?: boolean;
   }
 
   type Options = PassThroughOptions | DialogicOptions;

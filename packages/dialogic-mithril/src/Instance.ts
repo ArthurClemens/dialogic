@@ -14,7 +14,7 @@ export const Instance: InstanceFn = ({ attrs }) => {
   const dispatchTransition = (dispatchFn: Dialogic.DialogicalInstanceDispatchFn) => {
     dispatchFn({
       detail: {
-        identityOptions: attrs.identityOptions, // for identification
+        identityOptions: attrs.identityOptions,
         domElement
       }
     });
@@ -39,17 +39,17 @@ export const Instance: InstanceFn = ({ attrs }) => {
     },
     view: () => {
       return m("div",
-        { className },
+        {
+          className,
+          "data-spawn-id": attrs.identityOptions.spawn,
+          "data-id": attrs.identityOptions.id,
+        },
         m(attrs.dialogicOptions.component,
           {
             ...attrs.passThroughOptions,
             show,
             hide,
-          },
-          [
-            m("div", "Instance"),
-            m("button", { onclick: () => hide()}, "Hide from instance"),
-          ]
+          }
         )
       )
     }

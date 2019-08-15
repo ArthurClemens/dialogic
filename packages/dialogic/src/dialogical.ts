@@ -1,16 +1,14 @@
-import { show, hide, toggle, hideAll, resetAll, getCount, pause, resume, isPaused, getRemaining, exists } from "./dialogic";
+import { show, hide, hideAll, resetAll, getCount, pause, resume, isPaused, getRemaining, exists } from "./dialogic";
 import { Dialogic } from "../index";
 
 export const dialogical = ({ ns, queued, timeout } : { ns: string, queued?: boolean, timeout?: number }) => {
   const defaultId = `default_${ns}`;
   const defaultSpawn = `default_${ns}`;
-  const defaultOptions: Dialogic.DefaultOptions = {
+  const defaultDialogicOptions: Dialogic.DefaultDialogicOptions = {
     id: defaultId,
     spawn: defaultSpawn,
-    dialogic: {
-      ...(queued && { queued }),
-      ...(timeout !== undefined && { timeout }),
-    }
+    ...(queued && { queued }),
+    ...(timeout !== undefined && { timeout }),
   };
 
   return {
@@ -19,21 +17,20 @@ export const dialogical = ({ ns, queued, timeout } : { ns: string, queued?: bool
     defaultId,
     defaultSpawn,
     // Configuration
-    defaultOptions,
+    defaultDialogicOptions,
     // Commands
-    show: show(ns)(defaultOptions),
-    toggle: toggle(ns)(defaultOptions),
-    hide: hide(ns)(defaultOptions),
+    show: show(ns)(defaultDialogicOptions),
+    hide: hide(ns)(defaultDialogicOptions),
     hideAll: hideAll(ns),
     resetAll: resetAll(ns),
     // Timer commands
-    pause: pause(ns)(defaultOptions),
-    resume: resume(ns)(defaultOptions),
+    pause: pause(ns)(defaultDialogicOptions),
+    resume: resume(ns)(defaultDialogicOptions),
     // State
-    exists: exists(ns)(defaultOptions),
+    exists: exists(ns)(defaultDialogicOptions),
     getCount: getCount(ns),
     // Timer state
-    isPaused: isPaused(ns)(defaultOptions),
-    getRemaining: getRemaining(ns)(defaultOptions),
+    isPaused: isPaused(ns)(defaultDialogicOptions),
+    getRemaining: getRemaining(ns)(defaultDialogicOptions),
   }
 };

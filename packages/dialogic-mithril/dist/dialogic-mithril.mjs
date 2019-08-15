@@ -81,23 +81,16 @@ const transition = (props, mode) => {
         ? "showStart"
         : "hideStart";
     return new Promise(resolve => {
-        const onEnd = () => {
-            domElement.removeEventListener("transitionend", onEnd, false);
-            resolve();
-        };
         applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
         const nextStep = steps[currentStep].nextStep;
         if (nextStep) {
             setTimeout(() => {
                 currentStep = nextStep;
-                domElement.addEventListener("transitionend", onEnd, false);
                 applyStylesForState(domElement, props, currentStep);
-                // Due to incorrect CSS usage, ontransitionend may not be fired
-                // Using a timeout ensures completion
+                // addEventListener sometimes hangs this function because it never finishes
+                // Using setTimeout instead of addEventListener gives more consistent results
                 const duration = getDuration(domElement);
-                if (duration == 0) {
-                    setTimeout(onEnd, duration);
-                }
+                setTimeout(resolve, duration);
             }, 0);
         }
     });
@@ -606,7 +599,7 @@ const transitionStates = {
     none: "none",
     hiding: "hiding"
 };
-const filterBySpawnOption = (identityOptions) => (nsItems) => nsItems.filter(item => item.identityOptions.spawn === identityOptions.spawn);
+const filterBySpawnOption = (identityOptions) => (nsItems) => (nsItems.filter(item => (item.identityOptions.spawn === identityOptions.spawn)));
 /**
  * Gets a list of all non-queued items.
  * From the queued items only the first item is listed.
@@ -625,22 +618,31 @@ const filterFirstInQueue = (nsItems) => {
 };
 const filterCandidates = (ns, items, identityOptions) => {
     const nsItems = items[ns] || [];
+    if (nsItems.length == 0) {
+        return [];
+    }
     return pipe(filterFirstInQueue, filterBySpawnOption(identityOptions))(nsItems);
 };
-const getPassThroughOptions = options => ({
-    ...options,
-    dialogicOptions: undefined
+const getPassThroughOptions = options => {
+    const copy = {
+        ...options,
+    };
+    delete copy.dialogic;
+    return copy;
+};
+const getMergedIdentityOptions = (defaultDialogicOptions, identityOptions = {}) => ({
+    id: identityOptions.id || defaultDialogicOptions.id,
+    spawn: identityOptions.spawn || defaultDialogicOptions.spawn,
 });
-const getMergedIdentityOptions = (defaultOptions, identityOptions) => ({
-    id: defaultOptions.id,
-    spawn: defaultOptions.spawn,
-    ...identityOptions,
-});
-const createInstance = (ns) => (defaultOptions) => (options = {}, identityOptions) => {
+const createInstance = (ns) => (defaultDialogicOptions) => (options = {}) => {
     return new Promise(resolve => {
-        const mergedIdentityOptions = getMergedIdentityOptions(defaultOptions, identityOptions);
+        const identityOptions = {
+            id: options.dialogic ? options.dialogic.id : undefined,
+            spawn: options.dialogic ? options.dialogic.spawn : undefined
+        };
+        const mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions, identityOptions);
         const dialogicOptions = {
-            ...defaultOptions.dialogic,
+            ...defaultDialogicOptions,
             ...options.dialogic
         };
         const passThroughOptions = getPassThroughOptions(options);
@@ -672,6 +674,10 @@ const createInstance = (ns) => (defaultOptions) => (options = {}, identityOption
             transitionState: transitionStates.none,
         };
         const maybeExistingItem = selectors.find(ns, mergedIdentityOptions);
+        if (maybeExistingItem.just && dialogicOptions.toggle) {
+            const hideResult = hide(ns)(defaultDialogicOptions)(identityOptions);
+            return resolve(hideResult);
+        }
         if (maybeExistingItem.just && !dialogicOptions.queued) {
             const existingItem = maybeExistingItem.just;
             // Preserve dialogicOptions
@@ -693,20 +699,11 @@ const createInstance = (ns) => (defaultOptions) => (options = {}, identityOption
     });
 };
 const show = createInstance;
-const toggle = (ns) => (defaultOptions) => (options, identityOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
+const getMaybeItem = (ns) => (defaultDialogicOptions) => (identityOptions) => selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
+const performOnItem = fn => ns => defaultDialogicOptions => (options) => {
+    const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(options);
     if (maybeItem.just) {
-        return hide(ns)(defaultOptions)(identityOptions);
-    }
-    else {
-        return show(ns)(defaultOptions)(options, identityOptions);
-    }
-};
-const getMaybeItem = (ns) => (defaultOptions) => (identityOptions) => selectors.find(ns, getMergedIdentityOptions(defaultOptions, identityOptions));
-const performOnItem = fn => ns => defaultOptions => (identityOptions, fnOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
-    if (maybeItem.just) {
-        return fn(ns, maybeItem.just, fnOptions);
+        return fn(ns, maybeItem.just, options);
     }
     else {
         return Promise.resolve();
@@ -727,14 +724,14 @@ const pause = performOnItem((ns, item) => {
     }
     return Promise.resolve(item);
 });
-const resume = performOnItem((ns, item, fnOptions = {}) => {
+const resume = performOnItem((ns, item, commandOptions = {}) => {
     if (item && item.timer) {
-        item.timer.actions.resume(fnOptions.minimumDuration);
+        item.timer.actions.resume(commandOptions.minimumDuration);
     }
     return Promise.resolve(item);
 });
-const getTimerProperty = (timerProp) => (ns) => (defaultOptions) => (identityOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
+const getTimerProperty = (timerProp) => (ns) => (defaultDialogicOptions) => (identityOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
     if (maybeItem.just) {
         if (maybeItem.just && maybeItem.just.timer) {
             return maybeItem.just.timer.selectors[timerProp]();
@@ -749,8 +746,8 @@ const getTimerProperty = (timerProp) => (ns) => (defaultOptions) => (identityOpt
 };
 const isPaused = getTimerProperty("isPaused");
 const getRemaining$1 = getTimerProperty("getRemaining");
-const exists = (ns) => (defaultOptions) => (identityOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
+const exists = (ns) => (defaultDialogicOptions) => (identityOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
     return !!maybeItem.just;
 };
 const resetAll = (ns) => () => {
@@ -820,13 +817,11 @@ const setDomElement = (domElement, item) => {
 const dialogical = ({ ns, queued, timeout }) => {
     const defaultId = `default_${ns}`;
     const defaultSpawn = `default_${ns}`;
-    const defaultOptions = {
+    const defaultDialogicOptions = {
         id: defaultId,
         spawn: defaultSpawn,
-        dialogic: {
-            ...(queued && { queued }),
-            ...(timeout !== undefined && { timeout }),
-        }
+        ...(queued && { queued }),
+        ...(timeout !== undefined && { timeout }),
     };
     return {
         // Identification
@@ -834,22 +829,21 @@ const dialogical = ({ ns, queued, timeout }) => {
         defaultId,
         defaultSpawn,
         // Configuration
-        defaultOptions,
+        defaultDialogicOptions,
         // Commands
-        show: show(ns)(defaultOptions),
-        toggle: toggle(ns)(defaultOptions),
-        hide: hide(ns)(defaultOptions),
+        show: show(ns)(defaultDialogicOptions),
+        hide: hide(ns)(defaultDialogicOptions),
         hideAll: hideAll(ns),
         resetAll: resetAll(ns),
         // Timer commands
-        pause: pause(ns)(defaultOptions),
-        resume: resume(ns)(defaultOptions),
+        pause: pause(ns)(defaultDialogicOptions),
+        resume: resume(ns)(defaultDialogicOptions),
         // State
-        exists: exists(ns)(defaultOptions),
+        exists: exists(ns)(defaultDialogicOptions),
         getCount: getCount(ns),
         // Timer state
-        isPaused: isPaused(ns)(defaultOptions),
-        getRemaining: getRemaining$1(ns)(defaultOptions),
+        isPaused: isPaused(ns)(defaultDialogicOptions),
+        getRemaining: getRemaining$1(ns)(defaultDialogicOptions),
     };
 };
 
@@ -899,14 +893,15 @@ const Instance = ({ attrs }) => {
             onMount();
         },
         view: () => {
-            return m("div", { className }, m(attrs.dialogicOptions.component, {
+            return m("div", {
+                className,
+                "data-spawn-id": attrs.identityOptions.spawn,
+                "data-id": attrs.identityOptions.id,
+            }, m(attrs.dialogicOptions.component, {
                 ...attrs.passThroughOptions,
                 show,
                 hide,
-            }, [
-                m("div", "Instance"),
-                m("button", { onclick: () => hide() }, "Hide from instance"),
-            ]));
+            }));
         }
     };
 };

@@ -42,10 +42,8 @@
         }
       },
       className: "xxx",
+      spawn: "initial",
     },
-  },
-  {
-    spawn: "initial",
   }
 );
 
@@ -242,11 +240,9 @@
         dialogic: {
           timeout: 2000,
           component: DefaultContent,
+          id: "timer"
         },
         title: "With timer",
-      },
-      {
-        id: "timer"
       })}>
     With timer
   </button>
@@ -257,9 +253,7 @@
     )}>Pause</button>
   <button on:click={() => dialog.resume(
     {
-      id: "timer"
-    },
-    {
+      id: "timer",
       minimumDuration: 2000
     }
   )}>Resume</button>
@@ -283,11 +277,9 @@
           },
           component: DefaultContent,
           className: "xxx",
+          id: "withPromise"
         },
         title: "With Promise"
-      },
-      {
-        id: "withPromise"
       }
     ).then(item => console.log("dialog shown", item))}>
     Show with promises
@@ -302,22 +294,37 @@
   <button
     on:click={() => dialog.show({
       ...dialogDelayProps,
+      dialogic: {
+        ...dialogDelayProps.dialogic,
+        id: dialogOneProps.id
+      },
       title: dialogOneProps.title + " " + getRandomId()
-    }, { id: dialogOneProps.id })}>
+    })}>
     Show delay
   </button>
   <button on:click={() => dialog.hide({ id: dialogOneProps.id })}>Hide</button>
 </div>
 <div>
   <button
-    on:click={() => dialog.show(dialogSlowFadeProps, { id: dialogSlowFadeProps.id })}>
+    on:click={() => dialog.show({
+      ...dialogSlowFadeProps,
+      dialogic: {
+        ...dialogSlowFadeProps.dialogic,
+        id: dialogSlowFadeProps.id
+      }})}>
     Show slow fade
   </button>
   <button on:click={() => dialog.hide({ id: dialogSlowFadeProps.id })}>Hide</button>
 </div>
 <div>
   <button
-    on:click={() => dialog.show(dialogFourProps, { id: dialogFourProps.id })}>
+    on:click={() => dialog.show({
+      ...dialogFourProps,
+      dialogic: {
+        ...dialogFourProps.dialogic,
+        id: dialogFourProps.id
+      }
+    })}>
     Show transition
   </button>
   <button on:click={() => dialog.hide({ id: dialogFourProps.id })}>Hide</button>
@@ -327,9 +334,10 @@
     on:click={() => dialog.show({
       dialogic: {
         component: DefaultContent,
+        spawn: "special"
       },
       title: "Custom spawn"
-    }, { spawn: "special" })}>
+    })}>
     Show default in spawn
   </button>
   <button on:click={() => dialog.hide({ spawn: "special" })}>Hide</button>
@@ -354,9 +362,11 @@ Queued dialog
     on:click={() => dialog.show({
       dialogic: {
         component: DefaultContent,
+        spawn: "Q",
+        queued: true
       },
       title: "Queued " + Math.round(1000 * Math.random())
-    }, { spawn: "Q", queued: true })}>
+    })}>
     Queued
   </button>
   <button on:click={() => dialog.hide({ spawn: "Q" })}>Hide</button>
@@ -407,12 +417,10 @@ Initially shown dialog
             didHide: item => console.log("didHide", item, title),
             component: DefaultContent,
             className: "xxx-timings",
+            spawn: "NO"
           },
           className: "xxx-timings-content",
           title
-        },
-        {
-          spawn: "NO"
         }
       ).then(item => console.log("notification shown", item, title))}
     }

@@ -14,7 +14,7 @@
 
   const dispatchTransition = (name) =>
     dispatch(name, {
-      identityOptions, // for identification
+      identityOptions,
       domElement
     });
 

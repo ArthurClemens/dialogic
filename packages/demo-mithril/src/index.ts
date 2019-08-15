@@ -28,14 +28,12 @@ const showInitial = ({ isOnMount } : { isOnMount?: boolean } = {} ) => dialog.sh
         }
       },
       className: "xxx",
+      spawn: "initial",
     }
-  },
-  {
-    spawn: "initial",
   }
 );
 
-const toggleDialog = () => dialog.toggle(
+const toggleDialog = () => dialog.show(
   {
     title: getRandomId(),
     className: "xxx-content",
@@ -49,12 +47,11 @@ const toggleDialog = () => dialog.toggle(
           transitionDuration: "500ms",
         },
       }, 
-      className: "xxx"
-    }
+      spawn: "toggle",
+      className: "xxx",
+      toggle: true
+    },
   },
-  {
-    spawn: "toggle",
-  }
 );
 
 const dialogOneProps: Dialogic.Options = {
@@ -197,10 +194,11 @@ const App = {
               dialog.show(
                 {
                   ...dialogOneProps,
+                  dialogic: {
+                    ...dialogOneProps.dialogic,
+                    id: dialogOneProps.id
+                  },
                   title: dialogOneProps.title + ' ' + getRandomId(),
-                },
-                {
-                  id: dialogOneProps.id
                 }
               )    
           },
@@ -237,12 +235,10 @@ const App = {
                         transitionDelay: "0ms",
                       },
                     },
+                    id: "withPromise"
                   },
                   className: "xxx-content",
                   title: "With Promise"
-                },
-                {
-                  id: "withPromise"
                 }
               ).then((item: Dialogic.Item) => console.log("dialog shown", item)) 
           },
@@ -266,10 +262,11 @@ const App = {
               dialog.show(
                 {
                   ...dialogDelayProps,
+                  dialogic: {
+                    ...dialogDelayProps.dialogic,
+                    id: dialogDelayProps.id
+                  },
                   title: dialogDelayProps.title + " " + getRandomId()
-                },
-                {
-                  id: dialogDelayProps.id
                 }
               )    
           },
@@ -286,7 +283,7 @@ const App = {
       ]),
 
       // Timer
-      m("section", { className: "section"}, [
+      m("section", { className: "section" }, [
         m("button",
           {
             className: "button",
@@ -297,11 +294,9 @@ const App = {
                   dialogic: {
                     ...dialogOneProps.dialogic,
                     timeout: 2000,
+                    id: "timer"
                   },
-                  title: dialogDelayProps.title + " " + getRandomId()
-                },
-                {
-                  id: "timer"
+                  title: "Timeout " + dialogDelayProps.title + " " + getRandomId()
                 }
               )    
           },
@@ -323,7 +318,7 @@ const App = {
           {
             className: "button",
             onclick: () =>
-              dialog.resume({ id: "timer" }, { minimumDuration: 2000 })
+              dialog.resume({ id: "timer", minimumDuration: 2000 })
           },
           "Resume"
         ),
@@ -343,12 +338,13 @@ const App = {
           {
             className: "button",
             onclick: () =>
-              dialog.show(
-                dialogTransitionProps,
-                {
+              dialog.show({
+                ...dialogTransitionProps,
+                dialogic: {
+                  ...dialogTransitionProps.dialogic,
                   id: dialogTransitionProps.id
                 }
-              )    
+              })    
           },
           "Show transition"
         ),
@@ -380,10 +376,8 @@ const App = {
                   title: "Custom spawn",
                   dialogic: {
                     component: DefaultContent,
+                    spawn: "special"
                   }
-                },
-                {
-                  spawn: "special"
                 }
               )
           },
@@ -421,11 +415,9 @@ const App = {
                     component: DefaultContent,
                     className: "xxx",
                     queued: true,
+                    spawn: "Q",
                   }
                 },
-                {
-                  spawn: "Q",
-                }
               )    
           },
           "Queued dialog"
@@ -512,13 +504,11 @@ const App = {
                     didHide: (item: Dialogic.Item) => console.log("didHide", item, title),
                     component: DefaultContent,
                     className: "xxx-timings",
+                    spawn: "NO"
                   },
                   className: "xxx-timings-content",
                   title,
                 },
-                {
-                  spawn: "NO"
-                }
               ).then((item: Dialogic.Item) => console.log("notification shown", item, title))
             } 
           },
@@ -536,7 +526,7 @@ const App = {
           {
             className: "button",
             onclick: () =>
-              notification.resume({ spawn: "NO" }, { minimumDuration: 2000 })
+              notification.resume({ spawn: "NO", minimumDuration: 2000 })
           },
           "Resume"
         ),

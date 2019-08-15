@@ -6,7 +6,7 @@ export const notification = {
   getCount: identityOptions =>
     getCount(_notification.ns)(identityOptions),
   isPaused: identityOptions =>
-    isPaused(_notification.ns)(_notification.defaultOptions)(identityOptions),
+    isPaused(_notification.ns)(_notification.defaultDialogicOptions)(identityOptions),
   exists: identityOptions =>
-    exists(_notification.ns)(_notification.defaultOptions)(identityOptions),
+    exists(_notification.ns)(_notification.defaultDialogicOptions)(identityOptions),
 };

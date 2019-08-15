@@ -6,8 +6,8 @@ import { pipe } from "./utils";
 
 export { states, actions, selectors } from "./state/store";
 
-type PerformFn = (ns:string, item: Dialogic.Item, fnOptions?: any) => any;
-type PerformOnItemNsFn = (ns: string) => (defaultOptions: Dialogic.DefaultOptions) => (identityOptions: Dialogic.IdentityOptions, fnOptions?: any) => Promise<Dialogic.Item>;
+type PerformFn = (ns:string, item: Dialogic.Item, options: Dialogic.IdentityOptions | Dialogic.CommandOptions) => any;
+type PerformOnItemNsFn = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (options: Dialogic.IdentityOptions | Dialogic.CommandOptions) => Promise<Dialogic.Item>;
 type PerformOnItemFn = (fn: PerformFn) => PerformOnItemNsFn;
 
 let uid = 0;
@@ -21,8 +21,11 @@ const transitionStates = {
   hiding: "hiding"
 };
 
-const filterBySpawnOption = (identityOptions: Dialogic.IdentityOptions) => (nsItems: Dialogic.Item[]) =>
-  nsItems.filter(item => item.identityOptions.spawn === identityOptions.spawn);
+const filterBySpawnOption = (identityOptions: Dialogic.IdentityOptions) => (nsItems: Dialogic.Item[]) => (
+  nsItems.filter(item => (
+    item.identityOptions.spawn === identityOptions.spawn
+  ))
+);
 
 /**
  * Gets a list of all non-queued items.
@@ -43,6 +46,9 @@ const filterFirstInQueue = (nsItems: Dialogic.Item[]) => {
 
 export const filterCandidates = (ns: string, items: Dialogic.NamespaceStore, identityOptions: Dialogic.IdentityOptions) => {
   const nsItems = items[ns] || [];
+  if (nsItems.length == 0) {
+    return [];
+  }
   return pipe(
     filterFirstInQueue,
     filterBySpawnOption(identityOptions)
@@ -51,24 +57,30 @@ export const filterCandidates = (ns: string, items: Dialogic.NamespaceStore, ide
 
 type TGetPassThroughOptions = (options: Dialogic.Options) => Dialogic.PassThroughOptions;
 
-const getPassThroughOptions: TGetPassThroughOptions = options => ({
-  ...options,
-  dialogicOptions: undefined
-});
+const getPassThroughOptions: TGetPassThroughOptions = options => {
+  const copy = {
+    ...options,
+  };
+  delete copy.dialogic;
+  return copy;
+};
 
-const getMergedIdentityOptions = (defaultOptions: Dialogic.DefaultOptions, identityOptions?: Dialogic.IdentityOptions) => ({
-  id: defaultOptions.id,
-  spawn: defaultOptions.spawn,
-  ...identityOptions,
+const getMergedIdentityOptions = (defaultDialogicOptions: Dialogic.DefaultDialogicOptions, identityOptions: Dialogic.IdentityOptions = {}) => ({
+  id: identityOptions.id || defaultDialogicOptions.id,
+  spawn: identityOptions.spawn || defaultDialogicOptions.spawn,
 }) as Dialogic.IdentityOptions;
 
-const createInstance = (ns: string) => (defaultOptions: Dialogic.DefaultOptions) => (options: Dialogic.Options = {}, identityOptions?: Dialogic.IdentityOptions) => {
+const createInstance = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (options: Dialogic.Options = {}) => {
   return new Promise(resolve => {
 
-    const mergedIdentityOptions = getMergedIdentityOptions(defaultOptions, identityOptions);
+    const identityOptions = {
+      id: options.dialogic ? options.dialogic.id : undefined,
+      spawn: options.dialogic ? options.dialogic.spawn : undefined
+    };
+    const mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions, identityOptions);
     
     const dialogicOptions: Dialogic.DialogicOptions = {
-      ...defaultOptions.dialogic,
+      ...defaultDialogicOptions,
       ...options.dialogic
     };
 
@@ -104,6 +116,12 @@ const createInstance = (ns: string) => (defaultOptions: Dialogic.DefaultOptions)
     };
     
     const maybeExistingItem: Dialogic.MaybeItem = selectors.find(ns, mergedIdentityOptions);
+
+    if (maybeExistingItem.just && dialogicOptions.toggle) {
+      const hideResult = hide(ns)(defaultDialogicOptions)(identityOptions);
+      return resolve(hideResult);
+    }
+
     if (maybeExistingItem.just && !dialogicOptions.queued) {
       const existingItem = maybeExistingItem.just;
       // Preserve dialogicOptions
@@ -127,22 +145,13 @@ const createInstance = (ns: string) => (defaultOptions: Dialogic.DefaultOptions)
 
 export const show = createInstance;
 
-export const toggle = (ns: string) => (defaultOptions: Dialogic.DefaultOptions) => (options: Dialogic.Options, identityOptions: Dialogic.IdentityOptions) => {
-  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
-  if (maybeItem.just) {
-    return hide(ns)(defaultOptions)(identityOptions);
-  } else {
-    return show(ns)(defaultOptions)(options, identityOptions);
-  }
-}
+const getMaybeItem = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions?: Dialogic.IdentityOptions) => 
+  selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
 
-const getMaybeItem = (ns: string) => (defaultOptions: Dialogic.DefaultOptions) => (identityOptions?: Dialogic.IdentityOptions) => 
-  selectors.find(ns, getMergedIdentityOptions(defaultOptions, identityOptions));
-
-export const performOnItem: PerformOnItemFn = fn => ns => defaultOptions => (identityOptions: Dialogic.IdentityOptions, fnOptions?: any) => {
-  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
+export const performOnItem: PerformOnItemFn = fn => ns => defaultDialogicOptions => (options: Dialogic.IdentityOptions | Dialogic.CommandOptions) => {
+  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultDialogicOptions)(options);
   if (maybeItem.just) {
-    return fn(ns, maybeItem.just, fnOptions);
+    return fn(ns, maybeItem.just, options);
   } else {
     return Promise.resolve();
   }
@@ -167,15 +176,15 @@ export const pause: PerformOnItemNsFn =
   });
 
 export const resume: PerformOnItemNsFn =
-  performOnItem((ns, item, fnOptions: Dialogic.TimerResumeOptions = {}) => {
+  performOnItem((ns, item, commandOptions: Dialogic.CommandOptions = {}) => {
     if (item && item.timer) {
-      item.timer.actions.resume(fnOptions.minimumDuration);
+      item.timer.actions.resume(commandOptions.minimumDuration);
     }
     return Promise.resolve(item);
   });
 
-export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getResultPromise") => (ns: string) => (defaultOptions: Dialogic.DefaultOptions) => (identityOptions: Dialogic.IdentityOptions) => {
-  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
+export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getResultPromise") => (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions: Dialogic.IdentityOptions) => {
+  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
   if (maybeItem.just) {
     if (maybeItem.just && maybeItem.just.timer) {
       return maybeItem.just.timer.selectors[timerProp]();
@@ -190,8 +199,8 @@ export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getRe
 export const isPaused = getTimerProperty("isPaused");
 export const getRemaining = getTimerProperty("getRemaining");
 
-export const exists = (ns: string) => (defaultOptions: Dialogic.DefaultOptions) => (identityOptions: Dialogic.IdentityOptions) => {
-  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultOptions)(identityOptions);
+export const exists = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions: Dialogic.IdentityOptions) => {
+  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
   return !!maybeItem.just;
 };
 

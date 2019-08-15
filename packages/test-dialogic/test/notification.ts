@@ -6,37 +6,39 @@ const getDefaultItemId = (name: string) => `${name}-default_${name}-default_${na
 const defaultItemId = getDefaultItemId("notification");
 
 test("show: should resolve when no transition options passed", t => {
-  // Can"t use resetAll because this test is async
+  // Can't use resetAll because this test is async
   const options = {
-    title: "Test", // not a transition option
-    timeout: undefined
+    title: "Test", 
+    dialogic: {
+      timeout: undefined
+    }
   };
-  const identityOptions = undefined;
-  return notification.show(options, identityOptions)
+  return notification.show(options)
     .then(item => {
       t.is(item.id, defaultItemId);
     });
 });
 
-test("show, getCount: even when no spawn options are specified, the state should contain multiple (queued) items", t => {
-  // Can"t use resetAll because this test is async
+test("show, getCount: even when no dialogic options are specified, the state should contain multiple (queued) items", t => {
+  // Can't use resetAll because this test is async
   const options = {
-    title: "Test", // not a transition option
-    timeout: undefined
+    title: "Test", 
+    dialogic: {
+      timeout: undefined
+    }
   };
-  const identityOptions = undefined;
-  [1,2,3].forEach(n => notification.show(options, identityOptions));
+  [1,2,3].forEach(n => notification.show(options));
   t.is(notification.exists(), true);
 });
 
-test("show, getCount: when spawn option `id` is specified, the state should contain multiple items", t => {
+test("show, getCount: when dialogic option `id` is specified, the state should contain multiple items", t => {
   notification.resetAll();
   [1,2,3].forEach(n => notification.show(
     {
-      title: n
-    },
-    {
-      id: n.toString()
+      title: n,
+      dialogic: {
+        id: n.toString()
+      }
     }));
   const expected = 3;
   const actual = notification.getCount();
@@ -46,14 +48,14 @@ test("show, getCount: when spawn option `id` is specified, the state should cont
   t.is(notification.exists({ id: "3" }), true);
 });
 
-test("show, getCount: when spawn option `spawn` is specified, the state should contain multiple items", t => {
+test("show, getCount: when dialogic option `spawn` is specified, the state should contain multiple items", t => {
   notification.resetAll();
   [1,2,3].forEach(n => notification.show(
     {
-      title: n
-    },
-    {
-      spawn: n.toString()
+      title: n,
+      dialogic: {
+        spawn: n.toString()
+      }
     }));
   const expected = 3;
   const actual = notification.getCount();
@@ -64,14 +66,17 @@ test("show, getCount: when spawn option `spawn` is specified, the state should c
 });
 
 test("show, hide: should hide the item", t => {
-  // Can"t use resetAll because this test is async
-  const options = {
-    timeout: undefined
-  };
+  // Can't use resetAll because this test is async
   const identityOptions = {
     id: "show-hide"
   }
-  return notification.show(options, identityOptions)
+  const options = {
+    dialogic: {
+      ...identityOptions,
+      timeout: undefined
+    }
+  };
+  return notification.show(options)
     .then(() => {
       t.is(notification.exists(identityOptions), true);
       return notification.hide(identityOptions).then(item => {
@@ -81,18 +86,23 @@ test("show, hide: should hide the item", t => {
     });
 });
 
-test("show, toggle: should hide the item", t => {
-  // Can"t use resetAll because this test is async
-  const options = {
-    timeout: undefined
-  };
+test("show, toggle: should show and hide the item", t => {
+  // Cant use resetAll because this test is async
   const identityOptions = {
     id: "show-toggle"
   }
-  return notification.show(options, identityOptions)
+  const options = {
+    dialogic: {
+      ...identityOptions,
+      timeout: undefined,
+      toggle: true
+    }
+  };
+  
+  return notification.show(options)
     .then(() => {
       t.is(notification.exists(identityOptions), true);
-      return notification.toggle(options, identityOptions).then(item => {
+      return notification.show(options).then(item => {
         t.is(item.id, "notification-show-toggle-default_notification");
         t.is(notification.exists(identityOptions), false);
       })
@@ -106,16 +116,18 @@ test.serial("transition className", t => {
   t.is(div.classList.contains("yyy"), true);
   t.is(document.querySelector("div"), div);
   
-  const options = {
-    title: "Test",
-    dialogic: {
-      className: "xxx"
-    }
-  };
   const identityOptions = {
     id: "dom"
   };
-  return notification.show(options, identityOptions)
+  const options = {
+    title: "Test",
+    dialogic: {
+      ...identityOptions,
+      className: "xxx"
+    }
+  };
+  
+  return notification.show(options)
     .then(item => {
       t.is(item.id, "notification-dom-default_notification");
       t.is(notification.exists(identityOptions), true);
