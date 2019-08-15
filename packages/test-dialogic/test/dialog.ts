@@ -1,4 +1,4 @@
-import { dialog } from "dialogic";
+import { dialog, showItem } from "dialogic";
 import test from "ava";
 
 const getDefaultItemId = name => `${name}-default_${name}-default_${name}`;
@@ -214,4 +214,31 @@ test.serial("hideAll (different spawn specified): should hide some", t => {
         t.is(dialog.exists({ id: "2", spawn: "hide-all-2" }), true);
       });
   });
+});
+
+test.serial("timeout: should hide after specified time", t => {
+  dialog.resetAll();
+  const timeout = 300;
+  const identityOptions = {
+    id: "timeout"
+  }
+  const options = {
+    dialogic: {
+      ...identityOptions,
+      timeout
+    }
+  };
+  return dialog.show(options)
+    .then(item => {
+      t.is(dialog.exists(identityOptions), true);
+    
+      return showItem(item).then(() => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            t.is(dialog.exists(identityOptions), false);
+            resolve();
+          }, timeout + 100);
+        });
+      });
+    });
 });

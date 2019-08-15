@@ -151,7 +151,7 @@ test.serial("transition className", t => {
 
 test.serial("timeout: should hide after specified time", t => {
   notification.resetAll();
-  const timeout = 500;
+  const timeout = 300;
   const identityOptions = {
     id: "timeout"
   }
@@ -178,7 +178,7 @@ test.serial("timeout: should hide after specified time", t => {
 
 test.serial("pause and resume", t => {
   notification.resetAll();
-  const timeout = 500;
+  const timeout = 300;
   const identityOptions = {
     id: "pause-resume"
   }
