@@ -216,33 +216,6 @@ test.serial("hideAll (different spawn specified): should hide some", t => {
   });
 });
 
-test.serial("timeout: should hide after specified time", t => {
-  dialog.resetAll();
-  const timeout = 300;
-  const identityOptions = {
-    id: "timeout"
-  }
-  const options = {
-    dialogic: {
-      ...identityOptions,
-      timeout
-    }
-  };
-  return dialog.show(options)
-    .then(item => {
-      t.is(dialog.exists(identityOptions), true);
-    
-      return showItem(item).then(() => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            t.is(dialog.exists(identityOptions), false);
-            resolve();
-          }, timeout + 100);
-        });
-      });
-    });
-});
-
 test.serial("callbacks: should call didShow and didHide", t => {
   dialog.resetAll();
 
@@ -258,11 +231,11 @@ test.serial("callbacks: should call didShow and didHide", t => {
     dialogic: {
       ...identityOptions,
       didShow: () => (
-        t.log("didShow"),
+        // t.log("didShow"),
         results.didShow = true
       ),
       didHide: () => (
-        t.log("didHide"),
+        // t.log("didHide"),
         results.didHide = true
       ),
     }
@@ -295,12 +268,12 @@ test.serial("promises: show and hide should return promises", t => {
   };
   return dialog.show(options)
     .then(item => {
-      t.log("show promise");
+      // t.log("show promise");
       t.is(item.id, "dialog-default_dialog-promises");
 
       return dialog.hide(identityOptions)
         .then(item => {
-          t.log("hide promise");
+          // t.log("hide promise");
           t.is(item.id, "dialog-default_dialog-promises"); 
         });
     });
