@@ -99,3 +99,31 @@ test("toggle: should show and hide the item", t => {
       })
     });
 });
+
+test("resetAll: should remove all", t => {
+  // Cant use resetAll because this test is async
+
+  const createDialog = id => {
+    const options = {
+      dialogic: {
+        id,
+        spawn: "reset-all"
+      }
+    };
+    return dialog.show(options);
+  }
+
+  return Promise.all([
+    createDialog("1"),
+    createDialog("2")
+  ]).then(items => {
+    t.is(dialog.exists({ id: "1", spawn: "reset-all" }), true);
+    t.is(dialog.exists({ id: "2", spawn: "reset-all" }), true);
+
+    return dialog.resetAll()
+      .then(() => {
+        t.is(dialog.exists({ id: "1", spawn: "reset-all" }), false);
+        t.is(dialog.exists({ id: "2", spawn: "reset-all" }), false);
+      });
+  });
+});

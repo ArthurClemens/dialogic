@@ -141,7 +141,7 @@ test.serial("transition className", t => {
 
         return hideItem(item).then(item => {
           t.is(item.id, "notification-dom-default_notification");
-          t.not(notification.exists(identityOptions), true);
+          t.is(notification.exists(identityOptions), false);
           t.is(div.classList.contains("yyy"), true);
           t.is(div.classList.contains("xxx-hide-end"), true);
         });
