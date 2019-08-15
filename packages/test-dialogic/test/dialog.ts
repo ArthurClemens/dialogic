@@ -1,4 +1,4 @@
-import { dialog, showItem } from "dialogic";
+import { dialog, showItem, hideItem } from "dialogic";
 import test from "ava";
 
 const getDefaultItemId = name => `${name}-default_${name}-default_${name}`;
@@ -19,7 +19,7 @@ test.serial("show: should resolve when no transition options passed", t => {
     });
 });
 
-test.serial("show, getCount: when no dialogic options are specified, the state should contain 1 item", t => {
+test.serial("getCount: when no dialogic options are specified, the state should contain 1 item", t => {
   dialog.resetAll();
   [1,2,3].forEach(n => dialog.show({
     title: n
@@ -29,7 +29,7 @@ test.serial("show, getCount: when no dialogic options are specified, the state s
   t.is(actual, expected);
 });
 
-test.serial("show, getCount: when dialogic option `id` is specified, the state should contain multiple items", t => {
+test.serial("getCount: when dialogic option `id` is specified, the state should contain multiple items", t => {
   dialog.resetAll();
   [1,2,3].forEach(n => dialog.show(
     {
@@ -43,7 +43,7 @@ test.serial("show, getCount: when dialogic option `id` is specified, the state s
   t.is(actual, expected);
 });
 
-test.serial("show, getCount: when dialogic option `spawn` is specified, the state should contain multiple items", t => {
+test.serial("getCount: when dialogic option `spawn` is specified, the state should contain multiple items", t => {
   dialog.resetAll();
   [1,2,3].forEach(n => dialog.show(
     {
@@ -240,5 +240,68 @@ test.serial("timeout: should hide after specified time", t => {
           }, timeout + 100);
         });
       });
+    });
+});
+
+test.serial("callbacks: should call didShow and didHide", t => {
+  dialog.resetAll();
+
+  const results = {
+    didShow: false,
+    didHide: false
+  };
+  
+  const identityOptions = {
+    id: "callbacks"
+  }
+  const options = {
+    dialogic: {
+      ...identityOptions,
+      didShow: () => (
+        t.log("didShow"),
+        results.didShow = true
+      ),
+      didHide: () => (
+        t.log("didHide"),
+        results.didHide = true
+      ),
+    }
+  };
+  return dialog.show(options)
+    .then(item => {
+      t.is(dialog.exists(identityOptions), true);
+    
+      return showItem(item).then(() => {
+        t.is(dialog.exists(identityOptions), true);
+        t.is(results.didShow, true);
+
+        return hideItem(item).then(() => {
+          t.is(dialog.exists(identityOptions), false);
+          t.is(results.didHide, true);
+        })
+      });
+    });
+});
+
+test.serial("promises: show and hide should return promises", t => {
+  dialog.resetAll();
+  const identityOptions = {
+    spawn: "promises"
+  };
+  const options = {
+    dialogic: {
+      ...identityOptions
+    }
+  };
+  return dialog.show(options)
+    .then(item => {
+      t.log("show promise");
+      t.is(item.id, "dialog-default_dialog-promises");
+
+      return dialog.hide(identityOptions)
+        .then(item => {
+          t.log("hide promise");
+          t.is(item.id, "dialog-default_dialog-promises"); 
+        });
     });
 });

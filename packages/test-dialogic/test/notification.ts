@@ -19,7 +19,7 @@ test.serial("show: should resolve when no transition options passed", t => {
     });
 });
 
-test.serial("show, getCount: even when no dialogic options are specified, the state should contain multiple (queued) items", t => {
+test.serial("getCount: even when no dialogic options are specified, the state should contain multiple (queued) items", t => {
   notification.resetAll();
   const options = {
     title: "Test", 
@@ -31,7 +31,7 @@ test.serial("show, getCount: even when no dialogic options are specified, the st
   t.is(notification.exists(), true);
 });
 
-test.serial("show, getCount: when dialogic option `id` is specified, the state should contain multiple items", t => {
+test.serial("getCount: when dialogic option `id` is specified, the state should contain multiple items", t => {
   notification.resetAll();
   [1,2,3].forEach(n => notification.show(
     {
@@ -39,16 +39,17 @@ test.serial("show, getCount: when dialogic option `id` is specified, the state s
       dialogic: {
         id: n.toString()
       }
-    }));
-  const expected = 3;
-  const actual = notification.getCount();
-  t.is(actual, expected);
+    }
+  ));
   t.is(notification.exists({ id: "1" }), true);
   t.is(notification.exists({ id: "2" }), true);
   t.is(notification.exists({ id: "3" }), true);
+  const expected = 3;
+  const actual = notification.getCount();
+  t.is(actual, expected);
 });
 
-test.serial("show, getCount: when dialogic option `spawn` is specified, the state should contain multiple items", t => {
+test.serial("getCount: when dialogic option `spawn` is specified, the state should contain multiple items", t => {
   notification.resetAll();
   [1,2,3].forEach(n => notification.show(
     {
@@ -56,16 +57,17 @@ test.serial("show, getCount: when dialogic option `spawn` is specified, the stat
       dialogic: {
         spawn: n.toString()
       }
-    }));
-  const expected = 3;
-  const actual = notification.getCount();
+    }
+  ));
   t.is(notification.exists({ spawn: "1" }), true);
   t.is(notification.exists({ spawn: "2" }), true);
   t.is(notification.exists({ spawn: "3" }), true);
+  const expected = 3;
+  const actual = notification.getCount();
   t.is(actual, expected);
 });
 
-test.serial("show, hide: should hide the item", t => {
+test.serial("hide: should hide the item", t => {
   notification.resetAll();
   const identityOptions = {
     id: "show-hide"
