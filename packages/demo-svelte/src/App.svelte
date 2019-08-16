@@ -143,21 +143,22 @@
 </script>
 
 <style>
-  :global(.xxx) {
+  /* :global(.xxx) {
     opacity: 0;
-    transition: opacity 200ms;
-  }
+  }  */
   :global(.xxx-show-start) {
     opacity: 0;
   }
   :global(.xxx-show-end) {
     opacity: 1;
+    transition: opacity 300ms;
   }
-  :global(.xxx-exit) {
+  :global(.xxx-hide-start) {
     opacity: 1;
   }
   :global(.xxx-hide-end) {
     opacity: 0;
+    transition: opacity 300ms;
   }
 
   :global(.xxx-delay-show-start) {

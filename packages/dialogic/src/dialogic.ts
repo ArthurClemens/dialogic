@@ -18,7 +18,7 @@ const getUid = () =>
 
 const transitionStates = {
   default: 0,
-  displayed: 1,
+  displaying: 1,
   hiding: 2,
 };
 
@@ -160,7 +160,6 @@ export const show = createInstance;
 export const hide: PerformOnItemNsFn =
   performOnItem((ns, item) => {
     if (item.transitionState !== transitionStates.hiding) {
-      item.transitionState = transitionStates.hiding;
       return hideItem(item);
     } else {
       return Promise.resolve(item);
@@ -293,9 +292,9 @@ const deferredHideItem = async function(item: Dialogic.Item, timer: Dialogic.Tim
 };
 
 export const showItem: Dialogic.InitiateItemTransitionFn = async function(item) {
-  if (item.transitionState != transitionStates.displayed) {
+  if (item.transitionState !== transitionStates.displaying) {
+    item.transitionState = transitionStates.displaying;
     await(transitionItem(item, MODE.SHOW));
-    item.transitionState = transitionStates.displayed;
   }
   item.callbacks.didShow && await(item.callbacks.didShow(item));
   if (item.dialogicOptions.timeout && item.timer) {
@@ -305,13 +304,16 @@ export const showItem: Dialogic.InitiateItemTransitionFn = async function(item) 
 };
 
 export const hideItem: Dialogic.InitiateItemTransitionFn = async function(item) {
+  item.transitionState = transitionStates.hiding;
   // Stop any running timer
   if (item.timer) {
     item.timer.actions.stop();
   }
   await(transitionItem(item, MODE.HIDE));
   item.callbacks.didHide && await(item.callbacks.didHide(item));
-  const copy = JSON.parse(JSON.stringify(item));
+  const copy = {
+    ...item
+  };
   actions.remove(item.ns, item.id);
   return Promise.resolve(copy);
 };

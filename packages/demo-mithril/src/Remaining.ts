@@ -1,8 +1,15 @@
-import m from "mithril";
+import m, { Component } from "mithril";
 
-export const Remaining = ({ attrs } : { attrs: { getRemaining: () => number | undefined }}) => {
+type RemainingProps = {
+  getRemaining: () => number | undefined;
+}
+
+type RemainingFn = ({ attrs } : { attrs: RemainingProps }) => Component<RemainingProps>;
+
+export const Remaining: RemainingFn = ({ attrs }) => {
   let displayValue: number | undefined;
   let reqId: number;
+
   const update = () => {
     const remaining = attrs.getRemaining();
     if (remaining !== undefined) {
@@ -16,9 +23,9 @@ export const Remaining = ({ attrs } : { attrs: { getRemaining: () => number | un
     }
     reqId = window.requestAnimationFrame(update);
   };
-  reqId = window.requestAnimationFrame(update);
-
+  
   return {
+    oncreate: () => reqId = window.requestAnimationFrame(update),
     onremove: () => window.cancelAnimationFrame(reqId),
     view: () => 
       m("div", `Remaining: ${displayValue}`)

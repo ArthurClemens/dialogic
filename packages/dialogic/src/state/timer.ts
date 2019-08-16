@@ -4,15 +4,15 @@ import { Dialogic } from "../..";
 type PatchFn = (state: Dialogic.TimerState) => Dialogic.TimerState;
 
 const initialState = {
-  timerId: undefined,
+  callback: () => {},
   isPaused: undefined,
+  onAbort: () => {},
+  onDone: () => {},
+  promise: undefined,
   remaining: undefined,
   startTime: undefined,
-  callback: () => {},
   timeoutFn: () => {},
-  promise: undefined,
-  onDone: () => {},
-  onAbort: () => {},
+  timerId: undefined,
 };
 
 const appendStartTimer = (state: Dialogic.TimerState, callback: Dialogic.TimerCallback, duration: number, updateState: () => any) => {
@@ -107,7 +107,7 @@ export const Timer = () => {
           update((state: Dialogic.TimerState) => {
             return {
               ...state,
-              ...appendPauseTimer(state),
+              ...(!state.isPaused && appendPauseTimer(state)),
             }
           })
         },

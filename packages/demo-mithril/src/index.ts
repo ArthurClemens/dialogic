@@ -57,14 +57,6 @@ const toggleDialog = () => dialog.show(
 const dialogOneProps: Dialogic.Options = {
   dialogic: {
     component: DefaultContent,
-    styles: {
-      showEnd: {
-        transitionDuration: "500ms",
-      },
-      hideEnd: {
-        transitionDuration: "500ms",
-      },
-    },
     className: "xxx",
   },
   className: "xxx-content",
@@ -73,12 +65,6 @@ const dialogOneProps: Dialogic.Options = {
 };
 
 const dialogDelayProps: Dialogic.Options = {
-  // transitionStyles: {
-  //   default: {
-  //     transitionDuration: "750ms",
-  //     transitionDelay: "250ms",
-  //   },
-  // },
   dialogic: {
     component: DefaultContent,
     className: "xxx-delay",
@@ -143,6 +129,23 @@ const hideAllOptions = {
       opacity: "0",
     }
   }
+};
+
+const showNotification = () => {
+  const title = "N " + getRandomId();
+  return notification.show(
+    {
+      dialogic: {
+        didShow: (item: Dialogic.Item) => console.log("didShow", item, title),
+        didHide: (item: Dialogic.Item) => console.log("didHide", item, title),
+        component: DefaultContent,
+        className: "xxx-timings",
+        spawn: "NO"
+      },
+      className: "xxx-timings-content",
+      title,
+    },
+  ).then((item: Dialogic.Item) => console.log("notification shown", item, title))
 };
 
 const App = {
@@ -498,22 +501,7 @@ const App = {
         m("button",
           {
             className: "button",
-            onclick: () => {
-              const title = "N " + getRandomId();
-              return notification.show(
-                {
-                  dialogic: {
-                    didShow: (item: Dialogic.Item) => console.log("didShow", item, title),
-                    didHide: (item: Dialogic.Item) => console.log("didHide", item, title),
-                    component: DefaultContent,
-                    className: "xxx-timings",
-                    spawn: "NO"
-                  },
-                  className: "xxx-timings-content",
-                  title,
-                },
-              ).then((item: Dialogic.Item) => console.log("notification shown", item, title))
-            } 
+            onclick: showNotification
           },
           "Show notification"
         ),

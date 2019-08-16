@@ -48,6 +48,8 @@ const applyStylesForState = (domElement, props, step, isEnterStep) => {
         removeTransitionClassNames(domElement, transitionClassNames);
         transitionClassNames && domElement.classList.add(transitionClassNames[step]);
     }
+    // reflow
+    domElement.scrollTop;
 };
 const getDuration = (domElement) => {
     const durationStyleValue = getStyleValue({ domElement, prop: "transition-duration" });
@@ -84,17 +86,17 @@ const transition = (props, mode) => {
         : "hideStart";
     return new Promise(resolve => {
         applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
-        const nextStep = steps[currentStep].nextStep;
-        if (nextStep) {
-            setTimeout(() => {
+        setTimeout(() => {
+            const nextStep = steps[currentStep].nextStep;
+            if (nextStep) {
                 currentStep = nextStep;
                 applyStylesForState(domElement, props, currentStep);
                 // addEventListener sometimes hangs this function because it never finishes
                 // Using setTimeout instead of addEventListener gives more consistent results
                 const duration = getDuration(domElement);
                 setTimeout(resolve, duration);
-            }, 0);
-        }
+            }
+        }, 0);
     });
 };
 const styleDurationToMs = (durationStr) => {
@@ -427,15 +429,15 @@ const selectors = {
 // );
 
 const initialState = {
-    timerId: undefined,
+    callback: () => { },
     isPaused: undefined,
+    onAbort: () => { },
+    onDone: () => { },
+    promise: undefined,
     remaining: undefined,
     startTime: undefined,
-    callback: () => { },
     timeoutFn: () => { },
-    promise: undefined,
-    onDone: () => { },
-    onAbort: () => { },
+    timerId: undefined,
 };
 const appendStartTimer = (state, callback, duration, updateState) => {
     const timeoutFn = () => {
@@ -519,7 +521,7 @@ const Timer = () => {
                     update((state) => {
                         return {
                             ...state,
-                            ...appendPauseTimer(state),
+                            ...(!state.isPaused && appendPauseTimer(state)),
                         };
                     });
                 },
@@ -599,7 +601,7 @@ const getUid = () => uid === Number.MAX_SAFE_INTEGER
     : uid++;
 const transitionStates = {
     default: 0,
-    displayed: 1,
+    displaying: 1,
     hiding: 2,
 };
 const performOnItem = fn => ns => defaultDialogicOptions => (options) => {
@@ -713,7 +715,6 @@ const createInstance = (ns) => (defaultDialogicOptions) => (options = {}) => {
 const show = createInstance;
 const hide = performOnItem((ns, item) => {
     if (item.transitionState !== transitionStates.hiding) {
-        item.transitionState = transitionStates.hiding;
         return hideItem(item);
     }
     else {
@@ -820,9 +821,9 @@ const deferredHideItem = async function (item, timer, timeout) {
     return getTimerProperty("getResultPromise");
 };
 const showItem = async function (item) {
-    if (item.transitionState != transitionStates.displayed) {
+    if (item.transitionState !== transitionStates.displaying) {
+        item.transitionState = transitionStates.displaying;
         await (transitionItem(item, MODE.SHOW));
-        item.transitionState = transitionStates.displayed;
     }
     item.callbacks.didShow && await (item.callbacks.didShow(item));
     if (item.dialogicOptions.timeout && item.timer) {
@@ -831,13 +832,16 @@ const showItem = async function (item) {
     return Promise.resolve(item);
 };
 const hideItem = async function (item) {
+    item.transitionState = transitionStates.hiding;
     // Stop any running timer
     if (item.timer) {
         item.timer.actions.stop();
     }
     await (transitionItem(item, MODE.HIDE));
     item.callbacks.didHide && await (item.callbacks.didHide(item));
-    const copy = JSON.parse(JSON.stringify(item));
+    const copy = {
+        ...item
+    };
     actions.remove(item.ns, item.id);
     return Promise.resolve(copy);
 };

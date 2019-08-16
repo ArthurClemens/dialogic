@@ -16,8 +16,7 @@
   },
   "devDependencies": {
     "mithril": "^2.0.3",
-    "@types/mithril": "2.0.0",
-    "@types/uuid": "^3.4.5"
+    "@types/mithril": "2.0.0"
   },
   "files": [
     "dist",

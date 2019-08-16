@@ -1,0 +1,31 @@
+{
+  "name": "dialogic-react",
+  "version": "0.0.1",
+  "description": "Logic for dialogs and notifications",
+  "main": "dist/dialogic-react",
+  "module": "dist/dialogic-react.mjs",
+  "scripts": {
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
+    "clean": "rm -rf dist/*",
+    "rollup": "TYPESCRIPT=1 ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.umd.js && TYPESCRIPT=1 ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.es.js ",
+    "build": "npm run clean && npm run rollup && npm run size",
+    "size": "gzip -c dist/dialogic-react.js | wc -c"
+  },
+  "dependencies": {
+    "dialogic": "^0.0.1"
+  },
+  "devDependencies": {
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.8.5"
+  },
+  "files": [
+    "dist",
+    "index.d.ts",
+    "README.md"
+  ],
+  "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
+  "homepage": "https://github.com/ArthurClemens/dialogic",
+  "license": "MIT"
+}

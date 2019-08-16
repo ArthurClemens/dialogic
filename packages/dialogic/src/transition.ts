@@ -70,6 +70,9 @@ const applyStylesForState = (domElement: HTMLElement, props: TransitionProps, st
 		removeTransitionClassNames(domElement, transitionClassNames);
 		transitionClassNames && domElement.classList.add(transitionClassNames[step]);
 	}
+
+	// reflow
+	domElement.scrollTop;
 };
 
 const getDuration = (domElement: HTMLElement) => {
@@ -124,17 +127,17 @@ export const transition = (props: TransitionProps, mode?: string) => {
 
 		applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
 
-		const nextStep = steps[currentStep].nextStep;
-		if (nextStep) {
-			setTimeout(() => {
+		setTimeout(() => {
+			const nextStep = steps[currentStep].nextStep;
+			if (nextStep) {
 				currentStep = nextStep;
 				applyStylesForState(domElement, props, currentStep);
 				// addEventListener sometimes hangs this function because it never finishes
 				// Using setTimeout instead of addEventListener gives more consistent results
 				const duration = getDuration(domElement);
 				setTimeout(resolve, duration);
-			}, 0);
-		}
+			}
+		}, 0);
 	});
 };
 
