@@ -1,0 +1,34 @@
+{
+  "name": "tests-dialogic-mithril",
+  "private": true,
+  "description": "Test Dialogic with Mithril",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
+    "lint": "eslint ./src",
+    "dev": "npm-run-all --parallel dev:watch dev:serve",
+    "dev:serve": "ENTRY=./src/index.ts ../../node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ../../scripts/webpack.config.dev.js --disableHostCheck true --port 3000 --host 0.0.0.0",
+    "dev:watch": "ENTRY=./src/index.ts ../../node_modules/webpack/bin/webpack.js --watch --config ../../scripts/webpack.config.dev.js",
+    "webpack": "ENTRY=./src/index.ts ../../node_modules/webpack/bin/webpack.js --config ../../scripts/webpack.config.prod.js",
+    "build": "npm run clean && npm run webpack",
+    "serve": "http-server -c-1 -p 8080 dist",
+    "clean": "rm -rf dist/js/*",
+    "test": "npm run test:cypress",
+    "test:cypress": "npm run build && start-server-and-test serve 8080 cypress:run",
+    "test:cypress:i": "npm run build && npm-run-all --parallel serve cypress:open",
+    "cypress:run": "../../node_modules/cypress/bin/cypress run",
+    "cypress:open": "../../node_modules/cypress/bin/cypress open"
+  },
+  "dependencies": {
+    "dialogic": "0.0.1",
+    "dialogic-mithril": "0.0.1",
+    "mithril": "^2.0.3"
+  },
+  "devDependencies": {
+    "@types/mithril": "^2.0.0",
+    "http-server": "^0.11.1",
+    "npm-run-all": "^4.1.5",
+    "start-server-and-test": "^1.10.0"
+  }
+}

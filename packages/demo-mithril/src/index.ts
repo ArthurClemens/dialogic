@@ -203,7 +203,7 @@ const App = {
                   },
                   title: dialogOneProps.title + ' ' + getRandomId(),
                 }
-              )    
+              )
           },
           "Show dialog"
         ),
