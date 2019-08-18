@@ -11,7 +11,6 @@ export const Default: Default = {
         "data-test-id": "content-default"
       },
       [
-        "Content",
         m("h2", attrs.title),
         m("button",
           {

@@ -1,9 +1,9 @@
 /* global cy, describe, before, it */
 
-describe("Dialog: default options", () => {
+describe("Dialog: className", () => {
 
   before(() => {
-    cy.visit("/DefaultDialog");
+    cy.visit("/DialogClassName");
   });
 
   it("should show and hide the dialog", () => {
@@ -36,6 +36,14 @@ describe("Dialog: default options", () => {
     cy.get("[data-test-id=content-default]").should("exist");
     cy.get("[data-test-id=button-hide-content]").should("exist").click();
     cy.get("[data-test-id=content-default]").should("not.exist");
+  });
+
+  it("should have style set via the className", () => {
+    cy.get("[data-test-id=button-show]").should("exist").click();
+    cy.get("[data-test-id=content-default]").should("exist")
+      .parent()
+      .should("have.css", "opacity", "1")
+      .should("have.css", "transition", "opacity 0.3s ease 0s");
   });
 
 });

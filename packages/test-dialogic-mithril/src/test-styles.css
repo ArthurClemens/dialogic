@@ -1,19 +1,4 @@
 
-.menu {
-  padding: 15px;
-}
-
-.test {
-  padding: 15px;
-  min-height: 100vh;
-}
-
-.instance-content {
-  border: 1px solid #ddd;
-  padding: 20px;
-}
-
-
 .dialog-show-start {
   opacity: 0;
 }
@@ -58,6 +43,3 @@
   opacity: 0;
   transition: opacity 800ms;
 }
-
-
-/*# sourceMappingURL=app.css.map*/
