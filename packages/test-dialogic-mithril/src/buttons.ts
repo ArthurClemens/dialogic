@@ -4,9 +4,10 @@ import { DialogicTests } from "../";
 type ButtonsProps = {
   showFn: DialogicTests.showFn;
   hideFn: DialogicTests.hideFn;
+  id?: string;
 }
 
-export const buttons = ({ showFn, hideFn }: ButtonsProps) => 
+export const buttons = ({ showFn, hideFn, id }: ButtonsProps) => 
   m("div",
     { className: "buttons" },
     [
@@ -14,7 +15,7 @@ export const buttons = ({ showFn, hideFn }: ButtonsProps) =>
         {
           className: "button",
           onclick: showFn,
-          "data-test-id": "button-show"
+          "data-test-id": `button-show${id ? `-${id}` : ''}`
         },
         "Show"
       ),
@@ -22,7 +23,7 @@ export const buttons = ({ showFn, hideFn }: ButtonsProps) =>
         {
           className: "button",
           onclick: hideFn,
-          "data-test-id": "button-hide"
+          "data-test-id": `button-hide${id ? `-${id}` : ''}`
         },
         "Hide"
       ),

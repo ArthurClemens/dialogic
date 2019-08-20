@@ -13,6 +13,10 @@
   padding: 20px;
 }
 
+.dialog + .dialog {
+  margin-top: 15px;
+}
+
 
 .dialog-show-start {
   opacity: 0;

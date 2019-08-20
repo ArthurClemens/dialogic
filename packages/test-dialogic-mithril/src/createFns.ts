@@ -7,6 +7,7 @@ type CreateFnsFn = (props: {
   instance: Dialogic.DialogicInstance,
   component: any,
   className?: string,
+  id?: string,
   title: string,
   styles?: any
 }) => {
@@ -14,28 +15,26 @@ type CreateFnsFn = (props: {
   hideFn: DialogicTests.hideFn;
 };
 
-export const createFns: CreateFnsFn = ({ instance, component, className, title, styles }) => {
+export const createFns: CreateFnsFn = ({ instance, component, className, title, id, styles }) => {
   const props = {
     dialogic: {
       component: component,
       className,
-      styles
+      styles,
+      id
     },
     className: "instance-content",
-    id: getRandomId()
+    id: getRandomId(),
+    contentId: id
   };
   
   const showFn = () => instance.show(
     {
       ...props,
-      dialogic: {
-        ...props.dialogic,
-        id: props.id
-      },
       title: title + " " + getRandomId(),
     }
   );
-  const hideFn = () => instance.hide({ id: props.id });
+  const hideFn = () => instance.hide(id !== undefined ? { id } : undefined);
 
   return {
     showFn,

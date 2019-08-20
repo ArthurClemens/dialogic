@@ -8,7 +8,7 @@ export const Default: Default = {
     return m("div",
       {
         className: attrs.className,
-        "data-test-id": "content-default"
+        "data-test-id": `content-default${attrs.contentId ? `-${attrs.contentId}` : ''}`
       },
       [
         m("h2", attrs.title),
