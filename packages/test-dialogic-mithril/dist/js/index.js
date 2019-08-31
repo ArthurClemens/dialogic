@@ -4760,38 +4760,6 @@ else {}
 
 /***/ }),
 
-/***/ "./buttons.ts":
-/*!********************!*\
-  !*** ./buttons.ts ***!
-  \********************/
-/*! exports provided: buttons */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "buttons", function() { return buttons; });
-/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
-/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
-
-const buttons = ({ showFn, hideFn, id, spawn }) => {
-    const name = `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}` || "default";
-    return mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", { className: "buttons" }, [
-        showFn && mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
-            className: "button primary",
-            onclick: showFn,
-            "data-test-id": `button-show-${name}`
-        }, `Show ${name}`),
-        hideFn && mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
-            className: "button",
-            onclick: hideFn,
-            "data-test-id": `button-hide-${name}`
-        }, `Hide ${name}`),
-    ]);
-};
-
-
-/***/ }),
-
 /***/ "./content/Default.ts":
 /*!****************************!*\
   !*** ./content/Default.ts ***!
@@ -4824,46 +4792,6 @@ const Default = {
 
 /***/ }),
 
-/***/ "./createFns.ts":
-/*!**********************!*\
-  !*** ./createFns.ts ***!
-  \**********************/
-/*! exports provided: createFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFns", function() { return createFns; });
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./utils.ts");
-
-const createFns = ({ instance, component, className, title, id, spawn, styles }) => {
-    const contentId = `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}`;
-    const props = {
-        dialogic: {
-            component: component,
-            className,
-            styles,
-            id,
-            spawn
-        },
-        className: "instance-content",
-        id: Object(_utils__WEBPACK_IMPORTED_MODULE_0__["getRandomId"])(),
-        contentId
-    };
-    const showFn = () => instance.show({
-        ...props,
-        title: title + " " + Object(_utils__WEBPACK_IMPORTED_MODULE_0__["getRandomId"])(),
-    });
-    const hideFn = () => instance.hide(props.dialogic);
-    return {
-        showFn,
-        hideFn
-    };
-};
-
-
-/***/ }),
-
 /***/ "./cypress-tests/DialogClassName.ts":
 /*!******************************************!*\
   !*** ./cypress-tests/DialogClassName.ts ***!
@@ -4875,9 +4803,9 @@ const createFns = ({ instance, component, className, title, id, spawn, styles })
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../createFns */ "./createFns.ts");
+/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createFns */ "./cypress-tests/createFns.ts");
 /* harmony import */ var _content_Default__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../content/Default */ "./content/Default.ts");
-/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../buttons */ "./buttons.ts");
+/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./buttons */ "./cypress-tests/buttons.ts");
 /* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
 
 
@@ -4910,9 +4838,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../createFns */ "./createFns.ts");
+/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createFns */ "./cypress-tests/createFns.ts");
 /* harmony import */ var _content_Default__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../content/Default */ "./content/Default.ts");
-/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../buttons */ "./buttons.ts");
+/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./buttons */ "./cypress-tests/buttons.ts");
 /* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
 
 
@@ -4945,9 +4873,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../createFns */ "./createFns.ts");
+/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createFns */ "./cypress-tests/createFns.ts");
 /* harmony import */ var _content_Default__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../content/Default */ "./content/Default.ts");
-/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../buttons */ "./buttons.ts");
+/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./buttons */ "./cypress-tests/buttons.ts");
 /* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
 
 
@@ -4993,9 +4921,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../createFns */ "./createFns.ts");
+/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createFns */ "./cypress-tests/createFns.ts");
 /* harmony import */ var _content_Default__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../content/Default */ "./content/Default.ts");
-/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../buttons */ "./buttons.ts");
+/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./buttons */ "./cypress-tests/buttons.ts");
 /* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
 
 
@@ -5063,9 +4991,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../createFns */ "./createFns.ts");
+/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createFns */ "./cypress-tests/createFns.ts");
 /* harmony import */ var _content_Default__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../content/Default */ "./content/Default.ts");
-/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../buttons */ "./buttons.ts");
+/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./buttons */ "./cypress-tests/buttons.ts");
 /* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
 
 
@@ -5102,9 +5030,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../createFns */ "./createFns.ts");
+/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createFns */ "./cypress-tests/createFns.ts");
 /* harmony import */ var _content_Default__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../content/Default */ "./content/Default.ts");
-/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../buttons */ "./buttons.ts");
+/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./buttons */ "./cypress-tests/buttons.ts");
 /* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
 
 
@@ -5172,9 +5100,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../createFns */ "./createFns.ts");
+/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createFns */ "./cypress-tests/createFns.ts");
 /* harmony import */ var _content_Default__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../content/Default */ "./content/Default.ts");
-/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../buttons */ "./buttons.ts");
+/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./buttons */ "./cypress-tests/buttons.ts");
 /* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
 
 
@@ -5221,6 +5149,195 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./cypress-tests/DialogTimeout.ts":
+/*!****************************************!*\
+  !*** ./cypress-tests/DialogTimeout.ts ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
+/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createFns */ "./cypress-tests/createFns.ts");
+/* harmony import */ var _content_Default__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../content/Default */ "./content/Default.ts");
+/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./buttons */ "./cypress-tests/buttons.ts");
+/* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
+/* harmony import */ var _Remaining__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Remaining */ "./cypress-tests/Remaining.ts");
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (() => {
+    const fns1 = Object(_createFns__WEBPACK_IMPORTED_MODULE_1__["createFns"])({ instance: dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["dialog"], component: _content_Default__WEBPACK_IMPORTED_MODULE_2__["Default"], className: "dialog", title: "Default", timeout: 2000 });
+    return {
+        view: () => {
+            return mithril__WEBPACK_IMPORTED_MODULE_0___default()(".test", [
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", { "data-test-id": "reset-all" }, mithril__WEBPACK_IMPORTED_MODULE_0___default()(".buttons", [
+                    mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                        className: "button",
+                        onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["dialog"].pause(),
+                        "data-test-id": "button-pause"
+                    }, "Pause"),
+                    mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                        className: "button",
+                        onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["dialog"].resume(),
+                        "data-test-id": "button-resume"
+                    }, "Resume"),
+                    mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+                        className: "button",
+                        onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["dialog"].resetAll(),
+                        "data-test-id": "button-reset"
+                    }, "Reset"),
+                ])),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", { "data-test-id": "is-paused" }, `Is paused: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["dialog"].isPaused()}`),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", mithril__WEBPACK_IMPORTED_MODULE_0___default()(_Remaining__WEBPACK_IMPORTED_MODULE_5__["Remaining"], { getRemaining: dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["dialog"].getRemaining })),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".content", [
+                    Object(_buttons__WEBPACK_IMPORTED_MODULE_3__["buttons"])({ ...fns1 }),
+                ]),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".spawn.default-spawn", mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["Dialog"])),
+            ]);
+        }
+    };
+});
+
+
+/***/ }),
+
+/***/ "./cypress-tests/Remaining.ts":
+/*!************************************!*\
+  !*** ./cypress-tests/Remaining.ts ***!
+  \************************************/
+/*! exports provided: Remaining */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Remaining", function() { return Remaining; });
+/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
+/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
+
+const Remaining = ({ attrs }) => {
+    let displayValue;
+    let reqId;
+    const update = () => {
+        const remaining = attrs.getRemaining();
+        if (remaining !== undefined) {
+            if (displayValue !== remaining) {
+                mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw();
+                displayValue = Math.max(remaining, 0);
+            }
+        }
+        else {
+            displayValue = undefined;
+            mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw();
+        }
+        reqId = window.requestAnimationFrame(update);
+    };
+    return {
+        oncreate: () => reqId = window.requestAnimationFrame(update),
+        onremove: () => window.cancelAnimationFrame(reqId),
+        view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", { "data-test-id": "remaining" }, [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("span", "Remaining: "),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("span[data-test-id=remaining-value]", displayValue === undefined ? "undefined" : displayValue.toString()),
+        ])
+    };
+};
+
+
+/***/ }),
+
+/***/ "./cypress-tests/buttons.ts":
+/*!**********************************!*\
+  !*** ./cypress-tests/buttons.ts ***!
+  \**********************************/
+/*! exports provided: buttons */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "buttons", function() { return buttons; });
+/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
+/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
+
+const buttons = ({ showFn, hideFn, id, spawn }) => {
+    const name = `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}` || "default";
+    return mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", { className: "buttons" }, [
+        showFn && mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+            className: "button primary",
+            onclick: showFn,
+            "data-test-id": `button-show-${name}`
+        }, `Show ${name}`),
+        hideFn && mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
+            className: "button",
+            onclick: hideFn,
+            "data-test-id": `button-hide-${name}`
+        }, `Hide ${name}`),
+    ]);
+};
+
+
+/***/ }),
+
+/***/ "./cypress-tests/createFns.ts":
+/*!************************************!*\
+  !*** ./cypress-tests/createFns.ts ***!
+  \************************************/
+/*! exports provided: createFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFns", function() { return createFns; });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./cypress-tests/utils.ts");
+
+const createFns = ({ instance, component, className, title, id, spawn, styles, timeout }) => {
+    const contentId = `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}`;
+    const props = {
+        dialogic: {
+            component: component,
+            className,
+            styles,
+            id,
+            spawn,
+            timeout
+        },
+        className: "instance-content",
+        id: Object(_utils__WEBPACK_IMPORTED_MODULE_0__["getRandomId"])(),
+        contentId
+    };
+    const showFn = () => instance.show({
+        ...props,
+        title: title + " " + Object(_utils__WEBPACK_IMPORTED_MODULE_0__["getRandomId"])(),
+    });
+    const hideFn = () => instance.hide(props.dialogic);
+    return {
+        showFn,
+        hideFn
+    };
+};
+
+
+/***/ }),
+
+/***/ "./cypress-tests/utils.ts":
+/*!********************************!*\
+  !*** ./cypress-tests/utils.ts ***!
+  \********************************/
+/*! exports provided: getRandomId */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRandomId", function() { return getRandomId; });
+const getRandomId = () => Math.round(1000 * Math.random()).toString();
+
+
+/***/ }),
+
 /***/ "./index.ts":
 /*!******************!*\
   !*** ./index.ts ***!
@@ -5239,10 +5356,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _cypress_tests_DialogCount__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./cypress-tests/DialogCount */ "./cypress-tests/DialogCount.ts");
 /* harmony import */ var _cypress_tests_DialogHideAll__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./cypress-tests/DialogHideAll */ "./cypress-tests/DialogHideAll.ts");
 /* harmony import */ var _cypress_tests_DialogResetAll__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./cypress-tests/DialogResetAll */ "./cypress-tests/DialogResetAll.ts");
-/* harmony import */ var _app_styles_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./app-styles.css */ "./app-styles.css");
-/* harmony import */ var _app_styles_css__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_app_styles_css__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _test_styles_css__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./test-styles.css */ "./test-styles.css");
-/* harmony import */ var _test_styles_css__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_test_styles_css__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _cypress_tests_DialogTimeout__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./cypress-tests/DialogTimeout */ "./cypress-tests/DialogTimeout.ts");
+/* harmony import */ var _app_styles_css__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./app-styles.css */ "./app-styles.css");
+/* harmony import */ var _app_styles_css__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_app_styles_css__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _test_styles_css__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./test-styles.css */ "./test-styles.css");
+/* harmony import */ var _test_styles_css__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_test_styles_css__WEBPACK_IMPORTED_MODULE_10__);
+
 
 
 
@@ -5265,6 +5384,7 @@ const routes = {
     "/DialogCount": _cypress_tests_DialogCount__WEBPACK_IMPORTED_MODULE_5__["default"],
     "/DialogHideAll": _cypress_tests_DialogHideAll__WEBPACK_IMPORTED_MODULE_6__["default"],
     "/DialogResetAll": _cypress_tests_DialogResetAll__WEBPACK_IMPORTED_MODULE_7__["default"],
+    "/DialogTimeout": _cypress_tests_DialogTimeout__WEBPACK_IMPORTED_MODULE_8__["default"],
 };
 mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.prefix = "#";
 const mountNode = document.getElementById("root");
@@ -5283,21 +5403,6 @@ if (mountNode) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ "./utils.ts":
-/*!******************!*\
-  !*** ./utils.ts ***!
-  \******************/
-/*! exports provided: getRandomId */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRandomId", function() { return getRandomId; });
-const getRandomId = () => Math.round(1000 * Math.random()).toString();
-
 
 /***/ })
 

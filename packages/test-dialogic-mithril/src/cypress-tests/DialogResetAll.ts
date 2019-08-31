@@ -1,7 +1,7 @@
 import m from "mithril";
-import { createFns } from "../createFns";
+import { createFns } from "./createFns";
 import { Default } from "../content/Default";
-import { buttons } from "../buttons";
+import { buttons } from "./buttons";
 import { dialog, Dialog } from "dialogic-mithril";
 
 export default () => {

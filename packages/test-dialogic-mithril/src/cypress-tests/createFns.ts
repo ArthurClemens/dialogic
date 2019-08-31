@@ -1,7 +1,7 @@
 
 import { Dialogic } from "dialogic";
 import { getRandomId } from "./utils";
-import { DialogicTests } from "..";
+import { DialogicTests } from "../..";
 
 type CreateFnsFn = (props: {
   instance: Dialogic.DialogicInstance,
@@ -10,13 +10,14 @@ type CreateFnsFn = (props: {
   id?: string,
   spawn?: string,
   title: string,
-  styles?: any
+  styles?: any,
+  timeout?: number,
 }) => {
   showFn: DialogicTests.showFn;
   hideFn: DialogicTests.hideFn;
 };
 
-export const createFns: CreateFnsFn = ({ instance, component, className, title, id, spawn, styles }) => {
+export const createFns: CreateFnsFn = ({ instance, component, className, title, id, spawn, styles, timeout }) => {
   const contentId = `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}`;
   const props = {
     dialogic: {
@@ -24,7 +25,8 @@ export const createFns: CreateFnsFn = ({ instance, component, className, title, 
       className,
       styles,
       id,
-      spawn
+      spawn,
+      timeout
     },
     className: "instance-content",
     id: getRandomId(),

@@ -57,8 +57,10 @@
     font-weight: bold;
     color: #888;
     display: block;
-    margin-top: -5px;
-    margin-bottom: 13px;
+  }
+
+  .spawn:not(:empty):before {
+    margin-bottom: 20px;
   }
 
   .spawn + .spawn {
