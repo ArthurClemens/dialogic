@@ -15,7 +15,7 @@ export const buttons = ({ showFn, hideFn, id, spawn }: ButtonsProps) => {
     [
       showFn && m("button", 
         {
-          className: "button",
+          className: "button primary",
           onclick: showFn,
           "data-test-id": `button-show-${name}`
         },
