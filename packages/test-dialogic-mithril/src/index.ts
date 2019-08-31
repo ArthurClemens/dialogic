@@ -3,6 +3,7 @@ import DialogClassName from "./cypress-tests/DialogClassName";
 import DialogClassNameDelay from "./cypress-tests/DialogClassNameDelay";
 import DialogStyles from "./cypress-tests/DialogStyles";
 import DialogIds from "./cypress-tests/DialogIds";
+import DialogCount from "./cypress-tests/DialogCount";
 
 import "./app-styles.css";
 import "./test-styles.css";
@@ -26,6 +27,7 @@ const routes = {
   "/DialogClassNameDelay": DialogClassNameDelay,
   "/DialogStyles": DialogStyles,
   "/DialogIds": DialogIds,
+  "/DialogCount": DialogCount,
 };
 
 m.route.prefix = "#";

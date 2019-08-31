@@ -7,7 +7,7 @@ describe("Dialog: className delay", () => {
   });
 
   it("should have style set via the className", () => {
-    cy.get("[data-test-id=button-show]").should("exist").click();
+    cy.get("[data-test-id=button-show-default]").should("exist").click();
     cy.get("[data-test-id=content-default]").should("exist")
       .parent()
       .should("not.have.css", "opacity", "1")
@@ -19,7 +19,7 @@ describe("Dialog: className delay", () => {
         .should("have.css", "opacity", "1")
         .should("not.have.css", "transition", "opacity 0.3s ease 1000s");
       
-      cy.get("[data-test-id=button-hide]").should("exist").click();
+      cy.get("[data-test-id=button-hide-default]").should("exist").click();
       cy.get("[data-test-id=content-default]").should("exist")
         .parent()
         .should("not.have.css", "opacity", "0");
