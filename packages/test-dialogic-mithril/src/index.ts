@@ -5,6 +5,7 @@ import DialogStyles from "./cypress-tests/DialogStyles";
 import DialogIds from "./cypress-tests/DialogIds";
 import DialogCount from "./cypress-tests/DialogCount";
 import DialogHideAll from "./cypress-tests/DialogHideAll";
+import DialogResetAll from "./cypress-tests/DialogResetAll";
 
 import "./app-styles.css";
 import "./test-styles.css";
@@ -30,6 +31,7 @@ const routes = {
   "/DialogIds": DialogIds,
   "/DialogCount": DialogCount,
   "/DialogHideAll": DialogHideAll,
+  "/DialogResetAll": DialogResetAll,
 };
 
 m.route.prefix = "#";
