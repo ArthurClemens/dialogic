@@ -4,12 +4,13 @@ import { DialogicTests } from "../..";
 type ButtonsProps = {
   showFn: DialogicTests.showFn;
   hideFn: DialogicTests.hideFn;
+  name?: string;
   id?: string;
   spawn?: string;
 }
 
-export const buttons = ({ showFn, hideFn, id, spawn }: ButtonsProps) => {
-  const name = `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}` || "default";
+export const buttons = ({ showFn, hideFn, id, spawn, name }: ButtonsProps) => {
+  const genName = name || `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}` || "default";
   return m("div",
     { className: "buttons" },
     [
@@ -17,17 +18,17 @@ export const buttons = ({ showFn, hideFn, id, spawn }: ButtonsProps) => {
         {
           className: "button primary",
           onclick: showFn,
-          "data-test-id": `button-show-${name}`
+          "data-test-id": `button-show-${genName}`
         },
-        `Show ${name}`
+        `Show ${genName}`
       ),
       hideFn && m("button", 
         {
           className: "button",
           onclick: hideFn,
-          "data-test-id": `button-hide-${name}`
+          "data-test-id": `button-hide-${genName}`
         },
-        `Hide ${name}`
+        `Hide ${genName}`
       ),
     ]
   );

@@ -9,6 +9,8 @@ import DialogResetAll from "./cypress-tests/DialogResetAll";
 import DialogTimeout from "./cypress-tests/DialogTimeout";
 import DialogQueued from "./cypress-tests/DialogQueued";
 import NotificationCount from "./cypress-tests/NotificationCount";
+import NotificationPause from "./cypress-tests/NotificationPause";
+import NotificationTimeout from "./cypress-tests/NotificationTimeout";
 
 import "./app-styles.css";
 import "./test-styles.css";
@@ -38,6 +40,8 @@ const routes = {
   "/DialogTimeout": DialogTimeout,
   "/DialogQueued": DialogQueued,
   "/NotificationCount": NotificationCount,
+  "/NotificationPause": NotificationPause,
+  "/NotificationTimeout": NotificationTimeout,
 };
 
 m.route.prefix = "#";
