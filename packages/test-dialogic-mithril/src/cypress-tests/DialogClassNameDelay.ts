@@ -11,7 +11,9 @@ export default () => {
     view: () => {
       return m(".test", [
         buttons(fns),
-        m(Dialog)
+        m(".spawn.default-spawn", 
+          m(Dialog)
+        ),
       ])
     }
   }; 

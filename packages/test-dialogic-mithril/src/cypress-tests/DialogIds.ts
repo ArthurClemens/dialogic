@@ -15,7 +15,9 @@ export default () => {
         buttons({ ...fns1 }),
         buttons({ ...fns2, id: "1" }),
         buttons({ ...fns3, id: "2" }),
-        m(Dialog)
+        m(".spawn.default-spawn", 
+          m(Dialog)
+        ),
       ])
     }
   }; 

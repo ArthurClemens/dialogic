@@ -23,8 +23,12 @@ export default () => {
           buttons({ ...fns3, spawn: "1" }),
           buttons({ ...fns4, spawn: "1", id: "1" }),
         ]),
-        m(Dialog),
-        m(Dialog, { spawn: "1" }),
+        m(".spawn.default-spawn", 
+          m(Dialog)
+        ),
+        m(".spawn.custom-spawn", 
+          m(Dialog, { spawn: "1" })
+        ),
       ])
     }
   }; 

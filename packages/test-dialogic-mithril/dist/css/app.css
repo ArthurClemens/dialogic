@@ -46,6 +46,42 @@
   color: #fff;
 }
 
+.spawn {
+  border: 3px solid transparent;
+  padding: 20px;
+}
+
+  .spawn:before {
+    content: "Default";
+    font-size: small;
+    font-weight: bold;
+    color: #888;
+    display: block;
+    margin-top: -5px;
+    margin-bottom: 13px;
+  }
+
+  .spawn + .spawn {
+    margin-top: 20px
+  }
+
+.default-spawn {
+  border-color: #ddd;
+}
+
+  .default-spawn:before {
+    content: "Default spawn";
+  }
+
+.custom-spawn {
+  border-color: #40c4ff;
+  padding: 20px;
+}
+
+  .custom-spawn:before {
+    content: "Custom spawn";
+  }
+
 
 .dialog-show-start {
   opacity: 0;
