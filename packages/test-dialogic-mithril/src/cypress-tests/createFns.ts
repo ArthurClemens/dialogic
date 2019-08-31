@@ -12,12 +12,13 @@ type CreateFnsFn = (props: {
   title: string,
   styles?: any,
   timeout?: number,
+  queued?: boolean,
 }) => {
   showFn: DialogicTests.showFn;
   hideFn: DialogicTests.hideFn;
 };
 
-export const createFns: CreateFnsFn = ({ instance, component, className, title, id, spawn, styles, timeout }) => {
+export const createFns: CreateFnsFn = ({ instance, component, className, title, id, spawn, styles, timeout, queued }) => {
   const contentId = `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}`;
   const props = {
     dialogic: {
@@ -26,7 +27,8 @@ export const createFns: CreateFnsFn = ({ instance, component, className, title, 
       styles,
       id,
       spawn,
-      timeout
+      timeout,
+      queued
     },
     className: "instance-content",
     id: getRandomId(),
