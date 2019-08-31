@@ -22,9 +22,19 @@
   background: #f5f5f5;
 }
 
-.control + .control {
-  border-top: 1px solid #ddd;
-}
+  .control .buttons {
+    margin: 0 -5px;
+  }
+
+  .control + .control {
+    border-top: 1px solid #ddd;
+  }
+
+  .control .button {
+    margin: 5px;
+  }
+
+
 
 .content {
   margin-top: 25px;

@@ -34,9 +34,15 @@ export const performOnItem: PerformOnItemFn = fn => ns => defaultDialogicOptions
 const getMaybeItem = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions?: Dialogic.IdentityOptions) => 
   selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
 
-const filterBySpawnOption = (identityOptions: Dialogic.IdentityOptions) => (nsItems: Dialogic.Item[]) => (
-  nsItems.filter(item => (
+const filterBySpawn = (identityOptions: Dialogic.IdentityOptions) => (items: Dialogic.Item[]) => (
+  items.filter(item => (
     item.identityOptions.spawn === identityOptions.spawn
+  ))
+);
+
+const filterById = (identityOptions: Dialogic.IdentityOptions) => (items: Dialogic.Item[]) => (
+  items.filter(item => (
+    item.identityOptions.id === identityOptions.id
   ))
 );
 
@@ -64,7 +70,7 @@ export const filterCandidates = (ns: string, items: Dialogic.NamespaceStore, ide
   }
   return pipe(
     filterFirstInQueue,
-    filterBySpawnOption(identityOptions)
+    filterBySpawn(identityOptions)
   )(nsItems);
 };
 
@@ -203,15 +209,26 @@ export const exists = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultD
   return !!maybeItem.just;
 };
 
-export const resetAll = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (dialogicOptions?: Dialogic.DialogicOptions) => {
+const getValidItems = (ns: string, defaultDialogicOptions: Dialogic.DefaultDialogicOptions, dialogicOptions?: Dialogic.DialogicOptions) => {
   const allItems = selectors.getAll(ns);
-  const validItems = dialogicOptions
-    ? filterBySpawnOption({
+  let validItems;
+  if (dialogicOptions) {
+    const combinedOptions = {
       ...defaultDialogicOptions,
       ...dialogicOptions,
-    })(allItems)
-    : allItems;
+    };
+    validItems = pipe(
+      filterBySpawn(combinedOptions),
+      filterById(combinedOptions)
+    )(allItems);
+  } else {
+    validItems = allItems;
+  }
+  return validItems;
+};
 
+export const resetAll = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (dialogicOptions?: Dialogic.DialogicOptions) => {
+  const validItems = getValidItems(ns, defaultDialogicOptions, dialogicOptions);
   const items: Dialogic.Item[] = [];
   
   validItems.forEach((item: Dialogic.Item) => {
@@ -246,14 +263,7 @@ const getOverridingTransitionOptions = (item: Dialogic.Item, options: Dialogic.D
  * `dialogicOptions` may contain specific transition options. This comes in handy when all items should hide in the same manner.
  * */
 export const hideAll = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (dialogicOptions?: Dialogic.DialogicOptions) => {
-  const allItems = selectors.getAll(ns);
-  const validItems = dialogicOptions
-    ? filterBySpawnOption({
-      ...defaultDialogicOptions,
-      ...dialogicOptions,
-    })(allItems)
-    : allItems;
-
+  const validItems = getValidItems(ns, defaultDialogicOptions, dialogicOptions);
   const options = dialogicOptions || {};
   const regularItems = validItems.filter((item: Dialogic.Item) => !options.queued && !item.dialogicOptions.queued);
   const queuedItems = validItems.filter((item: Dialogic.Item) => options.queued || item.dialogicOptions.queued);

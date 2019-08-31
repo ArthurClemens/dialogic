@@ -17,6 +17,7 @@ type CreateFnsFn = (props: {
 };
 
 export const createFns: CreateFnsFn = ({ instance, component, className, title, id, spawn, styles }) => {
+  const contentId = `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}`;
   const props = {
     dialogic: {
       component: component,
@@ -27,7 +28,7 @@ export const createFns: CreateFnsFn = ({ instance, component, className, title, 
     },
     className: "instance-content",
     id: getRandomId(),
-    contentId: `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}`
+    contentId
   };
   
   const showFn = () => instance.show(
