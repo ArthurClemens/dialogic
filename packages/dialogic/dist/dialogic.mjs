@@ -16,7 +16,7 @@ const MODE = {
     SHOW: "show",
     HIDE: "hide"
 };
-const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(transitionClassNames.showStart, transitionClassNames.showEnd, transitionClassNames.hideStart, transitionClassNames.hideEnd);
+const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(...transitionClassNames.showStart, ...transitionClassNames.showEnd, ...transitionClassNames.hideStart, ...transitionClassNames.hideEnd);
 const applyTransitionStyles = (domElement, step, styles) => {
     const transitionStyle = styles[step] || {};
     Object.keys(transitionStyle).forEach((key) => {
@@ -31,6 +31,7 @@ const applyNoDurationTransitionStyle = (domElement) => domElement.style.transiti
 const getTransitionStyles = (domElement, styles) => (typeof styles === "function"
     ? styles(domElement)
     : styles) || {};
+const createClassList = (className, step) => className.split(/ /).map((n) => `${n}-${step}`);
 const applyStylesForState = (domElement, props, step, isEnterStep) => {
     if (props.styles) {
         const styles = getTransitionStyles(domElement, props.styles);
@@ -40,13 +41,13 @@ const applyStylesForState = (domElement, props, step, isEnterStep) => {
     }
     if (props.className) {
         const transitionClassNames = {
-            showStart: `${props.className}-show-start`,
-            showEnd: `${props.className}-show-end`,
-            hideStart: `${props.className}-hide-start`,
-            hideEnd: `${props.className}-hide-end`
+            showStart: createClassList(props.className, "show-start"),
+            showEnd: createClassList(props.className, "show-end"),
+            hideStart: createClassList(props.className, "hide-start"),
+            hideEnd: createClassList(props.className, "hide-end"),
         };
         removeTransitionClassNames(domElement, transitionClassNames);
-        transitionClassNames && domElement.classList.add(transitionClassNames[step]);
+        transitionClassNames && domElement.classList.add(...transitionClassNames[step]);
     }
     // reflow
     domElement.scrollTop;

@@ -14,11 +14,11 @@ type TransitionProps = {
 }
 
 type TransitionClassNames = {
-	[key:string]: string;
-	showStart: string;
-	showEnd: string;
-	hideStart: string;
-	hideEnd: string;
+	[key:string]: string[];
+	showStart: string[];
+	showEnd: string[];
+	hideStart: string[];
+	hideEnd: string[];
 }
 
 type TransitionStep = "showStart" | "showEnd" | "hideStart" | "hideEnd";
@@ -26,10 +26,10 @@ type TransitionStyleState = "default" | TransitionStep;
 
 const removeTransitionClassNames = (domElement: HTMLElement, transitionClassNames: TransitionClassNames) => 
 	domElement.classList.remove(
-		transitionClassNames.showStart,
-		transitionClassNames.showEnd,
-		transitionClassNames.hideStart,
-		transitionClassNames.hideEnd,
+		...transitionClassNames.showStart,
+		...transitionClassNames.showEnd,
+		...transitionClassNames.hideStart,
+		...transitionClassNames.hideEnd,
 	);
 
 const applyTransitionStyles = (domElement: HTMLElement, step: TransitionStyleState, styles: Dialogic.TransitionStyles) => {
@@ -52,6 +52,9 @@ const getTransitionStyles = (domElement: HTMLElement, styles: Dialogic.Transitio
 		: styles
 	) || {};
 
+const createClassList = (className: string, step: string) => 
+	className.split(/ /).map((n: string) => `${n}-${step}`);
+
 const applyStylesForState = (domElement: HTMLElement, props: TransitionProps, step: TransitionStep, isEnterStep?: boolean) => {
 	if (props.styles) {
 		const styles = getTransitionStyles(domElement, props.styles);
@@ -62,13 +65,13 @@ const applyStylesForState = (domElement: HTMLElement, props: TransitionProps, st
 
 	if (props.className) {
 		const transitionClassNames: TransitionClassNames = {
-			showStart: `${props.className}-show-start`,
-			showEnd: `${props.className}-show-end`,
-			hideStart: `${props.className}-hide-start`,
-			hideEnd: `${props.className}-hide-end`
+			showStart: createClassList(props.className, "show-start"),
+			showEnd: createClassList(props.className, "show-end"),
+			hideStart: createClassList(props.className, "hide-start"),
+			hideEnd: createClassList(props.className, "hide-end"),
 		};
 		removeTransitionClassNames(domElement, transitionClassNames);
-		transitionClassNames && domElement.classList.add(transitionClassNames[step]);
+		transitionClassNames && domElement.classList.add(...transitionClassNames[step]);
 	}
 
 	// reflow
