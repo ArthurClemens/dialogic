@@ -640,7 +640,7 @@ const filterCandidates = (ns, items, identityOptions) => {
     if (nsItems.length == 0) {
         return [];
     }
-    return pipe(filterFirstInQueue, filterBySpawn(identityOptions))(nsItems);
+    return pipe(filterBySpawn(identityOptions), filterFirstInQueue)(nsItems);
 };
 const getPassThroughOptions = options => {
     const copy = {

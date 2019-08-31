@@ -27,8 +27,18 @@ export const createFns: CreateFnsFn = ({ instance, component, className, title, 
       styles,
       id,
       spawn,
-      timeout,
-      queued
+      ...(spawn !== undefined 
+        ? { spawn }
+        : undefined
+      ),
+      ...(timeout !== undefined 
+        ? { timeout }
+        : undefined
+      ),
+      ...(queued !== undefined 
+        ? { queued }
+        : undefined
+      ),
     },
     className: "instance-content",
     id: getRandomId(),

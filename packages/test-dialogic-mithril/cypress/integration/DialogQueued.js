@@ -43,7 +43,6 @@ describe("Dialog: queued", () => {
             cy.wait(500);
             cy.get("[data-test-id=count-all]").should("contain", "Count all: 0");
         });
-
       })
     });
 

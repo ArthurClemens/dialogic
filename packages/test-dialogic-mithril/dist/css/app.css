@@ -131,4 +131,20 @@
 }
 
 
+.notification-show-start {
+  opacity: 0;
+}
+.notification-show-end {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.notification-hide-start {
+  opacity: 1;
+}
+.notification-hide-end {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+
 /*# sourceMappingURL=app.css.map*/

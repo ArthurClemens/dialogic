@@ -69,8 +69,8 @@ export const filterCandidates = (ns: string, items: Dialogic.NamespaceStore, ide
     return [];
   }
   return pipe(
-    filterFirstInQueue,
-    filterBySpawn(identityOptions)
+    filterBySpawn(identityOptions),
+    filterFirstInQueue
   )(nsItems);
 };
 
@@ -119,7 +119,7 @@ const createInstance = (ns: string) => (defaultDialogicOptions: Dialogic.Default
         return resolve(item);
       }
     };
-    
+
     const item: Dialogic.Item = {
       ns,
       identityOptions: mergedIdentityOptions,

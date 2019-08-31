@@ -7,14 +7,13 @@ interface Wrapper extends Dialogic.DialogicalWrapperOptions{}
 
 export const Wrapper: Component<Dialogic.DialogicalWrapperOptions> = {
   view: ({ attrs }) => {
-
     const nsOnInstanceMounted = onInstanceMounted(attrs.ns);
     const nsOnShowInstance = onShowInstance(attrs.ns);
     const nsOnHideInstance = onHideInstance(attrs.ns);
     
     const identityOptions: Dialogic.IdentityOptions = attrs.identityOptions || {} as Dialogic.IdentityOptions;
     const filtered = filterCandidates(attrs.ns, selectors.getStore(), identityOptions);
-
+    
     return filtered.map(item =>
       m(Instance, {
         key: item.key,
