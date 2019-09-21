@@ -18,7 +18,7 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.8.5"
+    "@types/react-dom": "^16.9.0"
   },
   "files": [
     "dist",
