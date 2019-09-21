@@ -6,6 +6,14 @@ export const setDomElement: (domElement: HTMLElement, item: Dialogic.Item) => vo
 export const filterCandidates: (ns: string, items: Dialogic.NamespaceStore, identityOptions: Dialogic.IdentityOptions) => Dialogic.Item[];
 export const states: Dialogic.States;
 export const selectors: Dialogic.StateSelectors;
+export const actions: {
+  add: (ns: string, item: Dialogic.Item) => void;
+  remove: (ns: string, id: string) => void;
+  replace: (ns: string, id: string, newItem: Dialogic.Item) => void;
+  removeAll: (ns: string) => void;
+  store: (ns: string, newItems: Dialogic.Item[]) => void;
+  refresh: () => void;
+}
 
 export const dialog: Dialogic.DialogicInstance;
 export const notification: Dialogic.DialogicInstance;
