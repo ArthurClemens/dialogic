@@ -18,7 +18,7 @@ const MODE = {
     SHOW: "show",
     HIDE: "hide"
 };
-const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(transitionClassNames.showStart, transitionClassNames.showEnd, transitionClassNames.hideStart, transitionClassNames.hideEnd);
+const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(...transitionClassNames.showStart, ...transitionClassNames.showEnd, ...transitionClassNames.hideStart, ...transitionClassNames.hideEnd);
 const applyTransitionStyles = (domElement, step, styles) => {
     const transitionStyle = styles[step] || {};
     Object.keys(transitionStyle).forEach((key) => {
@@ -33,6 +33,7 @@ const applyNoDurationTransitionStyle = (domElement) => domElement.style.transiti
 const getTransitionStyles = (domElement, styles) => (typeof styles === "function"
     ? styles(domElement)
     : styles) || {};
+const createClassList = (className, step) => className.split(/ /).map((n) => `${n}-${step}`);
 const applyStylesForState = (domElement, props, step, isEnterStep) => {
     if (props.styles) {
         const styles = getTransitionStyles(domElement, props.styles);
@@ -42,13 +43,13 @@ const applyStylesForState = (domElement, props, step, isEnterStep) => {
     }
     if (props.className) {
         const transitionClassNames = {
-            showStart: `${props.className}-show-start`,
-            showEnd: `${props.className}-show-end`,
-            hideStart: `${props.className}-hide-start`,
-            hideEnd: `${props.className}-hide-end`
+            showStart: createClassList(props.className, "show-start"),
+            showEnd: createClassList(props.className, "show-end"),
+            hideStart: createClassList(props.className, "hide-start"),
+            hideEnd: createClassList(props.className, "hide-end"),
         };
         removeTransitionClassNames(domElement, transitionClassNames);
-        transitionClassNames && domElement.classList.add(transitionClassNames[step]);
+        transitionClassNames && domElement.classList.add(...transitionClassNames[step]);
     }
     // reflow
     domElement.scrollTop;
@@ -616,7 +617,8 @@ const performOnItem = fn => ns => defaultDialogicOptions => (options) => {
     }
 };
 const getMaybeItem = (ns) => (defaultDialogicOptions) => (identityOptions) => selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
-const filterBySpawnOption = (identityOptions) => (nsItems) => (nsItems.filter(item => (item.identityOptions.spawn === identityOptions.spawn)));
+const filterBySpawn = (identityOptions) => (items) => (items.filter(item => (item.identityOptions.spawn === identityOptions.spawn)));
+const filterById = (identityOptions) => (items) => (items.filter(item => (item.identityOptions.id === identityOptions.id)));
 /**
  * Gets a list of all non-queued items.
  * From the queued items only the first item is listed.
@@ -638,7 +640,7 @@ const filterCandidates = (ns, items, identityOptions) => {
     if (nsItems.length == 0) {
         return [];
     }
-    return pipe(filterFirstInQueue, filterBySpawnOption(identityOptions))(nsItems);
+    return pipe(filterBySpawn(identityOptions), filterFirstInQueue)(nsItems);
 };
 const getPassThroughOptions = options => {
     const copy = {
@@ -755,14 +757,23 @@ const exists = (ns) => (defaultDialogicOptions) => (identityOptions) => {
     const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
     return !!maybeItem.just;
 };
-const resetAll = (ns) => (defaultDialogicOptions) => (dialogicOptions) => {
+const getValidItems = (ns, defaultDialogicOptions, dialogicOptions) => {
     const allItems = selectors.getAll(ns);
-    const validItems = dialogicOptions
-        ? filterBySpawnOption({
+    let validItems;
+    if (dialogicOptions) {
+        const combinedOptions = {
             ...defaultDialogicOptions,
             ...dialogicOptions,
-        })(allItems)
-        : allItems;
+        };
+        validItems = pipe(filterBySpawn(combinedOptions), filterById(combinedOptions))(allItems);
+    }
+    else {
+        validItems = allItems;
+    }
+    return validItems;
+};
+const resetAll = (ns) => (defaultDialogicOptions) => (dialogicOptions) => {
+    const validItems = getValidItems(ns, defaultDialogicOptions, dialogicOptions);
     const items = [];
     validItems.forEach((item) => {
         item.timer && item.timer.actions.abort();
@@ -793,13 +804,7 @@ const getOverridingTransitionOptions = (item, options) => {
  * `dialogicOptions` may contain specific transition options. This comes in handy when all items should hide in the same manner.
  * */
 const hideAll = (ns) => (defaultDialogicOptions) => (dialogicOptions) => {
-    const allItems = selectors.getAll(ns);
-    const validItems = dialogicOptions
-        ? filterBySpawnOption({
-            ...defaultDialogicOptions,
-            ...dialogicOptions,
-        })(allItems)
-        : allItems;
+    const validItems = getValidItems(ns, defaultDialogicOptions, dialogicOptions);
     const options = dialogicOptions || {};
     const regularItems = validItems.filter((item) => !options.queued && !item.dialogicOptions.queued);
     const queuedItems = validItems.filter((item) => options.queued || item.dialogicOptions.queued);

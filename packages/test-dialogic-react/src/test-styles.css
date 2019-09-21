@@ -1,0 +1,74 @@
+
+.dialog-show-start {
+  opacity: 0;
+}
+.dialog-show-end {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.dialog-hide-start {
+  opacity: 1;
+}
+.dialog-hide-end {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.dialog-delay-show-start {
+  opacity: 0;
+}
+.dialog-delay-show-end {
+  opacity: 1;
+  transition: opacity 750ms 1000ms;
+}
+.dialog-delay-hide-start {
+  opacity: 1;
+}
+.dialog-delay-hide-end {
+  opacity: 0;
+  transition: opacity 750ms 1000ms;
+}
+
+.dialog-timings-show-start {
+  opacity: 0;
+}
+.dialog-timings-show-end {
+  opacity: 1;
+  transition: opacity 200ms;
+}
+.dialog-timings-hide-start {
+  opacity: 1;
+}
+.dialog-timings-hide-end {
+  opacity: 0;
+  transition: opacity 800ms;
+}
+
+
+.notification-show-start {
+  opacity: 0;
+}
+.notification-show-end {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.notification-hide-start {
+  opacity: 1;
+}
+.notification-hide-end {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.bulma-dialog-content-box {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 3px rgba(10,10,10,.1),0 0 0 1px rgba(10,10,10,.1);
+  color: #4a4a4a;
+  display: block;
+  padding: 1.25rem;
+}
+
+.bulma-dialog-content-box .content {
+  margin: 0 0 .75em 0;
+}

@@ -16,7 +16,8 @@ module.exports = {
 
   output: {
     path: path.resolve(baseDir, "./dist"),
-    filename: "js/[name].js"
+    filename: "js/[name].js",
+    publicPath: 'http://localhost:3000/',
   },
 
   resolve: {
@@ -35,6 +36,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
+        exclude: /node_modules/,
         use: [
           { loader: "ts-loader" }
         ]
