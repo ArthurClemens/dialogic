@@ -1,4 +1,4 @@
-import { dialog, notification, Dialogic } from "dialogic";
+import { dialog, notification } from "dialogic";
 import test from "ava";
 
 const getDefaultItemId = (name: string) => `${name}-default_${name}-default_${name}`;

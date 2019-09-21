@@ -11,6 +11,8 @@ import DialogQueued from "./cypress-tests/DialogQueued";
 import NotificationCount from "./cypress-tests/NotificationCount";
 import NotificationPause from "./cypress-tests/NotificationPause";
 import NotificationTimeout from "./cypress-tests/NotificationTimeout";
+import LibBulmaDialog from "./cypress-tests/LibBulmaDialog";
+import LibMaterialIODialog from "./cypress-tests/LibMaterialIODialog";
 
 import "./app-styles.css";
 import "./test-styles.css";
@@ -42,6 +44,8 @@ const routes = {
   "/NotificationCount": NotificationCount,
   "/NotificationPause": NotificationPause,
   "/NotificationTimeout": NotificationTimeout,
+  "/LibBulmaDialog": LibBulmaDialog,
+  "/LibMaterialIODialog": LibMaterialIODialog,
 };
 
 m.route.prefix = "#";

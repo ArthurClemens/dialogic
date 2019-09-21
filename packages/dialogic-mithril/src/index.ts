@@ -10,4 +10,5 @@ export { Dialogical, dialog, Dialog, notification, Notification };
 
 states.map(state => (
   m.redraw()
+  // , console.log(state)
 ));

@@ -983,6 +983,8 @@ const Dialogical = type => ({
 
 const Dialog = Dialogical(dialog);
 const Notification = Dialogical(notification);
-states.map(state => (m.redraw()));
+states.map(state => (m.redraw()
+// , console.log(state)
+));
 
 export { Dialog, Dialogical, Notification, dialog, notification };
