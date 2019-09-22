@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 import DialogClassName from "./cypress-tests/DialogClassName";
 import DialogClassNameDelay from "./cypress-tests/DialogClassNameDelay";

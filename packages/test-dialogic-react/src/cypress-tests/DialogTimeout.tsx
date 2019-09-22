@@ -2,10 +2,11 @@ import React from "react";
 import { createFns } from "./createFns";
 import { Default } from "../content/Default";
 import { buttons } from "./buttons";
-import { dialog, Dialog } from "dialogic-react";
+import { dialog, Dialog, useDialogicState } from "dialogic-react";
 import { Remaining } from "./Remaining";
 
 export default () => {
+  useDialogicState();
   const fns1 = createFns({ instance: dialog, component: Default, className: "dialog", title: "Default", timeout: 2000 });
 
   return (
@@ -19,7 +20,7 @@ export default () => {
             Resume
           </button>
           <button className="button" data-test-id="button-reset" onClick={() => dialog.resetAll()}>
-              Reset
+            Reset
           </button>
         </div>
       </div>

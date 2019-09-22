@@ -11,7 +11,7 @@ describe("Dialog: timeout", () => {
     cy.get("[data-test-id=button-show-default]").should("exist").click();
     cy.wait(500);
     cy.clock().then((clock) => {
-      clock.tick(1000);
+      clock.tick(500);
       
       cy.get("[data-test-id=remaining-value]").should(($remainingValue) => {
         const text = $remainingValue.text();

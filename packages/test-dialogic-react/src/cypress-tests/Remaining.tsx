@@ -10,10 +10,8 @@ export const Remaining: FunctionComponent<RemainingProps> = props => {
 
   useAnimationFrame(() => {
     const remaining = props.getRemaining();
-    if (remaining !== undefined) {
-      if (displayValue !== remaining) {
-        setDisplayValue(Math.max(remaining, 0));
-      }
+    if (remaining !== undefined && displayValue !== remaining) {
+      setDisplayValue(Math.max(remaining, 0));
     } else {
       setDisplayValue(undefined);
     }

@@ -16,8 +16,7 @@ module.exports = {
 
   output: {
     path: path.resolve(baseDir, "./dist"),
-    filename: "js/[name].js",
-    publicPath: 'http://localhost:3000/',
+    filename: "js/[name].js"
   },
 
   resolve: {

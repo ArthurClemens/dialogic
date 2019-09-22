@@ -2,10 +2,11 @@ import React from "react";
 import { createFns } from "./createFns";
 import { Default } from "../content/Default";
 import { buttons } from "./buttons";
-import { notification, Notification } from "dialogic-react";
+import { notification, Notification, useDialogicState } from "dialogic-react";
 import { Remaining } from "./Remaining";
 
 export default () => {
+  useDialogicState();
   const fns1 = createFns({ instance: notification, component: Default, className: "notification", title: "Default", timeout: 2000 });
 
   return (
