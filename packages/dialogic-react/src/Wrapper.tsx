@@ -3,9 +3,7 @@ import { filterCandidates, selectors, Dialogic } from "dialogic";
 import { onInstanceMounted, onShowInstance, onHideInstance } from "./instanceEvents";
 import { Instance } from "./Instance";
 
-interface WrapperProps extends Dialogic.DialogicalWrapperOptions {
-  ref?: object;
-}
+interface WrapperProps extends Dialogic.DialogicalWrapperOptions {}
 
 export const Wrapper: FunctionComponent<WrapperProps> = props => {
   const nsOnInstanceMounted = onInstanceMounted(props.ns);

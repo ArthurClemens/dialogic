@@ -1,12 +1,12 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { Dialogic } from "dialogic";
 import { Wrapper } from "./Wrapper";
-import { useAnimationFrame } from "./useAnimationFrame";
+import { useDialogic } from "./useDialogic";
 
 type DialogicalFn = (type: Dialogic.DialogicInstance) => FunctionComponent<Dialogic.ComponentOptions>;
 
 export const Dialogical: DialogicalFn = type => props => {
-  const [, setUpdateCount] = useState(0);
+  useDialogic();
 
   const identityOptions = {
     id: props.id || type.defaultId,
@@ -14,19 +14,11 @@ export const Dialogical: DialogicalFn = type => props => {
   };
 
   // Mount
-  useEffect(
-    () => {
-      if (typeof props.onMount === "function") {
-        props.onMount();
-      }
-    },
-    []
-  );
-
-  // Use animation frame to create redraws without hitting "Can't perform a React state update on an unmounted component."
-  useAnimationFrame((deltaTime: number) => {
-    setUpdateCount(prevCount => (prevCount + deltaTime * 0.01) % 100);
-  })
+  useEffect(() => {
+    if (typeof props.onMount === "function") {
+      props.onMount();
+    }
+  }, []);
 
   return <Wrapper identityOptions={identityOptions} ns={type.ns} />;
 };

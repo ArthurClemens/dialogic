@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useEffect, useState } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 
 const pipe = (...fns) => (x) => fns.filter(Boolean).reduce((y, f) => f(y), x);
 const getStyleValue = ({ domElement, prop }) => {
@@ -953,47 +953,6 @@ const Wrapper = props => {
     return (React.createElement(React.Fragment, null, filtered.map(item => React.createElement(Instance, { key: item.key, identityOptions: item.identityOptions, dialogicOptions: item.dialogicOptions, passThroughOptions: item.passThroughOptions, onMount: nsOnInstanceMounted, onShow: nsOnShowInstance, onHide: nsOnHideInstance }))));
 };
 
-const useAnimationFrame = (callback) => {
-    const requestRef = useRef();
-    const previousTimeRef = useRef();
-    const animate = (time) => {
-        if (previousTimeRef.current !== undefined) {
-            const deltaTime = time - previousTimeRef.current;
-            callback(deltaTime);
-        }
-        previousTimeRef.current = time;
-        requestRef.current = requestAnimationFrame(animate);
-    };
-    useEffect(() => {
-        requestRef.current = requestAnimationFrame(animate);
-        return () => {
-            const id = requestRef.current;
-            if (id !== undefined) {
-                cancelAnimationFrame(id);
-            }
-        };
-    }, []);
-};
-
-const Dialogical = type => props => {
-    const [, setUpdateCount] = useState(0);
-    const identityOptions = {
-        id: props.id || type.defaultId,
-        spawn: props.spawn || type.defaultSpawn,
-    };
-    // Mount
-    useEffect(() => {
-        if (typeof props.onMount === "function") {
-            props.onMount();
-        }
-    }, []);
-    // Use animation frame to create redraws without hitting "Can't perform a React state update on an unmounted component."
-    useAnimationFrame((deltaTime) => {
-        setUpdateCount(prevCount => (prevCount + deltaTime * 0.01) % 100);
-    });
-    return React.createElement(Wrapper, { identityOptions: identityOptions, ns: type.ns });
-};
-
 const useDialogic = () => {
     const [store, setStore] = useState({});
     useEffect(() => {
@@ -1006,6 +965,21 @@ const useDialogic = () => {
     return [
         store
     ];
+};
+
+const Dialogical = type => props => {
+    useDialogic();
+    const identityOptions = {
+        id: props.id || type.defaultId,
+        spawn: props.spawn || type.defaultSpawn,
+    };
+    // Mount
+    useEffect(() => {
+        if (typeof props.onMount === "function") {
+            props.onMount();
+        }
+    }, []);
+    return React.createElement(Wrapper, { identityOptions: identityOptions, ns: type.ns });
 };
 
 const Dialog = Dialogical(dialog);
