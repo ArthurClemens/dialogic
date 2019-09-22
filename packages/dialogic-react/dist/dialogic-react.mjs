@@ -955,12 +955,19 @@ const Wrapper = props => {
 
 const useDialogic = () => {
     const [store, setStore] = useState({});
+    const isMountedRef = useRef(false);
     useEffect(() => {
+        isMountedRef.current = true;
         states.map(({ store }) => {
-            setStore({
-                ...store
-            });
+            if (isMountedRef.current) {
+                setStore({
+                    ...store
+                });
+            }
         });
+        return () => {
+            isMountedRef.current = false;
+        };
     }, []);
     return [
         store

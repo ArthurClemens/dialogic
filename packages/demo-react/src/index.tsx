@@ -113,13 +113,14 @@ const NotificationTests: FunctionComponent<NotificationTestsProps> = props => {
 };
 
 const App = () => {
-
+  const [] = useDialogic();
   return (
     <div className="demo">
 
       {/* Dialog */}
       <section className="section">
         <h2 className="title is-2">Dialog</h2>
+        <div>{`Dialog count: ${dialog.getCount()}`}</div>
       </section>
       <section className="section">
         <button

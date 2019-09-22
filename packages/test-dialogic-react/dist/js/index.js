@@ -2446,11 +2446,19 @@ var useDialogic = function useDialogic() {
       store = _useState2[0],
       setStore = _useState2[1];
 
+  var isMountedRef = Object(react__WEBPACK_IMPORTED_MODULE_6__["useRef"])(false);
   Object(react__WEBPACK_IMPORTED_MODULE_6__["useEffect"])(function () {
+    isMountedRef.current = true;
     states.map(function (_ref8) {
       var store = _ref8.store;
-      setStore(_objectSpread({}, store));
+
+      if (isMountedRef.current) {
+        setStore(_objectSpread({}, store));
+      }
     });
+    return function () {
+      isMountedRef.current = false;
+    };
   }, []);
   return [store];
 };
@@ -35751,6 +35759,51 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./cypress-tests/DialogCount.tsx":
+/*!***************************************!*\
+  !*** ./cypress-tests/DialogCount.tsx ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _createFns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createFns */ "./cypress-tests/createFns.ts");
+/* harmony import */ var _content_Default__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../content/Default */ "./content/Default.tsx");
+/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./buttons */ "./cypress-tests/buttons.tsx");
+/* harmony import */ var dialogic_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-react */ "../../dialogic-react/dist/dialogic-react.mjs");
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (() => {
+    Object(dialogic_react__WEBPACK_IMPORTED_MODULE_4__["useDialogic"])();
+    const fns1 = Object(_createFns__WEBPACK_IMPORTED_MODULE_1__["createFns"])({ instance: dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"], component: _content_Default__WEBPACK_IMPORTED_MODULE_2__["Default"], className: "dialog", title: "Default" });
+    const fns2 = Object(_createFns__WEBPACK_IMPORTED_MODULE_1__["createFns"])({ instance: dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"], component: _content_Default__WEBPACK_IMPORTED_MODULE_2__["Default"], className: "dialog", id: "1", title: "ID" });
+    const fns3 = Object(_createFns__WEBPACK_IMPORTED_MODULE_1__["createFns"])({ instance: dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"], component: _content_Default__WEBPACK_IMPORTED_MODULE_2__["Default"], className: "dialog", spawn: "1", title: "Spawn" });
+    const fns4 = Object(_createFns__WEBPACK_IMPORTED_MODULE_1__["createFns"])({ instance: dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"], component: _content_Default__WEBPACK_IMPORTED_MODULE_2__["Default"], className: "dialog", spawn: "1", id: "1", title: "Spawn and ID" });
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "test" },
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "control", "data-test-id": "count-all" }, `Count all: ${dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"].getCount()}`),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "control", "data-test-id": "count-id" }, `Count id: ${dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"].getCount({ id: "1" })}`),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "control", "data-test-id": "count-spawn" }, `Count spawn: ${dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"].getCount({ spawn: "1" })}`),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "control", "data-test-id": "count-spawn-id" }, `Count spawn, id: ${dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"].getCount({ spawn: "1", id: "1" })}`),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "content" },
+            Object(_buttons__WEBPACK_IMPORTED_MODULE_3__["buttons"])({ ...fns1 }),
+            Object(_buttons__WEBPACK_IMPORTED_MODULE_3__["buttons"])({ ...fns2, id: "1" }),
+            Object(_buttons__WEBPACK_IMPORTED_MODULE_3__["buttons"])({ ...fns3, spawn: "1" }),
+            Object(_buttons__WEBPACK_IMPORTED_MODULE_3__["buttons"])({ ...fns4, spawn: "1", id: "1" })),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "spawn default-spawn" },
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(dialogic_react__WEBPACK_IMPORTED_MODULE_4__["Dialog"], null)),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "spawn custom-spawn" },
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(dialogic_react__WEBPACK_IMPORTED_MODULE_4__["Dialog"], { spawn: "1" }))));
+});
+
+
+/***/ }),
+
 /***/ "./cypress-tests/DialogIds.tsx":
 /*!*************************************!*\
   !*** ./cypress-tests/DialogIds.tsx ***!
@@ -35947,10 +36000,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _cypress_tests_DialogClassNameDelay__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./cypress-tests/DialogClassNameDelay */ "./cypress-tests/DialogClassNameDelay.tsx");
 /* harmony import */ var _cypress_tests_DialogStyles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./cypress-tests/DialogStyles */ "./cypress-tests/DialogStyles.tsx");
 /* harmony import */ var _cypress_tests_DialogIds__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./cypress-tests/DialogIds */ "./cypress-tests/DialogIds.tsx");
-/* harmony import */ var _app_styles_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./app-styles.css */ "./app-styles.css");
-/* harmony import */ var _app_styles_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_app_styles_css__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _test_styles_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./test-styles.css */ "./test-styles.css");
-/* harmony import */ var _test_styles_css__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_test_styles_css__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _cypress_tests_DialogCount__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./cypress-tests/DialogCount */ "./cypress-tests/DialogCount.tsx");
+/* harmony import */ var _app_styles_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./app-styles.css */ "./app-styles.css");
+/* harmony import */ var _app_styles_css__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_app_styles_css__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _test_styles_css__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./test-styles.css */ "./test-styles.css");
+/* harmony import */ var _test_styles_css__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_test_styles_css__WEBPACK_IMPORTED_MODULE_9__);
+
 
 
 
@@ -35971,6 +36026,7 @@ const routes = {
     "/DialogClassNameDelay": _cypress_tests_DialogClassNameDelay__WEBPACK_IMPORTED_MODULE_4__["default"],
     "/DialogStyles": _cypress_tests_DialogStyles__WEBPACK_IMPORTED_MODULE_5__["default"],
     "/DialogIds": _cypress_tests_DialogIds__WEBPACK_IMPORTED_MODULE_6__["default"],
+    "/DialogCount": _cypress_tests_DialogCount__WEBPACK_IMPORTED_MODULE_7__["default"],
 };
 const mountNode = document.querySelector("#root");
 react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(App, null), mountNode);

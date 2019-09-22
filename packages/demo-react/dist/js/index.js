@@ -2415,11 +2415,19 @@ var useDialogic = function useDialogic() {
       store = _useState2[0],
       setStore = _useState2[1];
 
+  var isMountedRef = Object(react__WEBPACK_IMPORTED_MODULE_6__["useRef"])(false);
   Object(react__WEBPACK_IMPORTED_MODULE_6__["useEffect"])(function () {
+    isMountedRef.current = true;
     states.map(function (_ref8) {
       var store = _ref8.store;
-      setStore(_objectSpread({}, store));
+
+      if (isMountedRef.current) {
+        setStore(_objectSpread({}, store));
+      }
     });
+    return function () {
+      isMountedRef.current = false;
+    };
   }, []);
   return [store];
 };
@@ -31803,9 +31811,11 @@ const NotificationTests = props => {
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(dialogic_react__WEBPACK_IMPORTED_MODULE_2__["Notification"], { spawn: "NO" }))));
 };
 const App = () => {
+    const [] = Object(dialogic_react__WEBPACK_IMPORTED_MODULE_2__["useDialogic"])();
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "demo" },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", { className: "section" },
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", { className: "title is-2" }, "Dialog")),
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", { className: "title is-2" }, "Dialog"),
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, `Dialog count: ${dialogic_react__WEBPACK_IMPORTED_MODULE_2__["dialog"].getCount()}`)),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", { className: "section" },
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button", onClick: () => dialogic_react__WEBPACK_IMPORTED_MODULE_2__["dialog"].show({
                     ...dialogOneProps,

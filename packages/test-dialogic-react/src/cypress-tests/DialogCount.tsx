@@ -2,9 +2,10 @@ import React from "react";
 import { createFns } from "./createFns";
 import { Default } from "../content/Default";
 import { buttons } from "./buttons";
-import { dialog, Dialog } from "dialogic-react";
+import { dialog, Dialog, useDialogic } from "dialogic-react";
 
 export default () => {
+  useDialogic();
   const fns1 = createFns({ instance: dialog, component: Default, className: "dialog", title: "Default" });
   const fns2 = createFns({ instance: dialog, component: Default, className: "dialog", id: "1", title: "ID" });
   const fns3 = createFns({ instance: dialog, component: Default, className: "dialog", spawn: "1", title: "Spawn" });
