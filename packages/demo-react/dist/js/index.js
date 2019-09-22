@@ -1105,7 +1105,7 @@ try {
 /*!**********************************************************************************************************!*\
   !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/dist/dialogic-react.mjs ***!
   \**********************************************************************************************************/
-/*! exports provided: Dialog, Dialogical, Notification, dialog, notification, useDialogic */
+/*! exports provided: Dialog, Dialogical, Notification, dialog, notification, useDialogicState */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1115,7 +1115,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Notification", function() { return Notification; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dialog", function() { return dialog; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "notification", function() { return notification; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useDialogic", function() { return useDialogic; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useDialogicState", function() { return useDialogicState; });
 /* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "../../../node_modules/@babel/runtime/helpers/extends.js");
 /* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "../../../node_modules/@babel/runtime/regenerator/index.js");
@@ -2409,7 +2409,7 @@ var Wrapper = function Wrapper(props) {
   }));
 };
 
-var useDialogic = function useDialogic() {
+var useDialogicState = function useDialogicState() {
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_6__["useState"])({}),
       _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3___default()(_useState, 2),
       store = _useState2[0],
@@ -2434,7 +2434,7 @@ var useDialogic = function useDialogic() {
 
 var Dialogical = function Dialogical(type) {
   return function (props) {
-    useDialogic();
+    useDialogicState();
     var identityOptions = {
       id: props.id || type.defaultId,
       spawn: props.spawn || type.defaultSpawn
@@ -31792,7 +31792,7 @@ const showNotification = () => {
     }).then((item) => console.log("notification shown", item, title));
 };
 const NotificationTests = props => {
-    const [] = Object(dialogic_react__WEBPACK_IMPORTED_MODULE_2__["useDialogic"])();
+    // useDialogicState();
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null,
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", { className: "section" },
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", { className: "title is-2" }, "Notification"),
@@ -31811,7 +31811,7 @@ const NotificationTests = props => {
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(dialogic_react__WEBPACK_IMPORTED_MODULE_2__["Notification"], { spawn: "NO" }))));
 };
 const App = () => {
-    const [] = Object(dialogic_react__WEBPACK_IMPORTED_MODULE_2__["useDialogic"])();
+    Object(dialogic_react__WEBPACK_IMPORTED_MODULE_2__["useDialogicState"])();
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "demo" },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", { className: "section" },
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", { className: "title is-2" }, "Dialog"),

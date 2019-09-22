@@ -953,7 +953,7 @@ const Wrapper = props => {
     return (React.createElement(React.Fragment, null, filtered.map(item => React.createElement(Instance, { key: item.key, identityOptions: item.identityOptions, dialogicOptions: item.dialogicOptions, passThroughOptions: item.passThroughOptions, onMount: nsOnInstanceMounted, onShow: nsOnShowInstance, onHide: nsOnHideInstance }))));
 };
 
-const useDialogic = () => {
+const useDialogicState = () => {
     const [store, setStore] = useState({});
     const isMountedRef = useRef(false);
     useEffect(() => {
@@ -975,7 +975,7 @@ const useDialogic = () => {
 };
 
 const Dialogical = type => props => {
-    useDialogic();
+    useDialogicState();
     const identityOptions = {
         id: props.id || type.defaultId,
         spawn: props.spawn || type.defaultSpawn,
@@ -992,4 +992,4 @@ const Dialogical = type => props => {
 const Dialog = Dialogical(dialog);
 const Notification = Dialogical(notification);
 
-export { Dialog, Dialogical, Notification, dialog, notification, useDialogic };
+export { Dialog, Dialogical, Notification, dialog, notification, useDialogicState };

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import ReactDOM from "react-dom";
 import { Dialogic } from "dialogic";
-import { dialog, Dialog, notification, Notification, useDialogic } from "dialogic-react";
+import { dialog, Dialog, notification, Notification, useDialogicState } from "dialogic-react";
 import { Content as DefaultContent } from "./default/Content";
 import { Remaining } from "./Remaining";
 
@@ -65,7 +65,7 @@ type NotificationTestsProps = {
   // store: Dialogic.NamespaceStore;
 }
 const NotificationTests: FunctionComponent<NotificationTestsProps> = props => {
-  const [] = useDialogic();
+  // useDialogicState();
 
   return (
     <>
@@ -113,7 +113,7 @@ const NotificationTests: FunctionComponent<NotificationTestsProps> = props => {
 };
 
 const App = () => {
-  const [] = useDialogic();
+  useDialogicState();
   return (
     <div className="demo">
 

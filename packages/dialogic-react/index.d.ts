@@ -9,4 +9,4 @@ export const Dialog: FunctionComponent<Dialogic.ComponentOptions>;
 interface Notification extends Dialogic.ComponentOptions{}
 export const Notification: FunctionComponent<Dialogic.ComponentOptions>;
 
-export const useDialogic: () => [Dialogic.NamespaceStore];
+export const useDialogicState: () => [Dialogic.NamespaceStore];

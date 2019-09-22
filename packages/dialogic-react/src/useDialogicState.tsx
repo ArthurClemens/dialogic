@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { states, Dialogic } from "dialogic";
 
-export const useDialogic = () => {
+export const useDialogicState = () => {
   const [store, setStore] = useState<Dialogic.NamespaceStore>({});  
   const isMountedRef = useRef<boolean>(false);
 
