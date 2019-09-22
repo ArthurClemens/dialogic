@@ -2440,24 +2440,38 @@ var Wrapper = function Wrapper(props) {
   }));
 };
 
-var useDialogic = function useDialogic() {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_6__["useState"])({}),
-      _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3___default()(_useState, 2),
-      store = _useState2[0],
-      setStore = _useState2[1];
+var useAnimationFrame = function useAnimationFrame(callback) {
+  var requestRef = Object(react__WEBPACK_IMPORTED_MODULE_6__["useRef"])();
+  var previousTimeRef = Object(react__WEBPACK_IMPORTED_MODULE_6__["useRef"])();
+
+  var animate = function animate(time) {
+    if (previousTimeRef.current !== undefined) {
+      var deltaTime = time - previousTimeRef.current;
+      callback(deltaTime);
+    }
+
+    previousTimeRef.current = time;
+    requestRef.current = requestAnimationFrame(animate);
+  };
 
   Object(react__WEBPACK_IMPORTED_MODULE_6__["useEffect"])(function () {
-    states.map(function (_ref8) {
-      var store = _ref8.store;
-      setStore(_objectSpread({}, store));
-    });
+    requestRef.current = requestAnimationFrame(animate);
+    return function () {
+      var id = requestRef.current;
+
+      if (id !== undefined) {
+        cancelAnimationFrame(id);
+      }
+    };
   }, []);
-  return [store];
 };
 
 var Dialogical = function Dialogical(type) {
   return function (props) {
-    useDialogic();
+    var _useState = Object(react__WEBPACK_IMPORTED_MODULE_6__["useState"])(0),
+        _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3___default()(_useState, 2),
+        setUpdateCount = _useState2[1];
+
     var identityOptions = {
       id: props.id || type.defaultId,
       spawn: props.spawn || type.defaultSpawn
@@ -2467,12 +2481,33 @@ var Dialogical = function Dialogical(type) {
       if (typeof props.onMount === "function") {
         props.onMount();
       }
-    }, []);
+    }, []); // Use animation frame to create redraws without hitting "Can't perform a React state update on an unmounted component."
+
+    useAnimationFrame(function (deltaTime) {
+      setUpdateCount(function (prevCount) {
+        return (prevCount + deltaTime * 0.01) % 100;
+      });
+    });
     return react__WEBPACK_IMPORTED_MODULE_6___default.a.createElement(Wrapper, {
       identityOptions: identityOptions,
       ns: type.ns
     });
   };
+};
+
+var useDialogic = function useDialogic() {
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_6__["useState"])({}),
+      _useState4 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3___default()(_useState3, 2),
+      store = _useState4[0],
+      setStore = _useState4[1];
+
+  Object(react__WEBPACK_IMPORTED_MODULE_6__["useEffect"])(function () {
+    states.map(function (_ref8) {
+      var store = _ref8.store;
+      setStore(_objectSpread({}, store));
+    });
+  }, []);
+  return [store];
 };
 
 var Dialog = Dialogical(dialog);
