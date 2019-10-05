@@ -12,13 +12,13 @@ export default () => {
     []
   );
   useDialogicState();
-  const fns1 = createFns({ instance: dialog, component: Default, className: "dialog", title: "Default", queued: true });
+  const fns = createFns({ instance: dialog, component: Default, className: "dialog", title: "Default", queued: true });
 
   return (
     <div className="test">
       <div className="control" data-test-id="count-all">{`Count all: ${dialog.getCount()}`}</div>
       <div className="content">
-        {buttons(fns1)}
+        {buttons(fns)}
       </div>
       <div className="spawn default-spawn">
         <Dialog />

@@ -20,7 +20,7 @@ import LibMaterialIODialog from "./cypress-tests/LibMaterialIODialog";
 import "./app-styles.css";
 import "./test-styles.css";
 
-const Index = () => (
+const Home = () => (
   <div className="menu">
     <ul>
       {Object.keys(routes).map(path =>
@@ -47,7 +47,7 @@ type TRoutes = {
 };
 
 const routes: TRoutes = {
-  "/": Index,
+  "/": Home,
   "/DialogClassName": DialogClassName,
   "/DialogClassNameDelay": DialogClassNameDelay,
   "/DialogStyles": DialogStyles,

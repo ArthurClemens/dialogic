@@ -14,7 +14,7 @@ export default () => {
   );
 
   useDialogicState();
-  const fns1 = createFns({ instance: dialog, component: Default, className: "dialog", title: "Default", timeout: 2000 });
+  const fns = createFns({ instance: dialog, component: Default, className: "dialog", title: "Default", timeout: 2000 });
 
   return (
     <div className="test">
@@ -35,10 +35,10 @@ export default () => {
         {`Is paused: ${dialog.isPaused()}`}
       </div>
       <div className="control">
-        <Remaining getRemaining={dialog.getRemaining} />
+        <Remaining getRemainingFn={dialog.getRemaining} />
       </div>
       <div className="content">
-        {buttons({ ...fns1 })}
+        {buttons({ ...fns })}
       </div>
       <div className="spawn default-spawn">
         <Dialog />

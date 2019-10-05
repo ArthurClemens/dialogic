@@ -2,14 +2,14 @@ import React, { useState, FunctionComponent } from "react";
 import { useAnimationFrame } from "./useAnimationFrame";
 
 type RemainingProps = {
-  getRemaining: () => number | undefined;
+  getRemainingFn: () => number | undefined;
 }
 
 export const Remaining: FunctionComponent<RemainingProps> = props => {
   const [displayValue, setDisplayValue] = useState();
 
   useAnimationFrame(() => {
-    const remaining = props.getRemaining();
+    const remaining = props.getRemainingFn();
     if (remaining !== undefined && displayValue !== remaining) {
       setDisplayValue(Math.max(remaining, 0));
     } else {

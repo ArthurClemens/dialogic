@@ -20,7 +20,7 @@ export default () => {
             Resume
           </button>
           <button className="button" data-test-id="button-reset" onClick={() => notification.resetAll()}>
-              Reset
+            Reset
           </button>
         </div>
       </div>
@@ -28,7 +28,7 @@ export default () => {
         {`Is paused: ${notification.isPaused()}`}
       </div>
       <div className="control">
-        <Remaining getRemaining={notification.getRemaining} />
+        <Remaining getRemainingFn={notification.getRemaining} />
       </div>
       <div className="content">
         {buttons({ ...fns1 })}

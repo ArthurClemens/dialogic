@@ -17,7 +17,7 @@ import LibMaterialIODialog from "./cypress-tests/LibMaterialIODialog";
 import "./app-styles.css";
 import "./test-styles.css";
 
-const App = {
+const Home = {
   view: () => 
     m(".menu", 
       m("ul", 
@@ -31,7 +31,7 @@ const App = {
 };
 
 const routes = {
-  "/": App,
+  "/": Home,
   "/DialogClassName": DialogClassName,
   "/DialogClassNameDelay": DialogClassNameDelay,
   "/DialogStyles": DialogStyles,

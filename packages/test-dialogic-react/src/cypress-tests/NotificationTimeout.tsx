@@ -28,7 +28,7 @@ export default () => {
         {`Is paused: ${notification.isPaused()}`}
       </div>
       <div className="control">
-        <Remaining getRemaining={notification.getRemaining} />
+        <Remaining getRemainingFn={notification.getRemaining} />
       </div>
       <div className="content">
         {buttons({ ...fns1 })}
