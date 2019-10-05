@@ -7,9 +7,15 @@ describe("Notification: count", () => {
   });
 
   it("should hide the notification automatically", () => {
+    cy.get("[data-test-id=button-reset]").should("exist").click();
 
+    cy.get("[data-test-id=count-all]").should("exist");
     cy.get("[data-test-id=count-all]").should("contain", "Count all: 0");
+
+    cy.get("[data-test-id=count-id]").should("exist");
     cy.get("[data-test-id=count-id]").should("contain", "Count id: 0");
+
+    cy.get("[data-test-id=count-spawn]").should("exist");
     cy.get("[data-test-id=count-spawn]").should("contain", "Count spawn: 0");
     cy.get("[data-test-id=count-spawn-id]").should("contain", "Count spawn, id: 0");
 
@@ -31,11 +37,15 @@ describe("Notification: count", () => {
   });
 
   it("should queue subsequent notifications", () => {
+    cy.get("[data-test-id=button-reset]").should("exist").click();
 
+    cy.get("[data-test-id=count-all]").should("exist");
     cy.get("[data-test-id=count-all]").should("contain", "Count all: 0");
 
     cy.get("[data-test-id=button-show-default]").should("exist").click();
     cy.get("[data-test-id=content-default]").should("exist");
+    
+    cy.get("[data-test-id=count-all]").should("exist");
     cy.get("[data-test-id=count-all]").should("contain", "Count all: 1");
 
     // The show dialog should not change when invoking another one
@@ -72,14 +82,23 @@ describe("Notification: count", () => {
   });
 
   it("should count notifications per id/spawn", () => {
+    cy.get("[data-test-id=button-reset]").should("exist").click();
+
     cy.get("[data-test-id=button-show-default]").should("exist").click();
     cy.get("[data-test-id=button-show-default]").should("exist").click();
     cy.get("[data-test-id=button-show-default]").should("exist").click();
     cy.get("[data-test-id=button-show-default]").should("exist").click();
     
+    cy.get("[data-test-id=count-all]").should("exist");
     cy.get("[data-test-id=count-all]").should("contain", "Count all: 4");
+
+    cy.get("[data-test-id=count-id]").should("exist");
     cy.get("[data-test-id=count-id]").should("contain", "Count id: 0");
+
+    cy.get("[data-test-id=count-spawn]").should("exist");
     cy.get("[data-test-id=count-spawn]").should("contain", "Count spawn: 0");
+
+    cy.get("[data-test-id=count-spawn-id]").should("exist");
     cy.get("[data-test-id=count-spawn-id]").should("contain", "Count spawn, id: 0");
 
     cy.wait(500);
@@ -94,6 +113,7 @@ describe("Notification: count", () => {
 
     cy.get("[data-test-id=button-show-id1spawn1]").should("exist").click();
 
+    cy.wait(300);
     cy.get("[data-test-id=count-all]").should("contain", "Count all: 10");
     cy.get("[data-test-id=count-id]").should("contain", "Count id: 4");
     cy.get("[data-test-id=count-spawn]").should("contain", "Count spawn: 3");

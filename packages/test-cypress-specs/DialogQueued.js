@@ -7,7 +7,7 @@ describe("Dialog: queued", () => {
   });
 
   it("should queue dialogs", () => {
-
+    cy.get("[data-test-id=count-all]").should("exist");
     cy.get("[data-test-id=count-all]").should("contain", "Count all: 0");
 
     cy.get("[data-test-id=button-show-default]").should("exist").click();

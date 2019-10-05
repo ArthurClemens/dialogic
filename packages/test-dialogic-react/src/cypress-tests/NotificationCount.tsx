@@ -17,6 +17,13 @@ export default () => {
       <div className="control" data-test-id="count-id">{`Count id: ${notification.getCount({ id: "1" })}`}</div>
       <div className="control" data-test-id="count-spawn">{`Count spawn: ${notification.getCount({ spawn: "1" })}`}</div>
       <div className="control" data-test-id="count-spawn-id">{`Count spawn, id: ${notification.getCount({ spawn: "1", id: "1" })}`}</div>
+      <div className="control">
+        <div className="buttons">
+          <button className="button" data-test-id="button-reset" onClick={() => notification.resetAll()}>
+            Reset
+          </button>
+        </div>
+      </div>
       <div className="content">
         {buttons({ ...fns1 })}
         {buttons({ ...fns2, id: "1" })}

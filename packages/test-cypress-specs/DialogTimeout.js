@@ -10,9 +10,10 @@ describe("Dialog: timeout", () => {
     cy.get("[data-test-id=remaining-value]").should("contain", "undefined");
     cy.get("[data-test-id=button-show-default]").should("exist").click();
     cy.wait(500);
+    cy.get("[data-test-id=remaining-value]").should("not.contain", "undefined");
+
     cy.clock().then((clock) => {
       clock.tick(500);
-      
       cy.get("[data-test-id=remaining-value]").should(($remainingValue) => {
         const text = $remainingValue.text();
         const remainingValue = parseInt(text);
@@ -37,9 +38,11 @@ describe("Dialog: timeout", () => {
 
     // Resume
     cy.get("[data-test-id=button-resume]").should("exist").click();
+    cy.wait(300);
     cy.get("[data-test-id=is-paused]").should("contain", "Is paused: false");
 
     cy.wait(500);
+    cy.get("[data-test-id=remaining-value]").should("exist");
     cy.get("[data-test-id=remaining-value]").should(($remainingValue) => {
       const text = $remainingValue.text();
       const remainingValue = parseInt(text);

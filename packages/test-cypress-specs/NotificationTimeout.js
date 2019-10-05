@@ -29,6 +29,7 @@ describe("Notification: timeout", () => {
     cy.clock().then((clock) => {
       clock.tick(1500);
       
+      cy.get("[data-test-id=remaining-value]").should("exist");
       cy.get("[data-test-id=remaining-value]").should(($remainingValue) => {
         const text = $remainingValue.text();
         expect(text).to.eq("undefined");

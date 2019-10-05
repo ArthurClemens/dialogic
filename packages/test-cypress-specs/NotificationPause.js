@@ -23,6 +23,8 @@ describe("Notification: pause", () => {
     cy.get("[data-test-id=is-paused]").should("contain", "Is paused: false");
 
     cy.wait(500);
+
+    cy.get("[data-test-id=remaining-value]").should("exist");
     cy.get("[data-test-id=remaining-value]").should(($remainingValue) => {
       const text = $remainingValue.text();
       const remainingValue = parseInt(text);

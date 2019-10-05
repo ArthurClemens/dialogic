@@ -7,7 +7,7 @@ type RemainingProps = {
 type RemainingFn = ({ attrs } : { attrs: RemainingProps }) => Component<RemainingProps>;
 
 export const Remaining: RemainingFn = ({ attrs }) => {
-  let displayValue: number | undefined;
+  let displayValue: number | undefined = 0;
   let reqId: number;
 
   const update = () => {

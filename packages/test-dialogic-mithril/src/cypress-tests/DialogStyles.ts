@@ -5,6 +5,7 @@ import { buttons } from "./buttons";
 import { dialog, Dialog } from "dialogic-mithril";
 
 export default () => {
+  dialog.resetAll();
   const fns = createFns({
     instance: dialog,
     component: Default,

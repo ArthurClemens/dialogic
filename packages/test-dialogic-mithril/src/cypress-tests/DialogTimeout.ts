@@ -6,11 +6,12 @@ import { dialog, Dialog } from "dialogic-mithril";
 import { Remaining } from "./Remaining";
 
 export default () => {
+  dialog.resetAll();
   const fns1 = createFns({ instance: dialog, component: Default, className: "dialog", title: "Default", timeout: 2000 });
 
   return {
     view: () => {
-      return m(".test", [
+      return m(".test", { key: Math.random() }, [
         m(".control",
           { "data-test-id": "reset-all" }, 
           m(".buttons", [
@@ -41,7 +42,7 @@ export default () => {
           ])
         ),
         m(".control", { "data-test-id": "is-paused" }, `Is paused: ${dialog.isPaused()}`),
-        m(".control", m(Remaining, { getRemaining: dialog.getRemaining })),
+        m(".control", m(Remaining, { key: "DialogTimeout", getRemaining: dialog.getRemaining })),
         m(".content", [
           buttons({ ...fns1 }),
         ]),

@@ -42,7 +42,7 @@ export default () => {
           ])
         ),
         m(".control", { "data-test-id": "is-paused" }, `Is paused: ${notification.isPaused()}`),
-        m(".control", m(Remaining, { getRemaining: notification.getRemaining })),
+        m(".control", m(Remaining, { key: "NotificationTimeout", getRemaining: notification.getRemaining })),
         m(".content", [
           buttons({ ...fns1 }),
           buttons({ ...fns2, id: "1", name: "zero-timeout" }),
