@@ -5,7 +5,7 @@ import { pkg, createConfig } from "./rollup.base";
 import { terser } from "rollup-plugin-terser";
 
 const env = process.env;
-const name = env.MODULE_NAME || "polythene";
+const name = env.MODULE_NAME || "dialogic";
   
 const baseConfig = createConfig();
 const targetConfig = Object.assign({}, baseConfig, {
