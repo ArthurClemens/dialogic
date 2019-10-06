@@ -46,3 +46,12 @@ _item: a dialog/modal or a notification_
 * [Dialogic for Mithril](./packages/dialogic-react/README.md)
 * [Dialogic for Svelte](./packages/dialogic-svelte/README.md)
 
+## Size
+
+* Dialogic for React: 4.3 Kb gzipped
+* Dialogic for Mithril: 4.2 Kb gzipped
+* Dialogic for Svelte: 7.4 Kb gzipped
+
+## License
+
+MIT
