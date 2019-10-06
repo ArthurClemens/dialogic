@@ -22,13 +22,13 @@ describe("Notification: pause", () => {
     cy.get("[data-test-id=button-resume]").should("exist").click();
     cy.get("[data-test-id=is-paused]").should("contain", "Is paused: false");
 
-    cy.wait(500);
+    cy.wait(250);
 
     cy.get("[data-test-id=remaining-value]").should("exist");
+
     cy.get("[data-test-id=remaining-value]").should(($remainingValue) => {
       const text = $remainingValue.text();
       const remainingValue = parseInt(text);
-      expect(remainingValue).to.not.eq(undefined);
       expect(remainingValue).to.be.lessThan(2000);
       expect(remainingValue).to.be.greaterThan(0);
     });

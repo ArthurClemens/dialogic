@@ -103,7 +103,7 @@ test.serial("toggle: should show and hide the item", t => {
 test.serial("resetAll (no dialogic options specified): should remove all", t => {
   dialog.resetAll();
   const spawn = "reset-all";
-  const createDialog = id => {
+  const createDialog = (id: string) => {
     const options = {
       dialogic: {
         id,
@@ -131,7 +131,7 @@ test.serial("resetAll (no dialogic options specified): should remove all", t => 
 
 test.serial("resetAll (different spawn specified): should remove some", t => {
   dialog.resetAll();
-  const createDialog = id => {
+  const createDialog = (id: string) => {
     const options = {
       dialogic: {
         id,
@@ -150,7 +150,7 @@ test.serial("resetAll (different spawn specified): should remove some", t => {
     t.is(dialog.exists({ id: "2", spawn: "reset-all-2" }), true);
 
     return dialog.resetAll({ spawn: "reset-all-1" })
-      .then(() => {
+      .then(items => {
         t.is(dialog.exists({ id: "1", spawn: "reset-all-1" }), false);
         t.is(dialog.exists({ id: "2", spawn: "reset-all-2" }), true);
       });
@@ -160,7 +160,7 @@ test.serial("resetAll (different spawn specified): should remove some", t => {
 test.serial("hideAll (no dialogic options specified): should hide all", t => {
   dialog.resetAll();
   const spawn = "hide-all";
-  const createDialog = id => {
+  const createDialog = (id: string) => {
     const options = {
       dialogic: {
         id,
@@ -189,7 +189,7 @@ test.serial("hideAll (no dialogic options specified): should hide all", t => {
 
 test.serial("hideAll (different spawn specified): should hide some", t => {
   dialog.resetAll();
-  const createDialog = id => {
+  const createDialog = (id: string) => {
     const options = {
       dialogic: {
         id,

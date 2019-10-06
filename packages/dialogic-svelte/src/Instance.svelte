@@ -6,11 +6,11 @@
   // DOM bindings
   let domElement;
 
-  export let identityOptions = undefined;
-  export let passThroughOptions = undefined;
-  export let dialogicOptions = undefined;
+  export let identityOptions;
+  export let passThroughOptions;
+  export let dialogicOptions;
 
-  const className = dialogicOptions.className;
+  const className = dialogicOptions ? dialogicOptions.className : '';
 
   const dispatchTransition = (name) =>
     dispatch(name, {

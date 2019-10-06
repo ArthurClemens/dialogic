@@ -24,7 +24,7 @@ describe("Dialog: className delay", () => {
         .parent()
         .should("not.have.css", "opacity", "0");
       cy.clock().then((clock) => {
-        clock.tick(1000);
+        clock.tick(1500);
         cy.get("[data-test-id=content-default]").should("exist")
           .parent()
           .should("have.css", "opacity", "0");
