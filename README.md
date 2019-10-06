@@ -8,7 +8,7 @@
 
 ## Features
 
-_item: a dialog or a notification_
+_item: a dialog/modal or a notification_
 
 * Manage multiple items
   * Manage simultaneous (stacked) items
