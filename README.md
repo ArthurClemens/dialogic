@@ -37,5 +37,5 @@ _item: a dialog/modal or a notification_
 
 * Core functionality: stable
 * Tests: almost complete
+* Documentation: TODO
 * Demos: TODO
-
