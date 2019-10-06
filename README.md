@@ -39,3 +39,10 @@ _item: a dialog/modal or a notification_
 * Tests: almost complete
 * Documentation: TODO
 * Demos: TODO
+
+## Documentation
+
+* [Dialogic for React](./packages/dialogic-mithril/README.md)
+* [Dialogic for Mithril](./packages/dialogic-react/README.md)
+* [Dialogic for Svelte](./packages/dialogic-svelte/README.md)
+

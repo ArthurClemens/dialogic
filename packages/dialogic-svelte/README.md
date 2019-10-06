@@ -1,3 +1,6 @@
 # Dialogic for Svelte
 
-[Documentation](../../README.md)
+[Main page](../../README.md)
+
+Documentation: TODO
+
