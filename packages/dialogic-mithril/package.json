@@ -1,6 +1,6 @@
 {
   "name": "dialogic-mithril",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Logic for dialogs and notifications",
   "main": "dist/dialogic-mithril",
   "module": "dist/dialogic-mithril.mjs",
@@ -12,11 +12,11 @@
     "size": "gzip -c dist/dialogic-mithril.js | wc -c"
   },
   "dependencies": {
-    "dialogic": "^0.0.1"
+    "dialogic": "^0.1.0"
   },
   "devDependencies": {
-    "mithril": "^2.0.4",
-    "@types/mithril": "2.0.0"
+    "@types/mithril": "2.0.0",
+    "mithril": "^2.0.4"
   },
   "files": [
     "dist",
