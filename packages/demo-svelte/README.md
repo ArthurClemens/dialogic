@@ -1,1 +1,0 @@
-# Dialogic - Svelte demo
