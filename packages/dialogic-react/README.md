@@ -1,4 +1,4 @@
-# Dialogic for Mithril
+# Dialogic for React
 
 [Main page](../../README.md)
 
