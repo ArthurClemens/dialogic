@@ -35,7 +35,7 @@ export const Instance: InstanceFn = ({ attrs: componentAttrs }) => {
       domElement = vnode.dom as HTMLElement;
       onMount();
     },
-    view: ({ attrs }) =>
+    view: ({ attrs }) => (
       m("div",
         { className: attrs.dialogicOptions.className },
         m(attrs.dialogicOptions.component,
@@ -46,5 +46,6 @@ export const Instance: InstanceFn = ({ attrs: componentAttrs }) => {
           }
         )
       )
+    )
   };
 };

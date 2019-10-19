@@ -13,7 +13,20 @@
   background: #a7ffeb
 }
 
+.message {
+  padding: 15px;
+}
+
 .dialog + .dialog {
+  margin-top: 15px;
+}
+
+.section {
+  margin: 0;
+  padding: 0;
+}
+
+.section + .section {
   margin-top: 15px;
 }
 
@@ -33,8 +46,6 @@
   .control .button {
     margin: 5px;
   }
-
-
 
 .content {
   margin-top: 25px;

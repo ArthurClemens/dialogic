@@ -7,17 +7,17 @@ describe("Dialog: timeout", () => {
   });
 
   it("getRemaining should show the remaining time", () => {
-    cy.get("[data-test-id=remaining-value]").should("contain", "undefined");
+    cy.get("[data-test-id=remaining-value]").should("contain", "0");
     cy.get("[data-test-id=button-show-default]").should("exist").click();
     cy.wait(200);
-    cy.get("[data-test-id=remaining-value]").should("not.contain", "undefined");
+    cy.get("[data-test-id=remaining-value]").should("not.contain", "0");
 
     cy.clock().then((clock) => {
       clock.tick(100);
       cy.get("[data-test-id=remaining-value]").should(($remainingValue) => {
         const text = $remainingValue.text();
         const remainingValue = parseInt(text);
-        expect(remainingValue).to.not.eq(undefined);
+        expect(remainingValue).to.not.eq(0);
         expect(remainingValue).to.be.lessThan(2000);
         expect(remainingValue).to.be.greaterThan(0);
       });
@@ -25,8 +25,8 @@ describe("Dialog: timeout", () => {
   });
 
   it("pause button should pause the timer, resume should continue from where it left off", () => {
-    cy.get("[data-test-id=remaining-value]").should("contain", "undefined");
-    cy.get("[data-test-id=is-paused]").should("contain", "Is paused: undefined");
+    cy.get("[data-test-id=remaining-value]").should("contain", "0");
+    cy.get("[data-test-id=is-paused]").should("contain", "Is paused: false");
     cy.get("[data-test-id=button-show-default]").should("exist").click();
     cy.wait(500);
     cy.get("[data-test-id=button-pause]").should("exist").click();
@@ -46,14 +46,14 @@ describe("Dialog: timeout", () => {
     cy.get("[data-test-id=remaining-value]").should(($remainingValue) => {
       const text = $remainingValue.text();
       const remainingValue = parseInt(text);
-      expect(remainingValue).to.not.eq(undefined);
+      expect(remainingValue).to.not.eq(0);
       expect(remainingValue).to.be.lessThan(2000);
       expect(remainingValue).to.be.greaterThan(0);
     });
 
     cy.wait(2000);
-    cy.get("[data-test-id=is-paused]").should("contain", "Is paused: undefined");
-    cy.get("[data-test-id=remaining-value]").should("contain", "undefined");
+    cy.get("[data-test-id=is-paused]").should("contain", "Is paused: false");
+    cy.get("[data-test-id=remaining-value]").should("contain", "0");
   });
 
 });

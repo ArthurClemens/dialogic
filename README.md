@@ -257,19 +257,20 @@ Create transitions by writing styles using the format `className-suffix` - where
 Define those classes in CSS to create transitions. For example with `className` "dialog":
 
 ```css
+.dialog {
+  transition: opacity 300ms ease-in-out;
+}
 .dialog-show-start {
   opacity: 0;
 }
 .dialog-show-end {
   opacity: 1;
-  transition: opacity 300ms;
 }
 .dialog-hide-start {
   opacity: 1;
 }
 .dialog-hide-end {
   opacity: 0;
-  transition: opacity 300ms;
 }
 ```
 
@@ -693,12 +694,12 @@ notification.isPaused({
 **Signature**
 
 ```typescript
-isPaused: (identityOptions?: IdentityOptions) => boolean | undefined;
+isPaused: (identityOptions?: IdentityOptions) => boolean;
 ```
 
 #### `getRemaining`
 
-Returns the remaining timer duration in ms. Returns `undefined` when no timer is running. 
+Returns the remaining timer duration in ms.
 
 ```javascript
 const remaining = notification.getRemaining()
@@ -715,15 +716,14 @@ const remaining = notification.getRemaining({
 **Signature**
 
 ```typescript
-getRemaining: (identityOptions?: IdentityOptions) => number | undefined;
+getRemaining: (identityOptions?: IdentityOptions) => number;
 ```
-
 
 
 ## Size
 
 * Dialogic for React: 4.4 Kb gzipped
-* Dialogic for Mithril: 4.2 Kb gzipped
+* Dialogic for Mithril: 4.3 Kb gzipped
 * Dialogic for Svelte: 7.5 Kb gzipped
 
 ## License

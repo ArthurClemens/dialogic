@@ -1,17 +1,18 @@
 
+.dialog {
+  transition: opacity 300ms ease-in-out;
+}
 .dialog-show-start {
   opacity: 0;
 }
 .dialog-show-end {
   opacity: 1;
-  transition: opacity 300ms;
 }
 .dialog-hide-start {
   opacity: 1;
 }
 .dialog-hide-end {
   opacity: 0;
-  transition: opacity 300ms;
 }
 
 .dialog-delay-show-start {

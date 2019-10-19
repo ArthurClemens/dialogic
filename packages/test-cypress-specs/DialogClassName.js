@@ -43,7 +43,7 @@ describe("Dialog: className", () => {
     cy.get("[data-test-id=content-default]").should("exist")
       .parent()
       .should("have.css", "opacity", "1")
-      .should("have.css", "transition", "opacity 0.3s ease 0s");
+      .should("have.css", "transition", "opacity 0.3s ease-in-out 0s");
   });
 
 });

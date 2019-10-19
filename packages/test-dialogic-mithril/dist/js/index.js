@@ -2123,11 +2123,11 @@ var selectors = _objectSpread({}, store.selectors(states)); // states.map(state 
 
 var initialState = {
   callback: function callback() {},
-  isPaused: undefined,
+  isPaused: false,
   onAbort: function onAbort() {},
   onDone: function onDone() {},
   promise: undefined,
-  remaining: undefined,
+  remaining: 0,
   startTime: undefined,
   timeoutFn: function timeoutFn() {},
   timerId: undefined
@@ -2148,7 +2148,7 @@ var appendStartTimer = function appendStartTimer(state, callback, duration, upda
       };
 
       state.onAbort = function () {
-        return reject();
+        return resolve();
       };
     })
   }, state.isPaused ? {} : {
@@ -2188,7 +2188,7 @@ var appendResumeTimer = function appendResumeTimer(state, minimumDuration) {
 };
 
 var _getRemaining = function getRemaining(state) {
-  return state.remaining === undefined ? undefined : state.remaining - (new Date().getTime() - (state.startTime || 0));
+  return state.remaining === 0 ? 0 : state.remaining - (new Date().getTime() - (state.startTime || 0));
 };
 
 var Timer = function Timer() {
@@ -2508,7 +2508,7 @@ var resume = function resume(ns) {
   };
 };
 
-var getTimerProperty = function getTimerProperty(timerProp) {
+var getTimerProperty = function getTimerProperty(timerProp, defaultValue) {
   return function (ns) {
     return function (defaultDialogicOptions) {
       return function (identityOptions) {
@@ -2518,18 +2518,18 @@ var getTimerProperty = function getTimerProperty(timerProp) {
           if (maybeItem.just && maybeItem.just.timer) {
             return maybeItem.just.timer.selectors[timerProp]();
           } else {
-            return undefined;
+            return defaultValue;
           }
         } else {
-          return undefined;
+          return defaultValue;
         }
       };
     };
   };
 };
 
-var isPaused = getTimerProperty("isPaused");
-var getRemaining$1 = getTimerProperty("getRemaining");
+var isPaused = getTimerProperty("isPaused", false);
+var getRemaining$1 = getTimerProperty("getRemaining", 0);
 
 var exists = function exists(ns) {
   return function (defaultDialogicOptions) {
@@ -2645,7 +2645,7 @@ function () {
             timer.actions.start(function () {
               return hideItem(item);
             }, timeout);
-            return _context.abrupt("return", getTimerProperty("getResultPromise"));
+            return _context.abrupt("return", getTimerProperty("getResultPromise", undefined));
 
           case 2:
           case "end":
@@ -5460,61 +5460,222 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
 
 
-const DemoContent = {
-    view: () => (mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", { "class": "mdc-dialog__container" }, mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", { "class": "mdc-dialog__surface" }, [
-        mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2", { "class": "mdc-dialog__title", "id": "my-dialog-title" }, "Dialog Title"),
-        mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", { "class": "mdc-dialog__content", "id": "my-dialog-content" }, " Dialog body text goes here. "),
-        mithril__WEBPACK_IMPORTED_MODULE_0___default()("footer", { "class": "mdc-dialog__actions" }, [
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", { "class": "mdc-button mdc-dialog__button", "type": "button", "data-mdc-dialog-action": "no" }, mithril__WEBPACK_IMPORTED_MODULE_0___default()("span", {
-                "class": "mdc-button__label",
+const DialogContent = {
+    view: () => (mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-dialog__container", mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-dialog__surface", [
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2.mdc-dialog__title", "Dialog Title"),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-dialog__content", "Dialog body text goes here."),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("footer.mdc-dialog__actions", [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button.mdc-button.mdc-dialog__button", mithril__WEBPACK_IMPORTED_MODULE_0___default()("span.mdc-button__label", {
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide()
             }, "No")),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", { "class": "mdc-button mdc-dialog__button", "type": "button", "data-mdc-dialog-action": "yes" }, mithril__WEBPACK_IMPORTED_MODULE_0___default()("span", {
-                "class": "mdc-button__label",
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button.mdc-button.mdc-dialog__button", mithril__WEBPACK_IMPORTED_MODULE_0___default()("span.mdc-button__label", {
                 onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide()
             }, "Yes"))
         ])
     ])))
 };
 const MaterialIODialogComponent = (isModal = false) => ({
-    view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-dialog--open", { "class": "mdc-dialog", "role": "alertdialog", "aria-modal": "true", "aria-labelledby": "my-dialog-title", "aria-describedby": "my-dialog-content" }, [
-        mithril__WEBPACK_IMPORTED_MODULE_0___default()(DemoContent),
-        mithril__WEBPACK_IMPORTED_MODULE_0___default()("div", {
-            "class": "mdc-dialog__scrim",
+    view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-dialog.mdc-dialog--open", [
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()(DialogContent),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-dialog__scrim", {
             onclick: () => !isModal && dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide()
         })
     ])
 });
-/* harmony default export */ __webpack_exports__["default"] = (() => {
-    return {
-        view: () => {
-            return mithril__WEBPACK_IMPORTED_MODULE_0___default()(".test", [
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".buttons", [
-                    mithril__WEBPACK_IMPORTED_MODULE_0___default()(".button", {
-                        onclick: () => {
-                            dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
-                                dialogic: {
-                                    component: MaterialIODialogComponent(),
-                                    className: "dialog",
-                                }
-                            });
-                        }
-                    }, "Show dialog"),
-                    mithril__WEBPACK_IMPORTED_MODULE_0___default()(".button", {
-                        onclick: () => {
-                            dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
-                                dialogic: {
-                                    component: MaterialIODialogComponent(true),
-                                    className: "dialog",
-                                }
-                            });
-                        }
-                    }, "Show modal dialog"),
-                ]),
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".materialIO", mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"])),
-            ]);
+/* harmony default export */ __webpack_exports__["default"] = ({
+    view: () => {
+        return mithril__WEBPACK_IMPORTED_MODULE_0___default()(".test", [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()(".buttons", [
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".button", {
+                    onclick: () => {
+                        dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
+                            dialogic: {
+                                component: MaterialIODialogComponent(),
+                                className: "dialog",
+                            }
+                        });
+                    }
+                }, "Show dialog"),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".button", {
+                    onclick: () => {
+                        dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
+                            dialogic: {
+                                component: MaterialIODialogComponent(true),
+                                className: "dialog",
+                            }
+                        });
+                    }
+                }, "Show modal dialog"),
+            ]),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()(".materialIO", mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"])),
+        ]);
+    }
+});
+
+
+/***/ }),
+
+/***/ "./cypress-tests/LibMaterialIONotification.ts":
+/*!****************************************************!*\
+  !*** ./cypress-tests/LibMaterialIONotification.ts ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
+/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
+
+
+const NotificationContent = {
+    view: () => [
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__label", "Can't send photo. Retry in 5 seconds."),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__actions", mithril__WEBPACK_IMPORTED_MODULE_0___default()("button.mdc-button.mdc-snackbar__action", {
+            onclick: () => {
+                dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].pause();
+                dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
+                    dialogic: {
+                        component: DialogComponent,
+                        className: "dialog",
+                    },
+                    title: "Retry sending?",
+                    body: "We have noticed a slow internet connection. Sending may take a bit longer than usual.",
+                    onAccept: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].hide(),
+                    onReject: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].resume({ minimumDuration: 2000 }),
+                });
+            }
+        }, "Retry"))
+    ]
+};
+const NotificationComponent = ({
+    view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar.mdc-snackbar--open", mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__surface", mithril__WEBPACK_IMPORTED_MODULE_0___default()(NotificationContent)))
+});
+const DialogContent = {
+    view: ({ attrs }) => (mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-dialog__container", mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-dialog__surface", [
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("h2.mdc-dialog__title", attrs.title),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-dialog__content", attrs.body),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()("footer.mdc-dialog__actions", [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button.mdc-button.mdc-dialog__button", mithril__WEBPACK_IMPORTED_MODULE_0___default()("span.mdc-button__label", {
+                onclick: () => {
+                    dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide();
+                    attrs.onReject();
+                }
+            }, "Never mind")),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()("button.mdc-button.mdc-dialog__button", mithril__WEBPACK_IMPORTED_MODULE_0___default()("span.mdc-button__label", {
+                onclick: () => {
+                    dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].hide();
+                    attrs.onAccept();
+                }
+            }, "Yes, retry"))
+        ])
+    ])))
+};
+const DialogComponent = {
+    view: ({ attrs }) => mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-dialog.mdc-dialog--open", [
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()(DialogContent, { ...attrs }),
+        mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-dialog__scrim") // modal, onclick is not used
+    ])
+};
+const Remaining = ({ attrs }) => {
+    let displayValue = 0;
+    let reqId;
+    const update = () => {
+        const remaining = attrs.getRemaining();
+        if (remaining !== undefined) {
+            if (displayValue !== remaining) {
+                mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw();
+                displayValue = Math.max(remaining, 0);
+            }
         }
+        else {
+            displayValue = undefined;
+            mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw();
+        }
+        reqId = window.requestAnimationFrame(update);
     };
+    return {
+        oncreate: () => reqId = window.requestAnimationFrame(update),
+        onremove: () => window.cancelAnimationFrame(reqId),
+        view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()("span", {
+            style: {
+                minWidth: "3em",
+                textAlign: "left"
+            }
+        }, displayValue === undefined ? "undefined" : displayValue.toString())
+    };
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+    view: () => {
+        return mithril__WEBPACK_IMPORTED_MODULE_0___default()(".test", [
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()(".message", "Add a notification, then click on the Retry button in the message."),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()(".buttons", [
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".button.is-primary", {
+                    onclick: () => {
+                        dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].show({
+                            dialogic: {
+                                component: NotificationComponent,
+                                className: "demo-notification",
+                            }
+                        });
+                    }
+                }, "Add notification"),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".button", {
+                    onclick: () => {
+                        dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].pause();
+                    }
+                }, "Pause"),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".button", {
+                    onclick: () => {
+                        dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].resume();
+                    }
+                }, "Resume"),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".button", {
+                    onclick: () => {
+                        dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].hideAll();
+                    }
+                }, "Hide all"),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".button", {
+                    onclick: () => {
+                        dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].resetAll();
+                    }
+                }, "Reset all"),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".button.is-static", [
+                    mithril__WEBPACK_IMPORTED_MODULE_0___default()("span", "Notifications: "),
+                    mithril__WEBPACK_IMPORTED_MODULE_0___default.a.trust("&nbsp;"),
+                    mithril__WEBPACK_IMPORTED_MODULE_0___default()("span", {
+                        style: {
+                            minWidth: "1.5em",
+                            textAlign: "left"
+                        }
+                    }, dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getCount())
+                ]),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".button.is-static", [
+                    mithril__WEBPACK_IMPORTED_MODULE_0___default()("span", "Is paused: "),
+                    mithril__WEBPACK_IMPORTED_MODULE_0___default.a.trust("&nbsp;"),
+                    mithril__WEBPACK_IMPORTED_MODULE_0___default()("span", {
+                        style: {
+                            minWidth: "2em",
+                            textAlign: "left"
+                        }
+                    }, dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].isPaused().toString())
+                ]),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".button.is-static", [
+                    mithril__WEBPACK_IMPORTED_MODULE_0___default()("span", "Remaining: "),
+                    mithril__WEBPACK_IMPORTED_MODULE_0___default.a.trust("&nbsp;"),
+                    mithril__WEBPACK_IMPORTED_MODULE_0___default()("span", {
+                        style: {
+                            minWidth: "3em",
+                            textAlign: "left"
+                        }
+                    }, mithril__WEBPACK_IMPORTED_MODULE_0___default()(Remaining, { getRemaining: dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getRemaining }))
+                ]),
+            ]),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Notification"]),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"]),
+        ]);
+    }
 });
 
 
@@ -5597,12 +5758,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = (() => {
-    const fns1 = Object(_createFns__WEBPACK_IMPORTED_MODULE_1__["createFns"])({ instance: dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"], component: _content_Default__WEBPACK_IMPORTED_MODULE_2__["Default"], className: "notification", title: "Default", timeout: 10000 });
-    const fns2 = Object(_createFns__WEBPACK_IMPORTED_MODULE_1__["createFns"])({ instance: dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"], component: _content_Default__WEBPACK_IMPORTED_MODULE_2__["Default"], className: "notification", spawn: "2", title: "Spawn", timeout: 10000 });
+    const fns1 = Object(_createFns__WEBPACK_IMPORTED_MODULE_1__["createFns"])({ instance: dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"], component: _content_Default__WEBPACK_IMPORTED_MODULE_2__["Default"], className: "notification", title: "Default", timeout: 2000 });
+    const fns2 = Object(_createFns__WEBPACK_IMPORTED_MODULE_1__["createFns"])({ instance: dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"], component: _content_Default__WEBPACK_IMPORTED_MODULE_2__["Default"], className: "notification", spawn: "2", title: "Spawn", timeout: 2000 });
     return {
         view: () => {
             return mithril__WEBPACK_IMPORTED_MODULE_0___default()(".test", [
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", { "data-test-id": "pause-default" }, mithril__WEBPACK_IMPORTED_MODULE_0___default()(".buttons", [
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".section", { "data-test-id": "pause-default" }, mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", { "data-test-id": "pause-default" }, mithril__WEBPACK_IMPORTED_MODULE_0___default()(".buttons", [
                     mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                         className: "button",
                         onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"].pause(),
@@ -5618,13 +5779,10 @@ __webpack_require__.r(__webpack_exports__);
                         onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"].resetAll(),
                         "data-test-id": "button-reset"
                     }, "Reset"),
-                ])),
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", { "data-test-id": "is-paused" }, `Is paused: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"].isPaused()}`),
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", mithril__WEBPACK_IMPORTED_MODULE_0___default()(_Remaining__WEBPACK_IMPORTED_MODULE_5__["Remaining"], { key: "NotificationPause", getRemaining: dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"].getRemaining })),
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".content", [
+                ])), mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", { "data-test-id": "is-paused" }, `Is paused: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"].isPaused()}`), mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", mithril__WEBPACK_IMPORTED_MODULE_0___default()(_Remaining__WEBPACK_IMPORTED_MODULE_5__["Remaining"], { key: "NotificationPause", getRemaining: dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"].getRemaining })), mithril__WEBPACK_IMPORTED_MODULE_0___default()(".content", [
                     Object(_buttons__WEBPACK_IMPORTED_MODULE_3__["buttons"])({ ...fns1 }),
-                ]),
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", { "data-test-id": "pause-id" }, mithril__WEBPACK_IMPORTED_MODULE_0___default()(".buttons", [
+                ]), mithril__WEBPACK_IMPORTED_MODULE_0___default()(".spawn.default-spawn", mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["Notification"]))),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".section", { "data-test-id": "pause-id" }, mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", mithril__WEBPACK_IMPORTED_MODULE_0___default()(".buttons", [
                     mithril__WEBPACK_IMPORTED_MODULE_0___default()("button", {
                         className: "button",
                         onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"].pause({ spawn: "2" }),
@@ -5640,14 +5798,9 @@ __webpack_require__.r(__webpack_exports__);
                         onclick: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"].resetAll({ spawn: "2" }),
                         "data-test-id": "button-reset"
                     }, "Reset"),
-                ])),
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", { "data-test-id": "is-paused" }, `Is paused: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"].isPaused({ spawn: "2" })}`),
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", mithril__WEBPACK_IMPORTED_MODULE_0___default()(_Remaining__WEBPACK_IMPORTED_MODULE_5__["Remaining"], { key: "NotificationPause", getRemaining: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"].getRemaining({ spawn: "2" }) })),
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".content", [
+                ])), mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", { "data-test-id": "is-paused" }, `Is paused: ${dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"].isPaused({ spawn: "2" })}`), mithril__WEBPACK_IMPORTED_MODULE_0___default()(".control", mithril__WEBPACK_IMPORTED_MODULE_0___default()(_Remaining__WEBPACK_IMPORTED_MODULE_5__["Remaining"], { key: "NotificationPause", getRemaining: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["notification"].getRemaining({ spawn: "2" }) })), mithril__WEBPACK_IMPORTED_MODULE_0___default()(".content", [
                     Object(_buttons__WEBPACK_IMPORTED_MODULE_3__["buttons"])({ ...fns2, name: "spawn" }),
-                ]),
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".spawn.default-spawn", mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["Notification"])),
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(".spawn.custom-spawn", mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["Notification"], { spawn: "2" })),
+                ]), mithril__WEBPACK_IMPORTED_MODULE_0___default()(".spawn.custom-spawn", mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_4__["Notification"], { spawn: "2" }))),
             ]);
         }
     };
@@ -5884,10 +6037,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _cypress_tests_NotificationTimeout__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./cypress-tests/NotificationTimeout */ "./cypress-tests/NotificationTimeout.ts");
 /* harmony import */ var _cypress_tests_LibBulmaDialog__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./cypress-tests/LibBulmaDialog */ "./cypress-tests/LibBulmaDialog.ts");
 /* harmony import */ var _cypress_tests_LibMaterialIODialog__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./cypress-tests/LibMaterialIODialog */ "./cypress-tests/LibMaterialIODialog.ts");
-/* harmony import */ var _app_styles_css__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./app-styles.css */ "./app-styles.css");
-/* harmony import */ var _app_styles_css__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_app_styles_css__WEBPACK_IMPORTED_MODULE_16__);
-/* harmony import */ var _test_styles_css__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./test-styles.css */ "./test-styles.css");
-/* harmony import */ var _test_styles_css__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(_test_styles_css__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var _cypress_tests_LibMaterialIONotification__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./cypress-tests/LibMaterialIONotification */ "./cypress-tests/LibMaterialIONotification.ts");
+/* harmony import */ var _app_styles_css__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./app-styles.css */ "./app-styles.css");
+/* harmony import */ var _app_styles_css__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(_app_styles_css__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var _test_styles_css__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./test-styles.css */ "./test-styles.css");
+/* harmony import */ var _test_styles_css__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(_test_styles_css__WEBPACK_IMPORTED_MODULE_18__);
+
 
 
 
@@ -5926,6 +6081,7 @@ const routes = {
     "/NotificationTimeout": _cypress_tests_NotificationTimeout__WEBPACK_IMPORTED_MODULE_13__["default"],
     "/LibBulmaDialog": _cypress_tests_LibBulmaDialog__WEBPACK_IMPORTED_MODULE_14__["default"],
     "/LibMaterialIODialog": _cypress_tests_LibMaterialIODialog__WEBPACK_IMPORTED_MODULE_15__["default"],
+    "/LibMaterialIONotification": _cypress_tests_LibMaterialIONotification__WEBPACK_IMPORTED_MODULE_16__["default"],
 };
 mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.prefix = "#";
 const mountNode = document.getElementById("root");

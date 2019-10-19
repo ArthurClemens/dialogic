@@ -13,7 +13,20 @@
   background: #a7ffeb
 }
 
+.message {
+  padding: 15px;
+}
+
 .dialog + .dialog {
+  margin-top: 15px;
+}
+
+.section {
+  margin: 0;
+  padding: 0;
+}
+
+.section + .section {
   margin-top: 15px;
 }
 
@@ -33,8 +46,6 @@
   .control .button {
     margin: 5px;
   }
-
-
 
 .content {
   margin-top: 25px;
@@ -86,19 +97,20 @@
 
 
 
+.dialog {
+  transition: opacity 300ms ease-in-out;
+}
 .dialog-show-start {
   opacity: 0;
 }
 .dialog-show-end {
   opacity: 1;
-  transition: opacity 300ms;
 }
 .dialog-hide-start {
   opacity: 1;
 }
 .dialog-hide-end {
   opacity: 0;
-  transition: opacity 300ms;
 }
 
 .dialog-delay-show-start {
@@ -131,20 +143,36 @@
   transition: opacity 800ms;
 }
 
-
+.notification {
+  transition: opacity 300ms;
+}
 .notification-show-start {
   opacity: 0;
 }
 .notification-show-end {
   opacity: 1;
-  transition: opacity 300ms;
 }
 .notification-hide-start {
   opacity: 1;
 }
 .notification-hide-end {
   opacity: 0;
-  transition: opacity 300ms;
+}
+
+.demo-notification {
+  transition: opacity 400ms 100ms;
+}
+.demo-notification-show-start {
+  opacity: 0;
+}
+.demo-notification-show-end {
+  opacity: 1;
+}
+.demo-notification-hide-start {
+  opacity: 1;
+}
+.demo-notification-hide-end {
+  opacity: 0;
 }
 
 .bulma-dialog-content-box {

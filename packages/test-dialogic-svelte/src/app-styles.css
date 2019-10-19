@@ -17,6 +17,19 @@
   margin-top: 15px;
 }
 
+.message {
+  padding: 15px;
+}
+
+.section {
+  margin: 0;
+  padding: 0;
+}
+
+.section + .section {
+  margin-top: 15px;
+}
+
 .control {
   padding: 10px 15px;
   background: #f5f5f5;

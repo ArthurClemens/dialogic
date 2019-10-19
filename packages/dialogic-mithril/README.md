@@ -1,19 +1,15 @@
-[Main page](../../README.md)
-
 # Dialogic for Mithril
 
 Manage dialogs and notifications.
 
-- [Usage](#usage)
-  - [`show` function](#show-function)
-    - [Options passed to the `dialogic` object](#options-passed-to-the-dialogic-object)
-      - [`component`](#component)
+[Main documentation](../../README.md)
 
 ## Usage
 
-See also the [main documentation](../../README.md#api) for the Dialogic API.
+### Dialog
 
 ```javascript
+// index.js
 import m from "mithril";
 import { dialog, Dialog } from "dialogic-mithril";
 
@@ -48,37 +44,87 @@ const DialogView = {
 };
 ```
 
-### `show` function
-
-See also [show function](../../README.md#show-function) in the main documentation.
-
-#### Options passed to the `dialogic` object
-
-##### `component`
-
-Pass the component that will be rendered as dialog.
-
-In this example the title is passed using the component props:
-
-```javascript
-dialog.show({
-  dialogic: {
-    component: DialogView,
-  },
-  title: "Dialog Title"
-})
+```css
+/* index.css */
+.dialog {
+  transition: opacity 300ms ease-in-out;
+}
+.dialog-show-start {
+  opacity: 0;
+}
+.dialog-show-end {
+  opacity: 1;
+}
+.dialog-hide-start {
+  opacity: 1;
+}
+.dialog-hide-end {
+  opacity: 0;
+}
 ```
 
-```javascript
-import m from "mithril";
+### Notification
 
-export const DialogView = {
+```javascript
+// index.js
+import m from "mithril";
+import { notification, Notification } from "dialogic-mithril";
+
+const App = {
+  view: () => [
+    m(".button", {
+      onclick: () => {
+        notification.show({
+          dialogic: {
+            component: NotificationView, // any component; see example below
+            className: "notification",
+          },
+          title: "Notification Title"
+        })
+      }
+    }, "Show notification"),
+    m(Notification) // notification will be drawn by this component
+  ]
+};
+
+const NotificationView = {
   view: ({ attrs }) =>
-    m(".dialog", [
-      m(".dialog-content", [
-        m("h3", attrs.title),
-        m("div", "Dialog content")
-      ])
+    m(".notification", [
+      m("h3", attrs.title),
+      m("div", [
+        m("span", "Message"),
+        // Optionally using pause/resume/isPaused:
+        m("button",
+          {
+            onclick: () => 
+              notification.isPaused()
+                ? notification.resume({ minimumDuration: 2000 })
+                : notification.pause()
+          },
+          notification.isPaused()
+            ? "Continue"
+            : "Wait"
+        )
+      ]
     ])
 };
+```
+
+```css
+/* index.css */
+.notification {
+  transition: opacity 300ms;
+}
+.notification-show-start {
+  opacity: 0;
+}
+.notification-show-end {
+  opacity: 1;
+}
+.notification-hide-start {
+  opacity: 1;
+}
+.notification-hide-end {
+  opacity: 0;
+}
 ```
