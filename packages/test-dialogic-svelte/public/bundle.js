@@ -1,2 +1,6903 @@
-var app=function(){"use strict";function t(){}function n(t,n){for(const e in n)t[e]=n[e];return t}function e(t){return t()}function o(){return Object.create(null)}function s(t){t.forEach(e)}function a(t){return"function"==typeof t}function i(t,n){return t!=t?n==n:t!==n||t&&"object"==typeof t||"function"==typeof t}function l(t,n,e){t.$$.on_destroy.push(function(t,n){const e=t.subscribe(n);return e.unsubscribe?()=>e.unsubscribe():e}(n,e))}function r(t){const n={};for(const e in t)"$"!==e[0]&&(n[e]=t[e]);return n}function c(t,n){t.appendChild(n)}function d(t,n,e){t.insertBefore(n,e||null)}function u(t){t.parentNode.removeChild(t)}function f(t){return document.createElement(t)}function p(t){return document.createTextNode(t)}function $(){return p(" ")}function g(){return p("")}function m(t,n,e,o){return t.addEventListener(n,e,o),()=>t.removeEventListener(n,e,o)}function h(t,n,e){null==e?t.removeAttribute(n):t.setAttribute(n,e)}function w(t,n){n=""+n,t.data!==n&&(t.data=n)}let v;function C(t){v=t}function y(){if(!v)throw new Error("Function called outside component initialization");return v}function b(t){y().$$.on_mount.push(t)}function _(){const t=v;return(n,e)=>{const o=t.$$.callbacks[n];if(o){const s=function(t,n){const e=document.createEvent("CustomEvent");return e.initCustomEvent(t,!1,!1,n),e}(n,e);o.slice().forEach(n=>{n.call(t,s)})}}}const S=[],x=[],I=[],k=[],O=Promise.resolve();let N=!1;function D(t){I.push(t)}function P(){const t=new Set;do{for(;S.length;){const t=S.shift();C(t),E(t.$$)}for(;x.length;)x.pop()();for(let n=0;n<I.length;n+=1){const e=I[n];t.has(e)||(e(),t.add(e))}I.length=0}while(S.length);for(;k.length;)k.pop()();N=!1}function E(t){t.fragment&&(t.update(t.dirty),s(t.before_update),t.fragment.p(t.dirty,t.ctx),t.dirty=null,t.after_update.forEach(D))}const A=new Set;let T;function M(){T={r:0,c:[],p:T}}function F(){T.r||s(T.c),T=T.p}function R(t,n){t&&t.i&&(A.delete(t),t.i(n))}function L(t,n,e,o){if(t&&t.o){if(A.has(t))return;A.add(t),T.c.push(()=>{A.delete(t),o&&(e&&t.d(1),o())}),t.o(n)}}function j(t,n){L(t,1,1,()=>{n.delete(t.key)})}function H(t,n){const e={},o={},s={$$scope:1};let a=t.length;for(;a--;){const i=t[a],l=n[a];if(l){for(const t in i)t in l||(o[t]=1);for(const t in l)s[t]||(e[t]=l[t],s[t]=1);t[a]=l}else for(const t in i)s[t]=1}for(const t in o)t in e||(e[t]=void 0);return e}function q(t){return"object"==typeof t&&null!==t?t:{}}function V(t,n,o){const{fragment:i,on_mount:l,on_destroy:r,after_update:c}=t.$$;i.m(n,o),D(()=>{const n=l.map(e).filter(a);r?r.push(...n):s(n),t.$$.on_mount=[]}),c.forEach(D)}function B(t,n){t.$$.fragment&&(s(t.$$.on_destroy),t.$$.fragment.d(n),t.$$.on_destroy=t.$$.fragment=null,t.$$.ctx={})}function K(t,n){t.$$.dirty||(S.push(t),N||(N=!0,O.then(P)),t.$$.dirty=o()),t.$$.dirty[n]=!0}function z(n,e,a,i,l,r){const c=v;C(n);const d=e.props||{},u=n.$$={fragment:null,ctx:null,props:r,update:t,not_equal:l,bound:o(),on_mount:[],on_destroy:[],before_update:[],after_update:[],context:new Map(c?c.$$.context:[]),callbacks:o(),dirty:null};let f=!1;u.ctx=a?a(n,d,(t,e,o=e)=>(u.ctx&&l(u.ctx[t],u.ctx[t]=o)&&(u.bound[t]&&u.bound[t](o),f&&K(n,t)),e)):d,u.update(),f=!0,s(u.before_update),u.fragment=i(u.ctx),e.target&&(e.hydrate?u.fragment.l(function(t){return Array.from(t.childNodes)}(e.target)):u.fragment.c(),e.intro&&R(n.$$.fragment),V(n,e.target,e.anchor),P()),C(c)}class J{$destroy(){B(this,1),this.$destroy=t}$on(t,n){const e=this.$$.callbacks[t]||(this.$$.callbacks[t]=[]);return e.push(n),()=>{const t=e.indexOf(n);-1!==t&&e.splice(t,1)}}$set(){}}const Q=[];function G(t,n){return{subscribe:X(t,n).subscribe}}function X(n,e=t){let o;const s=[];function a(t){if(i(n,t)&&(n=t,o)){const t=!Q.length;for(let t=0;t<s.length;t+=1){const e=s[t];e[1](),Q.push(e,n)}if(t){for(let t=0;t<Q.length;t+=2)Q[t][0](Q[t+1]);Q.length=0}}}return{set:a,update:function(t){a(t(n))},subscribe:function(i,l=t){const r=[i,l];return s.push(r),1===s.length&&(o=e(a)||t),i(n),()=>{const t=s.indexOf(r);-1!==t&&s.splice(t,1),0===s.length&&(o(),o=null)}}}}function Y(n,e,o){const i=!Array.isArray(n),l=i?[n]:n,r=e.length<2;return G(o,n=>{let o=!1;const c=[];let d=0,u=t;const f=()=>{if(d)return;u();const o=e(i?c[0]:c,n);r?n(o):u=a(o)?o:t},p=l.map((t,n)=>t.subscribe(t=>{c[n]=t,d&=~(1<<n),o&&f()},()=>{d|=1<<n}));return o=!0,f(),function(){s(p),u()}})}function U(t){var n,e,o=t.component;function s(t){return{props:{params:t.componentParams}}}if(o)var a=new o(s(t));return{c(){a&&a.$$.fragment.c(),n=g()},m(t,o){a&&V(a,t,o),d(t,n,o),e=!0},p(t,e){var i={};if(t.componentParams&&(i.params=e.componentParams),o!==(o=e.component)){if(a){M();const t=a;L(t.$$.fragment,1,0,()=>{B(t,1)}),F()}o?((a=new o(s(e))).$$.fragment.c(),R(a.$$.fragment,1),V(a,n.parentNode,n)):a=null}else o&&a.$set(i)},i(t){e||(a&&R(a.$$.fragment,t),e=!0)},o(t){a&&L(a.$$.fragment,t),e=!1},d(t){t&&u(n),a&&B(a,t)}}}function W(){const t=window.location.href.indexOf("#/");let n=t>-1?window.location.href.substr(t+1):"/";const e=n.indexOf("?");let o="";return e>-1&&(o=n.substr(e+1),n=n.substr(0,e)),{location:n,querystring:o}}const Z=G(W(),(function(t){const n=()=>{t(W())};return window.addEventListener("hashchange",n,!1),function(){window.removeEventListener("hashchange",n,!1)}}));Y(Z,t=>t.location),Y(Z,t=>t.querystring);function tt(t){if(!t||!t.tagName||"a"!=t.tagName.toLowerCase())throw Error('Action "link" can only be used with <a> tags');const n=t.getAttribute("href");if(!n||n.length<1||"/"!=n.charAt(0))throw Error('Invalid value for "href" attribute');t.addEventListener("click",t=>{let n;t.preventDefault();let e=t.target;for(;null===(n=e.getAttribute("href"));)if(null===(e=e.parentElement))throw Error("Could not find corresponding href value");return function(t){if(!t||t.length<1||"/"!=t.charAt(0))throw Error("Invalid parameter location");setTimeout(()=>{window.location.hash="#"+t},0)}(n),!1})}function nt(t,n,e){let o;l(t,Z,t=>{e("$loc",o=t)});let{routes:s={}}=n;class a{constructor(t,n){if(!t||"string"==typeof t&&(t.length<1||"/"!=t.charAt(0)&&"*"!=t.charAt(0))||"object"==typeof t&&!(t instanceof RegExp))throw Error('Invalid value for "path" argument');const{pattern:e,keys:o}=function(t,n){if(t instanceof RegExp)return{keys:!1,pattern:t};var e,o,s,a,i=[],l="",r=t.split("/");for(r[0]||r.shift();s=r.shift();)"*"===(e=s[0])?(i.push("wild"),l+="/(.*)"):":"===e?(o=s.indexOf("?",1),a=s.indexOf(".",1),i.push(s.substring(1,~o?o:~a?a:s.length)),l+=~o&&!~a?"(?:/([^/]+?))?":"/([^/]+?)",~a&&(l+=(~o?"?":"")+"\\"+s.substring(a))):l+="/"+s;return{keys:i,pattern:new RegExp("^"+l+(n?"(?=$|/)":"/?$"),"i")}}(t);this.path=t,this.component=n,this._pattern=e,this._keys=o}match(t){const n=this._pattern.exec(t);if(null===n)return null;if(!1===this._keys)return n;const e={};let o=0;for(;o<this._keys.length;)e[this._keys[o]]=n[++o]||null;return e}}const i=s instanceof Map?s:Object.entries(s),r=[];for(const[t,n]of i)r.push(new a(t,n));let c=null,d={};return t.$set=t=>{"routes"in t&&e("routes",s=t.routes)},t.$$.update=(t={component:1,$loc:1})=>{if(t.component||t.$loc){e("component",c=null);let t=0;for(;!c&&t<r.length;){const n=r[t].match(o.location);n&&(e("component",c=r[t].component),e("componentParams",d=n)),t++}}},{routes:s,component:c,componentParams:d}}class et extends J{constructor(t){super(),z(this,t,nt,U,i,["routes"])}}function ot(n){var e,o,s,a,i,l,r,p,g,m,w,v,C,y,b,_,S,x,I,k,O,N,D,P,E,A,T,M,F,R,L,j,H,q,V,B,K,z,J,Q,G,X,Y,U,W,Z,nt,et,ot,st,at,it,lt,rt,ct,dt,ut;return{c(){e=f("div"),o=f("ul"),s=f("li"),(a=f("a")).textContent="DialogClassName",l=$(),r=f("li"),(p=f("a")).textContent="DialogClassNameDelay",m=$(),w=f("li"),(v=f("a")).textContent="DialogStyles",y=$(),b=f("li"),(_=f("a")).textContent="DialogIds",x=$(),I=f("li"),(k=f("a")).textContent="DialogCount",N=$(),D=f("li"),(P=f("a")).textContent="DialogHideAll",A=$(),T=f("li"),(M=f("a")).textContent="DialogResetAll",R=$(),L=f("li"),(j=f("a")).textContent="DialogTimeout",q=$(),V=f("li"),(B=f("a")).textContent="DialogQueued",z=$(),J=f("li"),(Q=f("a")).textContent="NotificationCount",X=$(),Y=f("li"),(U=f("a")).textContent="NotificationPause",Z=$(),nt=f("li"),(et=f("a")).textContent="NotificationTimeout",st=$(),at=f("li"),(it=f("a")).textContent="LibBulmaDialog",rt=$(),ct=f("li"),(dt=f("a")).textContent="LibMaterialIODialog",h(a,"href","/DialogClassName"),h(p,"href","/DialogClassNameDelay"),h(v,"href","/DialogStyles"),h(_,"href","/DialogIds"),h(k,"href","/DialogCount"),h(P,"href","/DialogHideAll"),h(M,"href","/DialogResetAll"),h(j,"href","/DialogTimeout"),h(B,"href","/DialogQueued"),h(Q,"href","/NotificationCount"),h(U,"href","/NotificationPause"),h(et,"href","/NotificationTimeout"),h(it,"href","/LibBulmaDialog"),h(dt,"href","/LibMaterialIODialog"),h(e,"class","menu")},m(t,n){d(t,e,n),c(e,o),c(o,s),c(s,a),i=tt.call(null,a)||{},c(o,l),c(o,r),c(r,p),g=tt.call(null,p)||{},c(o,m),c(o,w),c(w,v),C=tt.call(null,v)||{},c(o,y),c(o,b),c(b,_),S=tt.call(null,_)||{},c(o,x),c(o,I),c(I,k),O=tt.call(null,k)||{},c(o,N),c(o,D),c(D,P),E=tt.call(null,P)||{},c(o,A),c(o,T),c(T,M),F=tt.call(null,M)||{},c(o,R),c(o,L),c(L,j),H=tt.call(null,j)||{},c(o,q),c(o,V),c(V,B),K=tt.call(null,B)||{},c(o,z),c(o,J),c(J,Q),G=tt.call(null,Q)||{},c(o,X),c(o,Y),c(Y,U),W=tt.call(null,U)||{},c(o,Z),c(o,nt),c(nt,et),ot=tt.call(null,et)||{},c(o,st),c(o,at),c(at,it),lt=tt.call(null,it)||{},c(o,rt),c(o,ct),c(ct,dt),ut=tt.call(null,dt)||{}},p:t,i:t,o:t,d(t){t&&u(e),i&&"function"==typeof i.destroy&&i.destroy(),g&&"function"==typeof g.destroy&&g.destroy(),C&&"function"==typeof C.destroy&&C.destroy(),S&&"function"==typeof S.destroy&&S.destroy(),O&&"function"==typeof O.destroy&&O.destroy(),E&&"function"==typeof E.destroy&&E.destroy(),F&&"function"==typeof F.destroy&&F.destroy(),H&&"function"==typeof H.destroy&&H.destroy(),K&&"function"==typeof K.destroy&&K.destroy(),G&&"function"==typeof G.destroy&&G.destroy(),W&&"function"==typeof W.destroy&&W.destroy(),ot&&"function"==typeof ot.destroy&&ot.destroy(),lt&&"function"==typeof lt.destroy&&lt.destroy(),ut&&"function"==typeof ut.destroy&&ut.destroy()}}}const st=(...t)=>n=>t.filter(Boolean).reduce((t,n)=>n(t),n),at=({domElement:t,prop:n})=>{if(window.getComputedStyle){const e=document.defaultView;if(e){const o=e.getComputedStyle(t);if(o)return o.getPropertyValue(n)}}},it="show",lt="hide",rt=(t,n,e)=>{const o=e[n]||{};Object.keys(o).forEach(n=>{const e=o[n].toString();t.style[n]=e})},ct=(t,n)=>t.split(/ /).map(t=>`${t}-${n}`),dt=(t,n,e,o)=>{if(n.styles){const s=((t,n)=>("function"==typeof n?n(t):n)||{})(t,n.styles);rt(t,"default",s),o&&(t=>t.style.transitionDuration="0ms")(t),rt(t,e,s)}if(n.className){const o={showStart:ct(n.className,"show-start"),showEnd:ct(n.className,"show-end"),hideStart:ct(n.className,"hide-start"),hideEnd:ct(n.className,"hide-end")};((t,n)=>t.classList.remove(...n.showStart,...n.showEnd,...n.hideStart,...n.hideEnd))(t,o),o&&t.classList.add(...o[e])}t.scrollTop},ut={showStart:{nextStep:"showEnd"},showEnd:{nextStep:void 0},hideStart:{nextStep:"hideEnd"},hideEnd:{nextStep:void 0}},ft=(t,n)=>{const e=t.domElement;if(!e)return Promise.resolve("no domElement");let o=n===it?"showStart":"hideStart";return new Promise(n=>{dt(e,t,o,"showStart"===o),setTimeout(()=>{const s=ut[o].nextStep;if(s){dt(e,t,o=s);const a=(t=>{const n=at({domElement:t,prop:"transition-duration"}),e=void 0!==n?pt(n):0,o=at({domElement:t,prop:"transition-delay"});return e+(void 0!==o?pt(o):0)})(e);setTimeout(n,a)}},0)})},pt=t=>{const n=parseFloat(t)*(-1===t.indexOf("ms")?1e3:1);return isNaN(n)?0:n};var $t=function(t,n){return t(n={exports:{}},n.exports),n.exports}((function(t){!function(){e.SKIP={},e.lift=function(){var t=arguments[0];return s(Array.prototype.slice.call(arguments,1)).map((function(n){return t.apply(void 0,n)}))},e.scan=function(t,n,o){var s=o.map((function(o){var s=t(n,o);return s!==e.SKIP&&(n=s),s}));return s(n),s},e.merge=s,e.combine=o,e.scanMerge=function(t,n){var e=t.map((function(t){return t[0]})),s=o((function(){var o=arguments[arguments.length-1];return e.forEach((function(e,s){o.indexOf(e)>-1&&(n=t[s][1](n,e()))})),n}),e);return s(n),s},e["fantasy-land/of"]=e;var n=!1;function e(t){var n,s=[],i=[];function l(n){return arguments.length&&n!==e.SKIP&&(t=n,a(l)&&(l._changing(),l._state="active",s.forEach((function(n,e){n(i[e](t))})))),t}return l.constructor=e,l._state=arguments.length&&t!==e.SKIP?"active":"pending",l._parents=[],l._changing=function(){a(l)&&(l._state="changing"),s.forEach((function(t){t._changing()}))},l._map=function(n,o){var a=o?e():e(n(t));return a._parents.push(l),s.push(a),i.push(n),a},l.map=function(t){return l._map(t,"active"!==l._state)},l.toJSON=function(){return null!=t&&"function"==typeof t.toJSON?t.toJSON():t},l["fantasy-land/map"]=l.map,l["fantasy-land/ap"]=function(t){return o((function(t,n){return t()(n())}),[t,l])},l._unregisterChild=function(t){var n=s.indexOf(t);-1!==n&&(s.splice(n,1),i.splice(n,1))},Object.defineProperty(l,"end",{get:function(){return n||((n=e()).map((function(t){return!0===t&&(l._parents.forEach((function(t){t._unregisterChild(l)})),l._state="ended",l._parents.length=s.length=i.length=0),t})),n)}}),l}function o(t,n){var o=n.every((function(t){if(t.constructor!==e)throw new Error("Ensure that each item passed to stream.combine/stream.merge/lift is a stream");return"active"===t._state})),s=o?e(t.apply(null,n.concat([n]))):e(),a=[],i=n.map((function(e){return e._map((function(i){return a.push(e),(o||n.every((function(t){return"pending"!==t._state})))&&(o=!0,s(t.apply(null,n.concat([a]))),a=[]),i}),!0)})),l=s.end.map((function(t){!0===t&&(i.forEach((function(t){t.end(!0)})),l.end(!0))}));return s}function s(t){return o((function(){return t.map((function(t){return t()}))}),t)}function a(t){return"pending"===t._state||"active"===t._state||"changing"===t._state}Object.defineProperty(e,"HALT",{get:function(){return n||console.log("HALT is deprecated and has been renamed to SKIP"),n=!0,e.SKIP}}),t.exports=e}()}));const gt=(t,n)=>{const e=((t,n)=>n.find(n=>n.id===t))(t,n);return n.indexOf(e)},mt=(t,n)=>[n,t.id,t.spawn].filter(Boolean).join("-"),ht={initialState:{store:{}},actions:t=>({add:(n,e)=>{t(o=>{const s=o.store[n]||[];return o.store[n]=[...s,e],e.timer&&e.timer.states.map(()=>ht.actions(t).refresh()),o})},remove:(n,e)=>{t(t=>{const o=t.store[n]||[],s=((t,n)=>{const e=gt(t,n);return-1!==e&&n.splice(e,1),n})(e,o);return t.store[n]=s,t})},replace:(n,e,o)=>{t(t=>{const s=t.store[n]||[];if(s){const a=gt(e,s);-1!==a&&(s[a]=o,t.store[n]=[...s])}return t})},removeAll:n=>{t(t=>(t.store[n]=[],t))},store:(n,e)=>{t(t=>(t.store[n]=[...e],t))},refresh:()=>{t(t=>({...t}))}}),selectors:t=>{const n={getStore:()=>{return t().store},find:(n,e)=>{const o=t().store[n]||[],s=mt(e,n),a=o.find(t=>t.id===s);return a?{just:a}:{nothing:void 0}},getAll:(n,e)=>{const o=t().store[n]||[],s=void 0!==e?e.spawn:void 0,a=void 0!==e?e.id:void 0,i=void 0!==s?o.filter(t=>t.identityOptions.spawn===s):o;return void 0!==a?i.filter(t=>t.identityOptions.id===a):i},getCount:(t,e)=>n.getAll(t,e).length};return n}},wt=$t(),vt=$t.scan((t,n)=>n(t),{...ht.initialState},wt),Ct={...ht.actions(wt)},yt={...ht.selectors(vt)},bt={callback:()=>{},isPaused:void 0,onAbort:()=>{},onDone:()=>{},promise:void 0,remaining:void 0,startTime:void 0,timeoutFn:()=>{},timerId:void 0},_t=(t,n,e,o)=>{const s=()=>{n(),t.onDone(),o()};return{timeoutFn:s,promise:new Promise((n,e)=>{t.onDone=()=>n(),t.onAbort=()=>e()}),...t.isPaused?{}:{startTime:(new Date).getTime(),timerId:window.setTimeout(s,e),remaining:e}}},St=t=>(window.clearTimeout(t.timerId),{timerId:bt.timerId}),xt=t=>({...St(t)}),It=t=>({...St(t),isPaused:!0,remaining:Ot(t)}),kt=(t,n)=>{window.clearTimeout(t.timerId);const e=n?Math.max(t.remaining||0,n):t.remaining;return{startTime:(new Date).getTime(),isPaused:!1,remaining:e,timerId:window.setTimeout(t.timeoutFn,e)}},Ot=t=>void 0===t.remaining?void 0:t.remaining-((new Date).getTime()-(t.startTime||0)),Nt=()=>{const t={initialState:bt,actions:n=>({start:(e,o)=>{n(s=>({...s,...St(s),..._t(s,e,o,()=>t.actions(n).done()),...s.isPaused&&It(s)}))},stop:()=>{n(t=>({...t,...xt(t),...bt}))},pause:()=>{n(t=>({...t,...!t.isPaused&&It(t)}))},resume:t=>{n(n=>({...n,...n.isPaused&&kt(n,t)}))},abort:()=>{n(t=>(t.onAbort(),{...t,...St(t)}))},done:()=>{n(t=>bt)},refresh:()=>{n(t=>({...t}))}}),selectors:t=>({isPaused:()=>{return t().isPaused},getRemaining:()=>{const n=t();return n.isPaused?n.remaining:Ot(n)},getResultPromise:()=>{return t().promise}})},n=$t(),e=$t.scan((t,n)=>n(t),{...t.initialState},n);return{states:e,actions:{...t.actions(n)},selectors:{...t.selectors(e)}}};let Dt=0;const Pt=()=>Dt===Number.MAX_SAFE_INTEGER?0:Dt++,Et=0,At=1,Tt=2,Mt=t=>n=>e=>o=>{const s=Ft(n)(e)(o);return s.just?t(n,s.just,o):Promise.resolve()},Ft=t=>n=>e=>yt.find(t,Ht(n,e)),Rt=t=>n=>void 0!==t.spawn?n.filter(n=>n.identityOptions.spawn===t.spawn):n,Lt=t=>{let n=0;return t.map(t=>({item:t,queueCount:t.dialogicOptions.queued?n++:0})).filter(({queueCount:t})=>0===t).map(({item:t})=>t)},jt=(t,n,e)=>{const o=n[t]||[];return 0==o.length?[]:st(Rt(e),Lt)(o)},Ht=(t,n={})=>({id:n.id||t.id,spawn:n.spawn||t.spawn}),qt=t=>n=>(e={})=>new Promise(o=>{const s={id:e.dialogic?e.dialogic.id:void 0,spawn:e.dialogic?e.dialogic.spawn:void 0},a=Ht(n,s),i={...n,...e.dialogic},l=(t=>{const n={...t};return delete n.dialogic,n})(e),r={didShow:t=>(i.didShow&&i.didShow(t),o(t)),didHide:t=>(i.didHide&&i.didHide(t),o(t))},c={ns:t,identityOptions:a,dialogicOptions:i,callbacks:r,passThroughOptions:l,id:mt(a,t),timer:i.timeout?Nt():void 0,key:Pt().toString(),transitionState:Et},d=yt.find(t,a);if(d.just&&i.toggle){const e=Vt(t)(n)(s);return o(e)}if(d.just&&!i.queued){const n=d.just,e=n.dialogicOptions,o={...c,transitionState:n.transitionState,dialogicOptions:e};Ct.replace(t,n.id,o)}else Ct.add(t,c);o(c)}),Vt=Mt((t,n)=>n.transitionState!==Tt?en(n):Promise.resolve(n)),Bt=Mt((t,n)=>(n&&n.timer&&n.timer.actions.pause(),Promise.resolve(n))),Kt=Mt((t,n,e={})=>(n&&n.timer&&n.timer.actions.resume(e.minimumDuration),Promise.resolve(n))),zt=t=>n=>e=>o=>{const s=Ft(n)(e)(o);return s.just&&s.just&&s.just.timer?s.just.timer.selectors[t]():void 0},Jt=zt("isPaused"),Qt=zt("getRemaining"),Gt=t=>n=>e=>{return!!Ft(t)(n)(e).just},Xt=(t,n)=>{const e=yt.getAll(t);let o;if(n){const t={...n};o=st(Rt(t),(t=>n=>void 0!==t.id?n.filter(n=>n.identityOptions.id===t.id):n)(t))(e)}else o=e;return o},Yt=t=>n=>n=>{const e=Xt(t,n),o=[];return e.forEach(t=>{t.timer&&t.timer.actions.abort(),o.push(t)}),n?o.forEach(n=>{Ct.remove(t,n.id)}):Ct.removeAll(t),Promise.resolve(o)},Ut=(t,n)=>({...t,dialogicOptions:{...t.dialogicOptions,...n}}),Wt=t=>n=>n=>{const e=Xt(t,n),o=n||{},s=e.filter(t=>!o.queued&&!t.dialogicOptions.queued),a=e.filter(t=>o.queued||t.dialogicOptions.queued),i=[];if(s.forEach(t=>i.push(en(Ut(t,o)))),a.length>0){const[n]=a;Ct.store(t,[n]),i.push(en(Ut(n,o)))}return Promise.all(i)},Zt=t=>n=>yt.getCount(t,n),tn=(t,n)=>ft(t.dialogicOptions,n),nn=async function(t){return t.transitionState!==At&&(t.transitionState=At,await tn(t,it)),t.callbacks.didShow&&await t.callbacks.didShow(t),t.dialogicOptions.timeout&&t.timer&&await async function(t,n,e){return n.actions.start(()=>en(t),e),zt("getResultPromise")}(t,t.timer,t.dialogicOptions.timeout),Promise.resolve(t)},en=async function(t){t.transitionState=Tt,t.timer&&t.timer.actions.stop(),await tn(t,lt),t.callbacks.didHide&&await t.callbacks.didHide(t);const n={...t};return Ct.remove(t.ns,t.id),Promise.resolve(n)},on=({ns:t,queued:n,timeout:e})=>{const o=`default_${t}`,s=`default_${t}`,a={id:o,spawn:s,...n&&{queued:n},...void 0!==e&&{timeout:e}};return{ns:t,defaultId:o,defaultSpawn:s,defaultDialogicOptions:a,show:qt(t)(a),hide:Vt(t)(a),hideAll:Wt(t)(a),resetAll:Yt(t)(a),pause:Bt(t)(a),resume:Kt(t)(a),exists:Gt(t)(a),getCount:Zt(t),isPaused:Jt(t)(a),getRemaining:Qt(t)(a)}},sn=on({ns:"dialog"}),an=on({ns:"notification",queued:!0,timeout:3e3}),ln={...X(vt),...yt};vt.map(t=>ln.set({...t,...yt}));const rn=t=>n=>Y(ln,()=>yt.getCount(t,n)),cn=t=>n=>e=>Y(ln,()=>zt("isPaused")(t)(n)(e)),dn=t=>n=>e=>Y(ln,()=>Gt(t)(n)(e)),un={...sn,getCount:t=>rn(sn.ns)(t),isPaused:t=>cn(sn.ns)(sn.defaultDialogicOptions)(t),exists:t=>dn(sn.ns)(sn.defaultDialogicOptions)(t)},fn={...an,getCount:t=>rn(an.ns)(t),isPaused:t=>cn(an.ns)(an.defaultDialogicOptions)(t),exists:t=>dn(an.ns)(an.defaultDialogicOptions)(t)},pn=t=>(n,e)=>{const o=yt.find(t,n.detail.identityOptions);o.just&&((t,n)=>{n.dialogicOptions.domElement=t})(n.detail.domElement,o.just);const s=yt.find(t,n.detail.identityOptions);s.just&&e(s.just)},$n=t=>n=>pn(t)(n,nn),gn=t=>n=>pn(t)(n,nn),mn=t=>n=>pn(t)(n,en);function hn(t){var e,o,s=[{show:t.show},{hide:t.hide},t.passThroughOptions],a=t.dialogicOptions.component;function i(t){let e={};for(var o=0;o<s.length;o+=1)e=n(e,s[o]);return{props:e}}if(a)var l=new a(i());return{c(){e=f("div"),l&&l.$$.fragment.c(),h(e,"class",t.className)},m(n,s){d(n,e,s),l&&V(l,e,null),t.div_binding(e),o=!0},p(t,n){var o=t.show||t.hide||t.passThroughOptions?H(s,[t.show&&{show:n.show},t.hide&&{hide:n.hide},t.passThroughOptions&&q(n.passThroughOptions)]):{};if(a!==(a=n.dialogicOptions.component)){if(l){M();const t=l;L(t.$$.fragment,1,0,()=>{B(t,1)}),F()}a?((l=new a(i())).$$.fragment.c(),R(l.$$.fragment,1),V(l,e,null)):l=null}else a&&l.$set(o)},i(t){o||(l&&R(l.$$.fragment,t),o=!0)},o(t){l&&L(l.$$.fragment,t),o=!1},d(n){n&&u(e),l&&B(l),t.div_binding(null)}}}function wn(t,n,e){const o=_();let s,{identityOptions:a,passThroughOptions:i,dialogicOptions:l}=n;const r=l?l.className:"",c=t=>o(t,{identityOptions:a,domElement:s});return b(()=>{c("mount")}),t.$set=t=>{"identityOptions"in t&&e("identityOptions",a=t.identityOptions),"passThroughOptions"in t&&e("passThroughOptions",i=t.passThroughOptions),"dialogicOptions"in t&&e("dialogicOptions",l=t.dialogicOptions)},{domElement:s,identityOptions:a,passThroughOptions:i,dialogicOptions:l,className:r,show:()=>{c("show")},hide:()=>{c("hide")},div_binding:function(t){x[t?"unshift":"push"](()=>{e("domElement",s=t)})}}}class vn extends J{constructor(t){super(),z(this,t,wn,hn,i,["identityOptions","passThroughOptions","dialogicOptions"])}}function Cn(t,n,e){const o=Object.create(t);return o.identityOptions=n[e].identityOptions,o.dialogicOptions=n[e].dialogicOptions,o.passThroughOptions=n[e].passThroughOptions,o.key=n[e].key,o.index=e,o}function yn(t,n){var e,o,s=new vn({props:{identityOptions:n.identityOptions,dialogicOptions:n.dialogicOptions,passThroughOptions:n.passThroughOptions}});return s.$on("mount",n.nsOnInstanceMounted),s.$on("show",n.nsOnShowInstance),s.$on("hide",n.nsOnHideInstance),{key:t,first:null,c(){e=g(),s.$$.fragment.c(),this.first=e},m(t,n){d(t,e,n),V(s,t,n),o=!0},p(t,n){var e={};(t.ns||t.$appState||t.identityOptions)&&(e.identityOptions=n.identityOptions),(t.ns||t.$appState||t.identityOptions)&&(e.dialogicOptions=n.dialogicOptions),(t.ns||t.$appState||t.identityOptions)&&(e.passThroughOptions=n.passThroughOptions),s.$set(e)},i(t){o||(R(s.$$.fragment,t),o=!0)},o(t){L(s.$$.fragment,t),o=!1},d(t){t&&u(e),B(s,t)}}}function bn(t){var n,e,o=[],s=new Map;let a=jt(t.ns,t.$appState.store,t.identityOptions);const i=t=>t.key;for(let n=0;n<a.length;n+=1){let e=Cn(t,a,n),l=i(e);s.set(l,o[n]=yn(l,e))}return{c(){for(let t=0;t<o.length;t+=1)o[t].c();n=g()},m(t,s){for(let n=0;n<o.length;n+=1)o[n].m(t,s);d(t,n,s),e=!0},p(t,e){const a=jt(e.ns,e.$appState.store,e.identityOptions);M(),o=function(t,n,e,o,s,a,i,l,r,c,d,u){let f=t.length,p=a.length,$=f;const g={};for(;$--;)g[t[$].key]=$;const m=[],h=new Map,w=new Map;for($=p;$--;){const t=u(s,a,$),l=e(t);let r=i.get(l);r?o&&r.p(n,t):(r=c(l,t)).c(),h.set(l,m[$]=r),l in g&&w.set(l,Math.abs($-g[l]))}const v=new Set,C=new Set;function y(t){R(t,1),t.m(l,d),i.set(t.key,t),d=t.first,p--}for(;f&&p;){const n=m[p-1],e=t[f-1],o=n.key,s=e.key;n===e?(d=n.first,f--,p--):h.has(s)?!i.has(o)||v.has(o)?y(n):C.has(s)?f--:w.get(o)>w.get(s)?(C.add(o),y(n)):(v.add(s),f--):(r(e,i),f--)}for(;f--;){const n=t[f];h.has(n.key)||r(n,i)}for(;p;)y(m[p-1]);return m}(o,t,i,1,e,a,s,n.parentNode,j,yn,n,Cn),F()},i(t){if(!e){for(let t=0;t<a.length;t+=1)R(o[t]);e=!0}},o(t){for(let t=0;t<o.length;t+=1)L(o[t]);e=!1},d(t){for(let n=0;n<o.length;n+=1)o[n].d(t);t&&u(n)}}}function _n(t,n,e){let o;l(t,ln,t=>{e("$appState",o=t)});let{identityOptions:s,ns:a}=n;const i=$n(a),r=gn(a),c=mn(a);return t.$set=t=>{"identityOptions"in t&&e("identityOptions",s=t.identityOptions),"ns"in t&&e("ns",a=t.ns)},{identityOptions:s,ns:a,nsOnInstanceMounted:i,nsOnShowInstance:r,nsOnHideInstance:c,$appState:o}}class Sn extends J{constructor(t){super(),z(this,t,_n,bn,i,["identityOptions","ns"])}}function xn(t){var n,e=new Sn({props:{identityOptions:t.identityOptions,ns:t.ns}});return{c(){e.$$.fragment.c()},m(t,o){V(e,t,o),n=!0},p(t,n){var o={};t.ns&&(o.ns=n.ns),e.$set(o)},i(t){n||(R(e.$$.fragment,t),n=!0)},o(t){L(e.$$.fragment,t),n=!1},d(t){B(e,t)}}}function In(t,n,e){let{type:o,ns:s=o.ns,spawn:a,id:i,onMount:l}=n;const r={id:i||o.defaultId,spawn:a||o.defaultSpawn};return b(()=>{"function"==typeof l&&l()}),t.$set=t=>{"type"in t&&e("type",o=t.type),"ns"in t&&e("ns",s=t.ns),"spawn"in t&&e("spawn",a=t.spawn),"id"in t&&e("id",i=t.id),"onMount"in t&&e("onMount",l=t.onMount)},{type:o,ns:s,spawn:a,id:i,onMount:l,identityOptions:r}}class kn extends J{constructor(t){super(),z(this,t,In,xn,i,["type","ns","spawn","id","onMount"])}}function On(t){var e,o=[t.$$props,{type:un}];let s={};for(var a=0;a<o.length;a+=1)s=n(s,o[a]);var i=new kn({props:s});return{c(){i.$$.fragment.c()},m(t,n){V(i,t,n),e=!0},p(t,n){var e=t.$$props||t.dialog?H(o,[t.$$props&&q(n.$$props),t.dialog&&{type:un}]):{};i.$set(e)},i(t){e||(R(i.$$.fragment,t),e=!0)},o(t){L(i.$$.fragment,t),e=!1},d(t){B(i,t)}}}function Nn(t,e,o){return t.$set=t=>{o("$$props",e=n(n({},e),t))},{$$props:e,$$props:e=r(e)}}class Dn extends J{constructor(t){super(),z(this,t,Nn,On,i,[])}}function Pn(t){var e,o=[t.$$props,{type:fn}];let s={};for(var a=0;a<o.length;a+=1)s=n(s,o[a]);var i=new kn({props:s});return{c(){i.$$.fragment.c()},m(t,n){V(i,t,n),e=!0},p(t,n){var e=t.$$props||t.notification?H(o,[t.$$props&&q(n.$$props),t.notification&&{type:fn}]):{};i.$set(e)},i(t){e||(R(i.$$.fragment,t),e=!0)},o(t){L(i.$$.fragment,t),e=!1},d(t){B(i,t)}}}function En(t,e,o){return t.$set=t=>{o("$$props",e=n(n({},e),t))},{$$props:e,$$props:e=r(e)}}class An extends J{constructor(t){super(),z(this,t,En,Pn,i,[])}}function Tn(n){var e,o,s,a,i,l,r,g,v=n.$$props.title+"";return{c(){e=f("div"),o=f("h2"),s=p(v),a=$(),(i=f("button")).textContent="Hide from component",h(i,"class","button"),h(i,"data-test-id","button-hide-content"),h(e,"class",l=n.$$props.className),h(e,"data-test-id",r=`content-default${n.$$props.contentId?`-${n.$$props.contentId}`:""}`),g=m(i,"click",n.$$props.hide)},m(t,n){d(t,e,n),c(e,o),c(o,s),c(e,a),c(e,i)},p(t,n){t.$$props&&v!==(v=n.$$props.title+"")&&w(s,v),t.$$props&&l!==(l=n.$$props.className)&&h(e,"class",l),t.$$props&&r!==(r=`content-default${n.$$props.contentId?`-${n.$$props.contentId}`:""}`)&&h(e,"data-test-id",r)},i:t,o:t,d(t){t&&u(e),g()}}}function Mn(t,e,o){return t.$set=t=>{o("$$props",e=n(n({},e),t))},{$$props:e,$$props:e=r(e)}}class Fn extends J{constructor(t){super(),z(this,t,Mn,Tn,i,[])}}function Rn(n){var e,o,s,a=`Show ${n.genName}`+"";return{c(){e=f("button"),o=p(a),h(e,"class","button primary"),h(e,"data-test-id",`button-show-${n.genName}`),s=m(e,"click",n.showFn)},m(t,n){d(t,e,n),c(e,o)},p:t,d(t){t&&u(e),s()}}}function Ln(n){var e,o,s,a=`Hide ${n.genName}`+"";return{c(){e=f("button"),o=p(a),h(e,"class","button"),h(e,"data-test-id",`button-hide-${n.genName}`),s=m(e,"click",n.hideFn)},m(t,n){d(t,e,n),c(e,o)},p:t,d(t){t&&u(e),s()}}}function jn(n){var e,o,s=n.showFn&&Rn(n),a=n.hideFn&&Ln(n);return{c(){e=f("div"),s&&s.c(),o=$(),a&&a.c(),h(e,"class","buttons")},m(t,n){d(t,e,n),s&&s.m(e,null),c(e,o),a&&a.m(e,null)},p(t,n){n.showFn?s?s.p(t,n):((s=Rn(n)).c(),s.m(e,o)):s&&(s.d(1),s=null),n.hideFn?a?a.p(t,n):((a=Ln(n)).c(),a.m(e,null)):a&&(a.d(1),a=null)},i:t,o:t,d(t){t&&u(e),s&&s.d(),a&&a.d()}}}function Hn(t,n,e){let{showFn:o,hideFn:s,id:a="",spawn:i="",name:l=""}=n;const r=l||`${a?`id${a}`:""}${i?`spawn${i}`:""}`||"default";return t.$set=t=>{"showFn"in t&&e("showFn",o=t.showFn),"hideFn"in t&&e("hideFn",s=t.hideFn),"id"in t&&e("id",a=t.id),"spawn"in t&&e("spawn",i=t.spawn),"name"in t&&e("name",l=t.name)},{showFn:o,hideFn:s,id:a,spawn:i,name:l,genName:r}}class qn extends J{constructor(t){super(),z(this,t,Hn,jn,i,["showFn","hideFn","id","spawn","name"])}}const Vn=()=>Math.round(1e3*Math.random()).toString(),Bn=({instance:t,component:n,className:e,title:o,id:s,spawn:a,styles:i,timeout:l,queued:r})=>{const c=`${s?`id${s}`:""}${a?`spawn${a}`:""}`,d={dialogic:{component:n,className:e,styles:i,id:s,spawn:a,...void 0!==a?{spawn:a}:void 0,...void 0!==l?{timeout:l}:void 0,...void 0!==r?{queued:r}:void 0},className:"instance-content",id:Vn(),contentId:c};return{showFn:()=>t.show({...d,title:o+" "+Vn()}),hideFn:()=>t.hide(d.dialogic)}};function Kn(t){var e,o,s,a,i=[t.fns];let l={};for(var r=0;r<i.length;r+=1)l=n(l,i[r]);var p=new qn({props:l}),g=new Dn({});return{c(){e=f("div"),p.$$.fragment.c(),o=$(),s=f("div"),g.$$.fragment.c(),h(s,"class","spawn default-spawn"),h(e,"class","test")},m(t,n){d(t,e,n),V(p,e,null),c(e,o),c(e,s),V(g,s,null),a=!0},p(t,n){var e=t.fns?H(i,[q(n.fns)]):{};p.$set(e)},i(t){a||(R(p.$$.fragment,t),R(g.$$.fragment,t),a=!0)},o(t){L(p.$$.fragment,t),L(g.$$.fragment,t),a=!1},d(t){t&&u(e),B(p),B(g)}}}function zn(t){return{fns:Bn({instance:un,component:Fn,className:"dialog",title:"DialogClassName"})}}function Jn(t){var e,o,s,a,i=[t.fns];let l={};for(var r=0;r<i.length;r+=1)l=n(l,i[r]);var p=new qn({props:l}),g=new Dn({});return{c(){e=f("div"),p.$$.fragment.c(),o=$(),s=f("div"),g.$$.fragment.c(),h(s,"class","spawn default-spawn"),h(e,"class","test")},m(t,n){d(t,e,n),V(p,e,null),c(e,o),c(e,s),V(g,s,null),a=!0},p(t,n){var e=t.fns?H(i,[q(n.fns)]):{};p.$set(e)},i(t){a||(R(p.$$.fragment,t),R(g.$$.fragment,t),a=!0)},o(t){L(p.$$.fragment,t),L(g.$$.fragment,t),a=!1},d(t){t&&u(e),B(p),B(g)}}}function Qn(t){return{fns:Bn({instance:un,component:Fn,className:"dialog-delay",title:"DialogClassDelay"})}}function Gn(t){var e,o,s,a,i=[t.fns];let l={};for(var r=0;r<i.length;r+=1)l=n(l,i[r]);var p=new qn({props:l}),g=new Dn({});return{c(){e=f("div"),p.$$.fragment.c(),o=$(),s=f("div"),g.$$.fragment.c(),h(s,"class","spawn default-spawn"),h(e,"class","test")},m(t,n){d(t,e,n),V(p,e,null),c(e,o),c(e,s),V(g,s,null),a=!0},p(t,n){var e=t.fns?H(i,[q(n.fns)]):{};p.$set(e)},i(t){a||(R(p.$$.fragment,t),R(g.$$.fragment,t),a=!0)},o(t){L(p.$$.fragment,t),L(g.$$.fragment,t),a=!1},d(t){t&&u(e),B(p),B(g)}}}function Xn(t){return{fns:Bn({instance:un,component:Fn,title:"DialogStyles",styles:t=>{const n=t.getBoundingClientRect().height;return{default:{transition:"all 300ms ease-in-out"},showStart:{opacity:"0",transform:`translate3d(0, ${n}px, 0)`},showEnd:{opacity:"1",transform:"translate3d(0, 0px,  0)"},hideEnd:{transitionDuration:"450ms",transform:`translate3d(0, ${n}px, 0)`,opacity:"0"}}}})}}function Yn(t){var e,o,s,a,i,l,r=[t.fns1];let p={};for(var g=0;g<r.length;g+=1)p=n(p,r[g]);var m=new qn({props:p}),w=[t.fns2,{id:"1"}];let v={};for(g=0;g<w.length;g+=1)v=n(v,w[g]);var C=new qn({props:v}),y=[t.fns3,{id:"2"}];let b={};for(g=0;g<y.length;g+=1)b=n(b,y[g]);var _=new qn({props:b}),S=new Dn({});return{c(){e=f("div"),m.$$.fragment.c(),o=$(),C.$$.fragment.c(),s=$(),_.$$.fragment.c(),a=$(),i=f("div"),S.$$.fragment.c(),h(i,"class","spawn default-spawn"),h(e,"class","test")},m(t,n){d(t,e,n),V(m,e,null),c(e,o),V(C,e,null),c(e,s),V(_,e,null),c(e,a),c(e,i),V(S,i,null),l=!0},p(t,n){var e=t.fns1?H(r,[q(n.fns1)]):{};m.$set(e);var o=t.fns2?H(w,[q(n.fns2),w[1]]):{};C.$set(o);var s=t.fns3?H(y,[q(n.fns3),y[1]]):{};_.$set(s)},i(t){l||(R(m.$$.fragment,t),R(C.$$.fragment,t),R(_.$$.fragment,t),R(S.$$.fragment,t),l=!0)},o(t){L(m.$$.fragment,t),L(C.$$.fragment,t),L(_.$$.fragment,t),L(S.$$.fragment,t),l=!1},d(t){t&&u(e),B(m),B(C),B(_),B(S)}}}function Un(t){return un.resetAll(),{fns1:Bn({instance:un,component:Fn,className:"dialog",title:"DialogIds default"}),fns2:Bn({instance:un,component:Fn,className:"dialog",id:"1",title:"DialogIds 1"}),fns3:Bn({instance:un,component:Fn,className:"dialog",id:"2",title:"DialogIds 2"})}}function Wn(t){var e,o,s,a,i,l,r,g,m,v,C,y,b,_,S,x,I,k,O,N,D,P,E=`Count all: ${t.$dialogCount}`+"",A=`Count id: ${t.$dialogCountId1}`+"",T=`Count spawn: ${t.$dialogCountSpawn1}`+"",M=`Count spawn, id: ${t.$dialogCountSpawn1Id1}`+"",F=[t.fns1];let j={};for(var K=0;K<F.length;K+=1)j=n(j,F[K]);var z=new qn({props:j}),J=[t.fns2,{id:"1"}];let Q={};for(K=0;K<J.length;K+=1)Q=n(Q,J[K]);var G=new qn({props:Q}),X=[t.fns3,{spawn:"1"}];let Y={};for(K=0;K<X.length;K+=1)Y=n(Y,X[K]);var U=new qn({props:Y}),W=[t.fns4,{spawn:"1"},{id:"1"}];let Z={};for(K=0;K<W.length;K+=1)Z=n(Z,W[K]);var tt=new qn({props:Z}),nt=new Dn({}),et=new Dn({props:{spawn:"1"}});return{c(){e=f("div"),o=f("div"),s=p(E),a=$(),i=f("div"),l=p(A),r=$(),g=f("div"),m=p(T),v=$(),C=f("div"),y=p(M),b=$(),_=f("div"),z.$$.fragment.c(),S=$(),G.$$.fragment.c(),x=$(),U.$$.fragment.c(),I=$(),tt.$$.fragment.c(),k=$(),O=f("div"),nt.$$.fragment.c(),N=$(),D=f("div"),et.$$.fragment.c(),h(o,"class","control"),h(o,"data-test-id","count-all"),h(i,"class","control"),h(i,"data-test-id","count-id"),h(g,"class","control"),h(g,"data-test-id","count-spawn"),h(C,"class","control"),h(C,"data-test-id","count-spawn-id"),h(_,"class","content"),h(O,"class","spawn default-spawn"),h(D,"class","spawn custom-spawn"),h(e,"class","test")},m(t,n){d(t,e,n),c(e,o),c(o,s),c(e,a),c(e,i),c(i,l),c(e,r),c(e,g),c(g,m),c(e,v),c(e,C),c(C,y),c(e,b),c(e,_),V(z,_,null),c(_,S),V(G,_,null),c(_,x),V(U,_,null),c(_,I),V(tt,_,null),c(e,k),c(e,O),V(nt,O,null),c(e,N),c(e,D),V(et,D,null),P=!0},p(t,n){P&&!t.$dialogCount||E===(E=`Count all: ${n.$dialogCount}`+"")||w(s,E),P&&!t.$dialogCountId1||A===(A=`Count id: ${n.$dialogCountId1}`+"")||w(l,A),P&&!t.$dialogCountSpawn1||T===(T=`Count spawn: ${n.$dialogCountSpawn1}`+"")||w(m,T),P&&!t.$dialogCountSpawn1Id1||M===(M=`Count spawn, id: ${n.$dialogCountSpawn1Id1}`+"")||w(y,M);var e=t.fns1?H(F,[q(n.fns1)]):{};z.$set(e);var o=t.fns2?H(J,[q(n.fns2),J[1]]):{};G.$set(o);var a=t.fns3?H(X,[q(n.fns3),X[1]]):{};U.$set(a);var i=t.fns4?H(W,[q(n.fns4),W[1],W[2]]):{};tt.$set(i)},i(t){P||(R(z.$$.fragment,t),R(G.$$.fragment,t),R(U.$$.fragment,t),R(tt.$$.fragment,t),R(nt.$$.fragment,t),R(et.$$.fragment,t),P=!0)},o(t){L(z.$$.fragment,t),L(G.$$.fragment,t),L(U.$$.fragment,t),L(tt.$$.fragment,t),L(nt.$$.fragment,t),L(et.$$.fragment,t),P=!1},d(t){t&&u(e),B(z),B(G),B(U),B(tt),B(nt),B(et)}}}function Zn(t,n,e){let o,s,a,i;const r=Bn({instance:un,component:Fn,className:"dialog",title:"Default"}),c=Bn({instance:un,component:Fn,className:"dialog",id:"1",title:"ID"}),d=Bn({instance:un,component:Fn,className:"dialog",spawn:"1",title:"Spawn"}),u=Bn({instance:un,component:Fn,className:"dialog",spawn:"1",id:"1",title:"Spawn and ID"}),f=un.getCount();l(t,f,t=>{e("$dialogCount",o=t)});const p=un.getCount({id:"1"});l(t,p,t=>{e("$dialogCountId1",s=t)});const $=un.getCount({spawn:"1"});l(t,$,t=>{e("$dialogCountSpawn1",a=t)});const g=un.getCount({spawn:"1",id:"1"});return l(t,g,t=>{e("$dialogCountSpawn1Id1",i=t)}),{fns1:r,fns2:c,fns3:d,fns4:u,dialogCount:f,dialogCountId1:p,dialogCountSpawn1:$,dialogCountSpawn1Id1:g,$dialogCount:o,$dialogCountId1:s,$dialogCountSpawn1:a,$dialogCountSpawn1Id1:i}}function te(t){var e,o,a,i,l,r,g,v,C,y,b,_,S,x,I,k,O,N,D,P,E,A,T,M,F,j,K,z,J,Q,G,X,Y,U=`Count all: ${t.$dialogCount}`+"",W=`Count id: ${t.$dialogCountId1}`+"",Z=`Count spawn: ${t.$dialogCountSpawn1}`+"",tt=`Count spawn, id: ${t.$dialogCountSpawn1Id1}`+"",nt=[t.fns1];let et={};for(var ot=0;ot<nt.length;ot+=1)et=n(et,nt[ot]);var st=new qn({props:et}),at=[t.fns2,{id:"1"}];let it={};for(ot=0;ot<at.length;ot+=1)it=n(it,at[ot]);var lt=new qn({props:it}),rt=[t.fns3,{spawn:"1"}];let ct={};for(ot=0;ot<rt.length;ot+=1)ct=n(ct,rt[ot]);var dt=new qn({props:ct}),ut=[t.fns4,{spawn:"1"},{id:"1"}];let ft={};for(ot=0;ot<ut.length;ot+=1)ft=n(ft,ut[ot]);var pt=new qn({props:ft}),$t=new Dn({}),gt=new Dn({props:{spawn:"1"}});return{c(){e=f("div"),o=f("div"),a=p(U),i=$(),l=f("div"),r=p(W),g=$(),v=f("div"),C=p(Z),y=$(),b=f("div"),_=p(tt),S=$(),x=f("div"),I=f("div"),(k=f("button")).textContent="Hide all",O=$(),(N=f("button")).textContent="Hide all with id",D=$(),(P=f("button")).textContent="Hide all with spawn",E=$(),(A=f("button")).textContent="Hide all with spawn and id",T=$(),M=f("div"),st.$$.fragment.c(),F=$(),lt.$$.fragment.c(),j=$(),dt.$$.fragment.c(),K=$(),pt.$$.fragment.c(),z=$(),J=f("div"),$t.$$.fragment.c(),Q=$(),G=f("div"),gt.$$.fragment.c(),h(o,"class","control"),h(o,"data-test-id","count-all"),h(l,"class","control"),h(l,"data-test-id","count-id"),h(v,"class","control"),h(v,"data-test-id","count-spawn"),h(b,"class","control"),h(b,"data-test-id","count-spawn-id"),h(k,"class","button"),h(k,"data-test-id","button-hide-all"),h(N,"class","button"),h(N,"data-test-id","button-hide-all-id"),h(P,"class","button"),h(P,"data-test-id","button-hide-all-spawn"),h(A,"class","button"),h(A,"data-test-id","button-hide-all-spawn-id"),h(I,"class","buttons"),h(x,"class","control"),h(x,"data-test-id","hide-all"),h(M,"class","content"),h(J,"class","spawn default-spawn"),h(G,"class","spawn custom-spawn"),h(e,"class","test"),Y=[m(k,"click",t.click_handler),m(N,"click",t.click_handler_1),m(P,"click",t.click_handler_2),m(A,"click",t.click_handler_3)]},m(t,n){d(t,e,n),c(e,o),c(o,a),c(e,i),c(e,l),c(l,r),c(e,g),c(e,v),c(v,C),c(e,y),c(e,b),c(b,_),c(e,S),c(e,x),c(x,I),c(I,k),c(I,O),c(I,N),c(I,D),c(I,P),c(I,E),c(I,A),c(e,T),c(e,M),V(st,M,null),c(M,F),V(lt,M,null),c(M,j),V(dt,M,null),c(M,K),V(pt,M,null),c(e,z),c(e,J),V($t,J,null),c(e,Q),c(e,G),V(gt,G,null),X=!0},p(t,n){X&&!t.$dialogCount||U===(U=`Count all: ${n.$dialogCount}`+"")||w(a,U),X&&!t.$dialogCountId1||W===(W=`Count id: ${n.$dialogCountId1}`+"")||w(r,W),X&&!t.$dialogCountSpawn1||Z===(Z=`Count spawn: ${n.$dialogCountSpawn1}`+"")||w(C,Z),X&&!t.$dialogCountSpawn1Id1||tt===(tt=`Count spawn, id: ${n.$dialogCountSpawn1Id1}`+"")||w(_,tt);var e=t.fns1?H(nt,[q(n.fns1)]):{};st.$set(e);var o=t.fns2?H(at,[q(n.fns2),at[1]]):{};lt.$set(o);var s=t.fns3?H(rt,[q(n.fns3),rt[1]]):{};dt.$set(s);var i=t.fns4?H(ut,[q(n.fns4),ut[1],ut[2]]):{};pt.$set(i)},i(t){X||(R(st.$$.fragment,t),R(lt.$$.fragment,t),R(dt.$$.fragment,t),R(pt.$$.fragment,t),R($t.$$.fragment,t),R(gt.$$.fragment,t),X=!0)},o(t){L(st.$$.fragment,t),L(lt.$$.fragment,t),L(dt.$$.fragment,t),L(pt.$$.fragment,t),L($t.$$.fragment,t),L(gt.$$.fragment,t),X=!1},d(t){t&&u(e),B(st),B(lt),B(dt),B(pt),B($t),B(gt),s(Y)}}}function ne(t,n,e){let o,s,a,i;const r=Bn({instance:un,component:Fn,className:"dialog",title:"Default"}),c=Bn({instance:un,component:Fn,className:"dialog",id:"1",title:"ID"}),d=Bn({instance:un,component:Fn,className:"dialog",spawn:"1",title:"Spawn"}),u=Bn({instance:un,component:Fn,className:"dialog",spawn:"1",id:"1",title:"Spawn and ID"}),f=un.getCount();l(t,f,t=>{e("$dialogCount",o=t)});const p=un.getCount({id:"1"});l(t,p,t=>{e("$dialogCountId1",s=t)});const $=un.getCount({spawn:"1"});l(t,$,t=>{e("$dialogCountSpawn1",a=t)});const g=un.getCount({spawn:"1",id:"1"});l(t,g,t=>{e("$dialogCountSpawn1Id1",i=t)});return{fns1:r,fns2:c,fns3:d,fns4:u,dialogCount:f,dialogCountId1:p,dialogCountSpawn1:$,dialogCountSpawn1Id1:g,$dialogCount:o,$dialogCountId1:s,$dialogCountSpawn1:a,$dialogCountSpawn1Id1:i,click_handler:()=>un.hideAll(),click_handler_1:()=>un.hideAll({id:"1"}),click_handler_2:()=>un.hideAll({spawn:"1"}),click_handler_3:()=>un.hideAll({id:"1",spawn:"1"})}}function ee(t){var e,o,a,i,l,r,g,v,C,y,b,_,S,x,I,k,O,N,D,P,E,A,T,M,F,j,K,z,J,Q,G,X,Y,U=`Count all: ${t.$dialogCount}`+"",W=`Count id: ${t.$dialogCountId1}`+"",Z=`Count spawn: ${t.$dialogCountSpawn1}`+"",tt=`Count spawn, id: ${t.$dialogCountSpawn1Id1}`+"",nt=[t.fns1];let et={};for(var ot=0;ot<nt.length;ot+=1)et=n(et,nt[ot]);var st=new qn({props:et}),at=[t.fns2,{id:"1"}];let it={};for(ot=0;ot<at.length;ot+=1)it=n(it,at[ot]);var lt=new qn({props:it}),rt=[t.fns3,{spawn:"1"}];let ct={};for(ot=0;ot<rt.length;ot+=1)ct=n(ct,rt[ot]);var dt=new qn({props:ct}),ut=[t.fns4,{spawn:"1"},{id:"1"}];let ft={};for(ot=0;ot<ut.length;ot+=1)ft=n(ft,ut[ot]);var pt=new qn({props:ft}),$t=new Dn({}),gt=new Dn({props:{spawn:"1"}});return{c(){e=f("div"),o=f("div"),a=p(U),i=$(),l=f("div"),r=p(W),g=$(),v=f("div"),C=p(Z),y=$(),b=f("div"),_=p(tt),S=$(),x=f("div"),I=f("div"),(k=f("button")).textContent="Reset all",O=$(),(N=f("button")).textContent="Reset all with id",D=$(),(P=f("button")).textContent="Reset all with spawn",E=$(),(A=f("button")).textContent="Reset all with spawn and id",T=$(),M=f("div"),st.$$.fragment.c(),F=$(),lt.$$.fragment.c(),j=$(),dt.$$.fragment.c(),K=$(),pt.$$.fragment.c(),z=$(),J=f("div"),$t.$$.fragment.c(),Q=$(),G=f("div"),gt.$$.fragment.c(),h(o,"class","control"),h(o,"data-test-id","count-all"),h(l,"class","control"),h(l,"data-test-id","count-id"),h(v,"class","control"),h(v,"data-test-id","count-spawn"),h(b,"class","control"),h(b,"data-test-id","count-spawn-id"),h(k,"class","button"),h(k,"data-test-id","button-reset-all"),h(N,"class","button"),h(N,"data-test-id","button-reset-all-id"),h(P,"class","button"),h(P,"data-test-id","button-reset-all-spawn"),h(A,"class","button"),h(A,"data-test-id","button-reset-all-spawn-id"),h(I,"class","buttons"),h(x,"class","control"),h(x,"data-test-id","reset-all"),h(M,"class","content"),h(J,"class","spawn default-spawn"),h(G,"class","spawn custom-spawn"),h(e,"class","test"),Y=[m(k,"click",t.click_handler),m(N,"click",t.click_handler_1),m(P,"click",t.click_handler_2),m(A,"click",t.click_handler_3)]},m(t,n){d(t,e,n),c(e,o),c(o,a),c(e,i),c(e,l),c(l,r),c(e,g),c(e,v),c(v,C),c(e,y),c(e,b),c(b,_),c(e,S),c(e,x),c(x,I),c(I,k),c(I,O),c(I,N),c(I,D),c(I,P),c(I,E),c(I,A),c(e,T),c(e,M),V(st,M,null),c(M,F),V(lt,M,null),c(M,j),V(dt,M,null),c(M,K),V(pt,M,null),c(e,z),c(e,J),V($t,J,null),c(e,Q),c(e,G),V(gt,G,null),X=!0},p(t,n){X&&!t.$dialogCount||U===(U=`Count all: ${n.$dialogCount}`+"")||w(a,U),X&&!t.$dialogCountId1||W===(W=`Count id: ${n.$dialogCountId1}`+"")||w(r,W),X&&!t.$dialogCountSpawn1||Z===(Z=`Count spawn: ${n.$dialogCountSpawn1}`+"")||w(C,Z),X&&!t.$dialogCountSpawn1Id1||tt===(tt=`Count spawn, id: ${n.$dialogCountSpawn1Id1}`+"")||w(_,tt);var e=t.fns1?H(nt,[q(n.fns1)]):{};st.$set(e);var o=t.fns2?H(at,[q(n.fns2),at[1]]):{};lt.$set(o);var s=t.fns3?H(rt,[q(n.fns3),rt[1]]):{};dt.$set(s);var i=t.fns4?H(ut,[q(n.fns4),ut[1],ut[2]]):{};pt.$set(i)},i(t){X||(R(st.$$.fragment,t),R(lt.$$.fragment,t),R(dt.$$.fragment,t),R(pt.$$.fragment,t),R($t.$$.fragment,t),R(gt.$$.fragment,t),X=!0)},o(t){L(st.$$.fragment,t),L(lt.$$.fragment,t),L(dt.$$.fragment,t),L(pt.$$.fragment,t),L($t.$$.fragment,t),L(gt.$$.fragment,t),X=!1},d(t){t&&u(e),B(st),B(lt),B(dt),B(pt),B($t),B(gt),s(Y)}}}function oe(t,n,e){let o,s,a,i;const r=Bn({instance:un,component:Fn,className:"dialog",title:"Default"}),c=Bn({instance:un,component:Fn,className:"dialog dialog-delay",id:"1",title:"ID"}),d=Bn({instance:un,component:Fn,className:"dialog",spawn:"1",title:"Spawn"}),u=Bn({instance:un,component:Fn,className:"dialog",spawn:"1",id:"1",title:"Spawn and ID"}),f=un.getCount();l(t,f,t=>{e("$dialogCount",o=t)});const p=un.getCount({id:"1"});l(t,p,t=>{e("$dialogCountId1",s=t)});const $=un.getCount({spawn:"1"});l(t,$,t=>{e("$dialogCountSpawn1",a=t)});const g=un.getCount({spawn:"1",id:"1"});l(t,g,t=>{e("$dialogCountSpawn1Id1",i=t)});return{fns1:r,fns2:c,fns3:d,fns4:u,dialogCount:f,dialogCountId1:p,dialogCountSpawn1:$,dialogCountSpawn1Id1:g,$dialogCount:o,$dialogCountId1:s,$dialogCountSpawn1:a,$dialogCountSpawn1Id1:i,click_handler:()=>un.resetAll(),click_handler_1:()=>un.resetAll({id:"1"}),click_handler_2:()=>un.resetAll({spawn:"1"}),click_handler_3:()=>un.resetAll({id:"1",spawn:"1"})}}function se(n){var e,o,s,a,i,l=n.displayValue===n.undefined?"undefined":n.displayValue.toString()+"";return{c(){e=f("div"),(o=f("span")).textContent="Remaining:",s=$(),a=f("span"),i=p(l),h(a,"data-test-id","remaining-value"),h(e,"data-test-id","remaining")},m(t,n){d(t,e,n),c(e,o),c(e,s),c(e,a),c(a,i)},p(t,n){t.displayValue&&l!==(l=n.displayValue===n.undefined?"undefined":n.displayValue.toString()+"")&&w(i,l)},i:t,o:t,d(t){t&&u(e)}}}function ae(t,n,e){let o,{getRemainingFn:s}=n,a=0;const i=()=>{const t=s();e("displayValue",a=void 0===t?void 0:Math.max(t,0)),o=window.requestAnimationFrame(i)};var l;return o=window.requestAnimationFrame(i),l=()=>{window.cancelAnimationFrame(o)},y().$$.on_destroy.push(l),t.$set=t=>{"getRemainingFn"in t&&e("getRemainingFn",s=t.getRemainingFn)},{getRemainingFn:s,displayValue:a,undefined:void 0}}class ie extends J{constructor(t){super(),z(this,t,ae,se,i,["getRemainingFn"])}}function le(t){var e,o,a,i,l,r,g,v,C,y,b,_,S,x,I,k,O,N,D,P=`Is paused: ${t.$dialogIsPaused}`+"",E=new ie({props:{getRemainingFn:un.getRemaining}}),A=[t.fns];let T={};for(var M=0;M<A.length;M+=1)T=n(T,A[M]);var F=new qn({props:T}),j=new Dn({});return{c(){e=f("div"),o=f("div"),a=f("div"),(i=f("button")).textContent="Pause",l=$(),(r=f("button")).textContent="Resume",g=$(),(v=f("button")).textContent="Reset",C=$(),y=f("div"),b=p(P),_=$(),S=f("div"),E.$$.fragment.c(),x=$(),I=f("div"),F.$$.fragment.c(),k=$(),O=f("div"),j.$$.fragment.c(),h(i,"class","button"),h(i,"data-test-id","button-pause"),h(r,"class","button"),h(r,"data-test-id","button-resume"),h(v,"class","button"),h(v,"data-test-id","button-reset"),h(a,"class","buttons"),h(o,"class","control"),h(o,"data-test-id","reset-all"),h(y,"class","control"),h(y,"data-test-id","is-paused"),h(S,"class","control"),h(I,"class","content"),h(O,"class","spawn default-spawn"),h(e,"class","test"),D=[m(i,"click",t.click_handler),m(r,"click",t.click_handler_1),m(v,"click",t.click_handler_2)]},m(t,n){d(t,e,n),c(e,o),c(o,a),c(a,i),c(a,l),c(a,r),c(a,g),c(a,v),c(e,C),c(e,y),c(y,b),c(e,_),c(e,S),V(E,S,null),c(e,x),c(e,I),V(F,I,null),c(e,k),c(e,O),V(j,O,null),N=!0},p(t,n){N&&!t.$dialogIsPaused||P===(P=`Is paused: ${n.$dialogIsPaused}`+"")||w(b,P);var e=t.fns?H(A,[q(n.fns)]):{};F.$set(e)},i(t){N||(R(E.$$.fragment,t),R(F.$$.fragment,t),R(j.$$.fragment,t),N=!0)},o(t){L(E.$$.fragment,t),L(F.$$.fragment,t),L(j.$$.fragment,t),N=!1},d(t){t&&u(e),B(E),B(F),B(j),s(D)}}}function re(t,n,e){let o;un.resetAll();const s=Bn({instance:un,component:Fn,className:"dialog",title:"Default",timeout:2e3}),a=un.isPaused();l(t,a,t=>{e("$dialogIsPaused",o=t)});return{fns:s,dialogIsPaused:a,$dialogIsPaused:o,click_handler:()=>un.pause(),click_handler_1:()=>un.resume(),click_handler_2:()=>un.resetAll()}}function ce(t){var e,o,s,a,i,l,r,g,m=`Count all: ${t.$dialogCount}`+"",v=[t.fns];let C={};for(var y=0;y<v.length;y+=1)C=n(C,v[y]);var b=new qn({props:C}),_=new Dn({});return{c(){e=f("div"),o=f("div"),s=p(m),a=$(),i=f("div"),b.$$.fragment.c(),l=$(),r=f("div"),_.$$.fragment.c(),h(o,"class","control"),h(o,"data-test-id","count-all"),h(i,"class","content"),h(r,"class","spawn default-spawn"),h(e,"class","test")},m(t,n){d(t,e,n),c(e,o),c(o,s),c(e,a),c(e,i),V(b,i,null),c(e,l),c(e,r),V(_,r,null),g=!0},p(t,n){g&&!t.$dialogCount||m===(m=`Count all: ${n.$dialogCount}`+"")||w(s,m);var e=t.fns?H(v,[q(n.fns)]):{};b.$set(e)},i(t){g||(R(b.$$.fragment,t),R(_.$$.fragment,t),g=!0)},o(t){L(b.$$.fragment,t),L(_.$$.fragment,t),g=!1},d(t){t&&u(e),B(b),B(_)}}}function de(t,n,e){let o;un.resetAll();const s=Bn({instance:un,component:Fn,className:"dialog",title:"Default",queued:!0}),a=un.getCount();return l(t,a,t=>{e("$dialogCount",o=t)}),{fns:s,dialogCount:a,$dialogCount:o}}function ue(t){var e,o,s,a,i,l,r,g,v,C,y,b,_,S,x,I,k,O,N,D,P,E,A,T,M,F,j,K=`Count all: ${t.$notificationCount}`+"",z=`Count id: ${t.$notificationCountId1}`+"",J=`Count spawn: ${t.$notificationCountSpawn1}`+"",Q=`Count spawn, id: ${t.$notificationCountSpawn1Id1}`+"",G=[t.fns1];let X={};for(var Y=0;Y<G.length;Y+=1)X=n(X,G[Y]);var U=new qn({props:X}),W=[t.fns2,{id:"1"}];let Z={};for(Y=0;Y<W.length;Y+=1)Z=n(Z,W[Y]);var tt=new qn({props:Z}),nt=[t.fns3,{spawn:"1"}];let et={};for(Y=0;Y<nt.length;Y+=1)et=n(et,nt[Y]);var ot=new qn({props:et}),st=[t.fns4,{spawn:"1"},{id:"1"}];let at={};for(Y=0;Y<st.length;Y+=1)at=n(at,st[Y]);var it=new qn({props:at}),lt=new An({}),rt=new An({props:{spawn:"1"}});return{c(){e=f("div"),o=f("div"),s=p(K),a=$(),i=f("div"),l=p(z),r=$(),g=f("div"),v=p(J),C=$(),y=f("div"),b=p(Q),_=$(),S=f("div"),x=f("div"),(I=f("button")).textContent="Reset",k=$(),O=f("div"),U.$$.fragment.c(),N=$(),tt.$$.fragment.c(),D=$(),ot.$$.fragment.c(),P=$(),it.$$.fragment.c(),E=$(),A=f("div"),lt.$$.fragment.c(),T=$(),M=f("div"),rt.$$.fragment.c(),h(o,"class","control"),h(o,"data-test-id","count-all"),h(i,"class","control"),h(i,"data-test-id","count-id"),h(g,"class","control"),h(g,"data-test-id","count-spawn"),h(y,"class","control"),h(y,"data-test-id","count-spawn-id"),h(I,"class","button"),h(I,"data-test-id","button-reset"),h(x,"class","buttons"),h(S,"class","control"),h(O,"class","content"),h(A,"class","spawn default-spawn"),h(M,"class","spawn custom-spawn"),h(e,"class","test"),j=m(I,"click",t.click_handler)},m(t,n){d(t,e,n),c(e,o),c(o,s),c(e,a),c(e,i),c(i,l),c(e,r),c(e,g),c(g,v),c(e,C),c(e,y),c(y,b),c(e,_),c(e,S),c(S,x),c(x,I),c(e,k),c(e,O),V(U,O,null),c(O,N),V(tt,O,null),c(O,D),V(ot,O,null),c(O,P),V(it,O,null),c(e,E),c(e,A),V(lt,A,null),c(e,T),c(e,M),V(rt,M,null),F=!0},p(t,n){F&&!t.$notificationCount||K===(K=`Count all: ${n.$notificationCount}`+"")||w(s,K),F&&!t.$notificationCountId1||z===(z=`Count id: ${n.$notificationCountId1}`+"")||w(l,z),F&&!t.$notificationCountSpawn1||J===(J=`Count spawn: ${n.$notificationCountSpawn1}`+"")||w(v,J),F&&!t.$notificationCountSpawn1Id1||Q===(Q=`Count spawn, id: ${n.$notificationCountSpawn1Id1}`+"")||w(b,Q);var e=t.fns1?H(G,[q(n.fns1)]):{};U.$set(e);var o=t.fns2?H(W,[q(n.fns2),W[1]]):{};tt.$set(o);var a=t.fns3?H(nt,[q(n.fns3),nt[1]]):{};ot.$set(a);var i=t.fns4?H(st,[q(n.fns4),st[1],st[2]]):{};it.$set(i)},i(t){F||(R(U.$$.fragment,t),R(tt.$$.fragment,t),R(ot.$$.fragment,t),R(it.$$.fragment,t),R(lt.$$.fragment,t),R(rt.$$.fragment,t),F=!0)},o(t){L(U.$$.fragment,t),L(tt.$$.fragment,t),L(ot.$$.fragment,t),L(it.$$.fragment,t),L(lt.$$.fragment,t),L(rt.$$.fragment,t),F=!1},d(t){t&&u(e),B(U),B(tt),B(ot),B(it),B(lt),B(rt),j()}}}function fe(t,n,e){let o,s,a,i;const r=Bn({instance:fn,component:Fn,className:"notification",title:"Default"}),c=Bn({instance:fn,component:Fn,className:"notification",id:"1",title:"ID"}),d=Bn({instance:fn,component:Fn,className:"notification",spawn:"1",title:"Spawn"}),u=Bn({instance:fn,component:Fn,className:"notification",spawn:"1",id:"1",title:"Spawn and ID"}),f=fn.getCount();l(t,f,t=>{e("$notificationCount",o=t)});const p=fn.getCount({id:"1"});l(t,p,t=>{e("$notificationCountId1",s=t)});const $=fn.getCount({spawn:"1"});l(t,$,t=>{e("$notificationCountSpawn1",a=t)});const g=fn.getCount({spawn:"1",id:"1"});l(t,g,t=>{e("$notificationCountSpawn1Id1",i=t)});return{fns1:r,fns2:c,fns3:d,fns4:u,notificationCount:f,notificationCountId1:p,notificationCountSpawn1:$,notificationCountSpawn1Id1:g,$notificationCount:o,$notificationCountId1:s,$notificationCountSpawn1:a,$notificationCountSpawn1Id1:i,click_handler:()=>fn.resetAll()}}function pe(t){var e,o,a,i,l,r,g,v,C,y,b,_,S,x,I,k,O,N,D,P=`Is paused: ${t.$notificationIsPaused}`+"",E=new ie({props:{getRemainingFn:fn.getRemaining}}),A=[t.fns];let T={};for(var M=0;M<A.length;M+=1)T=n(T,A[M]);var F=new qn({props:T}),j=new An({});return{c(){e=f("div"),o=f("div"),a=f("div"),(i=f("button")).textContent="Pause",l=$(),(r=f("button")).textContent="Resume",g=$(),(v=f("button")).textContent="Reset",C=$(),y=f("div"),b=p(P),_=$(),S=f("div"),E.$$.fragment.c(),x=$(),I=f("div"),F.$$.fragment.c(),k=$(),O=f("div"),j.$$.fragment.c(),h(i,"class","button"),h(i,"data-test-id","button-pause"),h(r,"class","button"),h(r,"data-test-id","button-resume"),h(v,"class","button"),h(v,"data-test-id","button-reset"),h(a,"class","buttons"),h(o,"class","control"),h(o,"data-test-id","reset-all"),h(y,"class","control"),h(y,"data-test-id","is-paused"),h(S,"class","control"),h(I,"class","content"),h(O,"class","spawn default-spawn"),h(e,"class","test"),D=[m(i,"click",t.click_handler),m(r,"click",t.click_handler_1),m(v,"click",t.click_handler_2)]},m(t,n){d(t,e,n),c(e,o),c(o,a),c(a,i),c(a,l),c(a,r),c(a,g),c(a,v),c(e,C),c(e,y),c(y,b),c(e,_),c(e,S),V(E,S,null),c(e,x),c(e,I),V(F,I,null),c(e,k),c(e,O),V(j,O,null),N=!0},p(t,n){N&&!t.$notificationIsPaused||P===(P=`Is paused: ${n.$notificationIsPaused}`+"")||w(b,P);var e=t.fns?H(A,[q(n.fns)]):{};F.$set(e)},i(t){N||(R(E.$$.fragment,t),R(F.$$.fragment,t),R(j.$$.fragment,t),N=!0)},o(t){L(E.$$.fragment,t),L(F.$$.fragment,t),L(j.$$.fragment,t),N=!1},d(t){t&&u(e),B(E),B(F),B(j),s(D)}}}function $e(t,n,e){let o;fn.resetAll();const s=Bn({instance:fn,component:Fn,className:"notification",title:"Default",timeout:2e3}),a=fn.isPaused();l(t,a,t=>{e("$notificationIsPaused",o=t)});return{fns:s,notificationIsPaused:a,$notificationIsPaused:o,click_handler:()=>fn.pause(),click_handler_1:()=>fn.resume(),click_handler_2:()=>fn.resetAll()}}function ge(t){var e,o,a,i,l,r,g,v,C,y,b,_,S,x,I,k,O,N,D,P,E=`Is paused: ${t.$notificationIsPaused}`+"",A=new ie({props:{getRemainingFn:fn.getRemaining}}),T=[t.fns1];let M={};for(var F=0;F<T.length;F+=1)M=n(M,T[F]);var j=new qn({props:M}),K=[t.fns2,{id:"1"},{name:"zero-timeout"}];let z={};for(F=0;F<K.length;F+=1)z=n(z,K[F]);var J=new qn({props:z}),Q=new An({});return{c(){e=f("div"),o=f("div"),a=f("div"),(i=f("button")).textContent="Pause",l=$(),(r=f("button")).textContent="Resume",g=$(),(v=f("button")).textContent="Reset",C=$(),y=f("div"),b=p(E),_=$(),S=f("div"),A.$$.fragment.c(),x=$(),I=f("div"),j.$$.fragment.c(),k=$(),J.$$.fragment.c(),O=$(),N=f("div"),Q.$$.fragment.c(),h(i,"class","button"),h(i,"data-test-id","button-pause"),h(r,"class","button"),h(r,"data-test-id","button-resume"),h(v,"class","button"),h(v,"data-test-id","button-reset"),h(a,"class","buttons"),h(o,"class","control"),h(o,"data-test-id","reset-all"),h(y,"class","control"),h(y,"data-test-id","is-paused"),h(S,"class","control"),h(I,"class","content"),h(N,"class","spawn default-spawn"),h(e,"class","test"),P=[m(i,"click",t.click_handler),m(r,"click",t.click_handler_1),m(v,"click",t.click_handler_2)]},m(t,n){d(t,e,n),c(e,o),c(o,a),c(a,i),c(a,l),c(a,r),c(a,g),c(a,v),c(e,C),c(e,y),c(y,b),c(e,_),c(e,S),V(A,S,null),c(e,x),c(e,I),V(j,I,null),c(I,k),V(J,I,null),c(e,O),c(e,N),V(Q,N,null),D=!0},p(t,n){D&&!t.$notificationIsPaused||E===(E=`Is paused: ${n.$notificationIsPaused}`+"")||w(b,E);var e=t.fns1?H(T,[q(n.fns1)]):{};j.$set(e);var o=t.fns2?H(K,[q(n.fns2),K[1],K[2]]):{};J.$set(o)},i(t){D||(R(A.$$.fragment,t),R(j.$$.fragment,t),R(J.$$.fragment,t),R(Q.$$.fragment,t),D=!0)},o(t){L(A.$$.fragment,t),L(j.$$.fragment,t),L(J.$$.fragment,t),L(Q.$$.fragment,t),D=!1},d(t){t&&u(e),B(A),B(j),B(J),B(Q),s(P)}}}function me(t,n,e){let o;fn.resetAll();const s=Bn({instance:fn,component:Fn,className:"notification",title:"Default",timeout:2e3}),a=Bn({instance:fn,component:Fn,className:"notification",title:"Timeout: 0",timeout:0}),i=fn.isPaused();l(t,i,t=>{e("$notificationIsPaused",o=t)});return{fns1:s,fns2:a,notificationIsPaused:i,$notificationIsPaused:o,click_handler:()=>fn.pause(),click_handler_1:()=>fn.resume(),click_handler_2:()=>fn.resetAll()}}function he(n){var e;return{c(){(e=f("article")).innerHTML='<div class="media-left"><figure class="image is-64x64"><img src="https://bulma.io/images/placeholders/128x128.png" alt="Image"></figure></div> <div class="media-content"><div class="content"><p><strong>John Smith</strong> <small>@johnsmith</small> <small>31m</small> <br>\n\t\t\t        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.\n\t\t\t      </p></div> <nav class="level is-mobile"><div class="level-left"><a class="level-item" aria-label="retweet" href="null"><span class="icon is-small"><svg class="svg-inline--fa fa-retweet fa-w-20" aria-hidden="true" data-prefix="fas" data-icon="retweet" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="M629.657 343.598L528.971 444.284c-9.373 9.372-24.568 9.372-33.941 0L394.343 343.598c-9.373-9.373-9.373-24.569 0-33.941l10.823-10.823c9.562-9.562 25.133-9.34 34.419.492L480 342.118V160H292.451a24.005 24.005 0 0 1-16.971-7.029l-16-16C244.361 121.851 255.069 96 276.451 96H520c13.255 0 24 10.745 24 24v222.118l40.416-42.792c9.285-9.831 24.856-10.054 34.419-.492l10.823 10.823c9.372 9.372 9.372 24.569-.001 33.941zm-265.138 15.431A23.999 23.999 0 0 0 347.548 352H160V169.881l40.416 42.792c9.286 9.831 24.856 10.054 34.419.491l10.822-10.822c9.373-9.373 9.373-24.569 0-33.941L144.971 67.716c-9.373-9.373-24.569-9.373-33.941 0L10.343 168.402c-9.373 9.373-9.373 24.569 0 33.941l10.822 10.822c9.562 9.562 25.133 9.34 34.419-.491L96 169.881V392c0 13.255 10.745 24 24 24h243.549c21.382 0 32.09-25.851 16.971-40.971l-16.001-16z"></path></svg></span></a> <a class="level-item" aria-label="like" href="null"><span class="icon is-small"><svg class="svg-inline--fa fa-heart fa-w-16" aria-hidden="true" data-prefix="fas" data-icon="heart" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"></path></svg></span></a></div></nav></div>',h(e,"class","media")},m(t,n){d(t,e,n)},p:t,i:t,o:t,d(t){t&&u(e)}}}class we extends J{constructor(t){super(),z(this,t,null,he,i,[])}}function ve(n){var e,o,a,i,l,r,p,g,w,v=new we({});return{c(){e=f("div"),o=f("div"),a=$(),i=f("div"),l=f("div"),v.$$.fragment.c(),r=$(),p=f("button"),h(o,"class","modal-background"),h(l,"class","bulma-dialog-content-box"),h(i,"class","modal-content"),h(p,"class","modal-close is-large"),h(p,"aria-label","close"),h(e,"class","modal is-active"),w=[m(o,"click",n.click_handler),m(p,"click",n.click_handler_1)]},m(t,n){d(t,e,n),c(e,o),c(e,a),c(e,i),c(i,l),V(v,l,null),c(e,r),c(e,p),g=!0},p:t,i(t){g||(R(v.$$.fragment,t),g=!0)},o(t){L(v.$$.fragment,t),g=!1},d(t){t&&u(e),B(v),s(w)}}}function Ce(t,n,e){let{isModal:o=!1,show:s,hide:a}=n;return t.$set=t=>{"isModal"in t&&e("isModal",o=t.isModal),"show"in t&&e("show",s=t.show),"hide"in t&&e("hide",a=t.hide)},{isModal:o,show:s,hide:a,click_handler:()=>!o&&un.hide(),click_handler_1:()=>un.hide()}}class ye extends J{constructor(t){super(),z(this,t,Ce,ve,i,["isModal","show","hide"])}}function be(n){var e,o,a,i,l,r,p,g,w,v,C=new Dn({});return{c(){e=f("div"),o=f("div"),a=f("div"),(i=f("button")).textContent="Show dialog",l=$(),(r=f("button")).textContent="Show modal dialog",p=$(),g=f("div"),C.$$.fragment.c(),h(i,"class","button"),h(r,"class","button"),h(a,"class","buttons"),h(o,"class","control"),h(o,"data-test-id","hide-all"),h(g,"class","bulma"),h(e,"class","test"),v=[m(i,"click",n.click_handler),m(r,"click",n.click_handler_1)]},m(t,n){d(t,e,n),c(e,o),c(o,a),c(a,i),c(a,l),c(a,r),c(e,p),c(e,g),V(C,g,null),w=!0},p:t,i(t){w||(R(C.$$.fragment,t),w=!0)},o(t){L(C.$$.fragment,t),w=!1},d(t){t&&u(e),B(C),s(v)}}}function _e(t){return{click_handler:()=>un.show({dialogic:{component:ye,className:"dialog"}}),click_handler_1:()=>un.show({dialogic:{component:ye,className:"dialog"},isModal:!0})}}function Se(n){var e,o,a,i,l,r,p,g,w,v,C;return{c(){e=f("div"),o=f("div"),(a=f("h2")).textContent="Dialog Title",i=$(),(l=f("div")).textContent="Dialog body text goes here.",r=$(),p=f("footer"),(g=f("button")).innerHTML='<span class="mdc-button__label">No</span>',w=$(),(v=f("button")).innerHTML='<span class="mdc-button__label">Yes</span>',h(a,"class","mdc-dialog__title"),h(a,"id","my-dialog-title"),h(l,"class","mdc-dialog__content"),h(l,"id","my-dialog-content"),h(g,"type","button"),h(g,"class","mdc-button mdc-dialog__button"),h(g,"data-mdc-dialog-action","no"),h(v,"type","button"),h(v,"class","mdc-button mdc-dialog__button"),h(v,"data-mdc-dialog-action","yes"),h(p,"class","mdc-dialog__actions"),h(o,"class","mdc-dialog__surface"),h(e,"class","mdc-dialog__container"),C=[m(g,"click",n.click_handler),m(v,"click",n.click_handler_1)]},m(t,n){d(t,e,n),c(e,o),c(o,a),c(o,i),c(o,l),c(o,r),c(o,p),c(p,g),c(p,w),c(p,v)},p:t,i:t,o:t,d(t){t&&u(e),s(C)}}}function xe(t){return{click_handler:()=>un.hide(),click_handler_1:()=>un.hide()}}class Ie extends J{constructor(t){super(),z(this,t,xe,Se,i,[])}}function ke(n){var e,o,s,a,i,l=new Ie({});return{c(){e=f("div"),l.$$.fragment.c(),o=$(),h(s=f("div"),"class","mdc-dialog__scrim"),h(e,"class","mdc-dialog mdc-dialog--open"),h(e,"role","alertdialog"),h(e,"aria-modal","true"),h(e,"aria-labelledby","my-dialog-title"),h(e,"aria-describedby","my-dialog-content"),i=m(s,"click",n.click_handler)},m(t,n){d(t,e,n),V(l,e,null),c(e,o),c(e,s),a=!0},p:t,i(t){a||(R(l.$$.fragment,t),a=!0)},o(t){L(l.$$.fragment,t),a=!1},d(t){t&&u(e),B(l),i()}}}function Oe(t,n,e){let{isModal:o=!1,show:s,hide:a}=n;return t.$set=t=>{"isModal"in t&&e("isModal",o=t.isModal),"show"in t&&e("show",s=t.show),"hide"in t&&e("hide",a=t.hide)},{isModal:o,show:s,hide:a,click_handler:()=>!o&&un.hide()}}class Ne extends J{constructor(t){super(),z(this,t,Oe,ke,i,["isModal","show","hide"])}}function De(n){var e,o,a,i,l,r,p,g,w,v,C=new Dn({});return{c(){e=f("div"),o=f("div"),a=f("div"),(i=f("button")).textContent="Show dialog",l=$(),(r=f("button")).textContent="Show modal dialog",p=$(),g=f("div"),C.$$.fragment.c(),h(i,"class","button"),h(r,"class","button"),h(a,"class","buttons"),h(o,"class","control"),h(o,"data-test-id","hide-all"),h(g,"class","materialIO"),h(e,"class","test"),v=[m(i,"click",n.click_handler),m(r,"click",n.click_handler_1)]},m(t,n){d(t,e,n),c(e,o),c(o,a),c(a,i),c(a,l),c(a,r),c(e,p),c(e,g),V(C,g,null),w=!0},p:t,i(t){w||(R(C.$$.fragment,t),w=!0)},o(t){L(C.$$.fragment,t),w=!1},d(t){t&&u(e),B(C),s(v)}}}function Pe(t){return{click_handler:()=>un.show({dialogic:{component:Ne,className:"dialog"}}),click_handler_1:()=>un.show({dialogic:{component:Ne,className:"dialog"},isModal:!0})}}var Ee={"/":class extends J{constructor(t){super(),z(this,t,null,ot,i,[])}},"/DialogClassName":class extends J{constructor(t){super(),z(this,t,zn,Kn,i,[])}},"/DialogClassNameDelay":class extends J{constructor(t){super(),z(this,t,Qn,Jn,i,[])}},"/DialogStyles":class extends J{constructor(t){super(),z(this,t,Xn,Gn,i,[])}},"/DialogIds":class extends J{constructor(t){super(),z(this,t,Un,Yn,i,[])}},"/DialogCount":class extends J{constructor(t){super(),z(this,t,Zn,Wn,i,[])}},"/DialogHideAll":class extends J{constructor(t){super(),z(this,t,ne,te,i,[])}},"/DialogResetAll":class extends J{constructor(t){super(),z(this,t,oe,ee,i,[])}},"/DialogTimeout":class extends J{constructor(t){super(),z(this,t,re,le,i,[])}},"/DialogQueued":class extends J{constructor(t){super(),z(this,t,de,ce,i,[])}},"/NotificationCount":class extends J{constructor(t){super(),z(this,t,fe,ue,i,[])}},"/NotificationPause":class extends J{constructor(t){super(),z(this,t,$e,pe,i,[])}},"/NotificationTimeout":class extends J{constructor(t){super(),z(this,t,me,ge,i,[])}},"/LibBulmaDialog":class extends J{constructor(t){super(),z(this,t,_e,be,i,[])}},"/LibMaterialIODialog":class extends J{constructor(t){super(),z(this,t,Pe,De,i,[])}}};function Ae(n){var e,o=new et({props:{routes:Ee}});return{c(){o.$$.fragment.c()},m(t,n){V(o,t,n),e=!0},p:t,i(t){e||(R(o.$$.fragment,t),e=!0)},o(t){L(o.$$.fragment,t),e=!1},d(t){B(o,t)}}}return new class extends J{constructor(t){super(),z(this,t,null,Ae,i,[])}}({target:document.body})}();
+var app = (function () {
+    'use strict';
+
+    function noop() { }
+    function assign(tar, src) {
+        // @ts-ignore
+        for (const k in src)
+            tar[k] = src[k];
+        return tar;
+    }
+    function add_location(element, file, line, column, char) {
+        element.__svelte_meta = {
+            loc: { file, line, column, char }
+        };
+    }
+    function run(fn) {
+        return fn();
+    }
+    function blank_object() {
+        return Object.create(null);
+    }
+    function run_all(fns) {
+        fns.forEach(run);
+    }
+    function is_function(thing) {
+        return typeof thing === 'function';
+    }
+    function safe_not_equal(a, b) {
+        return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+    }
+    function validate_store(store, name) {
+        if (!store || typeof store.subscribe !== 'function') {
+            throw new Error(`'${name}' is not a store with a 'subscribe' method`);
+        }
+    }
+    function subscribe(store, callback) {
+        const unsub = store.subscribe(callback);
+        return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+    }
+    function component_subscribe(component, store, callback) {
+        component.$$.on_destroy.push(subscribe(store, callback));
+    }
+    function exclude_internal_props(props) {
+        const result = {};
+        for (const k in props)
+            if (k[0] !== '$')
+                result[k] = props[k];
+        return result;
+    }
+
+    function append(target, node) {
+        target.appendChild(node);
+    }
+    function insert(target, node, anchor) {
+        target.insertBefore(node, anchor || null);
+    }
+    function detach(node) {
+        node.parentNode.removeChild(node);
+    }
+    function element(name) {
+        return document.createElement(name);
+    }
+    function svg_element(name) {
+        return document.createElementNS('http://www.w3.org/2000/svg', name);
+    }
+    function text(data) {
+        return document.createTextNode(data);
+    }
+    function space() {
+        return text(' ');
+    }
+    function empty() {
+        return text('');
+    }
+    function listen(node, event, handler, options) {
+        node.addEventListener(event, handler, options);
+        return () => node.removeEventListener(event, handler, options);
+    }
+    function attr(node, attribute, value) {
+        if (value == null)
+            node.removeAttribute(attribute);
+        else
+            node.setAttribute(attribute, value);
+    }
+    function children(element) {
+        return Array.from(element.childNodes);
+    }
+    function custom_event(type, detail) {
+        const e = document.createEvent('CustomEvent');
+        e.initCustomEvent(type, false, false, detail);
+        return e;
+    }
+
+    let current_component;
+    function set_current_component(component) {
+        current_component = component;
+    }
+    function get_current_component() {
+        if (!current_component)
+            throw new Error(`Function called outside component initialization`);
+        return current_component;
+    }
+    function onMount(fn) {
+        get_current_component().$$.on_mount.push(fn);
+    }
+    function onDestroy(fn) {
+        get_current_component().$$.on_destroy.push(fn);
+    }
+    function createEventDispatcher() {
+        const component = current_component;
+        return (type, detail) => {
+            const callbacks = component.$$.callbacks[type];
+            if (callbacks) {
+                // TODO are there situations where events could be dispatched
+                // in a server (non-DOM) environment?
+                const event = custom_event(type, detail);
+                callbacks.slice().forEach(fn => {
+                    fn.call(component, event);
+                });
+            }
+        };
+    }
+
+    const dirty_components = [];
+    const binding_callbacks = [];
+    const render_callbacks = [];
+    const flush_callbacks = [];
+    const resolved_promise = Promise.resolve();
+    let update_scheduled = false;
+    function schedule_update() {
+        if (!update_scheduled) {
+            update_scheduled = true;
+            resolved_promise.then(flush);
+        }
+    }
+    function add_render_callback(fn) {
+        render_callbacks.push(fn);
+    }
+    function flush() {
+        const seen_callbacks = new Set();
+        do {
+            // first, call beforeUpdate functions
+            // and update components
+            while (dirty_components.length) {
+                const component = dirty_components.shift();
+                set_current_component(component);
+                update(component.$$);
+            }
+            while (binding_callbacks.length)
+                binding_callbacks.pop()();
+            // then, once components are updated, call
+            // afterUpdate functions. This may cause
+            // subsequent updates...
+            for (let i = 0; i < render_callbacks.length; i += 1) {
+                const callback = render_callbacks[i];
+                if (!seen_callbacks.has(callback)) {
+                    callback();
+                    // ...so guard against infinite loops
+                    seen_callbacks.add(callback);
+                }
+            }
+            render_callbacks.length = 0;
+        } while (dirty_components.length);
+        while (flush_callbacks.length) {
+            flush_callbacks.pop()();
+        }
+        update_scheduled = false;
+    }
+    function update($$) {
+        if ($$.fragment) {
+            $$.update($$.dirty);
+            run_all($$.before_update);
+            $$.fragment.p($$.dirty, $$.ctx);
+            $$.dirty = null;
+            $$.after_update.forEach(add_render_callback);
+        }
+    }
+    const outroing = new Set();
+    let outros;
+    function group_outros() {
+        outros = {
+            r: 0,
+            c: [],
+            p: outros // parent group
+        };
+    }
+    function check_outros() {
+        if (!outros.r) {
+            run_all(outros.c);
+        }
+        outros = outros.p;
+    }
+    function transition_in(block, local) {
+        if (block && block.i) {
+            outroing.delete(block);
+            block.i(local);
+        }
+    }
+    function transition_out(block, local, detach, callback) {
+        if (block && block.o) {
+            if (outroing.has(block))
+                return;
+            outroing.add(block);
+            outros.c.push(() => {
+                outroing.delete(block);
+                if (callback) {
+                    if (detach)
+                        block.d(1);
+                    callback();
+                }
+            });
+            block.o(local);
+        }
+    }
+
+    const globals = (typeof window !== 'undefined' ? window : global);
+    function outro_and_destroy_block(block, lookup) {
+        transition_out(block, 1, 1, () => {
+            lookup.delete(block.key);
+        });
+    }
+    function update_keyed_each(old_blocks, changed, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block, next, get_context) {
+        let o = old_blocks.length;
+        let n = list.length;
+        let i = o;
+        const old_indexes = {};
+        while (i--)
+            old_indexes[old_blocks[i].key] = i;
+        const new_blocks = [];
+        const new_lookup = new Map();
+        const deltas = new Map();
+        i = n;
+        while (i--) {
+            const child_ctx = get_context(ctx, list, i);
+            const key = get_key(child_ctx);
+            let block = lookup.get(key);
+            if (!block) {
+                block = create_each_block(key, child_ctx);
+                block.c();
+            }
+            else if (dynamic) {
+                block.p(changed, child_ctx);
+            }
+            new_lookup.set(key, new_blocks[i] = block);
+            if (key in old_indexes)
+                deltas.set(key, Math.abs(i - old_indexes[key]));
+        }
+        const will_move = new Set();
+        const did_move = new Set();
+        function insert(block) {
+            transition_in(block, 1);
+            block.m(node, next);
+            lookup.set(block.key, block);
+            next = block.first;
+            n--;
+        }
+        while (o && n) {
+            const new_block = new_blocks[n - 1];
+            const old_block = old_blocks[o - 1];
+            const new_key = new_block.key;
+            const old_key = old_block.key;
+            if (new_block === old_block) {
+                // do nothing
+                next = new_block.first;
+                o--;
+                n--;
+            }
+            else if (!new_lookup.has(old_key)) {
+                // remove old block
+                destroy(old_block, lookup);
+                o--;
+            }
+            else if (!lookup.has(new_key) || will_move.has(new_key)) {
+                insert(new_block);
+            }
+            else if (did_move.has(old_key)) {
+                o--;
+            }
+            else if (deltas.get(new_key) > deltas.get(old_key)) {
+                did_move.add(new_key);
+                insert(new_block);
+            }
+            else {
+                will_move.add(old_key);
+                o--;
+            }
+        }
+        while (o--) {
+            const old_block = old_blocks[o];
+            if (!new_lookup.has(old_block.key))
+                destroy(old_block, lookup);
+        }
+        while (n)
+            insert(new_blocks[n - 1]);
+        return new_blocks;
+    }
+
+    function get_spread_update(levels, updates) {
+        const update = {};
+        const to_null_out = {};
+        const accounted_for = { $$scope: 1 };
+        let i = levels.length;
+        while (i--) {
+            const o = levels[i];
+            const n = updates[i];
+            if (n) {
+                for (const key in o) {
+                    if (!(key in n))
+                        to_null_out[key] = 1;
+                }
+                for (const key in n) {
+                    if (!accounted_for[key]) {
+                        update[key] = n[key];
+                        accounted_for[key] = 1;
+                    }
+                }
+                levels[i] = n;
+            }
+            else {
+                for (const key in o) {
+                    accounted_for[key] = 1;
+                }
+            }
+        }
+        for (const key in to_null_out) {
+            if (!(key in update))
+                update[key] = undefined;
+        }
+        return update;
+    }
+    function get_spread_object(spread_props) {
+        return typeof spread_props === 'object' && spread_props !== null ? spread_props : {};
+    }
+    function mount_component(component, target, anchor) {
+        const { fragment, on_mount, on_destroy, after_update } = component.$$;
+        fragment.m(target, anchor);
+        // onMount happens before the initial afterUpdate
+        add_render_callback(() => {
+            const new_on_destroy = on_mount.map(run).filter(is_function);
+            if (on_destroy) {
+                on_destroy.push(...new_on_destroy);
+            }
+            else {
+                // Edge case - component was destroyed immediately,
+                // most likely as a result of a binding initialising
+                run_all(new_on_destroy);
+            }
+            component.$$.on_mount = [];
+        });
+        after_update.forEach(add_render_callback);
+    }
+    function destroy_component(component, detaching) {
+        if (component.$$.fragment) {
+            run_all(component.$$.on_destroy);
+            component.$$.fragment.d(detaching);
+            // TODO null out other refs, including component.$$ (but need to
+            // preserve final state?)
+            component.$$.on_destroy = component.$$.fragment = null;
+            component.$$.ctx = {};
+        }
+    }
+    function make_dirty(component, key) {
+        if (!component.$$.dirty) {
+            dirty_components.push(component);
+            schedule_update();
+            component.$$.dirty = blank_object();
+        }
+        component.$$.dirty[key] = true;
+    }
+    function init(component, options, instance, create_fragment, not_equal, prop_names) {
+        const parent_component = current_component;
+        set_current_component(component);
+        const props = options.props || {};
+        const $$ = component.$$ = {
+            fragment: null,
+            ctx: null,
+            // state
+            props: prop_names,
+            update: noop,
+            not_equal,
+            bound: blank_object(),
+            // lifecycle
+            on_mount: [],
+            on_destroy: [],
+            before_update: [],
+            after_update: [],
+            context: new Map(parent_component ? parent_component.$$.context : []),
+            // everything else
+            callbacks: blank_object(),
+            dirty: null
+        };
+        let ready = false;
+        $$.ctx = instance
+            ? instance(component, props, (key, ret, value = ret) => {
+                if ($$.ctx && not_equal($$.ctx[key], $$.ctx[key] = value)) {
+                    if ($$.bound[key])
+                        $$.bound[key](value);
+                    if (ready)
+                        make_dirty(component, key);
+                }
+                return ret;
+            })
+            : props;
+        $$.update();
+        ready = true;
+        run_all($$.before_update);
+        $$.fragment = create_fragment($$.ctx);
+        if (options.target) {
+            if (options.hydrate) {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment.l(children(options.target));
+            }
+            else {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment.c();
+            }
+            if (options.intro)
+                transition_in(component.$$.fragment);
+            mount_component(component, options.target, options.anchor);
+            flush();
+        }
+        set_current_component(parent_component);
+    }
+    class SvelteComponent {
+        $destroy() {
+            destroy_component(this, 1);
+            this.$destroy = noop;
+        }
+        $on(type, callback) {
+            const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
+            callbacks.push(callback);
+            return () => {
+                const index = callbacks.indexOf(callback);
+                if (index !== -1)
+                    callbacks.splice(index, 1);
+            };
+        }
+        $set() {
+            // overridden by instance, if it has props
+        }
+    }
+
+    function dispatch_dev(type, detail) {
+        document.dispatchEvent(custom_event(type, detail));
+    }
+    function append_dev(target, node) {
+        dispatch_dev("SvelteDOMInsert", { target, node });
+        append(target, node);
+    }
+    function insert_dev(target, node, anchor) {
+        dispatch_dev("SvelteDOMInsert", { target, node, anchor });
+        insert(target, node, anchor);
+    }
+    function detach_dev(node) {
+        dispatch_dev("SvelteDOMRemove", { node });
+        detach(node);
+    }
+    function listen_dev(node, event, handler, options, has_prevent_default, has_stop_propagation) {
+        const modifiers = options === true ? ["capture"] : options ? Array.from(Object.keys(options)) : [];
+        if (has_prevent_default)
+            modifiers.push('preventDefault');
+        if (has_stop_propagation)
+            modifiers.push('stopPropagation');
+        dispatch_dev("SvelteDOMAddEventListener", { node, event, handler, modifiers });
+        const dispose = listen(node, event, handler, options);
+        return () => {
+            dispatch_dev("SvelteDOMRemoveEventListener", { node, event, handler, modifiers });
+            dispose();
+        };
+    }
+    function attr_dev(node, attribute, value) {
+        attr(node, attribute, value);
+        if (value == null)
+            dispatch_dev("SvelteDOMRemoveAttribute", { node, attribute });
+        else
+            dispatch_dev("SvelteDOMSetAttribute", { node, attribute, value });
+    }
+    function set_data_dev(text, data) {
+        data = '' + data;
+        if (text.data === data)
+            return;
+        dispatch_dev("SvelteDOMSetData", { node: text, data });
+        text.data = data;
+    }
+    class SvelteComponentDev extends SvelteComponent {
+        constructor(options) {
+            if (!options || (!options.target && !options.$$inline)) {
+                throw new Error(`'target' is a required option`);
+            }
+            super();
+        }
+        $destroy() {
+            super.$destroy();
+            this.$destroy = () => {
+                console.warn(`Component was already destroyed`); // eslint-disable-line no-console
+            };
+        }
+    }
+
+    const subscriber_queue = [];
+    /**
+     * Creates a `Readable` store that allows reading by subscription.
+     * @param value initial value
+     * @param {StartStopNotifier}start start and stop notifications for subscriptions
+     */
+    function readable(value, start) {
+        return {
+            subscribe: writable(value, start).subscribe,
+        };
+    }
+    /**
+     * Create a `Writable` store that allows both updating and reading by subscription.
+     * @param {*=}value initial value
+     * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+     */
+    function writable(value, start = noop) {
+        let stop;
+        const subscribers = [];
+        function set(new_value) {
+            if (safe_not_equal(value, new_value)) {
+                value = new_value;
+                if (stop) { // store is ready
+                    const run_queue = !subscriber_queue.length;
+                    for (let i = 0; i < subscribers.length; i += 1) {
+                        const s = subscribers[i];
+                        s[1]();
+                        subscriber_queue.push(s, value);
+                    }
+                    if (run_queue) {
+                        for (let i = 0; i < subscriber_queue.length; i += 2) {
+                            subscriber_queue[i][0](subscriber_queue[i + 1]);
+                        }
+                        subscriber_queue.length = 0;
+                    }
+                }
+            }
+        }
+        function update(fn) {
+            set(fn(value));
+        }
+        function subscribe(run, invalidate = noop) {
+            const subscriber = [run, invalidate];
+            subscribers.push(subscriber);
+            if (subscribers.length === 1) {
+                stop = start(set) || noop;
+            }
+            run(value);
+            return () => {
+                const index = subscribers.indexOf(subscriber);
+                if (index !== -1) {
+                    subscribers.splice(index, 1);
+                }
+                if (subscribers.length === 0) {
+                    stop();
+                    stop = null;
+                }
+            };
+        }
+        return { set, update, subscribe };
+    }
+    /**
+     * Derived value store by synchronizing one or more readable stores and
+     * applying an aggregation function over its input values.
+     * @param {Stores} stores input stores
+     * @param {function(Stores=, function(*)=):*}fn function callback that aggregates the values
+     * @param {*=}initial_value when used asynchronously
+     */
+    function derived(stores, fn, initial_value) {
+        const single = !Array.isArray(stores);
+        const stores_array = single
+            ? [stores]
+            : stores;
+        const auto = fn.length < 2;
+        return readable(initial_value, (set) => {
+            let inited = false;
+            const values = [];
+            let pending = 0;
+            let cleanup = noop;
+            const sync = () => {
+                if (pending) {
+                    return;
+                }
+                cleanup();
+                const result = fn(single ? values[0] : values, set);
+                if (auto) {
+                    set(result);
+                }
+                else {
+                    cleanup = is_function(result) ? result : noop;
+                }
+            };
+            const unsubscribers = stores_array.map((store, i) => store.subscribe((value) => {
+                values[i] = value;
+                pending &= ~(1 << i);
+                if (inited) {
+                    sync();
+                }
+            }, () => {
+                pending |= (1 << i);
+            }));
+            inited = true;
+            sync();
+            return function stop() {
+                run_all(unsubscribers);
+                cleanup();
+            };
+        });
+    }
+
+    function regexparam (str, loose) {
+    	if (str instanceof RegExp) return { keys:false, pattern:str };
+    	var c, o, tmp, ext, keys=[], pattern='', arr = str.split('/');
+    	arr[0] || arr.shift();
+
+    	while (tmp = arr.shift()) {
+    		c = tmp[0];
+    		if (c === '*') {
+    			keys.push('wild');
+    			pattern += '/(.*)';
+    		} else if (c === ':') {
+    			o = tmp.indexOf('?', 1);
+    			ext = tmp.indexOf('.', 1);
+    			keys.push( tmp.substring(1, !!~o ? o : !!~ext ? ext : tmp.length) );
+    			pattern += !!~o && !~ext ? '(?:/([^/]+?))?' : '/([^/]+?)';
+    			if (!!~ext) pattern += (!!~o ? '?' : '') + '\\' + tmp.substring(ext);
+    		} else {
+    			pattern += '/' + tmp;
+    		}
+    	}
+
+    	return {
+    		keys: keys,
+    		pattern: new RegExp('^' + pattern + (loose ? '(?=$|\/)' : '\/?$'), 'i')
+    	};
+    }
+
+    /* node_modules/svelte-spa-router/Router.svelte generated by Svelte v3.12.1 */
+    const { Error: Error_1, Object: Object_1 } = globals;
+
+    function create_fragment(ctx) {
+    	var switch_instance_anchor, current;
+
+    	var switch_value = ctx.component;
+
+    	function switch_props(ctx) {
+    		return {
+    			props: { params: ctx.componentParams },
+    			$$inline: true
+    		};
+    	}
+
+    	if (switch_value) {
+    		var switch_instance = new switch_value(switch_props(ctx));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			if (switch_instance) switch_instance.$$.fragment.c();
+    			switch_instance_anchor = empty();
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error_1("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			if (switch_instance) {
+    				mount_component(switch_instance, target, anchor);
+    			}
+
+    			insert_dev(target, switch_instance_anchor, anchor);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var switch_instance_changes = {};
+    			if (changed.componentParams) switch_instance_changes.params = ctx.componentParams;
+
+    			if (switch_value !== (switch_value = ctx.component)) {
+    				if (switch_instance) {
+    					group_outros();
+    					const old_component = switch_instance;
+    					transition_out(old_component.$$.fragment, 1, 0, () => {
+    						destroy_component(old_component, 1);
+    					});
+    					check_outros();
+    				}
+
+    				if (switch_value) {
+    					switch_instance = new switch_value(switch_props(ctx));
+
+    					switch_instance.$$.fragment.c();
+    					transition_in(switch_instance.$$.fragment, 1);
+    					mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
+    				} else {
+    					switch_instance = null;
+    				}
+    			}
+
+    			else if (switch_value) {
+    				switch_instance.$set(switch_instance_changes);
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(switch_instance_anchor);
+    			}
+
+    			if (switch_instance) destroy_component(switch_instance, detaching);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    /**
+     * @typedef {Object} Location
+     * @property {string} location - Location (page/view), for example `/book`
+     * @property {string} [querystring] - Querystring from the hash, as a string not parsed
+     */
+    /**
+     * Returns the current location from the hash.
+     *
+     * @returns {Location} Location object
+     * @private
+     */
+    function getLocation() {
+    const hashPosition = window.location.href.indexOf('#/');
+    let location = (hashPosition > -1) ? window.location.href.substr(hashPosition + 1) : '/';
+
+    // Check if there's a querystring
+    const qsPosition = location.indexOf('?');
+    let querystring = '';
+    if (qsPosition > -1) {
+        querystring = location.substr(qsPosition + 1);
+        location = location.substr(0, qsPosition);
+    }
+
+    return {location, querystring}
+    }
+
+    /**
+     * Readable store that returns the current full location (incl. querystring)
+     */
+    const loc = readable(
+    getLocation(),
+    // eslint-disable-next-line prefer-arrow-callback
+    function start(set) {
+        const update = () => {
+            set(getLocation());
+        };
+        window.addEventListener('hashchange', update, false);
+
+        return function stop() {
+            window.removeEventListener('hashchange', update, false);
+        }
+    }
+    );
+
+    /**
+     * Readable store that returns the current location
+     */
+    const location = derived(
+    loc,
+    ($loc) => $loc.location
+    );
+
+    /**
+     * Readable store that returns the current querystring
+     */
+    const querystring = derived(
+    loc,
+    ($loc) => $loc.querystring
+    );
+
+    /**
+     * Navigates to a new page programmatically.
+     *
+     * @param {string} location - Path to navigate to (must start with `/`)
+     */
+    function push(location) {
+    if (!location || location.length < 1 || location.charAt(0) != '/') {
+        throw Error('Invalid parameter location')
+    }
+
+    // Execute this code when the current call stack is complete
+    setTimeout(() => {
+        window.location.hash = '#' + location;
+    }, 0);
+    }
+
+    /**
+     * Svelte Action that enables a link element (`<a>`) to use our history management.
+     *
+     * For example:
+     *
+     * ````html
+     * <a href="/books" use:link>View books</a>
+     * ````
+     *
+     * @param {HTMLElement} node - The target node (automatically set by Svelte). Must be an anchor tag (`<a>`) with a href attribute starting in `/`
+     */
+    function link(node) {
+    // Only apply to <a> tags
+    if (!node || !node.tagName || node.tagName.toLowerCase() != 'a') {
+        throw Error('Action "link" can only be used with <a> tags')
+    }
+
+    // Destination must start with '/'
+    const href = node.getAttribute('href');
+    if (!href || href.length < 1 || href.charAt(0) != '/') {
+        throw Error('Invalid value for "href" attribute')
+    }
+
+    // onclick event handler
+    node.addEventListener('click', (event) => {
+        // Disable normal click event
+        event.preventDefault();
+
+        // Push link or link children click
+        let href;
+        let target = event.target;
+        while ((href = target.getAttribute('href')) === null) {
+            target = target.parentElement;
+            if (target === null) {
+                throw Error('Could not find corresponding href value')
+            }
+        }
+        push(href);
+
+        return false
+    });
+    }
+
+    function instance($$self, $$props, $$invalidate) {
+    	let $loc;
+
+    	validate_store(loc, 'loc');
+    	component_subscribe($$self, loc, $$value => { $loc = $$value; $$invalidate('$loc', $loc); });
+
+    	/**
+     * Dictionary of all routes, in the format `'/path': component`.
+     *
+     * For example:
+     * ````js
+     * import HomeRoute from './routes/HomeRoute.svelte'
+     * import BooksRoute from './routes/BooksRoute.svelte'
+     * import NotFoundRoute from './routes/NotFoundRoute.svelte'
+     * routes = {
+     *     '/': HomeRoute,
+     *     '/books': BooksRoute,
+     *     '*': NotFoundRoute
+     * }
+     * ````
+     */
+    let { routes = {} } = $$props;
+
+    /**
+     * Container for a route: path, component
+     */
+    class RouteItem {
+        /**
+         * Initializes the object and creates a regular expression from the path, using regexparam.
+         *
+         * @param {string} path - Path to the route (must start with '/' or '*')
+         * @param {SvelteComponent} component - Svelte component for the route
+         */
+        constructor(path, component) {
+            // Path must be a regular or expression, or a string starting with '/' or '*'
+            if (!path || 
+                (typeof path == 'string' && (path.length < 1 || (path.charAt(0) != '/' && path.charAt(0) != '*'))) ||
+                (typeof path == 'object' && !(path instanceof RegExp))
+            ) {
+                throw Error('Invalid value for "path" argument')
+            }
+
+            const {pattern, keys} = regexparam(path);
+
+            this.path = path;
+            this.component = component;
+
+            this._pattern = pattern;
+            this._keys = keys;
+        }
+
+        /**
+         * Checks if `path` matches the current route.
+         * If there's a match, will return the list of parameters from the URL (if any).
+         * In case of no match, the method will return `null`.
+         *
+         * @param {string} path - Path to test
+         * @returns {null|Object.<string, string>} List of paramters from the URL if there's a match, or `null` otherwise.
+         */
+        match(path) {
+            const matches = this._pattern.exec(path);
+            if (matches === null) {
+                return null
+            }
+
+            // If the input was a regular expression, this._keys would be false, so return matches as is
+            if (this._keys === false) {
+                return matches
+            }
+
+            const out = {};
+            let i = 0;
+            while (i < this._keys.length) {
+                out[this._keys[i]] = matches[++i] || null;
+            }
+            return out
+        }
+    }
+
+    // We need an iterable: if it's not a Map, use Object.entries
+    const routesIterable = (routes instanceof Map) ? routes : Object.entries(routes);
+
+    // Set up all routes
+    const routesList = [];
+    for (const [path, route] of routesIterable) {
+        routesList.push(new RouteItem(path, route));
+    }
+
+    // Props for the component to render
+    let component = null;
+    let componentParams = {};
+
+    	const writable_props = ['routes'];
+    	Object_1.keys($$props).forEach(key => {
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<Router> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$set = $$props => {
+    		if ('routes' in $$props) $$invalidate('routes', routes = $$props.routes);
+    	};
+
+    	$$self.$capture_state = () => {
+    		return { routes, component, componentParams, $loc };
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('routes' in $$props) $$invalidate('routes', routes = $$props.routes);
+    		if ('component' in $$props) $$invalidate('component', component = $$props.component);
+    		if ('componentParams' in $$props) $$invalidate('componentParams', componentParams = $$props.componentParams);
+    		if ('$loc' in $$props) loc.set($loc);
+    	};
+
+    	$$self.$$.update = ($$dirty = { component: 1, $loc: 1 }) => {
+    		if ($$dirty.component || $$dirty.$loc) { {
+                // Find a route matching the location
+                $$invalidate('component', component = null);
+                let i = 0;
+                while (!component && i < routesList.length) {
+                    const match = routesList[i].match($loc.location);
+                    if (match) {
+                        $$invalidate('component', component = routesList[i].component);
+                        $$invalidate('componentParams', componentParams = match);
+                    }
+                    i++;
+                }
+            } }
+    	};
+
+    	return { routes, component, componentParams };
+    }
+
+    class Router extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance, create_fragment, safe_not_equal, ["routes"]);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Router", options, id: create_fragment.name });
+    	}
+
+    	get routes() {
+    		throw new Error_1("<Router>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set routes(value) {
+    		throw new Error_1("<Router>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/Home.svelte generated by Svelte v3.12.1 */
+
+    const file = "src/Home.svelte";
+
+    function create_fragment$1(ctx) {
+    	var div, ul, li0, a0, link_action, t1, li1, a1, link_action_1, t3, li2, a2, link_action_2, t5, li3, a3, link_action_3, t7, li4, a4, link_action_4, t9, li5, a5, link_action_5, t11, li6, a6, link_action_6, t13, li7, a7, link_action_7, t15, li8, a8, link_action_8, t17, li9, a9, link_action_9, t19, li10, a10, link_action_10, t21, li11, a11, link_action_11, t23, li12, a12, link_action_12, t25, li13, a13, link_action_13;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			ul = element("ul");
+    			li0 = element("li");
+    			a0 = element("a");
+    			a0.textContent = "DialogClassName";
+    			t1 = space();
+    			li1 = element("li");
+    			a1 = element("a");
+    			a1.textContent = "DialogClassNameDelay";
+    			t3 = space();
+    			li2 = element("li");
+    			a2 = element("a");
+    			a2.textContent = "DialogStyles";
+    			t5 = space();
+    			li3 = element("li");
+    			a3 = element("a");
+    			a3.textContent = "DialogIds";
+    			t7 = space();
+    			li4 = element("li");
+    			a4 = element("a");
+    			a4.textContent = "DialogCount";
+    			t9 = space();
+    			li5 = element("li");
+    			a5 = element("a");
+    			a5.textContent = "DialogHideAll";
+    			t11 = space();
+    			li6 = element("li");
+    			a6 = element("a");
+    			a6.textContent = "DialogResetAll";
+    			t13 = space();
+    			li7 = element("li");
+    			a7 = element("a");
+    			a7.textContent = "DialogTimeout";
+    			t15 = space();
+    			li8 = element("li");
+    			a8 = element("a");
+    			a8.textContent = "DialogQueued";
+    			t17 = space();
+    			li9 = element("li");
+    			a9 = element("a");
+    			a9.textContent = "NotificationCount";
+    			t19 = space();
+    			li10 = element("li");
+    			a10 = element("a");
+    			a10.textContent = "NotificationPause";
+    			t21 = space();
+    			li11 = element("li");
+    			a11 = element("a");
+    			a11.textContent = "NotificationTimeout";
+    			t23 = space();
+    			li12 = element("li");
+    			a12 = element("a");
+    			a12.textContent = "LibBulmaDialog";
+    			t25 = space();
+    			li13 = element("li");
+    			a13 = element("a");
+    			a13.textContent = "LibMaterialIODialog";
+    			attr_dev(a0, "href", "/DialogClassName");
+    			add_location(a0, file, 6, 8, 98);
+    			add_location(li0, file, 6, 4, 94);
+    			attr_dev(a1, "href", "/DialogClassNameDelay");
+    			add_location(a1, file, 7, 8, 167);
+    			add_location(li1, file, 7, 4, 163);
+    			attr_dev(a2, "href", "/DialogStyles");
+    			add_location(a2, file, 8, 8, 246);
+    			add_location(li2, file, 8, 4, 242);
+    			attr_dev(a3, "href", "/DialogIds");
+    			add_location(a3, file, 9, 8, 309);
+    			add_location(li3, file, 9, 4, 305);
+    			attr_dev(a4, "href", "/DialogCount");
+    			add_location(a4, file, 10, 8, 366);
+    			add_location(li4, file, 10, 4, 362);
+    			attr_dev(a5, "href", "/DialogHideAll");
+    			add_location(a5, file, 11, 8, 427);
+    			add_location(li5, file, 11, 4, 423);
+    			attr_dev(a6, "href", "/DialogResetAll");
+    			add_location(a6, file, 12, 8, 492);
+    			add_location(li6, file, 12, 4, 488);
+    			attr_dev(a7, "href", "/DialogTimeout");
+    			add_location(a7, file, 13, 8, 559);
+    			add_location(li7, file, 13, 4, 555);
+    			attr_dev(a8, "href", "/DialogQueued");
+    			add_location(a8, file, 14, 8, 624);
+    			add_location(li8, file, 14, 4, 620);
+    			attr_dev(a9, "href", "/NotificationCount");
+    			add_location(a9, file, 15, 8, 687);
+    			add_location(li9, file, 15, 4, 683);
+    			attr_dev(a10, "href", "/NotificationPause");
+    			add_location(a10, file, 16, 8, 760);
+    			add_location(li10, file, 16, 4, 756);
+    			attr_dev(a11, "href", "/NotificationTimeout");
+    			add_location(a11, file, 17, 8, 833);
+    			add_location(li11, file, 17, 4, 829);
+    			attr_dev(a12, "href", "/LibBulmaDialog");
+    			add_location(a12, file, 18, 8, 910);
+    			add_location(li12, file, 18, 4, 906);
+    			attr_dev(a13, "href", "/LibMaterialIODialog");
+    			add_location(a13, file, 19, 8, 977);
+    			add_location(li13, file, 19, 4, 973);
+    			add_location(ul, file, 5, 2, 85);
+    			attr_dev(div, "class", "menu");
+    			add_location(div, file, 4, 0, 64);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, ul);
+    			append_dev(ul, li0);
+    			append_dev(li0, a0);
+    			link_action = link.call(null, a0) || {};
+    			append_dev(ul, t1);
+    			append_dev(ul, li1);
+    			append_dev(li1, a1);
+    			link_action_1 = link.call(null, a1) || {};
+    			append_dev(ul, t3);
+    			append_dev(ul, li2);
+    			append_dev(li2, a2);
+    			link_action_2 = link.call(null, a2) || {};
+    			append_dev(ul, t5);
+    			append_dev(ul, li3);
+    			append_dev(li3, a3);
+    			link_action_3 = link.call(null, a3) || {};
+    			append_dev(ul, t7);
+    			append_dev(ul, li4);
+    			append_dev(li4, a4);
+    			link_action_4 = link.call(null, a4) || {};
+    			append_dev(ul, t9);
+    			append_dev(ul, li5);
+    			append_dev(li5, a5);
+    			link_action_5 = link.call(null, a5) || {};
+    			append_dev(ul, t11);
+    			append_dev(ul, li6);
+    			append_dev(li6, a6);
+    			link_action_6 = link.call(null, a6) || {};
+    			append_dev(ul, t13);
+    			append_dev(ul, li7);
+    			append_dev(li7, a7);
+    			link_action_7 = link.call(null, a7) || {};
+    			append_dev(ul, t15);
+    			append_dev(ul, li8);
+    			append_dev(li8, a8);
+    			link_action_8 = link.call(null, a8) || {};
+    			append_dev(ul, t17);
+    			append_dev(ul, li9);
+    			append_dev(li9, a9);
+    			link_action_9 = link.call(null, a9) || {};
+    			append_dev(ul, t19);
+    			append_dev(ul, li10);
+    			append_dev(li10, a10);
+    			link_action_10 = link.call(null, a10) || {};
+    			append_dev(ul, t21);
+    			append_dev(ul, li11);
+    			append_dev(li11, a11);
+    			link_action_11 = link.call(null, a11) || {};
+    			append_dev(ul, t23);
+    			append_dev(ul, li12);
+    			append_dev(li12, a12);
+    			link_action_12 = link.call(null, a12) || {};
+    			append_dev(ul, t25);
+    			append_dev(ul, li13);
+    			append_dev(li13, a13);
+    			link_action_13 = link.call(null, a13) || {};
+    		},
+
+    		p: noop,
+    		i: noop,
+    		o: noop,
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div);
+    			}
+
+    			if (link_action && typeof link_action.destroy === 'function') link_action.destroy();
+    			if (link_action_1 && typeof link_action_1.destroy === 'function') link_action_1.destroy();
+    			if (link_action_2 && typeof link_action_2.destroy === 'function') link_action_2.destroy();
+    			if (link_action_3 && typeof link_action_3.destroy === 'function') link_action_3.destroy();
+    			if (link_action_4 && typeof link_action_4.destroy === 'function') link_action_4.destroy();
+    			if (link_action_5 && typeof link_action_5.destroy === 'function') link_action_5.destroy();
+    			if (link_action_6 && typeof link_action_6.destroy === 'function') link_action_6.destroy();
+    			if (link_action_7 && typeof link_action_7.destroy === 'function') link_action_7.destroy();
+    			if (link_action_8 && typeof link_action_8.destroy === 'function') link_action_8.destroy();
+    			if (link_action_9 && typeof link_action_9.destroy === 'function') link_action_9.destroy();
+    			if (link_action_10 && typeof link_action_10.destroy === 'function') link_action_10.destroy();
+    			if (link_action_11 && typeof link_action_11.destroy === 'function') link_action_11.destroy();
+    			if (link_action_12 && typeof link_action_12.destroy === 'function') link_action_12.destroy();
+    			if (link_action_13 && typeof link_action_13.destroy === 'function') link_action_13.destroy();
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$1.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    class Home extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, null, create_fragment$1, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Home", options, id: create_fragment$1.name });
+    	}
+    }
+
+    const pipe = (...fns) => (x) => fns.filter(Boolean).reduce((y, f) => f(y), x);
+    const getStyleValue = ({ domElement, prop }) => {
+        if (window.getComputedStyle) {
+            const defaultView = document.defaultView;
+            if (defaultView) {
+                const style = defaultView.getComputedStyle(domElement);
+                if (style) {
+                    return style.getPropertyValue(prop);
+                }
+            }
+        }
+        return undefined;
+    };
+
+    const MODE = {
+        SHOW: "show",
+        HIDE: "hide"
+    };
+    const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(...transitionClassNames.showStart, ...transitionClassNames.showEnd, ...transitionClassNames.hideStart, ...transitionClassNames.hideEnd);
+    const applyTransitionStyles = (domElement, step, styles) => {
+        const transitionStyle = styles[step] || {};
+        Object.keys(transitionStyle).forEach((key) => {
+            const value = transitionStyle[key].toString();
+            domElement.style[key] = value;
+            // if (domElement.style[key] !== value) {
+            // 	console.warn(`Invalid style: ${key}: ${value} (${domElement.style[key]})`);
+            // }
+        });
+    };
+    const applyNoDurationTransitionStyle = (domElement) => domElement.style.transitionDuration = "0ms";
+    const getTransitionStyles = (domElement, styles) => (typeof styles === "function"
+        ? styles(domElement)
+        : styles) || {};
+    const createClassList = (className, step) => className.split(/ /).map((n) => `${n}-${step}`);
+    const applyStylesForState = (domElement, props, step, isEnterStep) => {
+        if (props.styles) {
+            const styles = getTransitionStyles(domElement, props.styles);
+            applyTransitionStyles(domElement, "default", styles);
+            isEnterStep && applyNoDurationTransitionStyle(domElement);
+            applyTransitionStyles(domElement, step, styles);
+        }
+        if (props.className) {
+            const transitionClassNames = {
+                showStart: createClassList(props.className, "show-start"),
+                showEnd: createClassList(props.className, "show-end"),
+                hideStart: createClassList(props.className, "hide-start"),
+                hideEnd: createClassList(props.className, "hide-end"),
+            };
+            removeTransitionClassNames(domElement, transitionClassNames);
+            transitionClassNames && domElement.classList.add(...transitionClassNames[step]);
+        }
+        // reflow
+        domElement.scrollTop;
+    };
+    const getDuration = (domElement) => {
+        const durationStyleValue = getStyleValue({ domElement, prop: "transition-duration" });
+        const durationValue = durationStyleValue !== undefined
+            ? styleDurationToMs(durationStyleValue)
+            : 0;
+        const delayStyleValue = getStyleValue({ domElement, prop: "transition-delay" });
+        const delayValue = delayStyleValue !== undefined
+            ? styleDurationToMs(delayStyleValue)
+            : 0;
+        return durationValue + delayValue;
+    };
+    const steps = {
+        showStart: {
+            nextStep: "showEnd"
+        },
+        showEnd: {
+            nextStep: undefined
+        },
+        hideStart: {
+            nextStep: "hideEnd"
+        },
+        hideEnd: {
+            nextStep: undefined
+        },
+    };
+    const transition = (props, mode) => {
+        const domElement = props.domElement;
+        if (!domElement) {
+            return Promise.resolve("no domElement");
+        }
+        let currentStep = mode === MODE.SHOW
+            ? "showStart"
+            : "hideStart";
+        return new Promise(resolve => {
+            applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
+            setTimeout(() => {
+                const nextStep = steps[currentStep].nextStep;
+                if (nextStep) {
+                    currentStep = nextStep;
+                    applyStylesForState(domElement, props, currentStep);
+                    // addEventListener sometimes hangs this function because it never finishes
+                    // Using setTimeout instead of addEventListener gives more consistent results
+                    const duration = getDuration(domElement);
+                    setTimeout(resolve, duration);
+                }
+            }, 0);
+        });
+    };
+    const styleDurationToMs = (durationStr) => {
+        const parsed = parseFloat(durationStr) * (durationStr.indexOf("ms") === -1 ? 1000 : 1);
+        return isNaN(parsed)
+            ? 0
+            : parsed;
+    };
+
+    function createCommonjsModule(fn, module) {
+    	return module = { exports: {} }, fn(module, module.exports), module.exports;
+    }
+
+    var stream = createCommonjsModule(function (module) {
+    (function() {
+    /* eslint-enable */
+    Stream.SKIP = {};
+    Stream.lift = lift;
+    Stream.scan = scan;
+    Stream.merge = merge;
+    Stream.combine = combine;
+    Stream.scanMerge = scanMerge;
+    Stream["fantasy-land/of"] = Stream;
+
+    var warnedHalt = false;
+    Object.defineProperty(Stream, "HALT", {
+    	get: function() {
+    		warnedHalt || console.log("HALT is deprecated and has been renamed to SKIP");
+    		warnedHalt = true;
+    		return Stream.SKIP
+    	}
+    });
+
+    function Stream(value) {
+    	var dependentStreams = [];
+    	var dependentFns = [];
+
+    	function stream(v) {
+    		if (arguments.length && v !== Stream.SKIP) {
+    			value = v;
+    			if (open(stream)) {
+    				stream._changing();
+    				stream._state = "active";
+    				dependentStreams.forEach(function(s, i) { s(dependentFns[i](value)); });
+    			}
+    		}
+
+    		return value
+    	}
+
+    	stream.constructor = Stream;
+    	stream._state = arguments.length && value !== Stream.SKIP ? "active" : "pending";
+    	stream._parents = [];
+
+    	stream._changing = function() {
+    		if (open(stream)) stream._state = "changing";
+    		dependentStreams.forEach(function(s) {
+    			s._changing();
+    		});
+    	};
+
+    	stream._map = function(fn, ignoreInitial) {
+    		var target = ignoreInitial ? Stream() : Stream(fn(value));
+    		target._parents.push(stream);
+    		dependentStreams.push(target);
+    		dependentFns.push(fn);
+    		return target
+    	};
+
+    	stream.map = function(fn) {
+    		return stream._map(fn, stream._state !== "active")
+    	};
+
+    	var end;
+    	function createEnd() {
+    		end = Stream();
+    		end.map(function(value) {
+    			if (value === true) {
+    				stream._parents.forEach(function (p) {p._unregisterChild(stream);});
+    				stream._state = "ended";
+    				stream._parents.length = dependentStreams.length = dependentFns.length = 0;
+    			}
+    			return value
+    		});
+    		return end
+    	}
+
+    	stream.toJSON = function() { return value != null && typeof value.toJSON === "function" ? value.toJSON() : value };
+
+    	stream["fantasy-land/map"] = stream.map;
+    	stream["fantasy-land/ap"] = function(x) { return combine(function(s1, s2) { return s1()(s2()) }, [x, stream]) };
+
+    	stream._unregisterChild = function(child) {
+    		var childIndex = dependentStreams.indexOf(child);
+    		if (childIndex !== -1) {
+    			dependentStreams.splice(childIndex, 1);
+    			dependentFns.splice(childIndex, 1);
+    		}
+    	};
+
+    	Object.defineProperty(stream, "end", {
+    		get: function() { return end || createEnd() }
+    	});
+
+    	return stream
+    }
+
+    function combine(fn, streams) {
+    	var ready = streams.every(function(s) {
+    		if (s.constructor !== Stream)
+    			throw new Error("Ensure that each item passed to stream.combine/stream.merge/lift is a stream")
+    		return s._state === "active"
+    	});
+    	var stream = ready
+    		? Stream(fn.apply(null, streams.concat([streams])))
+    		: Stream();
+
+    	var changed = [];
+
+    	var mappers = streams.map(function(s) {
+    		return s._map(function(value) {
+    			changed.push(s);
+    			if (ready || streams.every(function(s) { return s._state !== "pending" })) {
+    				ready = true;
+    				stream(fn.apply(null, streams.concat([changed])));
+    				changed = [];
+    			}
+    			return value
+    		}, true)
+    	});
+
+    	var endStream = stream.end.map(function(value) {
+    		if (value === true) {
+    			mappers.forEach(function(mapper) { mapper.end(true); });
+    			endStream.end(true);
+    		}
+    		return undefined
+    	});
+
+    	return stream
+    }
+
+    function merge(streams) {
+    	return combine(function() { return streams.map(function(s) { return s() }) }, streams)
+    }
+
+    function scan(fn, acc, origin) {
+    	var stream = origin.map(function(v) {
+    		var next = fn(acc, v);
+    		if (next !== Stream.SKIP) acc = next;
+    		return next
+    	});
+    	stream(acc);
+    	return stream
+    }
+
+    function scanMerge(tuples, seed) {
+    	var streams = tuples.map(function(tuple) { return tuple[0] });
+
+    	var stream = combine(function() {
+    		var changed = arguments[arguments.length - 1];
+    		streams.forEach(function(stream, i) {
+    			if (changed.indexOf(stream) > -1)
+    				seed = tuples[i][1](seed, stream());
+    		});
+
+    		return seed
+    	}, streams);
+
+    	stream(seed);
+
+    	return stream
+    }
+
+    function lift() {
+    	var fn = arguments[0];
+    	var streams = Array.prototype.slice.call(arguments, 1);
+    	return merge(streams).map(function(streams) {
+    		return fn.apply(undefined, streams)
+    	})
+    }
+
+    function open(s) {
+    	return s._state === "pending" || s._state === "active" || s._state === "changing"
+    }
+
+    module["exports"] = Stream;
+
+    }());
+    });
+
+    const findItem = (id, items) => {
+        return items.find(item => item.id === id);
+    };
+    const itemIndex = (id, items) => {
+        const item = findItem(id, items);
+        return items.indexOf(item);
+    };
+    const removeItem = (id, items) => {
+        const index = itemIndex(id, items);
+        if (index !== -1) {
+            items.splice(index, 1);
+        }
+        return items;
+    };
+    const createId = (identityOptions, ns) => [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join("-");
+    const store = {
+        initialState: {
+            store: {},
+        },
+        actions: (update) => {
+            return {
+                /**
+                 * Add an item to the end of the list.
+                 */
+                add: (ns, item) => {
+                    update((state) => {
+                        const items = state.store[ns] || [];
+                        state.store[ns] = [...items, item];
+                        if (item.timer) {
+                            // When the timer state updates, refresh the store so that UI can pick up the change
+                            item.timer.states.map(() => store.actions(update).refresh());
+                        }
+                        return state;
+                    });
+                },
+                /**
+                 * Removes the first item with a match on `id`.
+                 */
+                remove: (ns, id) => {
+                    update((state) => {
+                        const items = state.store[ns] || [];
+                        const remaining = removeItem(id, items);
+                        state.store[ns] = remaining;
+                        return state;
+                    });
+                },
+                /**
+                 * Replaces the first item with a match on `id` with a newItem.
+                 */
+                replace: (ns, id, newItem) => {
+                    update((state) => {
+                        const items = state.store[ns] || [];
+                        if (items) {
+                            const index = itemIndex(id, items);
+                            if (index !== -1) {
+                                items[index] = newItem;
+                                state.store[ns] = [...items];
+                            }
+                        }
+                        return state;
+                    });
+                },
+                /**
+                 * Removes all items within a namespace.
+                 */
+                removeAll: (ns) => {
+                    update((state) => {
+                        state.store[ns] = [];
+                        return state;
+                    });
+                },
+                /**
+                 * Replaces all items within a namespace.
+                 */
+                store: (ns, newItems) => {
+                    update((state) => {
+                        state.store[ns] = [...newItems];
+                        return state;
+                    });
+                },
+                refresh: () => {
+                    update((state) => {
+                        return {
+                            ...state,
+                        };
+                    });
+                },
+            };
+        },
+        selectors: (states) => {
+            const fns = {
+                getStore: () => {
+                    const state = states();
+                    return state.store;
+                },
+                find: (ns, identityOptions) => {
+                    const state = states();
+                    const items = state.store[ns] || [];
+                    const id = createId(identityOptions, ns);
+                    const item = items.find((item) => item.id === id);
+                    return item
+                        ? { just: item }
+                        : { nothing: undefined };
+                },
+                getAll: (ns, identityOptions) => {
+                    const state = states();
+                    const items = state.store[ns] || [];
+                    const spawn = identityOptions !== undefined
+                        ? identityOptions.spawn
+                        : undefined;
+                    const id = identityOptions !== undefined
+                        ? identityOptions.id
+                        : undefined;
+                    const itemsBySpawn = spawn !== undefined
+                        ? items.filter(item => item.identityOptions.spawn === spawn)
+                        : items;
+                    const itemsById = id !== undefined
+                        ? itemsBySpawn.filter(item => item.identityOptions.id === id)
+                        : itemsBySpawn;
+                    return itemsById;
+                },
+                getCount: (ns, identityOptions) => fns.getAll(ns, identityOptions).length,
+            };
+            return fns;
+        },
+    };
+    const update$1 = stream();
+    const states = stream.scan((state, patch) => patch(state), {
+        ...store.initialState,
+    }, update$1);
+    const actions = {
+        ...store.actions(update$1),
+    };
+    const selectors = {
+        ...store.selectors(states),
+    };
+    // states.map(state => 
+    //   console.log(JSON.stringify(state, null, 2))
+    // );
+
+    const initialState = {
+        callback: () => { },
+        isPaused: undefined,
+        onAbort: () => { },
+        onDone: () => { },
+        promise: undefined,
+        remaining: undefined,
+        startTime: undefined,
+        timeoutFn: () => { },
+        timerId: undefined,
+    };
+    const appendStartTimer = (state, callback, duration, updateState) => {
+        const timeoutFn = () => {
+            callback();
+            state.onDone();
+            updateState();
+        };
+        return {
+            timeoutFn,
+            promise: new Promise((resolve, reject) => {
+                state.onDone = () => resolve();
+                state.onAbort = () => reject();
+            }),
+            ...(state.isPaused
+                ? {}
+                : {
+                    startTime: new Date().getTime(),
+                    timerId: window.setTimeout(timeoutFn, duration),
+                    remaining: duration,
+                })
+        };
+    };
+    const appendStopTimeout = (state) => {
+        window.clearTimeout(state.timerId);
+        return {
+            timerId: initialState.timerId
+        };
+    };
+    const appendStopTimer = (state) => {
+        return {
+            ...appendStopTimeout(state),
+        };
+    };
+    const appendPauseTimer = (state) => {
+        return {
+            ...appendStopTimeout(state),
+            isPaused: true,
+            remaining: getRemaining(state)
+        };
+    };
+    const appendResumeTimer = (state, minimumDuration) => {
+        window.clearTimeout(state.timerId);
+        const remaining = minimumDuration
+            ? Math.max(state.remaining || 0, minimumDuration)
+            : state.remaining;
+        return {
+            startTime: new Date().getTime(),
+            isPaused: false,
+            remaining,
+            timerId: window.setTimeout(state.timeoutFn, remaining),
+        };
+    };
+    const getRemaining = (state) => state.remaining === undefined
+        ? undefined
+        : state.remaining - (new Date().getTime() - (state.startTime || 0));
+    const Timer = () => {
+        const timer = {
+            initialState,
+            actions: (update) => {
+                return {
+                    start: (callback, duration) => {
+                        update((state) => {
+                            return {
+                                ...state,
+                                ...appendStopTimeout(state),
+                                ...appendStartTimer(state, callback, duration, () => timer.actions(update).done()),
+                                ...(state.isPaused && appendPauseTimer(state)),
+                            };
+                        });
+                    },
+                    stop: () => {
+                        update((state) => {
+                            return {
+                                ...state,
+                                ...appendStopTimer(state),
+                                ...initialState
+                            };
+                        });
+                    },
+                    pause: () => {
+                        update((state) => {
+                            return {
+                                ...state,
+                                ...(!state.isPaused && appendPauseTimer(state)),
+                            };
+                        });
+                    },
+                    resume: (minimumDuration) => {
+                        update((state) => {
+                            return {
+                                ...state,
+                                ...(state.isPaused && appendResumeTimer(state, minimumDuration))
+                            };
+                        });
+                    },
+                    abort: () => {
+                        update((state) => {
+                            state.onAbort();
+                            return {
+                                ...state,
+                                ...appendStopTimeout(state),
+                            };
+                        });
+                    },
+                    done: () => {
+                        update((state) => {
+                            return initialState;
+                        });
+                    },
+                    refresh: () => {
+                        update((state) => {
+                            return {
+                                ...state,
+                            };
+                        });
+                    },
+                };
+            },
+            selectors: (states) => {
+                return {
+                    isPaused: () => {
+                        const state = states();
+                        return state.isPaused;
+                    },
+                    getRemaining: () => {
+                        const state = states();
+                        return state.isPaused
+                            ? state.remaining
+                            : getRemaining(state);
+                    },
+                    getResultPromise: () => {
+                        const state = states();
+                        return state.promise;
+                    },
+                };
+            },
+        };
+        const update = stream();
+        const states = stream.scan((state, patch) => patch(state), {
+            ...timer.initialState,
+        }, update);
+        const actions = {
+            ...timer.actions(update),
+        };
+        const selectors = {
+            ...timer.selectors(states),
+        };
+        // states.map(state => 
+        //   console.log(JSON.stringify(state, null, 2))
+        // );
+        return {
+            states,
+            actions,
+            selectors,
+        };
+    };
+
+    let uid = 0;
+    const getUid = () => uid === Number.MAX_SAFE_INTEGER
+        ? 0
+        : uid++;
+    const transitionStates = {
+        default: 0,
+        displaying: 1,
+        hiding: 2,
+    };
+    const performOnItem = fn => ns => defaultDialogicOptions => (options) => {
+        const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(options);
+        if (maybeItem.just) {
+            return fn(ns, maybeItem.just, options);
+        }
+        else {
+            return Promise.resolve();
+        }
+    };
+    const getMaybeItem = (ns) => (defaultDialogicOptions) => (identityOptions) => selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
+    const filterBySpawn = (identityOptions) => (items) => identityOptions.spawn !== undefined
+        ? items.filter(item => (item.identityOptions.spawn === identityOptions.spawn))
+        : items;
+    const filterById = (identityOptions) => (items) => identityOptions.id !== undefined
+        ? items.filter(item => (item.identityOptions.id === identityOptions.id))
+        : items;
+    /**
+     * Gets a list of all non-queued items.
+     * From the queued items only the first item is listed.
+     * */
+    const filterFirstInQueue = (nsItems) => {
+        let queuedCount = 0;
+        return nsItems
+            .map(item => ({
+            item,
+            queueCount: item.dialogicOptions.queued
+                ? queuedCount++
+                : 0
+        }))
+            .filter(({ queueCount }) => queueCount === 0)
+            .map(({ item }) => item);
+    };
+    const filterCandidates = (ns, items, identityOptions) => {
+        const nsItems = items[ns] || [];
+        if (nsItems.length == 0) {
+            return [];
+        }
+        return pipe(filterBySpawn(identityOptions), filterFirstInQueue)(nsItems);
+    };
+    const getPassThroughOptions = options => {
+        const copy = {
+            ...options,
+        };
+        delete copy.dialogic;
+        return copy;
+    };
+    const getMergedIdentityOptions = (defaultDialogicOptions, identityOptions = {}) => ({
+        id: identityOptions.id || defaultDialogicOptions.id,
+        spawn: identityOptions.spawn || defaultDialogicOptions.spawn,
+    });
+    const handleOptions = (defaultDialogicOptions, options = {}) => {
+        const identityOptions = {
+            id: options.dialogic ? options.dialogic.id : undefined,
+            spawn: options.dialogic ? options.dialogic.spawn : undefined
+        };
+        const mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions || {}, identityOptions);
+        const dialogicOptions = {
+            ...defaultDialogicOptions,
+            ...options.dialogic
+        };
+        const passThroughOptions = getPassThroughOptions(options);
+        return {
+            identityOptions: mergedIdentityOptions,
+            dialogicOptions,
+            passThroughOptions,
+        };
+    };
+    const createInstance = (ns) => (defaultDialogicOptions) => (options = {}) => {
+        const { identityOptions, dialogicOptions, passThroughOptions } = handleOptions(defaultDialogicOptions, options);
+        return new Promise(resolve => {
+            const callbacks = {
+                didShow: (item) => {
+                    if (dialogicOptions.didShow) {
+                        dialogicOptions.didShow(item);
+                    }
+                    return resolve(item);
+                },
+                didHide: (item) => {
+                    if (dialogicOptions.didHide) {
+                        dialogicOptions.didHide(item);
+                    }
+                    return resolve(item);
+                }
+            };
+            const item = {
+                ns,
+                identityOptions,
+                dialogicOptions,
+                callbacks,
+                passThroughOptions,
+                id: createId(identityOptions, ns),
+                timer: dialogicOptions.timeout
+                    ? Timer()
+                    : undefined,
+                key: getUid().toString(),
+                transitionState: transitionStates.default,
+            };
+            const maybeExistingItem = selectors.find(ns, identityOptions);
+            if (maybeExistingItem.just && dialogicOptions.toggle) {
+                const hideResult = hide(ns)(defaultDialogicOptions)(options);
+                return resolve(hideResult);
+            }
+            if (maybeExistingItem.just && !dialogicOptions.queued) {
+                const existingItem = maybeExistingItem.just;
+                // Preserve dialogicOptions
+                const dialogicOptions = existingItem.dialogicOptions;
+                const replacingItem = {
+                    ...item,
+                    transitionState: existingItem.transitionState,
+                    dialogicOptions
+                };
+                actions.replace(ns, existingItem.id, replacingItem);
+            }
+            else {
+                actions.add(ns, item);
+                // This will instantiate and draw the instance
+                // The instance will call `showDialog` in `onMount`
+            }
+            resolve(item);
+        });
+    };
+    const show = createInstance;
+    const hide = (ns) => (defaultDialogicOptions) => (options) => {
+        const { identityOptions, dialogicOptions, passThroughOptions } = handleOptions(defaultDialogicOptions, options);
+        const maybeExistingItem = selectors.find(ns, identityOptions);
+        if (maybeExistingItem.just) {
+            const existingItem = maybeExistingItem.just;
+            const domElement = existingItem.dialogicOptions.domElement;
+            const item = {
+                ...maybeExistingItem.just,
+                dialogicOptions: {
+                    ...existingItem,
+                    ...dialogicOptions,
+                    domElement
+                },
+                passThroughOptions,
+            };
+            actions.replace(ns, existingItem.id, item);
+            if (item.transitionState !== transitionStates.hiding) {
+                return hideItem(item);
+            }
+            else {
+                return Promise.resolve(item);
+            }
+        }
+        return Promise.resolve();
+    };
+    const pause = performOnItem((ns, item) => {
+        if (item && item.timer) {
+            item.timer.actions.pause();
+        }
+        return Promise.resolve(item);
+    });
+    const resume = performOnItem((ns, item, commandOptions = {}) => {
+        if (item && item.timer) {
+            item.timer.actions.resume(commandOptions.minimumDuration);
+        }
+        return Promise.resolve(item);
+    });
+    const getTimerProperty = (timerProp) => (ns) => (defaultDialogicOptions) => (identityOptions) => {
+        const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
+        if (maybeItem.just) {
+            if (maybeItem.just && maybeItem.just.timer) {
+                return maybeItem.just.timer.selectors[timerProp]();
+            }
+            else {
+                return undefined;
+            }
+        }
+        else {
+            return undefined;
+        }
+    };
+    const isPaused = getTimerProperty("isPaused");
+    const getRemaining$1 = getTimerProperty("getRemaining");
+    const exists = (ns) => (defaultDialogicOptions) => (identityOptions) => {
+        const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
+        return !!maybeItem.just;
+    };
+    const getValidItems = (ns, dialogicOptions) => {
+        const allItems = selectors.getAll(ns);
+        let validItems;
+        if (dialogicOptions) {
+            validItems = pipe(filterBySpawn(dialogicOptions), filterById(dialogicOptions))(allItems);
+        }
+        else {
+            validItems = allItems;
+        }
+        return validItems;
+    };
+    const resetAll = (ns) => (defaultDialogicOptions) => (dialogicOptions) => {
+        const validItems = getValidItems(ns, dialogicOptions);
+        const items = [];
+        validItems.forEach((item) => {
+            item.timer && item.timer.actions.abort();
+            items.push(item);
+        });
+        if (dialogicOptions) {
+            items.forEach((item) => {
+                actions.remove(ns, item.id);
+            });
+        }
+        else {
+            actions.removeAll(ns);
+        }
+        return Promise.resolve(items);
+    };
+    const getOverridingTransitionOptions = (item, dialogicOptions) => {
+        return {
+            ...item,
+            dialogicOptions: {
+                ...item.dialogicOptions,
+                ...dialogicOptions
+            }
+        };
+    };
+    /**
+     * Triggers a `hideItem` for each item in the store.
+     * Queued items: will trigger `hideItem` only for the first item, then reset the store.
+     * `dialogicOptions` may contain specific transition options. This comes in handy when all items should hide in the same manner.
+     * */
+    const hideAll = (ns) => (defaultDialogicOptions) => (dialogicOptions) => {
+        const validItems = getValidItems(ns, dialogicOptions);
+        const options = dialogicOptions || {};
+        const regularItems = validItems.filter((item) => !options.queued && !item.dialogicOptions.queued);
+        const queuedItems = validItems.filter((item) => options.queued || item.dialogicOptions.queued);
+        const items = [];
+        regularItems.forEach((item) => items.push(hideItem(getOverridingTransitionOptions(item, options))));
+        if (queuedItems.length > 0) {
+            const [current,] = queuedItems;
+            // Make sure that any remaining items don't suddenly appear
+            actions.store(ns, [current]);
+            // Transition the current item
+            items.push(hideItem(getOverridingTransitionOptions(current, options)));
+        }
+        return Promise.all(items);
+    };
+    const getCount = (ns) => (identityOptions) => selectors.getCount(ns, identityOptions);
+    const transitionItem = (item, mode) => {
+        return transition(item.dialogicOptions, mode);
+    };
+    const deferredHideItem = async function (item, timer, timeout) {
+        timer.actions.start(() => (hideItem(item)), timeout);
+        return getTimerProperty("getResultPromise");
+    };
+    const showItem = async function (item) {
+        if (item.transitionState !== transitionStates.displaying) {
+            item.transitionState = transitionStates.displaying;
+            await (transitionItem(item, MODE.SHOW));
+        }
+        item.callbacks.didShow && await (item.callbacks.didShow(item));
+        if (item.dialogicOptions.timeout && item.timer) {
+            await (deferredHideItem(item, item.timer, item.dialogicOptions.timeout));
+        }
+        return Promise.resolve(item);
+    };
+    const hideItem = async function (item) {
+        item.transitionState = transitionStates.hiding;
+        // Stop any running timer
+        if (item.timer) {
+            item.timer.actions.stop();
+        }
+        await (transitionItem(item, MODE.HIDE));
+        item.callbacks.didHide && await (item.callbacks.didHide(item));
+        const copy = {
+            ...item
+        };
+        actions.remove(item.ns, item.id);
+        return Promise.resolve(copy);
+    };
+    const setDomElement = (domElement, item) => {
+        item.dialogicOptions.domElement = domElement;
+    };
+
+    const dialogical = ({ ns, queued, timeout }) => {
+        const defaultId = `default_${ns}`;
+        const defaultSpawn = `default_${ns}`;
+        const defaultDialogicOptions = {
+            id: defaultId,
+            spawn: defaultSpawn,
+            ...(queued && { queued }),
+            ...(timeout !== undefined && { timeout }),
+        };
+        return {
+            // Identification
+            ns,
+            defaultId,
+            defaultSpawn,
+            // Configuration
+            defaultDialogicOptions,
+            // Commands
+            show: show(ns)(defaultDialogicOptions),
+            hide: hide(ns)(defaultDialogicOptions),
+            hideAll: hideAll(ns)(defaultDialogicOptions),
+            resetAll: resetAll(ns)(defaultDialogicOptions),
+            // Timer commands
+            pause: pause(ns)(defaultDialogicOptions),
+            resume: resume(ns)(defaultDialogicOptions),
+            // State
+            exists: exists(ns)(defaultDialogicOptions),
+            getCount: getCount(ns),
+            // Timer state
+            isPaused: isPaused(ns)(defaultDialogicOptions),
+            getRemaining: getRemaining$1(ns)(defaultDialogicOptions),
+        };
+    };
+
+    const dialog = dialogical({ ns: "dialog" });
+
+    const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
+    //# sourceMappingURL=dialogic.mjs.map
+
+    const appState = {
+      ...writable(states),
+      ...selectors
+    };
+
+    states.map(state => appState.set({
+      ...state,
+      ...selectors
+    }));
+
+    const getCount$1 = ns => identityOptions => derived(
+    	appState,
+    	() => selectors.getCount(ns, identityOptions)
+    );
+
+    const isPaused$1 = ns => defaultDialogicOptions => identityOptions => derived(
+    	appState,
+    	() => getTimerProperty("isPaused")(ns)(defaultDialogicOptions)(identityOptions)
+    );
+
+    const exists$1 = ns => defaultDialogicOptions => identityOptions => derived(
+    	appState,
+    	() => exists(ns)(defaultDialogicOptions)(identityOptions)
+    );
+
+    const dialog$1 = {
+      ...dialog,
+      getCount: identityOptions =>
+        getCount$1(dialog.ns)(identityOptions),
+      isPaused: identityOptions =>
+        isPaused$1(dialog.ns)(dialog.defaultDialogicOptions)(identityOptions),
+      exists: identityOptions =>
+        exists$1(dialog.ns)(dialog.defaultDialogicOptions)(identityOptions),
+    };
+
+    const notification$1 = {
+      ...notification,
+      getCount: identityOptions =>
+        getCount$1(notification.ns)(identityOptions),
+      isPaused: identityOptions =>
+        isPaused$1(notification.ns)(notification.defaultDialogicOptions)(identityOptions),
+      exists: identityOptions =>
+        exists$1(notification.ns)(notification.defaultDialogicOptions)(identityOptions),
+    };
+
+    const handleDispatch = (ns) => (event, fn) => {
+      // Update dispatching item:
+      const maybeItem = selectors.find(ns, event.detail.identityOptions);
+      if (maybeItem.just) {
+        setDomElement(event.detail.domElement, maybeItem.just);
+      }
+      // Find item to transition:
+      const maybeTransitioningItem = selectors.find(ns, event.detail.identityOptions);
+      if (maybeTransitioningItem.just) {
+        fn(maybeTransitioningItem.just);
+      }
+    };
+
+    const onInstanceMounted = (ns) => (event) =>
+      handleDispatch(ns)(event, showItem);
+      
+    const onShowInstance = (ns) => (event) =>
+      handleDispatch(ns)(event, showItem);
+
+    const onHideInstance = (ns) => (event) =>
+      handleDispatch(ns)(event, hideItem);
+
+    /* Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-svelte/src/Instance.svelte generated by Svelte v3.12.1 */
+
+    const file$1 = "Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-svelte/src/Instance.svelte";
+
+    function create_fragment$2(ctx) {
+    	var div, current;
+
+    	var switch_instance_spread_levels = [
+    		{ show: ctx.show },
+    		{ hide: ctx.hide },
+    		ctx.passThroughOptions
+    	];
+
+    	var switch_value = ctx.dialogicOptions.component;
+
+    	function switch_props(ctx) {
+    		let switch_instance_props = {};
+    		for (var i = 0; i < switch_instance_spread_levels.length; i += 1) {
+    			switch_instance_props = assign(switch_instance_props, switch_instance_spread_levels[i]);
+    		}
+    		return {
+    			props: switch_instance_props,
+    			$$inline: true
+    		};
+    	}
+
+    	if (switch_value) {
+    		var switch_instance = new switch_value(switch_props());
+    	}
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			if (switch_instance) switch_instance.$$.fragment.c();
+    			attr_dev(div, "class", ctx.className);
+    			add_location(div, file$1, 34, 0, 616);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+
+    			if (switch_instance) {
+    				mount_component(switch_instance, div, null);
+    			}
+
+    			ctx.div_binding(div);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var switch_instance_changes = (changed.show || changed.hide || changed.passThroughOptions) ? get_spread_update(switch_instance_spread_levels, [
+    									(changed.show) && { show: ctx.show },
+    			(changed.hide) && { hide: ctx.hide },
+    			(changed.passThroughOptions) && get_spread_object(ctx.passThroughOptions)
+    								]) : {};
+
+    			if (switch_value !== (switch_value = ctx.dialogicOptions.component)) {
+    				if (switch_instance) {
+    					group_outros();
+    					const old_component = switch_instance;
+    					transition_out(old_component.$$.fragment, 1, 0, () => {
+    						destroy_component(old_component, 1);
+    					});
+    					check_outros();
+    				}
+
+    				if (switch_value) {
+    					switch_instance = new switch_value(switch_props());
+
+    					switch_instance.$$.fragment.c();
+    					transition_in(switch_instance.$$.fragment, 1);
+    					mount_component(switch_instance, div, null);
+    				} else {
+    					switch_instance = null;
+    				}
+    			}
+
+    			else if (switch_value) {
+    				switch_instance.$set(switch_instance_changes);
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div);
+    			}
+
+    			if (switch_instance) destroy_component(switch_instance);
+    			ctx.div_binding(null);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$2.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$1($$self, $$props, $$invalidate) {
+    	const dispatch = createEventDispatcher();
+
+      // DOM bindings
+      let domElement;
+
+      let { identityOptions, passThroughOptions, dialogicOptions } = $$props;
+
+      const className = dialogicOptions ? dialogicOptions.className : '';
+
+      const dispatchTransition = (name) =>
+        dispatch(name, {
+          identityOptions,
+          domElement
+        });
+
+      const show = () => {
+        dispatchTransition("show");
+      };
+
+      const hide = () => {
+        dispatchTransition("hide");
+      };
+
+      onMount(() => {
+        dispatchTransition("mount");
+      });
+
+    	const writable_props = ['identityOptions', 'passThroughOptions', 'dialogicOptions'];
+    	Object.keys($$props).forEach(key => {
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<Instance> was created with unknown prop '${key}'`);
+    	});
+
+    	function div_binding($$value) {
+    		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+    			$$invalidate('domElement', domElement = $$value);
+    		});
+    	}
+
+    	$$self.$set = $$props => {
+    		if ('identityOptions' in $$props) $$invalidate('identityOptions', identityOptions = $$props.identityOptions);
+    		if ('passThroughOptions' in $$props) $$invalidate('passThroughOptions', passThroughOptions = $$props.passThroughOptions);
+    		if ('dialogicOptions' in $$props) $$invalidate('dialogicOptions', dialogicOptions = $$props.dialogicOptions);
+    	};
+
+    	$$self.$capture_state = () => {
+    		return { domElement, identityOptions, passThroughOptions, dialogicOptions };
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('domElement' in $$props) $$invalidate('domElement', domElement = $$props.domElement);
+    		if ('identityOptions' in $$props) $$invalidate('identityOptions', identityOptions = $$props.identityOptions);
+    		if ('passThroughOptions' in $$props) $$invalidate('passThroughOptions', passThroughOptions = $$props.passThroughOptions);
+    		if ('dialogicOptions' in $$props) $$invalidate('dialogicOptions', dialogicOptions = $$props.dialogicOptions);
+    	};
+
+    	return {
+    		domElement,
+    		identityOptions,
+    		passThroughOptions,
+    		dialogicOptions,
+    		className,
+    		show,
+    		hide,
+    		div_binding
+    	};
+    }
+
+    class Instance extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$1, create_fragment$2, safe_not_equal, ["identityOptions", "passThroughOptions", "dialogicOptions"]);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Instance", options, id: create_fragment$2.name });
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+    		if (ctx.identityOptions === undefined && !('identityOptions' in props)) {
+    			console.warn("<Instance> was created without expected prop 'identityOptions'");
+    		}
+    		if (ctx.passThroughOptions === undefined && !('passThroughOptions' in props)) {
+    			console.warn("<Instance> was created without expected prop 'passThroughOptions'");
+    		}
+    		if (ctx.dialogicOptions === undefined && !('dialogicOptions' in props)) {
+    			console.warn("<Instance> was created without expected prop 'dialogicOptions'");
+    		}
+    	}
+
+    	get identityOptions() {
+    		throw new Error("<Instance>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set identityOptions(value) {
+    		throw new Error("<Instance>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get passThroughOptions() {
+    		throw new Error("<Instance>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set passThroughOptions(value) {
+    		throw new Error("<Instance>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get dialogicOptions() {
+    		throw new Error("<Instance>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set dialogicOptions(value) {
+    		throw new Error("<Instance>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-svelte/src/Wrapper.svelte generated by Svelte v3.12.1 */
+
+    function get_each_context(ctx, list, i) {
+    	const child_ctx = Object.create(ctx);
+    	child_ctx.identityOptions = list[i].identityOptions;
+    	child_ctx.dialogicOptions = list[i].dialogicOptions;
+    	child_ctx.passThroughOptions = list[i].passThroughOptions;
+    	child_ctx.key = list[i].key;
+    	child_ctx.index = i;
+    	return child_ctx;
+    }
+
+    // (17:0) {#each filterCandidates(ns, $appState.store, identityOptions) as { identityOptions, dialogicOptions, passThroughOptions, key }
+    function create_each_block(key_1, ctx) {
+    	var first, current;
+
+    	var instance = new Instance({
+    		props: {
+    		identityOptions: ctx.identityOptions,
+    		dialogicOptions: ctx.dialogicOptions,
+    		passThroughOptions: ctx.passThroughOptions
+    	},
+    		$$inline: true
+    	});
+    	instance.$on("mount", ctx.nsOnInstanceMounted);
+    	instance.$on("show", ctx.nsOnShowInstance);
+    	instance.$on("hide", ctx.nsOnHideInstance);
+
+    	const block = {
+    		key: key_1,
+
+    		first: null,
+
+    		c: function create() {
+    			first = empty();
+    			instance.$$.fragment.c();
+    			this.first = first;
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, first, anchor);
+    			mount_component(instance, target, anchor);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var instance_changes = {};
+    			if (changed.ns || changed.$appState || changed.identityOptions) instance_changes.identityOptions = ctx.identityOptions;
+    			if (changed.ns || changed.$appState || changed.identityOptions) instance_changes.dialogicOptions = ctx.dialogicOptions;
+    			if (changed.ns || changed.$appState || changed.identityOptions) instance_changes.passThroughOptions = ctx.passThroughOptions;
+    			instance.$set(instance_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(instance.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(instance.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(first);
+    			}
+
+    			destroy_component(instance, detaching);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_each_block.name, type: "each", source: "(17:0) {#each filterCandidates(ns, $appState.store, identityOptions) as { identityOptions, dialogicOptions, passThroughOptions, key }", ctx });
+    	return block;
+    }
+
+    function create_fragment$3(ctx) {
+    	var each_blocks = [], each_1_lookup = new Map(), each_1_anchor, current;
+
+    	let each_value = filterCandidates(ctx.ns, ctx.$appState.store, ctx.identityOptions);
+
+    	const get_key = ctx => ctx.key;
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		let child_ctx = get_each_context(ctx, each_value, i);
+    		let key = get_key(child_ctx);
+    		each_1_lookup.set(key, each_blocks[i] = create_each_block(key, child_ctx));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			each_1_anchor = empty();
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(target, anchor);
+    			}
+
+    			insert_dev(target, each_1_anchor, anchor);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			const each_value = filterCandidates(ctx.ns, ctx.$appState.store, ctx.identityOptions);
+
+    			group_outros();
+    			each_blocks = update_keyed_each(each_blocks, changed, get_key, 1, ctx, each_value, each_1_lookup, each_1_anchor.parentNode, outro_and_destroy_block, create_each_block, each_1_anchor, get_each_context);
+    			check_outros();
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			for (let i = 0; i < each_value.length; i += 1) {
+    				transition_in(each_blocks[i]);
+    			}
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				transition_out(each_blocks[i]);
+    			}
+
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].d(detaching);
+    			}
+
+    			if (detaching) {
+    				detach_dev(each_1_anchor);
+    			}
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$3.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance_1($$self, $$props, $$invalidate) {
+    	let $appState;
+
+    	validate_store(appState, 'appState');
+    	component_subscribe($$self, appState, $$value => { $appState = $$value; $$invalidate('$appState', $appState); });
+
+    	
+
+      let { identityOptions, ns } = $$props;
+
+      const nsOnInstanceMounted = onInstanceMounted(ns);
+      const nsOnShowInstance = onShowInstance(ns);
+      const nsOnHideInstance = onHideInstance(ns);
+
+    	const writable_props = ['identityOptions', 'ns'];
+    	Object.keys($$props).forEach(key => {
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<Wrapper> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$set = $$props => {
+    		if ('identityOptions' in $$props) $$invalidate('identityOptions', identityOptions = $$props.identityOptions);
+    		if ('ns' in $$props) $$invalidate('ns', ns = $$props.ns);
+    	};
+
+    	$$self.$capture_state = () => {
+    		return { identityOptions, ns, $appState };
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('identityOptions' in $$props) $$invalidate('identityOptions', identityOptions = $$props.identityOptions);
+    		if ('ns' in $$props) $$invalidate('ns', ns = $$props.ns);
+    		if ('$appState' in $$props) appState.set($appState);
+    	};
+
+    	return {
+    		identityOptions,
+    		ns,
+    		nsOnInstanceMounted,
+    		nsOnShowInstance,
+    		nsOnHideInstance,
+    		$appState
+    	};
+    }
+
+    class Wrapper extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance_1, create_fragment$3, safe_not_equal, ["identityOptions", "ns"]);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Wrapper", options, id: create_fragment$3.name });
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+    		if (ctx.identityOptions === undefined && !('identityOptions' in props)) {
+    			console.warn("<Wrapper> was created without expected prop 'identityOptions'");
+    		}
+    		if (ctx.ns === undefined && !('ns' in props)) {
+    			console.warn("<Wrapper> was created without expected prop 'ns'");
+    		}
+    	}
+
+    	get identityOptions() {
+    		throw new Error("<Wrapper>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set identityOptions(value) {
+    		throw new Error("<Wrapper>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get ns() {
+    		throw new Error("<Wrapper>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set ns(value) {
+    		throw new Error("<Wrapper>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-svelte/src/Dialogical.svelte generated by Svelte v3.12.1 */
+
+    function create_fragment$4(ctx) {
+    	var current;
+
+    	var wrapper = new Wrapper({
+    		props: {
+    		identityOptions: ctx.identityOptions,
+    		ns: ctx.ns
+    	},
+    		$$inline: true
+    	});
+
+    	const block = {
+    		c: function create() {
+    			wrapper.$$.fragment.c();
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			mount_component(wrapper, target, anchor);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var wrapper_changes = {};
+    			if (changed.ns) wrapper_changes.ns = ctx.ns;
+    			wrapper.$set(wrapper_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(wrapper.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(wrapper.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			destroy_component(wrapper, detaching);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$4.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$2($$self, $$props, $$invalidate) {
+    	
+
+      let { type, ns = type.ns, spawn = undefined, id = undefined, onMount: onMount$1 = undefined } = $$props;
+
+      const identityOptions = {
+        id: id || type.defaultId,
+        spawn: spawn || type.defaultSpawn,
+      };
+
+      onMount(() => {
+        if (typeof onMount$1 === "function") {
+          onMount$1();
+        }
+      });
+
+    	const writable_props = ['type', 'ns', 'spawn', 'id', 'onMount'];
+    	Object.keys($$props).forEach(key => {
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<Dialogical> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$set = $$props => {
+    		if ('type' in $$props) $$invalidate('type', type = $$props.type);
+    		if ('ns' in $$props) $$invalidate('ns', ns = $$props.ns);
+    		if ('spawn' in $$props) $$invalidate('spawn', spawn = $$props.spawn);
+    		if ('id' in $$props) $$invalidate('id', id = $$props.id);
+    		if ('onMount' in $$props) $$invalidate('onMount', onMount$1 = $$props.onMount);
+    	};
+
+    	$$self.$capture_state = () => {
+    		return { type, ns, spawn, id, onMount: onMount$1 };
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('type' in $$props) $$invalidate('type', type = $$props.type);
+    		if ('ns' in $$props) $$invalidate('ns', ns = $$props.ns);
+    		if ('spawn' in $$props) $$invalidate('spawn', spawn = $$props.spawn);
+    		if ('id' in $$props) $$invalidate('id', id = $$props.id);
+    		if ('onMount' in $$props) $$invalidate('onMount', onMount$1 = $$props.onMount);
+    	};
+
+    	return {
+    		type,
+    		ns,
+    		spawn,
+    		id,
+    		onMount: onMount$1,
+    		identityOptions
+    	};
+    }
+
+    class Dialogical extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$2, create_fragment$4, safe_not_equal, ["type", "ns", "spawn", "id", "onMount"]);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Dialogical", options, id: create_fragment$4.name });
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+    		if (ctx.type === undefined && !('type' in props)) {
+    			console.warn("<Dialogical> was created without expected prop 'type'");
+    		}
+    	}
+
+    	get type() {
+    		throw new Error("<Dialogical>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set type(value) {
+    		throw new Error("<Dialogical>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get ns() {
+    		throw new Error("<Dialogical>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set ns(value) {
+    		throw new Error("<Dialogical>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get spawn() {
+    		throw new Error("<Dialogical>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set spawn(value) {
+    		throw new Error("<Dialogical>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get id() {
+    		throw new Error("<Dialogical>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set id(value) {
+    		throw new Error("<Dialogical>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get onMount() {
+    		throw new Error("<Dialogical>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set onMount(value) {
+    		throw new Error("<Dialogical>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-svelte/src/Dialog.svelte generated by Svelte v3.12.1 */
+
+    function create_fragment$5(ctx) {
+    	var current;
+
+    	var dialogical_spread_levels = [
+    		ctx.$$props,
+    		{ type: dialog$1 }
+    	];
+
+    	let dialogical_props = {};
+    	for (var i = 0; i < dialogical_spread_levels.length; i += 1) {
+    		dialogical_props = assign(dialogical_props, dialogical_spread_levels[i]);
+    	}
+    	var dialogical = new Dialogical({ props: dialogical_props, $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			dialogical.$$.fragment.c();
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			mount_component(dialogical, target, anchor);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var dialogical_changes = (changed.$$props || changed.dialog) ? get_spread_update(dialogical_spread_levels, [
+    									(changed.$$props) && get_spread_object(ctx.$$props),
+    			(changed.dialog) && { type: dialog$1 }
+    								]) : {};
+    			dialogical.$set(dialogical_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(dialogical.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(dialogical.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			destroy_component(dialogical, detaching);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$5.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$3($$self, $$props, $$invalidate) {
+    	$$self.$set = $$new_props => {
+    		$$invalidate('$$props', $$props = assign(assign({}, $$props), $$new_props));
+    	};
+
+    	$$self.$capture_state = () => {
+    		return {  };
+    	};
+
+    	$$self.$inject_state = $$new_props => {
+    		$$invalidate('$$props', $$props = assign(assign({}, $$props), $$new_props));
+    	};
+
+    	return {
+    		$$props,
+    		$$props: $$props = exclude_internal_props($$props)
+    	};
+    }
+
+    class Dialog extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$3, create_fragment$5, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Dialog", options, id: create_fragment$5.name });
+    	}
+    }
+
+    /* Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-svelte/src/Notification.svelte generated by Svelte v3.12.1 */
+
+    function create_fragment$6(ctx) {
+    	var current;
+
+    	var dialogical_spread_levels = [
+    		ctx.$$props,
+    		{ type: notification$1 }
+    	];
+
+    	let dialogical_props = {};
+    	for (var i = 0; i < dialogical_spread_levels.length; i += 1) {
+    		dialogical_props = assign(dialogical_props, dialogical_spread_levels[i]);
+    	}
+    	var dialogical = new Dialogical({ props: dialogical_props, $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			dialogical.$$.fragment.c();
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			mount_component(dialogical, target, anchor);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var dialogical_changes = (changed.$$props || changed.notification) ? get_spread_update(dialogical_spread_levels, [
+    									(changed.$$props) && get_spread_object(ctx.$$props),
+    			(changed.notification) && { type: notification$1 }
+    								]) : {};
+    			dialogical.$set(dialogical_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(dialogical.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(dialogical.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			destroy_component(dialogical, detaching);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$6.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$4($$self, $$props, $$invalidate) {
+    	$$self.$set = $$new_props => {
+    		$$invalidate('$$props', $$props = assign(assign({}, $$props), $$new_props));
+    	};
+
+    	$$self.$capture_state = () => {
+    		return {  };
+    	};
+
+    	$$self.$inject_state = $$new_props => {
+    		$$invalidate('$$props', $$props = assign(assign({}, $$props), $$new_props));
+    	};
+
+    	return {
+    		$$props,
+    		$$props: $$props = exclude_internal_props($$props)
+    	};
+    }
+
+    class Notification extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$4, create_fragment$6, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Notification", options, id: create_fragment$6.name });
+    	}
+    }
+
+    /* src/cypress-tests/content/Default.svelte generated by Svelte v3.12.1 */
+
+    const file$2 = "src/cypress-tests/content/Default.svelte";
+
+    function create_fragment$7(ctx) {
+    	var div, h2, t0_value = ctx.$$props.title + "", t0, t1, button, div_class_value, div_data_test_id_value, dispose;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			h2 = element("h2");
+    			t0 = text(t0_value);
+    			t1 = space();
+    			button = element("button");
+    			button.textContent = "Hide from component";
+    			add_location(h2, file$2, 4, 2, 123);
+    			attr_dev(button, "class", "button");
+    			attr_dev(button, "data-test-id", "button-hide-content");
+    			add_location(button, file$2, 5, 2, 150);
+    			attr_dev(div, "class", div_class_value = ctx.$$props.className);
+    			attr_dev(div, "data-test-id", div_data_test_id_value = `content-default${ctx.$$props.contentId ? `-${ctx.$$props.contentId}` : ''}`);
+    			add_location(div, file$2, 0, 0, 0);
+    			dispose = listen_dev(button, "click", ctx.$$props.hide);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, h2);
+    			append_dev(h2, t0);
+    			append_dev(div, t1);
+    			append_dev(div, button);
+    		},
+
+    		p: function update(changed, ctx) {
+    			if ((changed.$$props) && t0_value !== (t0_value = ctx.$$props.title + "")) {
+    				set_data_dev(t0, t0_value);
+    			}
+
+    			if ((changed.$$props) && div_class_value !== (div_class_value = ctx.$$props.className)) {
+    				attr_dev(div, "class", div_class_value);
+    			}
+
+    			if ((changed.$$props) && div_data_test_id_value !== (div_data_test_id_value = `content-default${ctx.$$props.contentId ? `-${ctx.$$props.contentId}` : ''}`)) {
+    				attr_dev(div, "data-test-id", div_data_test_id_value);
+    			}
+    		},
+
+    		i: noop,
+    		o: noop,
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div);
+    			}
+
+    			dispose();
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$7.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$5($$self, $$props, $$invalidate) {
+    	$$self.$set = $$new_props => {
+    		$$invalidate('$$props', $$props = assign(assign({}, $$props), $$new_props));
+    	};
+
+    	$$self.$capture_state = () => {
+    		return {  };
+    	};
+
+    	$$self.$inject_state = $$new_props => {
+    		$$invalidate('$$props', $$props = assign(assign({}, $$props), $$new_props));
+    	};
+
+    	return {
+    		$$props,
+    		$$props: $$props = exclude_internal_props($$props)
+    	};
+    }
+
+    class Default extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$5, create_fragment$7, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Default", options, id: create_fragment$7.name });
+    	}
+    }
+
+    /* src/cypress-tests/Buttons.svelte generated by Svelte v3.12.1 */
+
+    const file$3 = "src/cypress-tests/Buttons.svelte";
+
+    // (12:0) {#if showFn}
+    function create_if_block_1(ctx) {
+    	var button, t_value = `Show ${ctx.genName}` + "", t, dispose;
+
+    	const block = {
+    		c: function create() {
+    			button = element("button");
+    			t = text(t_value);
+    			attr_dev(button, "class", "button primary");
+    			attr_dev(button, "data-test-id", `button-show-${ctx.genName}`);
+    			add_location(button, file$3, 12, 2, 255);
+    			dispose = listen_dev(button, "click", ctx.showFn);
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, button, anchor);
+    			append_dev(button, t);
+    		},
+
+    		p: noop,
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(button);
+    			}
+
+    			dispose();
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block_1.name, type: "if", source: "(12:0) {#if showFn}", ctx });
+    	return block;
+    }
+
+    // (21:0) {#if hideFn}
+    function create_if_block(ctx) {
+    	var button, t_value = `Hide ${ctx.genName}` + "", t, dispose;
+
+    	const block = {
+    		c: function create() {
+    			button = element("button");
+    			t = text(t_value);
+    			attr_dev(button, "class", "button");
+    			attr_dev(button, "data-test-id", `button-hide-${ctx.genName}`);
+    			add_location(button, file$3, 21, 2, 417);
+    			dispose = listen_dev(button, "click", ctx.hideFn);
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, button, anchor);
+    			append_dev(button, t);
+    		},
+
+    		p: noop,
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(button);
+    			}
+
+    			dispose();
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block.name, type: "if", source: "(21:0) {#if hideFn}", ctx });
+    	return block;
+    }
+
+    function create_fragment$8(ctx) {
+    	var div, t;
+
+    	var if_block0 = (ctx.showFn) && create_if_block_1(ctx);
+
+    	var if_block1 = (ctx.hideFn) && create_if_block(ctx);
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			if (if_block0) if_block0.c();
+    			t = space();
+    			if (if_block1) if_block1.c();
+    			attr_dev(div, "class", "buttons");
+    			add_location(div, file$3, 10, 0, 218);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			if (if_block0) if_block0.m(div, null);
+    			append_dev(div, t);
+    			if (if_block1) if_block1.m(div, null);
+    		},
+
+    		p: function update(changed, ctx) {
+    			if (ctx.showFn) {
+    				if (if_block0) {
+    					if_block0.p(changed, ctx);
+    				} else {
+    					if_block0 = create_if_block_1(ctx);
+    					if_block0.c();
+    					if_block0.m(div, t);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (ctx.hideFn) {
+    				if (if_block1) {
+    					if_block1.p(changed, ctx);
+    				} else {
+    					if_block1 = create_if_block(ctx);
+    					if_block1.c();
+    					if_block1.m(div, null);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+    		},
+
+    		i: noop,
+    		o: noop,
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div);
+    			}
+
+    			if (if_block0) if_block0.d();
+    			if (if_block1) if_block1.d();
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$8.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$6($$self, $$props, $$invalidate) {
+    	let { showFn, hideFn, id = "", spawn = "", name = "" } = $$props;
+
+    const genName = name || `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}` || "default";
+
+    	const writable_props = ['showFn', 'hideFn', 'id', 'spawn', 'name'];
+    	Object.keys($$props).forEach(key => {
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<Buttons> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$set = $$props => {
+    		if ('showFn' in $$props) $$invalidate('showFn', showFn = $$props.showFn);
+    		if ('hideFn' in $$props) $$invalidate('hideFn', hideFn = $$props.hideFn);
+    		if ('id' in $$props) $$invalidate('id', id = $$props.id);
+    		if ('spawn' in $$props) $$invalidate('spawn', spawn = $$props.spawn);
+    		if ('name' in $$props) $$invalidate('name', name = $$props.name);
+    	};
+
+    	$$self.$capture_state = () => {
+    		return { showFn, hideFn, id, spawn, name };
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('showFn' in $$props) $$invalidate('showFn', showFn = $$props.showFn);
+    		if ('hideFn' in $$props) $$invalidate('hideFn', hideFn = $$props.hideFn);
+    		if ('id' in $$props) $$invalidate('id', id = $$props.id);
+    		if ('spawn' in $$props) $$invalidate('spawn', spawn = $$props.spawn);
+    		if ('name' in $$props) $$invalidate('name', name = $$props.name);
+    	};
+
+    	return { showFn, hideFn, id, spawn, name, genName };
+    }
+
+    class Buttons extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$6, create_fragment$8, safe_not_equal, ["showFn", "hideFn", "id", "spawn", "name"]);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Buttons", options, id: create_fragment$8.name });
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+    		if (ctx.showFn === undefined && !('showFn' in props)) {
+    			console.warn("<Buttons> was created without expected prop 'showFn'");
+    		}
+    		if (ctx.hideFn === undefined && !('hideFn' in props)) {
+    			console.warn("<Buttons> was created without expected prop 'hideFn'");
+    		}
+    	}
+
+    	get showFn() {
+    		throw new Error("<Buttons>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set showFn(value) {
+    		throw new Error("<Buttons>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get hideFn() {
+    		throw new Error("<Buttons>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set hideFn(value) {
+    		throw new Error("<Buttons>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get id() {
+    		throw new Error("<Buttons>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set id(value) {
+    		throw new Error("<Buttons>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get spawn() {
+    		throw new Error("<Buttons>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set spawn(value) {
+    		throw new Error("<Buttons>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get name() {
+    		throw new Error("<Buttons>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set name(value) {
+    		throw new Error("<Buttons>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    const getRandomId = () => Math.round(1000 * Math.random()).toString();
+
+    const createFns = ({ instance, component, className, title, id, spawn, styles, timeout, queued }) => {
+        const contentId = `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}`;
+        const props = {
+            dialogic: {
+                component: component,
+                className,
+                styles,
+                id,
+                spawn,
+                ...(spawn !== undefined
+                    ? { spawn }
+                    : undefined),
+                ...(timeout !== undefined
+                    ? { timeout }
+                    : undefined),
+                ...(queued !== undefined
+                    ? { queued }
+                    : undefined),
+            },
+            className: "instance-content",
+            id: getRandomId(),
+            contentId
+        };
+        const showFn = () => instance.show({
+            ...props,
+            title: `${title} ${getRandomId()}`,
+        });
+        const hideFn = () => instance.hide({
+            ...props,
+            title: `${title} ${getRandomId()} hiding`,
+        });
+        return {
+            showFn,
+            hideFn
+        };
+    };
+
+    /* src/cypress-tests/DialogClassName.svelte generated by Svelte v3.12.1 */
+
+    const file$4 = "src/cypress-tests/DialogClassName.svelte";
+
+    function create_fragment$9(ctx) {
+    	var div1, t, div0, current;
+
+    	var buttons_spread_levels = [
+    		ctx.fns
+    	];
+
+    	let buttons_props = {};
+    	for (var i = 0; i < buttons_spread_levels.length; i += 1) {
+    		buttons_props = assign(buttons_props, buttons_spread_levels[i]);
+    	}
+    	var buttons = new Buttons({ props: buttons_props, $$inline: true });
+
+    	var dialog_1 = new Dialog({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			buttons.$$.fragment.c();
+    			t = space();
+    			div0 = element("div");
+    			dialog_1.$$.fragment.c();
+    			attr_dev(div0, "class", "spawn default-spawn");
+    			add_location(div0, file$4, 11, 2, 369);
+    			attr_dev(div1, "class", "test");
+    			add_location(div1, file$4, 9, 0, 325);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			mount_component(buttons, div1, null);
+    			append_dev(div1, t);
+    			append_dev(div1, div0);
+    			mount_component(dialog_1, div0, null);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var buttons_changes = (changed.fns) ? get_spread_update(buttons_spread_levels, [
+    									get_spread_object(ctx.fns)
+    								]) : {};
+    			buttons.$set(buttons_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(buttons.$$.fragment, local);
+
+    			transition_in(dialog_1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(buttons.$$.fragment, local);
+    			transition_out(dialog_1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div1);
+    			}
+
+    			destroy_component(buttons);
+
+    			destroy_component(dialog_1);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$9.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$7($$self) {
+    	
+
+      const fns = createFns({ instance: dialog$1, component: Default, className: "dialog", title: "DialogClassName" });
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {};
+
+    	return { fns };
+    }
+
+    class DialogClassName extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$7, create_fragment$9, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "DialogClassName", options, id: create_fragment$9.name });
+    	}
+    }
+
+    /* src/cypress-tests/DialogClassNameDelay.svelte generated by Svelte v3.12.1 */
+
+    const file$5 = "src/cypress-tests/DialogClassNameDelay.svelte";
+
+    function create_fragment$a(ctx) {
+    	var div1, t, div0, current;
+
+    	var buttons_spread_levels = [
+    		ctx.fns
+    	];
+
+    	let buttons_props = {};
+    	for (var i = 0; i < buttons_spread_levels.length; i += 1) {
+    		buttons_props = assign(buttons_props, buttons_spread_levels[i]);
+    	}
+    	var buttons = new Buttons({ props: buttons_props, $$inline: true });
+
+    	var dialog_1 = new Dialog({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			buttons.$$.fragment.c();
+    			t = space();
+    			div0 = element("div");
+    			dialog_1.$$.fragment.c();
+    			attr_dev(div0, "class", "spawn default-spawn");
+    			add_location(div0, file$5, 11, 2, 376);
+    			attr_dev(div1, "class", "test");
+    			add_location(div1, file$5, 9, 0, 332);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			mount_component(buttons, div1, null);
+    			append_dev(div1, t);
+    			append_dev(div1, div0);
+    			mount_component(dialog_1, div0, null);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var buttons_changes = (changed.fns) ? get_spread_update(buttons_spread_levels, [
+    									get_spread_object(ctx.fns)
+    								]) : {};
+    			buttons.$set(buttons_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(buttons.$$.fragment, local);
+
+    			transition_in(dialog_1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(buttons.$$.fragment, local);
+    			transition_out(dialog_1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div1);
+    			}
+
+    			destroy_component(buttons);
+
+    			destroy_component(dialog_1);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$a.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$8($$self) {
+    	
+
+      const fns = createFns({ instance: dialog$1, component: Default, className: "dialog-delay", title: "DialogClassDelay" });
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {};
+
+    	return { fns };
+    }
+
+    class DialogClassNameDelay extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$8, create_fragment$a, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "DialogClassNameDelay", options, id: create_fragment$a.name });
+    	}
+    }
+
+    /* src/cypress-tests/DialogStyles.svelte generated by Svelte v3.12.1 */
+
+    const file$6 = "src/cypress-tests/DialogStyles.svelte";
+
+    function create_fragment$b(ctx) {
+    	var div1, t0, t1, div0, current;
+
+    	var buttons0_spread_levels = [
+    		ctx.fns1
+    	];
+
+    	let buttons0_props = {};
+    	for (var i = 0; i < buttons0_spread_levels.length; i += 1) {
+    		buttons0_props = assign(buttons0_props, buttons0_spread_levels[i]);
+    	}
+    	var buttons0 = new Buttons({ props: buttons0_props, $$inline: true });
+
+    	var buttons1_spread_levels = [
+    		ctx.fns2,
+    		{ name: "combi" }
+    	];
+
+    	let buttons1_props = {};
+    	for (var i = 0; i < buttons1_spread_levels.length; i += 1) {
+    		buttons1_props = assign(buttons1_props, buttons1_spread_levels[i]);
+    	}
+    	var buttons1 = new Buttons({ props: buttons1_props, $$inline: true });
+
+    	var dialog_1 = new Dialog({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			buttons0.$$.fragment.c();
+    			t0 = space();
+    			buttons1.$$.fragment.c();
+    			t1 = space();
+    			div0 = element("div");
+    			dialog_1.$$.fragment.c();
+    			attr_dev(div0, "class", "spawn default-spawn");
+    			add_location(div0, file$6, 56, 2, 1447);
+    			attr_dev(div1, "class", "test");
+    			add_location(div1, file$6, 53, 0, 1365);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			mount_component(buttons0, div1, null);
+    			append_dev(div1, t0);
+    			mount_component(buttons1, div1, null);
+    			append_dev(div1, t1);
+    			append_dev(div1, div0);
+    			mount_component(dialog_1, div0, null);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var buttons0_changes = (changed.fns1) ? get_spread_update(buttons0_spread_levels, [
+    									get_spread_object(ctx.fns1)
+    								]) : {};
+    			buttons0.$set(buttons0_changes);
+
+    			var buttons1_changes = (changed.fns2) ? get_spread_update(buttons1_spread_levels, [
+    									get_spread_object(ctx.fns2),
+    			buttons1_spread_levels[1]
+    								]) : {};
+    			buttons1.$set(buttons1_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(buttons0.$$.fragment, local);
+
+    			transition_in(buttons1.$$.fragment, local);
+
+    			transition_in(dialog_1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(buttons0.$$.fragment, local);
+    			transition_out(buttons1.$$.fragment, local);
+    			transition_out(dialog_1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div1);
+    			}
+
+    			destroy_component(buttons0);
+
+    			destroy_component(buttons1);
+
+    			destroy_component(dialog_1);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$b.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$9($$self) {
+    	
+
+      const fns1 = createFns({
+        instance: dialog$1,
+        component: Default,
+        title: "DialogStyles",
+        styles: (domElement) => {
+          const height = domElement.getBoundingClientRect().height;
+          return {
+            default: {
+              transition: "all 300ms ease-in-out",
+            },
+            showStart: {
+              opacity: "0",
+              transform: `translate3d(0, ${height}px, 0)`,
+            },
+            showEnd: {
+              opacity: "1",
+              transform: "translate3d(0, 0px,  0)",
+            },
+            hideEnd: {
+              transitionDuration: "450ms",
+              transform: `translate3d(0, ${height}px, 0)`,
+              opacity: "0",
+            },
+          }
+        },
+      });
+      const fns2 = createFns({
+        instance: dialog$1,
+        component: Default,
+        title: "DialogStyles combi",
+        className: "dialog",
+        styles: (domElement) => {
+          const height = domElement.getBoundingClientRect().height;
+          return {
+            default: {
+              transition: "all 300ms ease-in-out",
+            },
+            hideEnd: {
+              transitionDuration: "450ms",
+              transform: `translate3d(0, ${height}px, 0)`,
+              opacity: "0",
+            },
+          }
+        },
+      });
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {};
+
+    	return { fns1, fns2 };
+    }
+
+    class DialogStyles extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$9, create_fragment$b, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "DialogStyles", options, id: create_fragment$b.name });
+    	}
+    }
+
+    /* src/cypress-tests/DialogIds.svelte generated by Svelte v3.12.1 */
+
+    const file$7 = "src/cypress-tests/DialogIds.svelte";
+
+    function create_fragment$c(ctx) {
+    	var div1, t0, t1, t2, div0, current;
+
+    	var buttons0_spread_levels = [
+    		ctx.fns1
+    	];
+
+    	let buttons0_props = {};
+    	for (var i = 0; i < buttons0_spread_levels.length; i += 1) {
+    		buttons0_props = assign(buttons0_props, buttons0_spread_levels[i]);
+    	}
+    	var buttons0 = new Buttons({ props: buttons0_props, $$inline: true });
+
+    	var buttons1_spread_levels = [
+    		ctx.fns2,
+    		{ id: "1" }
+    	];
+
+    	let buttons1_props = {};
+    	for (var i = 0; i < buttons1_spread_levels.length; i += 1) {
+    		buttons1_props = assign(buttons1_props, buttons1_spread_levels[i]);
+    	}
+    	var buttons1 = new Buttons({ props: buttons1_props, $$inline: true });
+
+    	var buttons2_spread_levels = [
+    		ctx.fns3,
+    		{ id: "2" }
+    	];
+
+    	let buttons2_props = {};
+    	for (var i = 0; i < buttons2_spread_levels.length; i += 1) {
+    		buttons2_props = assign(buttons2_props, buttons2_spread_levels[i]);
+    	}
+    	var buttons2 = new Buttons({ props: buttons2_props, $$inline: true });
+
+    	var dialog_1 = new Dialog({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			buttons0.$$.fragment.c();
+    			t0 = space();
+    			buttons1.$$.fragment.c();
+    			t1 = space();
+    			buttons2.$$.fragment.c();
+    			t2 = space();
+    			div0 = element("div");
+    			dialog_1.$$.fragment.c();
+    			attr_dev(div0, "class", "spawn default-spawn");
+    			add_location(div0, file$7, 16, 2, 696);
+    			attr_dev(div1, "class", "test");
+    			add_location(div1, file$7, 12, 0, 589);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			mount_component(buttons0, div1, null);
+    			append_dev(div1, t0);
+    			mount_component(buttons1, div1, null);
+    			append_dev(div1, t1);
+    			mount_component(buttons2, div1, null);
+    			append_dev(div1, t2);
+    			append_dev(div1, div0);
+    			mount_component(dialog_1, div0, null);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var buttons0_changes = (changed.fns1) ? get_spread_update(buttons0_spread_levels, [
+    									get_spread_object(ctx.fns1)
+    								]) : {};
+    			buttons0.$set(buttons0_changes);
+
+    			var buttons1_changes = (changed.fns2) ? get_spread_update(buttons1_spread_levels, [
+    									get_spread_object(ctx.fns2),
+    			buttons1_spread_levels[1]
+    								]) : {};
+    			buttons1.$set(buttons1_changes);
+
+    			var buttons2_changes = (changed.fns3) ? get_spread_update(buttons2_spread_levels, [
+    									get_spread_object(ctx.fns3),
+    			buttons2_spread_levels[1]
+    								]) : {};
+    			buttons2.$set(buttons2_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(buttons0.$$.fragment, local);
+
+    			transition_in(buttons1.$$.fragment, local);
+
+    			transition_in(buttons2.$$.fragment, local);
+
+    			transition_in(dialog_1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(buttons0.$$.fragment, local);
+    			transition_out(buttons1.$$.fragment, local);
+    			transition_out(buttons2.$$.fragment, local);
+    			transition_out(dialog_1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div1);
+    			}
+
+    			destroy_component(buttons0);
+
+    			destroy_component(buttons1);
+
+    			destroy_component(buttons2);
+
+    			destroy_component(dialog_1);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$c.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$a($$self) {
+    	
+
+      dialog$1.resetAll();
+      const fns1 = createFns({ instance: dialog$1, component: Default, className: "dialog", title: "DialogIds default" });
+      const fns2 = createFns({ instance: dialog$1, component: Default, className: "dialog", id: "1", title: "DialogIds 1" });
+      const fns3 = createFns({ instance: dialog$1, component: Default, className: "dialog", id: "2", title: "DialogIds 2" });
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {};
+
+    	return { fns1, fns2, fns3 };
+    }
+
+    class DialogIds extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$a, create_fragment$c, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "DialogIds", options, id: create_fragment$c.name });
+    	}
+    }
+
+    /* src/cypress-tests/DialogCount.svelte generated by Svelte v3.12.1 */
+
+    const file$8 = "src/cypress-tests/DialogCount.svelte";
+
+    function create_fragment$d(ctx) {
+    	var div7, div0, t0_value = `Count all: ${ctx.$dialogCount}` + "", t0, t1, div1, t2_value = `Count id: ${ctx.$dialogCountId1}` + "", t2, t3, div2, t4_value = `Count spawn: ${ctx.$dialogCountSpawn1}` + "", t4, t5, div3, t6_value = `Count spawn, id: ${ctx.$dialogCountSpawn1Id1}` + "", t6, t7, div4, t8, t9, t10, t11, div5, t12, div6, current;
+
+    	var buttons0_spread_levels = [
+    		ctx.fns1
+    	];
+
+    	let buttons0_props = {};
+    	for (var i = 0; i < buttons0_spread_levels.length; i += 1) {
+    		buttons0_props = assign(buttons0_props, buttons0_spread_levels[i]);
+    	}
+    	var buttons0 = new Buttons({ props: buttons0_props, $$inline: true });
+
+    	var buttons1_spread_levels = [
+    		ctx.fns2,
+    		{ id: "1" }
+    	];
+
+    	let buttons1_props = {};
+    	for (var i = 0; i < buttons1_spread_levels.length; i += 1) {
+    		buttons1_props = assign(buttons1_props, buttons1_spread_levels[i]);
+    	}
+    	var buttons1 = new Buttons({ props: buttons1_props, $$inline: true });
+
+    	var buttons2_spread_levels = [
+    		ctx.fns3,
+    		{ spawn: "1" }
+    	];
+
+    	let buttons2_props = {};
+    	for (var i = 0; i < buttons2_spread_levels.length; i += 1) {
+    		buttons2_props = assign(buttons2_props, buttons2_spread_levels[i]);
+    	}
+    	var buttons2 = new Buttons({ props: buttons2_props, $$inline: true });
+
+    	var buttons3_spread_levels = [
+    		ctx.fns4,
+    		{ spawn: "1" },
+    		{ id: "1" }
+    	];
+
+    	let buttons3_props = {};
+    	for (var i = 0; i < buttons3_spread_levels.length; i += 1) {
+    		buttons3_props = assign(buttons3_props, buttons3_spread_levels[i]);
+    	}
+    	var buttons3 = new Buttons({ props: buttons3_props, $$inline: true });
+
+    	var dialog0 = new Dialog({ $$inline: true });
+
+    	var dialog1 = new Dialog({ props: { spawn: "1" }, $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div7 = element("div");
+    			div0 = element("div");
+    			t0 = text(t0_value);
+    			t1 = space();
+    			div1 = element("div");
+    			t2 = text(t2_value);
+    			t3 = space();
+    			div2 = element("div");
+    			t4 = text(t4_value);
+    			t5 = space();
+    			div3 = element("div");
+    			t6 = text(t6_value);
+    			t7 = space();
+    			div4 = element("div");
+    			buttons0.$$.fragment.c();
+    			t8 = space();
+    			buttons1.$$.fragment.c();
+    			t9 = space();
+    			buttons2.$$.fragment.c();
+    			t10 = space();
+    			buttons3.$$.fragment.c();
+    			t11 = space();
+    			div5 = element("div");
+    			dialog0.$$.fragment.c();
+    			t12 = space();
+    			div6 = element("div");
+    			dialog1.$$.fragment.c();
+    			attr_dev(div0, "class", "control");
+    			attr_dev(div0, "data-test-id", "count-all");
+    			add_location(div0, file$8, 17, 2, 930);
+    			attr_dev(div1, "class", "control");
+    			attr_dev(div1, "data-test-id", "count-id");
+    			add_location(div1, file$8, 18, 2, 1015);
+    			attr_dev(div2, "class", "control");
+    			attr_dev(div2, "data-test-id", "count-spawn");
+    			add_location(div2, file$8, 19, 2, 1101);
+    			attr_dev(div3, "class", "control");
+    			attr_dev(div3, "data-test-id", "count-spawn-id");
+    			add_location(div3, file$8, 20, 2, 1196);
+    			attr_dev(div4, "class", "content");
+    			add_location(div4, file$8, 21, 2, 1301);
+    			attr_dev(div5, "class", "spawn default-spawn");
+    			add_location(div5, file$8, 27, 2, 1472);
+    			attr_dev(div6, "class", "spawn custom-spawn");
+    			add_location(div6, file$8, 30, 2, 1532);
+    			attr_dev(div7, "class", "test");
+    			add_location(div7, file$8, 16, 0, 909);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div7, anchor);
+    			append_dev(div7, div0);
+    			append_dev(div0, t0);
+    			append_dev(div7, t1);
+    			append_dev(div7, div1);
+    			append_dev(div1, t2);
+    			append_dev(div7, t3);
+    			append_dev(div7, div2);
+    			append_dev(div2, t4);
+    			append_dev(div7, t5);
+    			append_dev(div7, div3);
+    			append_dev(div3, t6);
+    			append_dev(div7, t7);
+    			append_dev(div7, div4);
+    			mount_component(buttons0, div4, null);
+    			append_dev(div4, t8);
+    			mount_component(buttons1, div4, null);
+    			append_dev(div4, t9);
+    			mount_component(buttons2, div4, null);
+    			append_dev(div4, t10);
+    			mount_component(buttons3, div4, null);
+    			append_dev(div7, t11);
+    			append_dev(div7, div5);
+    			mount_component(dialog0, div5, null);
+    			append_dev(div7, t12);
+    			append_dev(div7, div6);
+    			mount_component(dialog1, div6, null);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if ((!current || changed.$dialogCount) && t0_value !== (t0_value = `Count all: ${ctx.$dialogCount}` + "")) {
+    				set_data_dev(t0, t0_value);
+    			}
+
+    			if ((!current || changed.$dialogCountId1) && t2_value !== (t2_value = `Count id: ${ctx.$dialogCountId1}` + "")) {
+    				set_data_dev(t2, t2_value);
+    			}
+
+    			if ((!current || changed.$dialogCountSpawn1) && t4_value !== (t4_value = `Count spawn: ${ctx.$dialogCountSpawn1}` + "")) {
+    				set_data_dev(t4, t4_value);
+    			}
+
+    			if ((!current || changed.$dialogCountSpawn1Id1) && t6_value !== (t6_value = `Count spawn, id: ${ctx.$dialogCountSpawn1Id1}` + "")) {
+    				set_data_dev(t6, t6_value);
+    			}
+
+    			var buttons0_changes = (changed.fns1) ? get_spread_update(buttons0_spread_levels, [
+    									get_spread_object(ctx.fns1)
+    								]) : {};
+    			buttons0.$set(buttons0_changes);
+
+    			var buttons1_changes = (changed.fns2) ? get_spread_update(buttons1_spread_levels, [
+    									get_spread_object(ctx.fns2),
+    			buttons1_spread_levels[1]
+    								]) : {};
+    			buttons1.$set(buttons1_changes);
+
+    			var buttons2_changes = (changed.fns3) ? get_spread_update(buttons2_spread_levels, [
+    									get_spread_object(ctx.fns3),
+    			buttons2_spread_levels[1]
+    								]) : {};
+    			buttons2.$set(buttons2_changes);
+
+    			var buttons3_changes = (changed.fns4) ? get_spread_update(buttons3_spread_levels, [
+    									get_spread_object(ctx.fns4),
+    			buttons3_spread_levels[1],
+    			buttons3_spread_levels[2]
+    								]) : {};
+    			buttons3.$set(buttons3_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(buttons0.$$.fragment, local);
+
+    			transition_in(buttons1.$$.fragment, local);
+
+    			transition_in(buttons2.$$.fragment, local);
+
+    			transition_in(buttons3.$$.fragment, local);
+
+    			transition_in(dialog0.$$.fragment, local);
+
+    			transition_in(dialog1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(buttons0.$$.fragment, local);
+    			transition_out(buttons1.$$.fragment, local);
+    			transition_out(buttons2.$$.fragment, local);
+    			transition_out(buttons3.$$.fragment, local);
+    			transition_out(dialog0.$$.fragment, local);
+    			transition_out(dialog1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div7);
+    			}
+
+    			destroy_component(buttons0);
+
+    			destroy_component(buttons1);
+
+    			destroy_component(buttons2);
+
+    			destroy_component(buttons3);
+
+    			destroy_component(dialog0);
+
+    			destroy_component(dialog1);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$d.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$b($$self, $$props, $$invalidate) {
+    	let $dialogCount, $dialogCountId1, $dialogCountSpawn1, $dialogCountSpawn1Id1;
+
+    	
+
+      const fns1 = createFns({ instance: dialog$1, component: Default, className: "dialog", title: "Default" });
+      const fns2 = createFns({ instance: dialog$1, component: Default, className: "dialog", id: "1", title: "ID" });
+      const fns3 = createFns({ instance: dialog$1, component: Default, className: "dialog", spawn: "1", title: "Spawn" });
+      const fns4 = createFns({ instance: dialog$1, component: Default, className: "dialog", spawn: "1", id: "1", title: "Spawn and ID" });
+      const dialogCount = dialog$1.getCount(); validate_store(dialogCount, 'dialogCount'); component_subscribe($$self, dialogCount, $$value => { $dialogCount = $$value; $$invalidate('$dialogCount', $dialogCount); });
+      const dialogCountId1 = dialog$1.getCount({ id: "1" }); validate_store(dialogCountId1, 'dialogCountId1'); component_subscribe($$self, dialogCountId1, $$value => { $dialogCountId1 = $$value; $$invalidate('$dialogCountId1', $dialogCountId1); });
+      const dialogCountSpawn1 = dialog$1.getCount({ spawn: "1" }); validate_store(dialogCountSpawn1, 'dialogCountSpawn1'); component_subscribe($$self, dialogCountSpawn1, $$value => { $dialogCountSpawn1 = $$value; $$invalidate('$dialogCountSpawn1', $dialogCountSpawn1); });
+      const dialogCountSpawn1Id1 = dialog$1.getCount({ spawn: "1", id: "1" }); validate_store(dialogCountSpawn1Id1, 'dialogCountSpawn1Id1'); component_subscribe($$self, dialogCountSpawn1Id1, $$value => { $dialogCountSpawn1Id1 = $$value; $$invalidate('$dialogCountSpawn1Id1', $dialogCountSpawn1Id1); });
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('$dialogCount' in $$props) dialogCount.set($dialogCount);
+    		if ('$dialogCountId1' in $$props) dialogCountId1.set($dialogCountId1);
+    		if ('$dialogCountSpawn1' in $$props) dialogCountSpawn1.set($dialogCountSpawn1);
+    		if ('$dialogCountSpawn1Id1' in $$props) dialogCountSpawn1Id1.set($dialogCountSpawn1Id1);
+    	};
+
+    	return {
+    		fns1,
+    		fns2,
+    		fns3,
+    		fns4,
+    		dialogCount,
+    		dialogCountId1,
+    		dialogCountSpawn1,
+    		dialogCountSpawn1Id1,
+    		$dialogCount,
+    		$dialogCountId1,
+    		$dialogCountSpawn1,
+    		$dialogCountSpawn1Id1
+    	};
+    }
+
+    class DialogCount extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$b, create_fragment$d, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "DialogCount", options, id: create_fragment$d.name });
+    	}
+    }
+
+    /* src/cypress-tests/DialogHideAll.svelte generated by Svelte v3.12.1 */
+
+    const file$9 = "src/cypress-tests/DialogHideAll.svelte";
+
+    function create_fragment$e(ctx) {
+    	var div9, div0, t0_value = `Count all: ${ctx.$dialogCount}` + "", t0, t1, div1, t2_value = `Count id: ${ctx.$dialogCountId1}` + "", t2, t3, div2, t4_value = `Count spawn: ${ctx.$dialogCountSpawn1}` + "", t4, t5, div3, t6_value = `Count spawn, id: ${ctx.$dialogCountSpawn1Id1}` + "", t6, t7, div5, div4, button0, t9, button1, t11, button2, t13, button3, t15, div6, t16, t17, t18, t19, div7, t20, div8, current, dispose;
+
+    	var buttons0_spread_levels = [
+    		ctx.fns1
+    	];
+
+    	let buttons0_props = {};
+    	for (var i = 0; i < buttons0_spread_levels.length; i += 1) {
+    		buttons0_props = assign(buttons0_props, buttons0_spread_levels[i]);
+    	}
+    	var buttons0 = new Buttons({ props: buttons0_props, $$inline: true });
+
+    	var buttons1_spread_levels = [
+    		ctx.fns2,
+    		{ id: "1" }
+    	];
+
+    	let buttons1_props = {};
+    	for (var i = 0; i < buttons1_spread_levels.length; i += 1) {
+    		buttons1_props = assign(buttons1_props, buttons1_spread_levels[i]);
+    	}
+    	var buttons1 = new Buttons({ props: buttons1_props, $$inline: true });
+
+    	var buttons2_spread_levels = [
+    		ctx.fns3,
+    		{ spawn: "1" }
+    	];
+
+    	let buttons2_props = {};
+    	for (var i = 0; i < buttons2_spread_levels.length; i += 1) {
+    		buttons2_props = assign(buttons2_props, buttons2_spread_levels[i]);
+    	}
+    	var buttons2 = new Buttons({ props: buttons2_props, $$inline: true });
+
+    	var buttons3_spread_levels = [
+    		ctx.fns4,
+    		{ spawn: "1" },
+    		{ id: "1" }
+    	];
+
+    	let buttons3_props = {};
+    	for (var i = 0; i < buttons3_spread_levels.length; i += 1) {
+    		buttons3_props = assign(buttons3_props, buttons3_spread_levels[i]);
+    	}
+    	var buttons3 = new Buttons({ props: buttons3_props, $$inline: true });
+
+    	var dialog0 = new Dialog({ $$inline: true });
+
+    	var dialog1 = new Dialog({ props: { spawn: "1" }, $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div9 = element("div");
+    			div0 = element("div");
+    			t0 = text(t0_value);
+    			t1 = space();
+    			div1 = element("div");
+    			t2 = text(t2_value);
+    			t3 = space();
+    			div2 = element("div");
+    			t4 = text(t4_value);
+    			t5 = space();
+    			div3 = element("div");
+    			t6 = text(t6_value);
+    			t7 = space();
+    			div5 = element("div");
+    			div4 = element("div");
+    			button0 = element("button");
+    			button0.textContent = "Hide all";
+    			t9 = space();
+    			button1 = element("button");
+    			button1.textContent = "Hide all with id";
+    			t11 = space();
+    			button2 = element("button");
+    			button2.textContent = "Hide all with spawn";
+    			t13 = space();
+    			button3 = element("button");
+    			button3.textContent = "Hide all with spawn and id";
+    			t15 = space();
+    			div6 = element("div");
+    			buttons0.$$.fragment.c();
+    			t16 = space();
+    			buttons1.$$.fragment.c();
+    			t17 = space();
+    			buttons2.$$.fragment.c();
+    			t18 = space();
+    			buttons3.$$.fragment.c();
+    			t19 = space();
+    			div7 = element("div");
+    			dialog0.$$.fragment.c();
+    			t20 = space();
+    			div8 = element("div");
+    			dialog1.$$.fragment.c();
+    			attr_dev(div0, "class", "control");
+    			attr_dev(div0, "data-test-id", "count-all");
+    			add_location(div0, file$9, 17, 2, 930);
+    			attr_dev(div1, "class", "control");
+    			attr_dev(div1, "data-test-id", "count-id");
+    			add_location(div1, file$9, 18, 2, 1015);
+    			attr_dev(div2, "class", "control");
+    			attr_dev(div2, "data-test-id", "count-spawn");
+    			add_location(div2, file$9, 19, 2, 1101);
+    			attr_dev(div3, "class", "control");
+    			attr_dev(div3, "data-test-id", "count-spawn-id");
+    			add_location(div3, file$9, 20, 2, 1196);
+    			attr_dev(button0, "class", "button");
+    			attr_dev(button0, "data-test-id", "button-hide-all");
+    			add_location(button0, file$9, 23, 6, 1379);
+    			attr_dev(button1, "class", "button");
+    			attr_dev(button1, "data-test-id", "button-hide-all-id");
+    			add_location(button1, file$9, 26, 6, 1507);
+    			attr_dev(button2, "class", "button");
+    			attr_dev(button2, "data-test-id", "button-hide-all-spawn");
+    			add_location(button2, file$9, 29, 6, 1657);
+    			attr_dev(button3, "class", "button");
+    			attr_dev(button3, "data-test-id", "button-hide-all-spawn-id");
+    			add_location(button3, file$9, 32, 6, 1816);
+    			attr_dev(div4, "class", "buttons");
+    			add_location(div4, file$9, 22, 4, 1351);
+    			attr_dev(div5, "class", "control");
+    			attr_dev(div5, "data-test-id", "hide-all");
+    			add_location(div5, file$9, 21, 2, 1301);
+    			attr_dev(div6, "class", "content");
+    			add_location(div6, file$9, 37, 2, 2010);
+    			attr_dev(div7, "class", "spawn default-spawn");
+    			add_location(div7, file$9, 43, 2, 2181);
+    			attr_dev(div8, "class", "spawn custom-spawn");
+    			add_location(div8, file$9, 46, 2, 2241);
+    			attr_dev(div9, "class", "test");
+    			add_location(div9, file$9, 16, 0, 909);
+
+    			dispose = [
+    				listen_dev(button0, "click", ctx.click_handler),
+    				listen_dev(button1, "click", ctx.click_handler_1),
+    				listen_dev(button2, "click", ctx.click_handler_2),
+    				listen_dev(button3, "click", ctx.click_handler_3)
+    			];
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div9, anchor);
+    			append_dev(div9, div0);
+    			append_dev(div0, t0);
+    			append_dev(div9, t1);
+    			append_dev(div9, div1);
+    			append_dev(div1, t2);
+    			append_dev(div9, t3);
+    			append_dev(div9, div2);
+    			append_dev(div2, t4);
+    			append_dev(div9, t5);
+    			append_dev(div9, div3);
+    			append_dev(div3, t6);
+    			append_dev(div9, t7);
+    			append_dev(div9, div5);
+    			append_dev(div5, div4);
+    			append_dev(div4, button0);
+    			append_dev(div4, t9);
+    			append_dev(div4, button1);
+    			append_dev(div4, t11);
+    			append_dev(div4, button2);
+    			append_dev(div4, t13);
+    			append_dev(div4, button3);
+    			append_dev(div9, t15);
+    			append_dev(div9, div6);
+    			mount_component(buttons0, div6, null);
+    			append_dev(div6, t16);
+    			mount_component(buttons1, div6, null);
+    			append_dev(div6, t17);
+    			mount_component(buttons2, div6, null);
+    			append_dev(div6, t18);
+    			mount_component(buttons3, div6, null);
+    			append_dev(div9, t19);
+    			append_dev(div9, div7);
+    			mount_component(dialog0, div7, null);
+    			append_dev(div9, t20);
+    			append_dev(div9, div8);
+    			mount_component(dialog1, div8, null);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if ((!current || changed.$dialogCount) && t0_value !== (t0_value = `Count all: ${ctx.$dialogCount}` + "")) {
+    				set_data_dev(t0, t0_value);
+    			}
+
+    			if ((!current || changed.$dialogCountId1) && t2_value !== (t2_value = `Count id: ${ctx.$dialogCountId1}` + "")) {
+    				set_data_dev(t2, t2_value);
+    			}
+
+    			if ((!current || changed.$dialogCountSpawn1) && t4_value !== (t4_value = `Count spawn: ${ctx.$dialogCountSpawn1}` + "")) {
+    				set_data_dev(t4, t4_value);
+    			}
+
+    			if ((!current || changed.$dialogCountSpawn1Id1) && t6_value !== (t6_value = `Count spawn, id: ${ctx.$dialogCountSpawn1Id1}` + "")) {
+    				set_data_dev(t6, t6_value);
+    			}
+
+    			var buttons0_changes = (changed.fns1) ? get_spread_update(buttons0_spread_levels, [
+    									get_spread_object(ctx.fns1)
+    								]) : {};
+    			buttons0.$set(buttons0_changes);
+
+    			var buttons1_changes = (changed.fns2) ? get_spread_update(buttons1_spread_levels, [
+    									get_spread_object(ctx.fns2),
+    			buttons1_spread_levels[1]
+    								]) : {};
+    			buttons1.$set(buttons1_changes);
+
+    			var buttons2_changes = (changed.fns3) ? get_spread_update(buttons2_spread_levels, [
+    									get_spread_object(ctx.fns3),
+    			buttons2_spread_levels[1]
+    								]) : {};
+    			buttons2.$set(buttons2_changes);
+
+    			var buttons3_changes = (changed.fns4) ? get_spread_update(buttons3_spread_levels, [
+    									get_spread_object(ctx.fns4),
+    			buttons3_spread_levels[1],
+    			buttons3_spread_levels[2]
+    								]) : {};
+    			buttons3.$set(buttons3_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(buttons0.$$.fragment, local);
+
+    			transition_in(buttons1.$$.fragment, local);
+
+    			transition_in(buttons2.$$.fragment, local);
+
+    			transition_in(buttons3.$$.fragment, local);
+
+    			transition_in(dialog0.$$.fragment, local);
+
+    			transition_in(dialog1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(buttons0.$$.fragment, local);
+    			transition_out(buttons1.$$.fragment, local);
+    			transition_out(buttons2.$$.fragment, local);
+    			transition_out(buttons3.$$.fragment, local);
+    			transition_out(dialog0.$$.fragment, local);
+    			transition_out(dialog1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div9);
+    			}
+
+    			destroy_component(buttons0);
+
+    			destroy_component(buttons1);
+
+    			destroy_component(buttons2);
+
+    			destroy_component(buttons3);
+
+    			destroy_component(dialog0);
+
+    			destroy_component(dialog1);
+
+    			run_all(dispose);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$e.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$c($$self, $$props, $$invalidate) {
+    	let $dialogCount, $dialogCountId1, $dialogCountSpawn1, $dialogCountSpawn1Id1;
+
+    	
+
+      const fns1 = createFns({ instance: dialog$1, component: Default, className: "dialog", title: "Default" });
+      const fns2 = createFns({ instance: dialog$1, component: Default, className: "dialog", id: "1", title: "ID" });
+      const fns3 = createFns({ instance: dialog$1, component: Default, className: "dialog", spawn: "1", title: "Spawn" });
+      const fns4 = createFns({ instance: dialog$1, component: Default, className: "dialog", spawn: "1", id: "1", title: "Spawn and ID" });
+      const dialogCount = dialog$1.getCount(); validate_store(dialogCount, 'dialogCount'); component_subscribe($$self, dialogCount, $$value => { $dialogCount = $$value; $$invalidate('$dialogCount', $dialogCount); });
+      const dialogCountId1 = dialog$1.getCount({ id: "1" }); validate_store(dialogCountId1, 'dialogCountId1'); component_subscribe($$self, dialogCountId1, $$value => { $dialogCountId1 = $$value; $$invalidate('$dialogCountId1', $dialogCountId1); });
+      const dialogCountSpawn1 = dialog$1.getCount({ spawn: "1" }); validate_store(dialogCountSpawn1, 'dialogCountSpawn1'); component_subscribe($$self, dialogCountSpawn1, $$value => { $dialogCountSpawn1 = $$value; $$invalidate('$dialogCountSpawn1', $dialogCountSpawn1); });
+      const dialogCountSpawn1Id1 = dialog$1.getCount({ spawn: "1", id: "1" }); validate_store(dialogCountSpawn1Id1, 'dialogCountSpawn1Id1'); component_subscribe($$self, dialogCountSpawn1Id1, $$value => { $dialogCountSpawn1Id1 = $$value; $$invalidate('$dialogCountSpawn1Id1', $dialogCountSpawn1Id1); });
+
+    	const click_handler = () => dialog$1.hideAll();
+
+    	const click_handler_1 = () => dialog$1.hideAll({ id: "1" });
+
+    	const click_handler_2 = () => dialog$1.hideAll({ spawn: "1" });
+
+    	const click_handler_3 = () => dialog$1.hideAll({ id: "1", spawn: "1" });
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('$dialogCount' in $$props) dialogCount.set($dialogCount);
+    		if ('$dialogCountId1' in $$props) dialogCountId1.set($dialogCountId1);
+    		if ('$dialogCountSpawn1' in $$props) dialogCountSpawn1.set($dialogCountSpawn1);
+    		if ('$dialogCountSpawn1Id1' in $$props) dialogCountSpawn1Id1.set($dialogCountSpawn1Id1);
+    	};
+
+    	return {
+    		fns1,
+    		fns2,
+    		fns3,
+    		fns4,
+    		dialogCount,
+    		dialogCountId1,
+    		dialogCountSpawn1,
+    		dialogCountSpawn1Id1,
+    		$dialogCount,
+    		$dialogCountId1,
+    		$dialogCountSpawn1,
+    		$dialogCountSpawn1Id1,
+    		click_handler,
+    		click_handler_1,
+    		click_handler_2,
+    		click_handler_3
+    	};
+    }
+
+    class DialogHideAll extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$c, create_fragment$e, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "DialogHideAll", options, id: create_fragment$e.name });
+    	}
+    }
+
+    /* src/cypress-tests/DialogResetAll.svelte generated by Svelte v3.12.1 */
+
+    const file$a = "src/cypress-tests/DialogResetAll.svelte";
+
+    function create_fragment$f(ctx) {
+    	var div9, div0, t0_value = `Count all: ${ctx.$dialogCount}` + "", t0, t1, div1, t2_value = `Count id: ${ctx.$dialogCountId1}` + "", t2, t3, div2, t4_value = `Count spawn: ${ctx.$dialogCountSpawn1}` + "", t4, t5, div3, t6_value = `Count spawn, id: ${ctx.$dialogCountSpawn1Id1}` + "", t6, t7, div5, div4, button0, t9, button1, t11, button2, t13, button3, t15, div6, t16, t17, t18, t19, div7, t20, div8, current, dispose;
+
+    	var buttons0_spread_levels = [
+    		ctx.fns1
+    	];
+
+    	let buttons0_props = {};
+    	for (var i = 0; i < buttons0_spread_levels.length; i += 1) {
+    		buttons0_props = assign(buttons0_props, buttons0_spread_levels[i]);
+    	}
+    	var buttons0 = new Buttons({ props: buttons0_props, $$inline: true });
+
+    	var buttons1_spread_levels = [
+    		ctx.fns2,
+    		{ id: "1" }
+    	];
+
+    	let buttons1_props = {};
+    	for (var i = 0; i < buttons1_spread_levels.length; i += 1) {
+    		buttons1_props = assign(buttons1_props, buttons1_spread_levels[i]);
+    	}
+    	var buttons1 = new Buttons({ props: buttons1_props, $$inline: true });
+
+    	var buttons2_spread_levels = [
+    		ctx.fns3,
+    		{ spawn: "1" }
+    	];
+
+    	let buttons2_props = {};
+    	for (var i = 0; i < buttons2_spread_levels.length; i += 1) {
+    		buttons2_props = assign(buttons2_props, buttons2_spread_levels[i]);
+    	}
+    	var buttons2 = new Buttons({ props: buttons2_props, $$inline: true });
+
+    	var buttons3_spread_levels = [
+    		ctx.fns4,
+    		{ spawn: "1" },
+    		{ id: "1" }
+    	];
+
+    	let buttons3_props = {};
+    	for (var i = 0; i < buttons3_spread_levels.length; i += 1) {
+    		buttons3_props = assign(buttons3_props, buttons3_spread_levels[i]);
+    	}
+    	var buttons3 = new Buttons({ props: buttons3_props, $$inline: true });
+
+    	var dialog0 = new Dialog({ $$inline: true });
+
+    	var dialog1 = new Dialog({ props: { spawn: "1" }, $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div9 = element("div");
+    			div0 = element("div");
+    			t0 = text(t0_value);
+    			t1 = space();
+    			div1 = element("div");
+    			t2 = text(t2_value);
+    			t3 = space();
+    			div2 = element("div");
+    			t4 = text(t4_value);
+    			t5 = space();
+    			div3 = element("div");
+    			t6 = text(t6_value);
+    			t7 = space();
+    			div5 = element("div");
+    			div4 = element("div");
+    			button0 = element("button");
+    			button0.textContent = "Reset all";
+    			t9 = space();
+    			button1 = element("button");
+    			button1.textContent = "Reset all with id";
+    			t11 = space();
+    			button2 = element("button");
+    			button2.textContent = "Reset all with spawn";
+    			t13 = space();
+    			button3 = element("button");
+    			button3.textContent = "Reset all with spawn and id";
+    			t15 = space();
+    			div6 = element("div");
+    			buttons0.$$.fragment.c();
+    			t16 = space();
+    			buttons1.$$.fragment.c();
+    			t17 = space();
+    			buttons2.$$.fragment.c();
+    			t18 = space();
+    			buttons3.$$.fragment.c();
+    			t19 = space();
+    			div7 = element("div");
+    			dialog0.$$.fragment.c();
+    			t20 = space();
+    			div8 = element("div");
+    			dialog1.$$.fragment.c();
+    			attr_dev(div0, "class", "control");
+    			attr_dev(div0, "data-test-id", "count-all");
+    			add_location(div0, file$a, 17, 2, 943);
+    			attr_dev(div1, "class", "control");
+    			attr_dev(div1, "data-test-id", "count-id");
+    			add_location(div1, file$a, 18, 2, 1028);
+    			attr_dev(div2, "class", "control");
+    			attr_dev(div2, "data-test-id", "count-spawn");
+    			add_location(div2, file$a, 19, 2, 1114);
+    			attr_dev(div3, "class", "control");
+    			attr_dev(div3, "data-test-id", "count-spawn-id");
+    			add_location(div3, file$a, 20, 2, 1209);
+    			attr_dev(button0, "class", "button");
+    			attr_dev(button0, "data-test-id", "button-reset-all");
+    			add_location(button0, file$a, 23, 6, 1393);
+    			attr_dev(button1, "class", "button");
+    			attr_dev(button1, "data-test-id", "button-reset-all-id");
+    			add_location(button1, file$a, 26, 6, 1524);
+    			attr_dev(button2, "class", "button");
+    			attr_dev(button2, "data-test-id", "button-reset-all-spawn");
+    			add_location(button2, file$a, 29, 6, 1677);
+    			attr_dev(button3, "class", "button");
+    			attr_dev(button3, "data-test-id", "button-reset-all-spawn-id");
+    			add_location(button3, file$a, 32, 6, 1839);
+    			attr_dev(div4, "class", "buttons");
+    			add_location(div4, file$a, 22, 4, 1365);
+    			attr_dev(div5, "class", "control");
+    			attr_dev(div5, "data-test-id", "reset-all");
+    			add_location(div5, file$a, 21, 2, 1314);
+    			attr_dev(div6, "class", "content");
+    			add_location(div6, file$a, 37, 2, 2036);
+    			attr_dev(div7, "class", "spawn default-spawn");
+    			add_location(div7, file$a, 43, 2, 2207);
+    			attr_dev(div8, "class", "spawn custom-spawn");
+    			add_location(div8, file$a, 46, 2, 2267);
+    			attr_dev(div9, "class", "test");
+    			add_location(div9, file$a, 16, 0, 922);
+
+    			dispose = [
+    				listen_dev(button0, "click", ctx.click_handler),
+    				listen_dev(button1, "click", ctx.click_handler_1),
+    				listen_dev(button2, "click", ctx.click_handler_2),
+    				listen_dev(button3, "click", ctx.click_handler_3)
+    			];
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div9, anchor);
+    			append_dev(div9, div0);
+    			append_dev(div0, t0);
+    			append_dev(div9, t1);
+    			append_dev(div9, div1);
+    			append_dev(div1, t2);
+    			append_dev(div9, t3);
+    			append_dev(div9, div2);
+    			append_dev(div2, t4);
+    			append_dev(div9, t5);
+    			append_dev(div9, div3);
+    			append_dev(div3, t6);
+    			append_dev(div9, t7);
+    			append_dev(div9, div5);
+    			append_dev(div5, div4);
+    			append_dev(div4, button0);
+    			append_dev(div4, t9);
+    			append_dev(div4, button1);
+    			append_dev(div4, t11);
+    			append_dev(div4, button2);
+    			append_dev(div4, t13);
+    			append_dev(div4, button3);
+    			append_dev(div9, t15);
+    			append_dev(div9, div6);
+    			mount_component(buttons0, div6, null);
+    			append_dev(div6, t16);
+    			mount_component(buttons1, div6, null);
+    			append_dev(div6, t17);
+    			mount_component(buttons2, div6, null);
+    			append_dev(div6, t18);
+    			mount_component(buttons3, div6, null);
+    			append_dev(div9, t19);
+    			append_dev(div9, div7);
+    			mount_component(dialog0, div7, null);
+    			append_dev(div9, t20);
+    			append_dev(div9, div8);
+    			mount_component(dialog1, div8, null);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if ((!current || changed.$dialogCount) && t0_value !== (t0_value = `Count all: ${ctx.$dialogCount}` + "")) {
+    				set_data_dev(t0, t0_value);
+    			}
+
+    			if ((!current || changed.$dialogCountId1) && t2_value !== (t2_value = `Count id: ${ctx.$dialogCountId1}` + "")) {
+    				set_data_dev(t2, t2_value);
+    			}
+
+    			if ((!current || changed.$dialogCountSpawn1) && t4_value !== (t4_value = `Count spawn: ${ctx.$dialogCountSpawn1}` + "")) {
+    				set_data_dev(t4, t4_value);
+    			}
+
+    			if ((!current || changed.$dialogCountSpawn1Id1) && t6_value !== (t6_value = `Count spawn, id: ${ctx.$dialogCountSpawn1Id1}` + "")) {
+    				set_data_dev(t6, t6_value);
+    			}
+
+    			var buttons0_changes = (changed.fns1) ? get_spread_update(buttons0_spread_levels, [
+    									get_spread_object(ctx.fns1)
+    								]) : {};
+    			buttons0.$set(buttons0_changes);
+
+    			var buttons1_changes = (changed.fns2) ? get_spread_update(buttons1_spread_levels, [
+    									get_spread_object(ctx.fns2),
+    			buttons1_spread_levels[1]
+    								]) : {};
+    			buttons1.$set(buttons1_changes);
+
+    			var buttons2_changes = (changed.fns3) ? get_spread_update(buttons2_spread_levels, [
+    									get_spread_object(ctx.fns3),
+    			buttons2_spread_levels[1]
+    								]) : {};
+    			buttons2.$set(buttons2_changes);
+
+    			var buttons3_changes = (changed.fns4) ? get_spread_update(buttons3_spread_levels, [
+    									get_spread_object(ctx.fns4),
+    			buttons3_spread_levels[1],
+    			buttons3_spread_levels[2]
+    								]) : {};
+    			buttons3.$set(buttons3_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(buttons0.$$.fragment, local);
+
+    			transition_in(buttons1.$$.fragment, local);
+
+    			transition_in(buttons2.$$.fragment, local);
+
+    			transition_in(buttons3.$$.fragment, local);
+
+    			transition_in(dialog0.$$.fragment, local);
+
+    			transition_in(dialog1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(buttons0.$$.fragment, local);
+    			transition_out(buttons1.$$.fragment, local);
+    			transition_out(buttons2.$$.fragment, local);
+    			transition_out(buttons3.$$.fragment, local);
+    			transition_out(dialog0.$$.fragment, local);
+    			transition_out(dialog1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div9);
+    			}
+
+    			destroy_component(buttons0);
+
+    			destroy_component(buttons1);
+
+    			destroy_component(buttons2);
+
+    			destroy_component(buttons3);
+
+    			destroy_component(dialog0);
+
+    			destroy_component(dialog1);
+
+    			run_all(dispose);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$f.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$d($$self, $$props, $$invalidate) {
+    	let $dialogCount, $dialogCountId1, $dialogCountSpawn1, $dialogCountSpawn1Id1;
+
+    	
+
+      const fns1 = createFns({ instance: dialog$1, component: Default, className: "dialog", title: "Default" });
+      const fns2 = createFns({ instance: dialog$1, component: Default, className: "dialog dialog-delay", id: "1", title: "ID" });
+      const fns3 = createFns({ instance: dialog$1, component: Default, className: "dialog", spawn: "1", title: "Spawn" });
+      const fns4 = createFns({ instance: dialog$1, component: Default, className: "dialog", spawn: "1", id: "1", title: "Spawn and ID" });
+      const dialogCount = dialog$1.getCount(); validate_store(dialogCount, 'dialogCount'); component_subscribe($$self, dialogCount, $$value => { $dialogCount = $$value; $$invalidate('$dialogCount', $dialogCount); });
+      const dialogCountId1 = dialog$1.getCount({ id: "1" }); validate_store(dialogCountId1, 'dialogCountId1'); component_subscribe($$self, dialogCountId1, $$value => { $dialogCountId1 = $$value; $$invalidate('$dialogCountId1', $dialogCountId1); });
+      const dialogCountSpawn1 = dialog$1.getCount({ spawn: "1" }); validate_store(dialogCountSpawn1, 'dialogCountSpawn1'); component_subscribe($$self, dialogCountSpawn1, $$value => { $dialogCountSpawn1 = $$value; $$invalidate('$dialogCountSpawn1', $dialogCountSpawn1); });
+      const dialogCountSpawn1Id1 = dialog$1.getCount({ spawn: "1", id: "1" }); validate_store(dialogCountSpawn1Id1, 'dialogCountSpawn1Id1'); component_subscribe($$self, dialogCountSpawn1Id1, $$value => { $dialogCountSpawn1Id1 = $$value; $$invalidate('$dialogCountSpawn1Id1', $dialogCountSpawn1Id1); });
+
+    	const click_handler = () => dialog$1.resetAll();
+
+    	const click_handler_1 = () => dialog$1.resetAll({ id: "1" });
+
+    	const click_handler_2 = () => dialog$1.resetAll({ spawn: "1" });
+
+    	const click_handler_3 = () => dialog$1.resetAll({ id: "1", spawn: "1" });
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('$dialogCount' in $$props) dialogCount.set($dialogCount);
+    		if ('$dialogCountId1' in $$props) dialogCountId1.set($dialogCountId1);
+    		if ('$dialogCountSpawn1' in $$props) dialogCountSpawn1.set($dialogCountSpawn1);
+    		if ('$dialogCountSpawn1Id1' in $$props) dialogCountSpawn1Id1.set($dialogCountSpawn1Id1);
+    	};
+
+    	return {
+    		fns1,
+    		fns2,
+    		fns3,
+    		fns4,
+    		dialogCount,
+    		dialogCountId1,
+    		dialogCountSpawn1,
+    		dialogCountSpawn1Id1,
+    		$dialogCount,
+    		$dialogCountId1,
+    		$dialogCountSpawn1,
+    		$dialogCountSpawn1Id1,
+    		click_handler,
+    		click_handler_1,
+    		click_handler_2,
+    		click_handler_3
+    	};
+    }
+
+    class DialogResetAll extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$d, create_fragment$f, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "DialogResetAll", options, id: create_fragment$f.name });
+    	}
+    }
+
+    /* src/cypress-tests/Remaining.svelte generated by Svelte v3.12.1 */
+
+    const file$b = "src/cypress-tests/Remaining.svelte";
+
+    function create_fragment$g(ctx) {
+    	var div, span0, t1, span1, t2_value = ctx.displayValue === ctx.undefined
+        ? "undefined"
+        : ctx.displayValue.toString() + "", t2;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			span0 = element("span");
+    			span0.textContent = "Remaining:";
+    			t1 = space();
+    			span1 = element("span");
+    			t2 = text(t2_value);
+    			add_location(span0, file$b, 24, 2, 474);
+    			attr_dev(span1, "data-test-id", "remaining-value");
+    			add_location(span1, file$b, 25, 2, 501);
+    			attr_dev(div, "data-test-id", "remaining");
+    			add_location(div, file$b, 23, 0, 441);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, span0);
+    			append_dev(div, t1);
+    			append_dev(div, span1);
+    			append_dev(span1, t2);
+    		},
+
+    		p: function update_1(changed, ctx) {
+    			if ((changed.displayValue) && t2_value !== (t2_value = ctx.displayValue === ctx.undefined
+        ? "undefined"
+        : ctx.displayValue.toString() + "")) {
+    				set_data_dev(t2, t2_value);
+    			}
+    		},
+
+    		i: noop,
+    		o: noop,
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div);
+    			}
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$g.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$e($$self, $$props, $$invalidate) {
+    	let { getRemainingFn } = $$props;
+    	
+    	let displayValue = 0;
+    	let reqId;
+    	
+      const update = () => {
+        const value = getRemainingFn();
+        $$invalidate('displayValue', displayValue = value === undefined
+          ? undefined
+          : Math.max(value, 0));
+        reqId = window.requestAnimationFrame(update);
+      };
+    	reqId = window.requestAnimationFrame(update);
+    	
+    	onDestroy(() => {
+    		window.cancelAnimationFrame(reqId);
+      });
+
+    	const writable_props = ['getRemainingFn'];
+    	Object.keys($$props).forEach(key => {
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<Remaining> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$set = $$props => {
+    		if ('getRemainingFn' in $$props) $$invalidate('getRemainingFn', getRemainingFn = $$props.getRemainingFn);
+    	};
+
+    	$$self.$capture_state = () => {
+    		return { getRemainingFn, displayValue, reqId };
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('getRemainingFn' in $$props) $$invalidate('getRemainingFn', getRemainingFn = $$props.getRemainingFn);
+    		if ('displayValue' in $$props) $$invalidate('displayValue', displayValue = $$props.displayValue);
+    		if ('reqId' in $$props) reqId = $$props.reqId;
+    	};
+
+    	return { getRemainingFn, displayValue, undefined };
+    }
+
+    class Remaining extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$e, create_fragment$g, safe_not_equal, ["getRemainingFn"]);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Remaining", options, id: create_fragment$g.name });
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+    		if (ctx.getRemainingFn === undefined && !('getRemainingFn' in props)) {
+    			console.warn("<Remaining> was created without expected prop 'getRemainingFn'");
+    		}
+    	}
+
+    	get getRemainingFn() {
+    		throw new Error("<Remaining>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set getRemainingFn(value) {
+    		throw new Error("<Remaining>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/cypress-tests/DialogTimeout.svelte generated by Svelte v3.12.1 */
+
+    const file$c = "src/cypress-tests/DialogTimeout.svelte";
+
+    function create_fragment$h(ctx) {
+    	var div6, div1, div0, button0, t1, button1, t3, button2, t5, div2, t6_value = `Is paused: ${ctx.$dialogIsPaused}` + "", t6, t7, div3, t8, div4, t9, div5, current, dispose;
+
+    	var remaining = new Remaining({
+    		props: { getRemainingFn: dialog$1.getRemaining },
+    		$$inline: true
+    	});
+
+    	var buttons_spread_levels = [
+    		ctx.fns
+    	];
+
+    	let buttons_props = {};
+    	for (var i = 0; i < buttons_spread_levels.length; i += 1) {
+    		buttons_props = assign(buttons_props, buttons_spread_levels[i]);
+    	}
+    	var buttons = new Buttons({ props: buttons_props, $$inline: true });
+
+    	var dialog_1 = new Dialog({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div6 = element("div");
+    			div1 = element("div");
+    			div0 = element("div");
+    			button0 = element("button");
+    			button0.textContent = "Pause";
+    			t1 = space();
+    			button1 = element("button");
+    			button1.textContent = "Resume";
+    			t3 = space();
+    			button2 = element("button");
+    			button2.textContent = "Reset";
+    			t5 = space();
+    			div2 = element("div");
+    			t6 = text(t6_value);
+    			t7 = space();
+    			div3 = element("div");
+    			remaining.$$.fragment.c();
+    			t8 = space();
+    			div4 = element("div");
+    			buttons.$$.fragment.c();
+    			t9 = space();
+    			div5 = element("div");
+    			dialog_1.$$.fragment.c();
+    			attr_dev(button0, "class", "button");
+    			attr_dev(button0, "data-test-id", "button-pause");
+    			add_location(button0, file$c, 15, 6, 543);
+    			attr_dev(button1, "class", "button");
+    			attr_dev(button1, "data-test-id", "button-resume");
+    			add_location(button1, file$c, 18, 6, 663);
+    			attr_dev(button2, "class", "button");
+    			attr_dev(button2, "data-test-id", "button-reset");
+    			add_location(button2, file$c, 21, 6, 786);
+    			attr_dev(div0, "class", "buttons");
+    			add_location(div0, file$c, 14, 4, 515);
+    			attr_dev(div1, "class", "control");
+    			attr_dev(div1, "data-test-id", "reset-all");
+    			add_location(div1, file$c, 13, 2, 464);
+    			attr_dev(div2, "class", "control");
+    			attr_dev(div2, "data-test-id", "is-paused");
+    			add_location(div2, file$c, 26, 2, 925);
+    			attr_dev(div3, "class", "control");
+    			add_location(div3, file$c, 29, 2, 1021);
+    			attr_dev(div4, "class", "content");
+    			add_location(div4, file$c, 32, 2, 1109);
+    			attr_dev(div5, "class", "spawn default-spawn");
+    			add_location(div5, file$c, 35, 2, 1167);
+    			attr_dev(div6, "class", "test");
+    			add_location(div6, file$c, 12, 0, 443);
+
+    			dispose = [
+    				listen_dev(button0, "click", ctx.click_handler),
+    				listen_dev(button1, "click", ctx.click_handler_1),
+    				listen_dev(button2, "click", ctx.click_handler_2)
+    			];
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div6, anchor);
+    			append_dev(div6, div1);
+    			append_dev(div1, div0);
+    			append_dev(div0, button0);
+    			append_dev(div0, t1);
+    			append_dev(div0, button1);
+    			append_dev(div0, t3);
+    			append_dev(div0, button2);
+    			append_dev(div6, t5);
+    			append_dev(div6, div2);
+    			append_dev(div2, t6);
+    			append_dev(div6, t7);
+    			append_dev(div6, div3);
+    			mount_component(remaining, div3, null);
+    			append_dev(div6, t8);
+    			append_dev(div6, div4);
+    			mount_component(buttons, div4, null);
+    			append_dev(div6, t9);
+    			append_dev(div6, div5);
+    			mount_component(dialog_1, div5, null);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if ((!current || changed.$dialogIsPaused) && t6_value !== (t6_value = `Is paused: ${ctx.$dialogIsPaused}` + "")) {
+    				set_data_dev(t6, t6_value);
+    			}
+
+    			var buttons_changes = (changed.fns) ? get_spread_update(buttons_spread_levels, [
+    									get_spread_object(ctx.fns)
+    								]) : {};
+    			buttons.$set(buttons_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(remaining.$$.fragment, local);
+
+    			transition_in(buttons.$$.fragment, local);
+
+    			transition_in(dialog_1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(remaining.$$.fragment, local);
+    			transition_out(buttons.$$.fragment, local);
+    			transition_out(dialog_1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div6);
+    			}
+
+    			destroy_component(remaining);
+
+    			destroy_component(buttons);
+
+    			destroy_component(dialog_1);
+
+    			run_all(dispose);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$h.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$f($$self, $$props, $$invalidate) {
+    	let $dialogIsPaused;
+
+    	
+
+      dialog$1.resetAll();
+      const fns = createFns({ instance: dialog$1, component: Default, className: "dialog", title: "Default", timeout: 2000 });
+      const dialogIsPaused = dialog$1.isPaused(); validate_store(dialogIsPaused, 'dialogIsPaused'); component_subscribe($$self, dialogIsPaused, $$value => { $dialogIsPaused = $$value; $$invalidate('$dialogIsPaused', $dialogIsPaused); });
+
+    	const click_handler = () => dialog$1.pause();
+
+    	const click_handler_1 = () => dialog$1.resume();
+
+    	const click_handler_2 = () => dialog$1.resetAll();
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('$dialogIsPaused' in $$props) dialogIsPaused.set($dialogIsPaused);
+    	};
+
+    	return {
+    		fns,
+    		dialogIsPaused,
+    		$dialogIsPaused,
+    		click_handler,
+    		click_handler_1,
+    		click_handler_2
+    	};
+    }
+
+    class DialogTimeout extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$f, create_fragment$h, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "DialogTimeout", options, id: create_fragment$h.name });
+    	}
+    }
+
+    /* src/cypress-tests/DialogQueued.svelte generated by Svelte v3.12.1 */
+
+    const file$d = "src/cypress-tests/DialogQueued.svelte";
+
+    function create_fragment$i(ctx) {
+    	var div3, div0, t0_value = `Count all: ${ctx.$dialogCount}` + "", t0, t1, div1, t2, div2, current;
+
+    	var buttons_spread_levels = [
+    		ctx.fns
+    	];
+
+    	let buttons_props = {};
+    	for (var i = 0; i < buttons_spread_levels.length; i += 1) {
+    		buttons_props = assign(buttons_props, buttons_spread_levels[i]);
+    	}
+    	var buttons = new Buttons({ props: buttons_props, $$inline: true });
+
+    	var dialog_1 = new Dialog({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div3 = element("div");
+    			div0 = element("div");
+    			t0 = text(t0_value);
+    			t1 = space();
+    			div1 = element("div");
+    			buttons.$$.fragment.c();
+    			t2 = space();
+    			div2 = element("div");
+    			dialog_1.$$.fragment.c();
+    			attr_dev(div0, "class", "control");
+    			attr_dev(div0, "data-test-id", "count-all");
+    			add_location(div0, file$d, 12, 2, 413);
+    			attr_dev(div1, "class", "content");
+    			add_location(div1, file$d, 13, 2, 498);
+    			attr_dev(div2, "class", "spawn default-spawn");
+    			add_location(div2, file$d, 16, 2, 556);
+    			attr_dev(div3, "class", "test");
+    			add_location(div3, file$d, 11, 0, 392);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div3, anchor);
+    			append_dev(div3, div0);
+    			append_dev(div0, t0);
+    			append_dev(div3, t1);
+    			append_dev(div3, div1);
+    			mount_component(buttons, div1, null);
+    			append_dev(div3, t2);
+    			append_dev(div3, div2);
+    			mount_component(dialog_1, div2, null);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if ((!current || changed.$dialogCount) && t0_value !== (t0_value = `Count all: ${ctx.$dialogCount}` + "")) {
+    				set_data_dev(t0, t0_value);
+    			}
+
+    			var buttons_changes = (changed.fns) ? get_spread_update(buttons_spread_levels, [
+    									get_spread_object(ctx.fns)
+    								]) : {};
+    			buttons.$set(buttons_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(buttons.$$.fragment, local);
+
+    			transition_in(dialog_1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(buttons.$$.fragment, local);
+    			transition_out(dialog_1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div3);
+    			}
+
+    			destroy_component(buttons);
+
+    			destroy_component(dialog_1);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$i.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$g($$self, $$props, $$invalidate) {
+    	let $dialogCount;
+
+    	
+
+      dialog$1.resetAll();
+      const fns = createFns({ instance: dialog$1, component: Default, className: "dialog", title: "Default", queued: true });
+      const dialogCount = dialog$1.getCount(); validate_store(dialogCount, 'dialogCount'); component_subscribe($$self, dialogCount, $$value => { $dialogCount = $$value; $$invalidate('$dialogCount', $dialogCount); });
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('$dialogCount' in $$props) dialogCount.set($dialogCount);
+    	};
+
+    	return { fns, dialogCount, $dialogCount };
+    }
+
+    class DialogQueued extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$g, create_fragment$i, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "DialogQueued", options, id: create_fragment$i.name });
+    	}
+    }
+
+    /* src/cypress-tests/NotificationCount.svelte generated by Svelte v3.12.1 */
+
+    const file$e = "src/cypress-tests/NotificationCount.svelte";
+
+    function create_fragment$j(ctx) {
+    	var div9, div0, t0_value = `Count all: ${ctx.$notificationCount}` + "", t0, t1, div1, t2_value = `Count id: ${ctx.$notificationCountId1}` + "", t2, t3, div2, t4_value = `Count spawn: ${ctx.$notificationCountSpawn1}` + "", t4, t5, div3, t6_value = `Count spawn, id: ${ctx.$notificationCountSpawn1Id1}` + "", t6, t7, div5, div4, button, t9, div6, t10, t11, t12, t13, div7, t14, div8, current, dispose;
+
+    	var buttons0_spread_levels = [
+    		ctx.fns1
+    	];
+
+    	let buttons0_props = {};
+    	for (var i = 0; i < buttons0_spread_levels.length; i += 1) {
+    		buttons0_props = assign(buttons0_props, buttons0_spread_levels[i]);
+    	}
+    	var buttons0 = new Buttons({ props: buttons0_props, $$inline: true });
+
+    	var buttons1_spread_levels = [
+    		ctx.fns2,
+    		{ id: "1" }
+    	];
+
+    	let buttons1_props = {};
+    	for (var i = 0; i < buttons1_spread_levels.length; i += 1) {
+    		buttons1_props = assign(buttons1_props, buttons1_spread_levels[i]);
+    	}
+    	var buttons1 = new Buttons({ props: buttons1_props, $$inline: true });
+
+    	var buttons2_spread_levels = [
+    		ctx.fns3,
+    		{ spawn: "1" }
+    	];
+
+    	let buttons2_props = {};
+    	for (var i = 0; i < buttons2_spread_levels.length; i += 1) {
+    		buttons2_props = assign(buttons2_props, buttons2_spread_levels[i]);
+    	}
+    	var buttons2 = new Buttons({ props: buttons2_props, $$inline: true });
+
+    	var buttons3_spread_levels = [
+    		ctx.fns4,
+    		{ spawn: "1" },
+    		{ id: "1" }
+    	];
+
+    	let buttons3_props = {};
+    	for (var i = 0; i < buttons3_spread_levels.length; i += 1) {
+    		buttons3_props = assign(buttons3_props, buttons3_spread_levels[i]);
+    	}
+    	var buttons3 = new Buttons({ props: buttons3_props, $$inline: true });
+
+    	var notification0 = new Notification({ $$inline: true });
+
+    	var notification1 = new Notification({ props: { spawn: "1" }, $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div9 = element("div");
+    			div0 = element("div");
+    			t0 = text(t0_value);
+    			t1 = space();
+    			div1 = element("div");
+    			t2 = text(t2_value);
+    			t3 = space();
+    			div2 = element("div");
+    			t4 = text(t4_value);
+    			t5 = space();
+    			div3 = element("div");
+    			t6 = text(t6_value);
+    			t7 = space();
+    			div5 = element("div");
+    			div4 = element("div");
+    			button = element("button");
+    			button.textContent = "Reset";
+    			t9 = space();
+    			div6 = element("div");
+    			buttons0.$$.fragment.c();
+    			t10 = space();
+    			buttons1.$$.fragment.c();
+    			t11 = space();
+    			buttons2.$$.fragment.c();
+    			t12 = space();
+    			buttons3.$$.fragment.c();
+    			t13 = space();
+    			div7 = element("div");
+    			notification0.$$.fragment.c();
+    			t14 = space();
+    			div8 = element("div");
+    			notification1.$$.fragment.c();
+    			attr_dev(div0, "class", "control");
+    			attr_dev(div0, "data-test-id", "count-all");
+    			add_location(div0, file$e, 17, 2, 1038);
+    			attr_dev(div1, "class", "control");
+    			attr_dev(div1, "data-test-id", "count-id");
+    			add_location(div1, file$e, 18, 2, 1129);
+    			attr_dev(div2, "class", "control");
+    			attr_dev(div2, "data-test-id", "count-spawn");
+    			add_location(div2, file$e, 19, 2, 1221);
+    			attr_dev(div3, "class", "control");
+    			attr_dev(div3, "data-test-id", "count-spawn-id");
+    			add_location(div3, file$e, 20, 2, 1322);
+    			attr_dev(button, "class", "button");
+    			attr_dev(button, "data-test-id", "button-reset");
+    			add_location(button, file$e, 23, 6, 1487);
+    			attr_dev(div4, "class", "buttons");
+    			add_location(div4, file$e, 22, 4, 1459);
+    			attr_dev(div5, "class", "control");
+    			add_location(div5, file$e, 21, 2, 1433);
+    			attr_dev(div6, "class", "content");
+    			add_location(div6, file$e, 28, 2, 1632);
+    			attr_dev(div7, "class", "spawn default-spawn");
+    			add_location(div7, file$e, 34, 2, 1803);
+    			attr_dev(div8, "class", "spawn custom-spawn");
+    			add_location(div8, file$e, 37, 2, 1869);
+    			attr_dev(div9, "class", "test");
+    			add_location(div9, file$e, 16, 0, 1017);
+    			dispose = listen_dev(button, "click", ctx.click_handler);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div9, anchor);
+    			append_dev(div9, div0);
+    			append_dev(div0, t0);
+    			append_dev(div9, t1);
+    			append_dev(div9, div1);
+    			append_dev(div1, t2);
+    			append_dev(div9, t3);
+    			append_dev(div9, div2);
+    			append_dev(div2, t4);
+    			append_dev(div9, t5);
+    			append_dev(div9, div3);
+    			append_dev(div3, t6);
+    			append_dev(div9, t7);
+    			append_dev(div9, div5);
+    			append_dev(div5, div4);
+    			append_dev(div4, button);
+    			append_dev(div9, t9);
+    			append_dev(div9, div6);
+    			mount_component(buttons0, div6, null);
+    			append_dev(div6, t10);
+    			mount_component(buttons1, div6, null);
+    			append_dev(div6, t11);
+    			mount_component(buttons2, div6, null);
+    			append_dev(div6, t12);
+    			mount_component(buttons3, div6, null);
+    			append_dev(div9, t13);
+    			append_dev(div9, div7);
+    			mount_component(notification0, div7, null);
+    			append_dev(div9, t14);
+    			append_dev(div9, div8);
+    			mount_component(notification1, div8, null);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if ((!current || changed.$notificationCount) && t0_value !== (t0_value = `Count all: ${ctx.$notificationCount}` + "")) {
+    				set_data_dev(t0, t0_value);
+    			}
+
+    			if ((!current || changed.$notificationCountId1) && t2_value !== (t2_value = `Count id: ${ctx.$notificationCountId1}` + "")) {
+    				set_data_dev(t2, t2_value);
+    			}
+
+    			if ((!current || changed.$notificationCountSpawn1) && t4_value !== (t4_value = `Count spawn: ${ctx.$notificationCountSpawn1}` + "")) {
+    				set_data_dev(t4, t4_value);
+    			}
+
+    			if ((!current || changed.$notificationCountSpawn1Id1) && t6_value !== (t6_value = `Count spawn, id: ${ctx.$notificationCountSpawn1Id1}` + "")) {
+    				set_data_dev(t6, t6_value);
+    			}
+
+    			var buttons0_changes = (changed.fns1) ? get_spread_update(buttons0_spread_levels, [
+    									get_spread_object(ctx.fns1)
+    								]) : {};
+    			buttons0.$set(buttons0_changes);
+
+    			var buttons1_changes = (changed.fns2) ? get_spread_update(buttons1_spread_levels, [
+    									get_spread_object(ctx.fns2),
+    			buttons1_spread_levels[1]
+    								]) : {};
+    			buttons1.$set(buttons1_changes);
+
+    			var buttons2_changes = (changed.fns3) ? get_spread_update(buttons2_spread_levels, [
+    									get_spread_object(ctx.fns3),
+    			buttons2_spread_levels[1]
+    								]) : {};
+    			buttons2.$set(buttons2_changes);
+
+    			var buttons3_changes = (changed.fns4) ? get_spread_update(buttons3_spread_levels, [
+    									get_spread_object(ctx.fns4),
+    			buttons3_spread_levels[1],
+    			buttons3_spread_levels[2]
+    								]) : {};
+    			buttons3.$set(buttons3_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(buttons0.$$.fragment, local);
+
+    			transition_in(buttons1.$$.fragment, local);
+
+    			transition_in(buttons2.$$.fragment, local);
+
+    			transition_in(buttons3.$$.fragment, local);
+
+    			transition_in(notification0.$$.fragment, local);
+
+    			transition_in(notification1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(buttons0.$$.fragment, local);
+    			transition_out(buttons1.$$.fragment, local);
+    			transition_out(buttons2.$$.fragment, local);
+    			transition_out(buttons3.$$.fragment, local);
+    			transition_out(notification0.$$.fragment, local);
+    			transition_out(notification1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div9);
+    			}
+
+    			destroy_component(buttons0);
+
+    			destroy_component(buttons1);
+
+    			destroy_component(buttons2);
+
+    			destroy_component(buttons3);
+
+    			destroy_component(notification0);
+
+    			destroy_component(notification1);
+
+    			dispose();
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$j.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$h($$self, $$props, $$invalidate) {
+    	let $notificationCount, $notificationCountId1, $notificationCountSpawn1, $notificationCountSpawn1Id1;
+
+    	
+
+      const fns1 = createFns({ instance: notification$1, component: Default, className: "notification", title: "Default" });
+      const fns2 = createFns({ instance: notification$1, component: Default, className: "notification", id: "1", title: "ID" });
+      const fns3 = createFns({ instance: notification$1, component: Default, className: "notification", spawn: "1", title: "Spawn" });
+      const fns4 = createFns({ instance: notification$1, component: Default, className: "notification", spawn: "1", id: "1", title: "Spawn and ID" });
+      const notificationCount = notification$1.getCount(); validate_store(notificationCount, 'notificationCount'); component_subscribe($$self, notificationCount, $$value => { $notificationCount = $$value; $$invalidate('$notificationCount', $notificationCount); });
+      const notificationCountId1 = notification$1.getCount({ id: "1" }); validate_store(notificationCountId1, 'notificationCountId1'); component_subscribe($$self, notificationCountId1, $$value => { $notificationCountId1 = $$value; $$invalidate('$notificationCountId1', $notificationCountId1); });
+      const notificationCountSpawn1 = notification$1.getCount({ spawn: "1" }); validate_store(notificationCountSpawn1, 'notificationCountSpawn1'); component_subscribe($$self, notificationCountSpawn1, $$value => { $notificationCountSpawn1 = $$value; $$invalidate('$notificationCountSpawn1', $notificationCountSpawn1); });
+      const notificationCountSpawn1Id1 = notification$1.getCount({ spawn: "1", id: "1" }); validate_store(notificationCountSpawn1Id1, 'notificationCountSpawn1Id1'); component_subscribe($$self, notificationCountSpawn1Id1, $$value => { $notificationCountSpawn1Id1 = $$value; $$invalidate('$notificationCountSpawn1Id1', $notificationCountSpawn1Id1); });
+
+    	const click_handler = () => notification$1.resetAll();
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('$notificationCount' in $$props) notificationCount.set($notificationCount);
+    		if ('$notificationCountId1' in $$props) notificationCountId1.set($notificationCountId1);
+    		if ('$notificationCountSpawn1' in $$props) notificationCountSpawn1.set($notificationCountSpawn1);
+    		if ('$notificationCountSpawn1Id1' in $$props) notificationCountSpawn1Id1.set($notificationCountSpawn1Id1);
+    	};
+
+    	return {
+    		fns1,
+    		fns2,
+    		fns3,
+    		fns4,
+    		notificationCount,
+    		notificationCountId1,
+    		notificationCountSpawn1,
+    		notificationCountSpawn1Id1,
+    		$notificationCount,
+    		$notificationCountId1,
+    		$notificationCountSpawn1,
+    		$notificationCountSpawn1Id1,
+    		click_handler
+    	};
+    }
+
+    class NotificationCount extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$h, create_fragment$j, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "NotificationCount", options, id: create_fragment$j.name });
+    	}
+    }
+
+    /* src/cypress-tests/NotificationPause.svelte generated by Svelte v3.12.1 */
+
+    const file$f = "src/cypress-tests/NotificationPause.svelte";
+
+    function create_fragment$k(ctx) {
+    	var div6, div1, div0, button0, t1, button1, t3, button2, t5, div2, t6_value = `Is paused: ${ctx.$notificationIsPaused}` + "", t6, t7, div3, t8, div4, t9, div5, current, dispose;
+
+    	var remaining = new Remaining({
+    		props: { getRemainingFn: notification$1.getRemaining },
+    		$$inline: true
+    	});
+
+    	var buttons_spread_levels = [
+    		ctx.fns
+    	];
+
+    	let buttons_props = {};
+    	for (var i = 0; i < buttons_spread_levels.length; i += 1) {
+    		buttons_props = assign(buttons_props, buttons_spread_levels[i]);
+    	}
+    	var buttons = new Buttons({ props: buttons_props, $$inline: true });
+
+    	var notification_1 = new Notification({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div6 = element("div");
+    			div1 = element("div");
+    			div0 = element("div");
+    			button0 = element("button");
+    			button0.textContent = "Pause";
+    			t1 = space();
+    			button1 = element("button");
+    			button1.textContent = "Resume";
+    			t3 = space();
+    			button2 = element("button");
+    			button2.textContent = "Reset";
+    			t5 = space();
+    			div2 = element("div");
+    			t6 = text(t6_value);
+    			t7 = space();
+    			div3 = element("div");
+    			remaining.$$.fragment.c();
+    			t8 = space();
+    			div4 = element("div");
+    			buttons.$$.fragment.c();
+    			t9 = space();
+    			div5 = element("div");
+    			notification_1.$$.fragment.c();
+    			attr_dev(button0, "class", "button");
+    			attr_dev(button0, "data-test-id", "button-pause");
+    			add_location(button0, file$f, 15, 6, 585);
+    			attr_dev(button1, "class", "button");
+    			attr_dev(button1, "data-test-id", "button-resume");
+    			add_location(button1, file$f, 18, 6, 711);
+    			attr_dev(button2, "class", "button");
+    			attr_dev(button2, "data-test-id", "button-reset");
+    			add_location(button2, file$f, 21, 6, 840);
+    			attr_dev(div0, "class", "buttons");
+    			add_location(div0, file$f, 14, 4, 557);
+    			attr_dev(div1, "class", "control");
+    			attr_dev(div1, "data-test-id", "reset-all");
+    			add_location(div1, file$f, 13, 2, 506);
+    			attr_dev(div2, "class", "control");
+    			attr_dev(div2, "data-test-id", "is-paused");
+    			add_location(div2, file$f, 26, 2, 985);
+    			attr_dev(div3, "class", "control");
+    			add_location(div3, file$f, 29, 2, 1087);
+    			attr_dev(div4, "class", "content");
+    			add_location(div4, file$f, 32, 2, 1181);
+    			attr_dev(div5, "class", "spawn default-spawn");
+    			add_location(div5, file$f, 35, 2, 1239);
+    			attr_dev(div6, "class", "test");
+    			add_location(div6, file$f, 12, 0, 485);
+
+    			dispose = [
+    				listen_dev(button0, "click", ctx.click_handler),
+    				listen_dev(button1, "click", ctx.click_handler_1),
+    				listen_dev(button2, "click", ctx.click_handler_2)
+    			];
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div6, anchor);
+    			append_dev(div6, div1);
+    			append_dev(div1, div0);
+    			append_dev(div0, button0);
+    			append_dev(div0, t1);
+    			append_dev(div0, button1);
+    			append_dev(div0, t3);
+    			append_dev(div0, button2);
+    			append_dev(div6, t5);
+    			append_dev(div6, div2);
+    			append_dev(div2, t6);
+    			append_dev(div6, t7);
+    			append_dev(div6, div3);
+    			mount_component(remaining, div3, null);
+    			append_dev(div6, t8);
+    			append_dev(div6, div4);
+    			mount_component(buttons, div4, null);
+    			append_dev(div6, t9);
+    			append_dev(div6, div5);
+    			mount_component(notification_1, div5, null);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if ((!current || changed.$notificationIsPaused) && t6_value !== (t6_value = `Is paused: ${ctx.$notificationIsPaused}` + "")) {
+    				set_data_dev(t6, t6_value);
+    			}
+
+    			var buttons_changes = (changed.fns) ? get_spread_update(buttons_spread_levels, [
+    									get_spread_object(ctx.fns)
+    								]) : {};
+    			buttons.$set(buttons_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(remaining.$$.fragment, local);
+
+    			transition_in(buttons.$$.fragment, local);
+
+    			transition_in(notification_1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(remaining.$$.fragment, local);
+    			transition_out(buttons.$$.fragment, local);
+    			transition_out(notification_1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div6);
+    			}
+
+    			destroy_component(remaining);
+
+    			destroy_component(buttons);
+
+    			destroy_component(notification_1);
+
+    			run_all(dispose);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$k.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$i($$self, $$props, $$invalidate) {
+    	let $notificationIsPaused;
+
+    	
+
+      notification$1.resetAll();
+      const fns = createFns({ instance: notification$1, component: Default, className: "notification", title: "Default", timeout: 2000 });
+      const notificationIsPaused = notification$1.isPaused(); validate_store(notificationIsPaused, 'notificationIsPaused'); component_subscribe($$self, notificationIsPaused, $$value => { $notificationIsPaused = $$value; $$invalidate('$notificationIsPaused', $notificationIsPaused); });
+
+    	const click_handler = () => notification$1.pause();
+
+    	const click_handler_1 = () => notification$1.resume();
+
+    	const click_handler_2 = () => notification$1.resetAll();
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('$notificationIsPaused' in $$props) notificationIsPaused.set($notificationIsPaused);
+    	};
+
+    	return {
+    		fns,
+    		notificationIsPaused,
+    		$notificationIsPaused,
+    		click_handler,
+    		click_handler_1,
+    		click_handler_2
+    	};
+    }
+
+    class NotificationPause extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$i, create_fragment$k, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "NotificationPause", options, id: create_fragment$k.name });
+    	}
+    }
+
+    /* src/cypress-tests/NotificationTimeout.svelte generated by Svelte v3.12.1 */
+
+    const file$g = "src/cypress-tests/NotificationTimeout.svelte";
+
+    function create_fragment$l(ctx) {
+    	var div6, div1, div0, button0, t1, button1, t3, button2, t5, div2, t6_value = `Is paused: ${ctx.$notificationIsPaused}` + "", t6, t7, div3, t8, div4, t9, t10, div5, current, dispose;
+
+    	var remaining = new Remaining({
+    		props: { getRemainingFn: notification$1.getRemaining },
+    		$$inline: true
+    	});
+
+    	var buttons0_spread_levels = [
+    		ctx.fns1
+    	];
+
+    	let buttons0_props = {};
+    	for (var i = 0; i < buttons0_spread_levels.length; i += 1) {
+    		buttons0_props = assign(buttons0_props, buttons0_spread_levels[i]);
+    	}
+    	var buttons0 = new Buttons({ props: buttons0_props, $$inline: true });
+
+    	var buttons1_spread_levels = [
+    		ctx.fns2,
+    		{ id: "1" },
+    		{ name: "zero-timeout" }
+    	];
+
+    	let buttons1_props = {};
+    	for (var i = 0; i < buttons1_spread_levels.length; i += 1) {
+    		buttons1_props = assign(buttons1_props, buttons1_spread_levels[i]);
+    	}
+    	var buttons1 = new Buttons({ props: buttons1_props, $$inline: true });
+
+    	var notification_1 = new Notification({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div6 = element("div");
+    			div1 = element("div");
+    			div0 = element("div");
+    			button0 = element("button");
+    			button0.textContent = "Pause";
+    			t1 = space();
+    			button1 = element("button");
+    			button1.textContent = "Resume";
+    			t3 = space();
+    			button2 = element("button");
+    			button2.textContent = "Reset";
+    			t5 = space();
+    			div2 = element("div");
+    			t6 = text(t6_value);
+    			t7 = space();
+    			div3 = element("div");
+    			remaining.$$.fragment.c();
+    			t8 = space();
+    			div4 = element("div");
+    			buttons0.$$.fragment.c();
+    			t9 = space();
+    			buttons1.$$.fragment.c();
+    			t10 = space();
+    			div5 = element("div");
+    			notification_1.$$.fragment.c();
+    			attr_dev(button0, "class", "button");
+    			attr_dev(button0, "data-test-id", "button-pause");
+    			add_location(button0, file$g, 16, 6, 720);
+    			attr_dev(button1, "class", "button");
+    			attr_dev(button1, "data-test-id", "button-resume");
+    			add_location(button1, file$g, 19, 6, 846);
+    			attr_dev(button2, "class", "button");
+    			attr_dev(button2, "data-test-id", "button-reset");
+    			add_location(button2, file$g, 22, 6, 975);
+    			attr_dev(div0, "class", "buttons");
+    			add_location(div0, file$g, 15, 4, 692);
+    			attr_dev(div1, "class", "control");
+    			attr_dev(div1, "data-test-id", "reset-all");
+    			add_location(div1, file$g, 14, 2, 641);
+    			attr_dev(div2, "class", "control");
+    			attr_dev(div2, "data-test-id", "is-paused");
+    			add_location(div2, file$g, 27, 2, 1120);
+    			attr_dev(div3, "class", "control");
+    			add_location(div3, file$g, 30, 2, 1222);
+    			attr_dev(div4, "class", "content");
+    			add_location(div4, file$g, 33, 2, 1316);
+    			attr_dev(div5, "class", "spawn default-spawn");
+    			add_location(div5, file$g, 37, 2, 1428);
+    			attr_dev(div6, "class", "test");
+    			add_location(div6, file$g, 13, 0, 620);
+
+    			dispose = [
+    				listen_dev(button0, "click", ctx.click_handler),
+    				listen_dev(button1, "click", ctx.click_handler_1),
+    				listen_dev(button2, "click", ctx.click_handler_2)
+    			];
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div6, anchor);
+    			append_dev(div6, div1);
+    			append_dev(div1, div0);
+    			append_dev(div0, button0);
+    			append_dev(div0, t1);
+    			append_dev(div0, button1);
+    			append_dev(div0, t3);
+    			append_dev(div0, button2);
+    			append_dev(div6, t5);
+    			append_dev(div6, div2);
+    			append_dev(div2, t6);
+    			append_dev(div6, t7);
+    			append_dev(div6, div3);
+    			mount_component(remaining, div3, null);
+    			append_dev(div6, t8);
+    			append_dev(div6, div4);
+    			mount_component(buttons0, div4, null);
+    			append_dev(div4, t9);
+    			mount_component(buttons1, div4, null);
+    			append_dev(div6, t10);
+    			append_dev(div6, div5);
+    			mount_component(notification_1, div5, null);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if ((!current || changed.$notificationIsPaused) && t6_value !== (t6_value = `Is paused: ${ctx.$notificationIsPaused}` + "")) {
+    				set_data_dev(t6, t6_value);
+    			}
+
+    			var buttons0_changes = (changed.fns1) ? get_spread_update(buttons0_spread_levels, [
+    									get_spread_object(ctx.fns1)
+    								]) : {};
+    			buttons0.$set(buttons0_changes);
+
+    			var buttons1_changes = (changed.fns2) ? get_spread_update(buttons1_spread_levels, [
+    									get_spread_object(ctx.fns2),
+    			buttons1_spread_levels[1],
+    			buttons1_spread_levels[2]
+    								]) : {};
+    			buttons1.$set(buttons1_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(remaining.$$.fragment, local);
+
+    			transition_in(buttons0.$$.fragment, local);
+
+    			transition_in(buttons1.$$.fragment, local);
+
+    			transition_in(notification_1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(remaining.$$.fragment, local);
+    			transition_out(buttons0.$$.fragment, local);
+    			transition_out(buttons1.$$.fragment, local);
+    			transition_out(notification_1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div6);
+    			}
+
+    			destroy_component(remaining);
+
+    			destroy_component(buttons0);
+
+    			destroy_component(buttons1);
+
+    			destroy_component(notification_1);
+
+    			run_all(dispose);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$l.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$j($$self, $$props, $$invalidate) {
+    	let $notificationIsPaused;
+
+    	
+
+      notification$1.resetAll();
+      const fns1 = createFns({ instance: notification$1, component: Default, className: "notification", title: "Default", timeout: 2000 });
+      const fns2 = createFns({ instance: notification$1, component: Default, className: "notification", title: "Timeout: 0", timeout: 0 });
+      const notificationIsPaused = notification$1.isPaused(); validate_store(notificationIsPaused, 'notificationIsPaused'); component_subscribe($$self, notificationIsPaused, $$value => { $notificationIsPaused = $$value; $$invalidate('$notificationIsPaused', $notificationIsPaused); });
+
+    	const click_handler = () => notification$1.pause();
+
+    	const click_handler_1 = () => notification$1.resume();
+
+    	const click_handler_2 = () => notification$1.resetAll();
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('$notificationIsPaused' in $$props) notificationIsPaused.set($notificationIsPaused);
+    	};
+
+    	return {
+    		fns1,
+    		fns2,
+    		notificationIsPaused,
+    		$notificationIsPaused,
+    		click_handler,
+    		click_handler_1,
+    		click_handler_2
+    	};
+    }
+
+    class NotificationTimeout extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$j, create_fragment$l, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "NotificationTimeout", options, id: create_fragment$l.name });
+    	}
+    }
+
+    /* src/cypress-tests/lib-bulma/DemoContent.svelte generated by Svelte v3.12.1 */
+
+    const file$h = "src/cypress-tests/lib-bulma/DemoContent.svelte";
+
+    function create_fragment$m(ctx) {
+    	var article, div0, figure, img, t0, div3, div1, p, strong, t2, small0, t4, small1, t6, br, t7, t8, nav, div2, a0, span0, svg0, path0, t9, a1, span1, svg1, path1;
+
+    	const block = {
+    		c: function create() {
+    			article = element("article");
+    			div0 = element("div");
+    			figure = element("figure");
+    			img = element("img");
+    			t0 = space();
+    			div3 = element("div");
+    			div1 = element("div");
+    			p = element("p");
+    			strong = element("strong");
+    			strong.textContent = "John Smith";
+    			t2 = space();
+    			small0 = element("small");
+    			small0.textContent = "@johnsmith";
+    			t4 = space();
+    			small1 = element("small");
+    			small1.textContent = "31m";
+    			t6 = space();
+    			br = element("br");
+    			t7 = text("\n        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.");
+    			t8 = space();
+    			nav = element("nav");
+    			div2 = element("div");
+    			a0 = element("a");
+    			span0 = element("span");
+    			svg0 = svg_element("svg");
+    			path0 = svg_element("path");
+    			t9 = space();
+    			a1 = element("a");
+    			span1 = element("span");
+    			svg1 = svg_element("svg");
+    			path1 = svg_element("path");
+    			attr_dev(img, "src", "https://bulma.io/images/placeholders/128x128.png");
+    			attr_dev(img, "alt", "Image");
+    			add_location(img, file$h, 3, 6, 93);
+    			attr_dev(figure, "class", "image is-64x64");
+    			add_location(figure, file$h, 2, 4, 55);
+    			attr_dev(div0, "class", "media-left");
+    			add_location(div0, file$h, 1, 2, 26);
+    			add_location(strong, file$h, 9, 8, 265);
+    			add_location(small0, file$h, 9, 36, 293);
+    			add_location(small1, file$h, 9, 62, 319);
+    			add_location(br, file$h, 10, 8, 346);
+    			add_location(p, file$h, 8, 6, 253);
+    			attr_dev(div1, "class", "content");
+    			add_location(div1, file$h, 7, 4, 225);
+    			attr_dev(path0, "fill", "currentColor");
+    			attr_dev(path0, "d", "M629.657 343.598L528.971 444.284c-9.373 9.372-24.568 9.372-33.941 0L394.343 343.598c-9.373-9.373-9.373-24.569 0-33.941l10.823-10.823c9.562-9.562 25.133-9.34 34.419.492L480 342.118V160H292.451a24.005 24.005 0 0 1-16.971-7.029l-16-16C244.361 121.851 255.069 96 276.451 96H520c13.255 0 24 10.745 24 24v222.118l40.416-42.792c9.285-9.831 24.856-10.054 34.419-.492l10.823 10.823c9.372 9.372 9.372 24.569-.001 33.941zm-265.138 15.431A23.999 23.999 0 0 0 347.548 352H160V169.881l40.416 42.792c9.286 9.831 24.856 10.054 34.419.491l10.822-10.822c9.373-9.373 9.373-24.569 0-33.941L144.971 67.716c-9.373-9.373-24.569-9.373-33.941 0L10.343 168.402c-9.373 9.373-9.373 24.569 0 33.941l10.822 10.822c9.562 9.562 25.133 9.34 34.419-.491L96 169.881V392c0 13.255 10.745 24 24 24h243.549c21.382 0 32.09-25.851 16.971-40.971l-16.001-16z");
+    			add_location(path0, file$h, 18, 201, 894);
+    			attr_dev(svg0, "class", "svg-inline--fa fa-retweet fa-w-20");
+    			attr_dev(svg0, "aria-hidden", "true");
+    			attr_dev(svg0, "data-prefix", "fas");
+    			attr_dev(svg0, "data-icon", "retweet");
+    			attr_dev(svg0, "role", "img");
+    			attr_dev(svg0, "xmlns", "http://www.w3.org/2000/svg");
+    			attr_dev(svg0, "viewBox", "0 0 640 512");
+    			attr_dev(svg0, "data-fa-i2svg", "");
+    			add_location(svg0, file$h, 18, 12, 705);
+    			attr_dev(span0, "class", "icon is-small");
+    			add_location(span0, file$h, 17, 10, 664);
+    			attr_dev(a0, "class", "level-item");
+    			attr_dev(a0, "aria-label", "retweet");
+    			attr_dev(a0, "href", null);
+    			add_location(a0, file$h, 16, 8, 598);
+    			attr_dev(path1, "fill", "currentColor");
+    			attr_dev(path1, "d", "M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z");
+    			add_location(path1, file$h, 23, 197, 2082);
+    			attr_dev(svg1, "class", "svg-inline--fa fa-heart fa-w-16");
+    			attr_dev(svg1, "aria-hidden", "true");
+    			attr_dev(svg1, "data-prefix", "fas");
+    			attr_dev(svg1, "data-icon", "heart");
+    			attr_dev(svg1, "role", "img");
+    			attr_dev(svg1, "xmlns", "http://www.w3.org/2000/svg");
+    			attr_dev(svg1, "viewBox", "0 0 512 512");
+    			attr_dev(svg1, "data-fa-i2svg", "");
+    			add_location(svg1, file$h, 23, 12, 1897);
+    			attr_dev(span1, "class", "icon is-small");
+    			add_location(span1, file$h, 22, 10, 1856);
+    			attr_dev(a1, "class", "level-item");
+    			attr_dev(a1, "aria-label", "like");
+    			attr_dev(a1, "href", null);
+    			add_location(a1, file$h, 21, 8, 1793);
+    			attr_dev(div2, "class", "level-left");
+    			add_location(div2, file$h, 15, 6, 565);
+    			attr_dev(nav, "class", "level is-mobile");
+    			add_location(nav, file$h, 14, 4, 529);
+    			attr_dev(div3, "class", "media-content");
+    			add_location(div3, file$h, 6, 2, 193);
+    			attr_dev(article, "class", "media");
+    			add_location(article, file$h, 0, 0, 0);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, article, anchor);
+    			append_dev(article, div0);
+    			append_dev(div0, figure);
+    			append_dev(figure, img);
+    			append_dev(article, t0);
+    			append_dev(article, div3);
+    			append_dev(div3, div1);
+    			append_dev(div1, p);
+    			append_dev(p, strong);
+    			append_dev(p, t2);
+    			append_dev(p, small0);
+    			append_dev(p, t4);
+    			append_dev(p, small1);
+    			append_dev(p, t6);
+    			append_dev(p, br);
+    			append_dev(p, t7);
+    			append_dev(div3, t8);
+    			append_dev(div3, nav);
+    			append_dev(nav, div2);
+    			append_dev(div2, a0);
+    			append_dev(a0, span0);
+    			append_dev(span0, svg0);
+    			append_dev(svg0, path0);
+    			append_dev(div2, t9);
+    			append_dev(div2, a1);
+    			append_dev(a1, span1);
+    			append_dev(span1, svg1);
+    			append_dev(svg1, path1);
+    		},
+
+    		p: noop,
+    		i: noop,
+    		o: noop,
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(article);
+    			}
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$m.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    class DemoContent extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, null, create_fragment$m, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "DemoContent", options, id: create_fragment$m.name });
+    	}
+    }
+
+    /* src/cypress-tests/lib-bulma/DialogComponent.svelte generated by Svelte v3.12.1 */
+
+    const file$i = "src/cypress-tests/lib-bulma/DialogComponent.svelte";
+
+    function create_fragment$n(ctx) {
+    	var div3, div0, t0, div2, div1, t1, button, current, dispose;
+
+    	var democontent = new DemoContent({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div3 = element("div");
+    			div0 = element("div");
+    			t0 = space();
+    			div2 = element("div");
+    			div1 = element("div");
+    			democontent.$$.fragment.c();
+    			t1 = space();
+    			button = element("button");
+    			attr_dev(div0, "class", "modal-background");
+    			add_location(div0, file$i, 10, 2, 205);
+    			attr_dev(div1, "class", "bulma-dialog-content-box");
+    			add_location(div1, file$i, 12, 4, 319);
+    			attr_dev(div2, "class", "modal-content");
+    			add_location(div2, file$i, 11, 2, 287);
+    			attr_dev(button, "class", "modal-close is-large");
+    			attr_dev(button, "aria-label", "close");
+    			add_location(button, file$i, 16, 2, 402);
+    			attr_dev(div3, "class", "modal is-active");
+    			add_location(div3, file$i, 9, 0, 173);
+
+    			dispose = [
+    				listen_dev(div0, "click", ctx.click_handler),
+    				listen_dev(button, "click", ctx.click_handler_1)
+    			];
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div3, anchor);
+    			append_dev(div3, div0);
+    			append_dev(div3, t0);
+    			append_dev(div3, div2);
+    			append_dev(div2, div1);
+    			mount_component(democontent, div1, null);
+    			append_dev(div3, t1);
+    			append_dev(div3, button);
+    			current = true;
+    		},
+
+    		p: noop,
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(democontent.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(democontent.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div3);
+    			}
+
+    			destroy_component(democontent);
+
+    			run_all(dispose);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$n.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$k($$self, $$props, $$invalidate) {
+    	
+
+    let { isModal = false, show, hide } = $$props;
+
+    	const writable_props = ['isModal', 'show', 'hide'];
+    	Object.keys($$props).forEach(key => {
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<DialogComponent> was created with unknown prop '${key}'`);
+    	});
+
+    	const click_handler = () => !isModal && dialog$1.hide();
+
+    	const click_handler_1 = () => dialog$1.hide();
+
+    	$$self.$set = $$props => {
+    		if ('isModal' in $$props) $$invalidate('isModal', isModal = $$props.isModal);
+    		if ('show' in $$props) $$invalidate('show', show = $$props.show);
+    		if ('hide' in $$props) $$invalidate('hide', hide = $$props.hide);
+    	};
+
+    	$$self.$capture_state = () => {
+    		return { isModal, show, hide };
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('isModal' in $$props) $$invalidate('isModal', isModal = $$props.isModal);
+    		if ('show' in $$props) $$invalidate('show', show = $$props.show);
+    		if ('hide' in $$props) $$invalidate('hide', hide = $$props.hide);
+    	};
+
+    	return {
+    		isModal,
+    		show,
+    		hide,
+    		click_handler,
+    		click_handler_1
+    	};
+    }
+
+    class DialogComponent extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$k, create_fragment$n, safe_not_equal, ["isModal", "show", "hide"]);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "DialogComponent", options, id: create_fragment$n.name });
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+    		if (ctx.show === undefined && !('show' in props)) {
+    			console.warn("<DialogComponent> was created without expected prop 'show'");
+    		}
+    		if (ctx.hide === undefined && !('hide' in props)) {
+    			console.warn("<DialogComponent> was created without expected prop 'hide'");
+    		}
+    	}
+
+    	get isModal() {
+    		throw new Error("<DialogComponent>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set isModal(value) {
+    		throw new Error("<DialogComponent>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get show() {
+    		throw new Error("<DialogComponent>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set show(value) {
+    		throw new Error("<DialogComponent>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get hide() {
+    		throw new Error("<DialogComponent>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set hide(value) {
+    		throw new Error("<DialogComponent>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/cypress-tests/lib-bulma/Dialog.svelte generated by Svelte v3.12.1 */
+
+    const file$j = "src/cypress-tests/lib-bulma/Dialog.svelte";
+
+    function create_fragment$o(ctx) {
+    	var div3, div1, div0, button0, t1, button1, t3, div2, current, dispose;
+
+    	var dialog_1 = new Dialog({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div3 = element("div");
+    			div1 = element("div");
+    			div0 = element("div");
+    			button0 = element("button");
+    			button0.textContent = "Show dialog";
+    			t1 = space();
+    			button1 = element("button");
+    			button1.textContent = "Show modal dialog";
+    			t3 = space();
+    			div2 = element("div");
+    			dialog_1.$$.fragment.c();
+    			attr_dev(button0, "class", "button");
+    			add_location(button0, file$j, 8, 6, 225);
+    			attr_dev(button1, "class", "button");
+    			add_location(button1, file$j, 19, 6, 463);
+    			attr_dev(div0, "class", "buttons");
+    			add_location(div0, file$j, 7, 4, 197);
+    			attr_dev(div1, "class", "control");
+    			attr_dev(div1, "data-test-id", "hide-all");
+    			add_location(div1, file$j, 6, 2, 147);
+    			attr_dev(div2, "class", "bulma");
+    			add_location(div2, file$j, 33, 2, 749);
+    			attr_dev(div3, "class", "test");
+    			add_location(div3, file$j, 5, 0, 126);
+
+    			dispose = [
+    				listen_dev(button0, "click", ctx.click_handler),
+    				listen_dev(button1, "click", ctx.click_handler_1)
+    			];
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div3, anchor);
+    			append_dev(div3, div1);
+    			append_dev(div1, div0);
+    			append_dev(div0, button0);
+    			append_dev(div0, t1);
+    			append_dev(div0, button1);
+    			append_dev(div3, t3);
+    			append_dev(div3, div2);
+    			mount_component(dialog_1, div2, null);
+    			current = true;
+    		},
+
+    		p: noop,
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(dialog_1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(dialog_1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div3);
+    			}
+
+    			destroy_component(dialog_1);
+
+    			run_all(dispose);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$o.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$l($$self) {
+    	const click_handler = () => dialog$1.show({
+    	          dialogic: {
+    	            component: DialogComponent,
+    	            className: "dialog",
+    	          }
+    	        });
+
+    	const click_handler_1 = () => dialog$1.show({
+    	          dialogic: {
+    	            component: DialogComponent,
+    	            className: "dialog",
+    	          },
+    	          isModal: true,
+    	        });
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {};
+
+    	return { click_handler, click_handler_1 };
+    }
+
+    class Dialog_1 extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$l, create_fragment$o, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Dialog_1", options, id: create_fragment$o.name });
+    	}
+    }
+
+    /* src/cypress-tests/lib-material-io/DemoContent.svelte generated by Svelte v3.12.1 */
+
+    const file$k = "src/cypress-tests/lib-material-io/DemoContent.svelte";
+
+    function create_fragment$p(ctx) {
+    	var div2, div1, h2, t1, div0, t3, footer, button0, span0, t5, button1, span1, dispose;
+
+    	const block = {
+    		c: function create() {
+    			div2 = element("div");
+    			div1 = element("div");
+    			h2 = element("h2");
+    			h2.textContent = "Dialog Title";
+    			t1 = space();
+    			div0 = element("div");
+    			div0.textContent = "Dialog body text goes here.";
+    			t3 = space();
+    			footer = element("footer");
+    			button0 = element("button");
+    			span0 = element("span");
+    			span0.textContent = "No";
+    			t5 = space();
+    			button1 = element("button");
+    			span1 = element("span");
+    			span1.textContent = "Yes";
+    			attr_dev(h2, "class", "mdc-dialog__title");
+    			attr_dev(h2, "id", "my-dialog-title");
+    			add_location(h2, file$k, 6, 4, 138);
+    			attr_dev(div0, "class", "mdc-dialog__content");
+    			attr_dev(div0, "id", "my-dialog-content");
+    			add_location(div0, file$k, 7, 4, 211);
+    			attr_dev(span0, "class", "mdc-button__label");
+    			add_location(span0, file$k, 17, 8, 527);
+    			attr_dev(button0, "type", "button");
+    			attr_dev(button0, "class", "mdc-button mdc-dialog__button");
+    			attr_dev(button0, "data-mdc-dialog-action", "no");
+    			add_location(button0, file$k, 11, 6, 360);
+    			attr_dev(span1, "class", "mdc-button__label");
+    			add_location(span1, file$k, 25, 8, 759);
+    			attr_dev(button1, "type", "button");
+    			attr_dev(button1, "class", "mdc-button mdc-dialog__button");
+    			attr_dev(button1, "data-mdc-dialog-action", "yes");
+    			add_location(button1, file$k, 19, 6, 591);
+    			attr_dev(footer, "class", "mdc-dialog__actions");
+    			add_location(footer, file$k, 10, 4, 317);
+    			attr_dev(div1, "class", "mdc-dialog__surface");
+    			add_location(div1, file$k, 5, 2, 100);
+    			attr_dev(div2, "class", "mdc-dialog__container");
+    			add_location(div2, file$k, 4, 0, 62);
+
+    			dispose = [
+    				listen_dev(button0, "click", ctx.click_handler),
+    				listen_dev(button1, "click", ctx.click_handler_1)
+    			];
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div2, anchor);
+    			append_dev(div2, div1);
+    			append_dev(div1, h2);
+    			append_dev(div1, t1);
+    			append_dev(div1, div0);
+    			append_dev(div1, t3);
+    			append_dev(div1, footer);
+    			append_dev(footer, button0);
+    			append_dev(button0, span0);
+    			append_dev(footer, t5);
+    			append_dev(footer, button1);
+    			append_dev(button1, span1);
+    		},
+
+    		p: noop,
+    		i: noop,
+    		o: noop,
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div2);
+    			}
+
+    			run_all(dispose);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$p.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$m($$self) {
+    	const click_handler = () => dialog$1.hide();
+
+    	const click_handler_1 = () => dialog$1.hide();
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {};
+
+    	return { click_handler, click_handler_1 };
+    }
+
+    class DemoContent$1 extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$m, create_fragment$p, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "DemoContent", options, id: create_fragment$p.name });
+    	}
+    }
+
+    /* src/cypress-tests/lib-material-io/DialogComponent.svelte generated by Svelte v3.12.1 */
+
+    const file$l = "src/cypress-tests/lib-material-io/DialogComponent.svelte";
+
+    function create_fragment$q(ctx) {
+    	var div1, t, div0, current, dispose;
+
+    	var democontent = new DemoContent$1({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			democontent.$$.fragment.c();
+    			t = space();
+    			div0 = element("div");
+    			attr_dev(div0, "class", "mdc-dialog__scrim");
+    			add_location(div0, file$l, 17, 4, 360);
+    			attr_dev(div1, "class", "mdc-dialog mdc-dialog--open");
+    			attr_dev(div1, "role", "alertdialog");
+    			attr_dev(div1, "aria-modal", "true");
+    			attr_dev(div1, "aria-labelledby", "my-dialog-title");
+    			attr_dev(div1, "aria-describedby", "my-dialog-content");
+    			add_location(div1, file$l, 9, 0, 173);
+    			dispose = listen_dev(div0, "click", ctx.click_handler);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			mount_component(democontent, div1, null);
+    			append_dev(div1, t);
+    			append_dev(div1, div0);
+    			current = true;
+    		},
+
+    		p: noop,
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(democontent.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(democontent.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div1);
+    			}
+
+    			destroy_component(democontent);
+
+    			dispose();
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$q.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$n($$self, $$props, $$invalidate) {
+    	
+
+    let { isModal = false, show, hide } = $$props;
+
+    	const writable_props = ['isModal', 'show', 'hide'];
+    	Object.keys($$props).forEach(key => {
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<DialogComponent> was created with unknown prop '${key}'`);
+    	});
+
+    	const click_handler = () => !isModal && dialog$1.hide();
+
+    	$$self.$set = $$props => {
+    		if ('isModal' in $$props) $$invalidate('isModal', isModal = $$props.isModal);
+    		if ('show' in $$props) $$invalidate('show', show = $$props.show);
+    		if ('hide' in $$props) $$invalidate('hide', hide = $$props.hide);
+    	};
+
+    	$$self.$capture_state = () => {
+    		return { isModal, show, hide };
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ('isModal' in $$props) $$invalidate('isModal', isModal = $$props.isModal);
+    		if ('show' in $$props) $$invalidate('show', show = $$props.show);
+    		if ('hide' in $$props) $$invalidate('hide', hide = $$props.hide);
+    	};
+
+    	return { isModal, show, hide, click_handler };
+    }
+
+    class DialogComponent$1 extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$n, create_fragment$q, safe_not_equal, ["isModal", "show", "hide"]);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "DialogComponent", options, id: create_fragment$q.name });
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+    		if (ctx.show === undefined && !('show' in props)) {
+    			console.warn("<DialogComponent> was created without expected prop 'show'");
+    		}
+    		if (ctx.hide === undefined && !('hide' in props)) {
+    			console.warn("<DialogComponent> was created without expected prop 'hide'");
+    		}
+    	}
+
+    	get isModal() {
+    		throw new Error("<DialogComponent>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set isModal(value) {
+    		throw new Error("<DialogComponent>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get show() {
+    		throw new Error("<DialogComponent>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set show(value) {
+    		throw new Error("<DialogComponent>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get hide() {
+    		throw new Error("<DialogComponent>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set hide(value) {
+    		throw new Error("<DialogComponent>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/cypress-tests/lib-material-io/Dialog.svelte generated by Svelte v3.12.1 */
+
+    const file$m = "src/cypress-tests/lib-material-io/Dialog.svelte";
+
+    function create_fragment$r(ctx) {
+    	var div3, div1, div0, button0, t1, button1, t3, div2, current, dispose;
+
+    	var dialog_1 = new Dialog({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div3 = element("div");
+    			div1 = element("div");
+    			div0 = element("div");
+    			button0 = element("button");
+    			button0.textContent = "Show dialog";
+    			t1 = space();
+    			button1 = element("button");
+    			button1.textContent = "Show modal dialog";
+    			t3 = space();
+    			div2 = element("div");
+    			dialog_1.$$.fragment.c();
+    			attr_dev(button0, "class", "button");
+    			add_location(button0, file$m, 8, 6, 225);
+    			attr_dev(button1, "class", "button");
+    			add_location(button1, file$m, 19, 6, 463);
+    			attr_dev(div0, "class", "buttons");
+    			add_location(div0, file$m, 7, 4, 197);
+    			attr_dev(div1, "class", "control");
+    			attr_dev(div1, "data-test-id", "hide-all");
+    			add_location(div1, file$m, 6, 2, 147);
+    			attr_dev(div2, "class", "materialIO");
+    			add_location(div2, file$m, 33, 2, 749);
+    			attr_dev(div3, "class", "test");
+    			add_location(div3, file$m, 5, 0, 126);
+
+    			dispose = [
+    				listen_dev(button0, "click", ctx.click_handler),
+    				listen_dev(button1, "click", ctx.click_handler_1)
+    			];
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div3, anchor);
+    			append_dev(div3, div1);
+    			append_dev(div1, div0);
+    			append_dev(div0, button0);
+    			append_dev(div0, t1);
+    			append_dev(div0, button1);
+    			append_dev(div3, t3);
+    			append_dev(div3, div2);
+    			mount_component(dialog_1, div2, null);
+    			current = true;
+    		},
+
+    		p: noop,
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(dialog_1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(dialog_1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach_dev(div3);
+    			}
+
+    			destroy_component(dialog_1);
+
+    			run_all(dispose);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$r.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    function instance$o($$self) {
+    	const click_handler = () => dialog$1.show({
+    	          dialogic: {
+    	            component: DialogComponent$1,
+    	            className: "dialog",
+    	          }
+    	        });
+
+    	const click_handler_1 = () => dialog$1.show({
+    	          dialogic: {
+    	            component: DialogComponent$1,
+    	            className: "dialog",
+    	          },
+    	          isModal: true,
+    	        });
+
+    	$$self.$capture_state = () => {
+    		return {};
+    	};
+
+    	$$self.$inject_state = $$props => {};
+
+    	return { click_handler, click_handler_1 };
+    }
+
+    class Dialog_1$1 extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$o, create_fragment$r, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Dialog_1", options, id: create_fragment$r.name });
+    	}
+    }
+
+    var routes = {
+        "/": Home,
+        "/DialogClassName": DialogClassName,
+        "/DialogClassNameDelay": DialogClassNameDelay,
+        "/DialogStyles": DialogStyles,
+        "/DialogIds": DialogIds,
+        "/DialogCount": DialogCount,
+        "/DialogHideAll": DialogHideAll,
+        "/DialogResetAll": DialogResetAll,
+        "/DialogTimeout": DialogTimeout,
+        "/DialogQueued": DialogQueued,
+        "/NotificationCount": NotificationCount,
+        "/NotificationPause": NotificationPause,
+        "/NotificationTimeout": NotificationTimeout,
+        "/LibBulmaDialog": Dialog_1,
+        "/LibMaterialIODialog": Dialog_1$1,
+    };
+
+    /* src/App.svelte generated by Svelte v3.12.1 */
+
+    function create_fragment$s(ctx) {
+    	var current;
+
+    	var router = new Router({
+    		props: { routes: routes },
+    		$$inline: true
+    	});
+
+    	const block = {
+    		c: function create() {
+    			router.$$.fragment.c();
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			mount_component(router, target, anchor);
+    			current = true;
+    		},
+
+    		p: noop,
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(router.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(router.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			destroy_component(router, detaching);
+    		}
+    	};
+    	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$s.name, type: "component", source: "", ctx });
+    	return block;
+    }
+
+    class App extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, null, create_fragment$s, safe_not_equal, []);
+    		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "App", options, id: create_fragment$s.name });
+    	}
+    }
+
+    var app = new App({
+        target: document.body
+    });
+
+    return app;
+
+}());
 //# sourceMappingURL=bundle.js.map

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { createFns } from "./createFns";
 import { Default } from "../content/Default";
-import { buttons } from "./buttons";
+import { Buttons } from "./Buttons";
 import { dialog, Dialog, useDialogicState } from "dialogic-react";
 import { Remaining } from "./Remaining";
 
@@ -38,7 +38,7 @@ export default () => {
         <Remaining getRemainingFn={dialog.getRemaining} />
       </div>
       <div className="content">
-        {buttons({ ...fns })}
+        <Buttons { ...fns } />
       </div>
       <div className="spawn default-spawn">
         <Dialog />

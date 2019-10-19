@@ -2,7 +2,7 @@
   import { Dialog, dialog } from "dialogic-svelte";
   import Default from "./content/Default.svelte";
   import Buttons from "./Buttons.svelte";
-  import { createFns } from "./createFns";
+  import { createFns } from "./createFns.ts";
 
   dialog.resetAll();
   const fns1 = createFns({ instance: dialog, component: Default, className: "dialog", title: "DialogIds default" });

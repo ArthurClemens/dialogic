@@ -63,7 +63,7 @@ export default {
     }),
     commonjs(),
     typescript({
-      abortOnError: false
+      abortOnError: false,
     }),
 
     // If we"re building for production (npm run build

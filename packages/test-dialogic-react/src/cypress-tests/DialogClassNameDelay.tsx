@@ -1,7 +1,7 @@
 import React from "react";
 import { createFns } from "./createFns";
 import { Default } from "../content/Default";
-import { buttons } from "./buttons";
+import { Buttons } from "./Buttons";
 import { dialog, Dialog } from "dialogic-react";
 
 export default () => {
@@ -9,7 +9,7 @@ export default () => {
 
   return (
     <div className="test">
-      {buttons(fns)}
+      <Buttons {...fns} />
       <div className="spawn default-spawn">
         <Dialog />
       </div>

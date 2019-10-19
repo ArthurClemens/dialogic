@@ -3,7 +3,7 @@
   import Default from "./content/Default.svelte";
   import Buttons from "./Buttons.svelte";
   import Remaining from "./Remaining.svelte";
-  import { createFns } from "./createFns";
+  import { createFns } from "./createFns.ts";
 
   dialog.resetAll();
   const fns = createFns({ instance: dialog, component: Default, className: "dialog", title: "Default", timeout: 2000 });

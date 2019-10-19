@@ -2,9 +2,9 @@
   import { Dialog, dialog } from "dialogic-svelte";
   import Default from "./content/Default.svelte";
   import Buttons from "./Buttons.svelte";
-  import { createFns } from "./createFns";
+  import { createFns } from "./createFns.ts";
 
-  const fns = createFns({
+  const fns1 = createFns({
     instance: dialog,
     component: Default,
     title: "DialogStyles",
@@ -30,10 +30,30 @@
       }
     },
   });
+  const fns2 = createFns({
+    instance: dialog,
+    component: Default,
+    title: "DialogStyles combi",
+    className: "dialog",
+    styles: (domElement) => {
+      const height = domElement.getBoundingClientRect().height;
+      return {
+        default: {
+          transition: "all 300ms ease-in-out",
+        },
+        hideEnd: {
+          transitionDuration: "450ms",
+          transform: `translate3d(0, ${height}px, 0)`,
+          opacity: "0",
+        },
+      }
+    },
+  });
 </script>
 
 <div class="test">
-  <Buttons {...fns} />
+  <Buttons {...fns1} />
+  <Buttons {...fns2} name="combi" />
   <div class="spawn default-spawn">
     <Dialog />
   </div>

@@ -9,11 +9,11 @@ describe("Dialog: timeout", () => {
   it("getRemaining should show the remaining time", () => {
     cy.get("[data-test-id=remaining-value]").should("contain", "undefined");
     cy.get("[data-test-id=button-show-default]").should("exist").click();
-    cy.wait(500);
+    cy.wait(200);
     cy.get("[data-test-id=remaining-value]").should("not.contain", "undefined");
 
     cy.clock().then((clock) => {
-      clock.tick(500);
+      clock.tick(100);
       cy.get("[data-test-id=remaining-value]").should(($remainingValue) => {
         const text = $remainingValue.text();
         const remainingValue = parseInt(text);

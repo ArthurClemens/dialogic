@@ -1,11 +1,11 @@
 import React from "react";
 import { createFns } from "./createFns";
 import { Default } from "../content/Default";
-import { buttons } from "./buttons";
+import { Buttons as Buttons } from "./Buttons";
 import { dialog, Dialog } from "dialogic-react";
 
 export default () => {
-  const fns = createFns({
+  const fns1 = createFns({
     instance: dialog,
     component: Default,
     title: "DialogStyles",
@@ -31,10 +31,30 @@ export default () => {
       }
     },
   });
+  const fns2 = createFns({
+    instance: dialog,
+    component: Default,
+    title: "DialogStyles",
+    className: "dialog", 
+    styles: (domElement: HTMLElement) => {
+      const height = domElement.getBoundingClientRect().height;
+      return {
+        default: {
+          transition: "all 300ms ease-in-out",
+        },
+        hideEnd: {
+          transitionDuration: "450ms",
+          transform: `translate3d(0, ${height}px, 0)`,
+          opacity: "0",
+        },
+      }
+    },
+  });
 
   return (
     <div className="test">
-      {buttons(fns)}
+      <Buttons {...fns1} />
+      <Buttons {...fns2} name="combi" />
       <div className="spawn default-spawn">
         <Dialog />
       </div>

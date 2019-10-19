@@ -5,6 +5,7 @@ type Default = Component<Dialogic.ContentComponentOptions>;
 
 export const Default: Default = {
   view: ({ attrs }) => {
+    console.log("attrs.title", attrs.title);
     return m("div",
       {
         className: attrs.className,

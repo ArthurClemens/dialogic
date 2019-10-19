@@ -2,7 +2,7 @@
   import { Notification, notification } from "dialogic-svelte";
   import Default from "./content/Default.svelte";
   import Buttons from "./Buttons.svelte";
-  import { createFns } from "./createFns";
+  import { createFns } from "./createFns.ts";
 
   const fns1 = createFns({ instance: notification, component: Default, className: "notification", title: "Default" });
   const fns2 = createFns({ instance: notification, component: Default, className: "notification", id: "1", title: "ID" });

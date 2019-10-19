@@ -1,7 +1,7 @@
 import React from "react";
 import { createFns } from "./createFns";
 import { Default } from "../content/Default";
-import { buttons } from "./buttons";
+import { Buttons } from "./Buttons";
 import { dialog, Dialog, useDialogicState } from "dialogic-react";
 
 export default () => {
@@ -18,10 +18,10 @@ export default () => {
       <div className="control" data-test-id="count-spawn">{`Count spawn: ${dialog.getCount({ spawn: "1" })}`}</div>
       <div className="control" data-test-id="count-spawn-id">{`Count spawn, id: ${dialog.getCount({ spawn: "1", id: "1" })}`}</div>
       <div className="content">
-        {buttons({ ...fns1 })}
-        {buttons({ ...fns2, id: "1" })}
-        {buttons({ ...fns3, spawn: "1" })}
-        {buttons({ ...fns4, spawn: "1", id: "1" })}
+        <Buttons { ...fns1 } />
+        <Buttons { ...fns2} id="1" />
+        <Buttons { ...fns3} spawn="1" />
+        <Buttons { ...fns4} spawn="1" id="1" />
       </div>
       <div className="spawn default-spawn">
         <Dialog />
