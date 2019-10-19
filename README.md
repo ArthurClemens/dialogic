@@ -27,7 +27,11 @@
     - [Sequence of items](#sequence-of-items)
   - [`exists`](#exists)
   - [`getCount`](#getcount)
-- [TODO](#todo)
+  - [Timer functions](#timer-functions)
+    - [`pause`](#pause)
+    - [`resume`](#resume)
+    - [`isPaused`](#ispaused)
+    - [`getRemaining`](#getremaining)
 - [Size](#size)
 - [License](#license)
 
@@ -135,12 +139,22 @@ dialog.show({
 })
 ```
 
+When `queued` is `true` (which is the default for notifications), any further call to `show` will queue the item and it will be displayed when the current item has transitioned to hidden.
+
+
 **Signature**
 
-`dialog.show({ dialogic: dialogicOptions, ...componentProps }) => Promise<Item>`
+```typescript
+type Options = {
+  dialogic?: DialogicOptions; // see below
+}
 
-`notification.show({ dialogic: dialogicOptions, ...componentProps }) => Promise<Item>`
+type PassThroughOptions = {
+  [key:string]: any;
+}
 
+show: (options: Options, componentOptions?: PassThroughOptions) => Promise<Item>;
+```
 
 
 ### `hide`
@@ -161,13 +175,19 @@ dialog.hide({
 })
 ```
 
-
 **Signature**
 
-`dialog.hide({ dialogic?: dialogicOptions, ...componentProps? }) => Promise<Item>`
+```typescript
+type Options = {
+  dialogic?: DialogicOptions; // see below
+}
 
-`notification.hide({ dialogic?: dialogicOptions, ...componentProps? }) => Promise<Item>`
+type PassThroughOptions = {
+  [key:string]: any;
+}
 
+hide: (options?: Options, componentOptions?: PassThroughOptions) => Promise<Item>;
+```
 
 
 
@@ -187,8 +207,31 @@ Options passed to `show`, `hide` and `hideAll`. The options are further explaine
 | `didHide` | `(item: Dialogic.Item) => void` | No | Function called when the item is completely hidden (after transitioning). | |
 | `id` | `string` | No | Dialog identifier, useful when using multiple (stacked) items. See [Handling multiple items with identity options](#handling-multiple-items-with-identity-options) | "default_dialog" or "default_notification" |
 | `spawn` | `string` | No | Spawn identifier, useful when using multiple spawn locations. See [Handling multiple items with identity options](#handling-multiple-items-with-identity-options) | "default_spawn" |
-| `...componentProps` | `object` | No | Options to pass to the `component`. |  |
-| **Returns** | `Promise<Item>` |||
+| `...componentOptions` | `any` | No | Options to pass to the `component`. |  |
+
+
+**Signature**
+
+```typescript
+type IdentityOptions = {
+  id?: string;
+  spawn?: string;
+}
+
+type DialogicOptions = {
+  className?: string;
+  component?: any;
+  didHide?: ConfirmFn;
+  didShow?: ConfirmFn;
+  domElement?: HTMLElement;
+  queued?: boolean;
+  styles?: TransitionStyles | TransitionStylesFn;
+  timeout?: number;
+  toggle?: boolean;
+} & IdentityOptions;
+```
+
+For more type information, see [index.d.ts](https://github.com/ArthurClemens/dialogic/blob/development/packages/dialogic/index.d.ts).
 
 
 
@@ -248,7 +291,8 @@ The object is read again for every transition, so in this example the `height` o
 
 ```javascript
 styles: (domElement: HTMLElement) => {
-  const height = domElement.getBoundingClientRect().height;
+  const height = domElement.getBoundingClientRect().height
+
   return {
     default: {
       transition: "all 300ms ease-in-out",
@@ -284,20 +328,12 @@ Creates a timer. The timer starts when the item is completely shown. After timeo
 ```javascript
 dialog.show({
   dialogic: {
-    timeout: 3000
+    timeout: 3000 // in ms
   },
 })
 ```
 
-Additional timer functions:
-
-```javascript
-dialog.pause()
-dialog.resume()
-```
-
-See: timer functions.
-
+See also: [timer functions](timer-functions)
 
 
 #### `queued`
@@ -378,6 +414,8 @@ dialog.show({
 
 Hides all items. All items are transitioned to their hide state.
 
+For queued items only the first item will be transitioned - the remaining items will be removed from the queue.
+
 ```javascript
 dialog.hideAll()
 ```
@@ -390,13 +428,30 @@ dialog.hideAll({
 })
 ```
 
+Optional `dialogicOptions` may be passed with specific transition options. This comes in handy when all items should hide in the same way.
+
+```javascript
+const hideAllStyles = {
+  showEnd: {
+    opacity: "1",
+  },
+  hideEnd: {
+    transition: "all 450ms ease-in-out",
+    opacity: "0",
+  },
+}
+
+dialog.hideAll({
+  styles: hideAllStyles
+})
+```
+
+
 **Signature**
 
-`dialog.hideAll({ dialogic?: dialogicOptions }) => Promise<Item[]>`
-
-`notification.hideAll({ dialogic?: dialogicOptions }) => Promise<Item[]>`
-
-See [index.d.ts](https://github.com/ArthurClemens/dialogic/blob/development/packages/dialogic/index.d.ts) for more type information.
+```typescript
+hideAll: (dialogicOptions?: DialogicOptions) => Promise<Item[]>;
+```
 
 
 ### `resetAll`
@@ -417,18 +472,21 @@ dialog.resetAll({
 
 **Signature**
 
-`dialog.resetAll(identityOptions?) => Promise<Item[]>`
-
-`notification.resetAll(identityOptions?) => Promise<Item[]>`
-
-
+```typescript
+resetAll: (identityOptions?: IdentityOptions) => Promise<Item[]>;
+```
 
 
 ### Handling multiple items with identity options
 
 Dialogic can handle multiple items in space (simulaneous view) and in time (sequential view).
 
-Items can be differentiate using identity options:
+Dialogs and notifications each have their own namespace and are handled separately.
+
+* `dialog`: namespace "dialog"
+* `notification`: namespace "notification"
+
+Items can further be differentiated using identity options:
 
 * `id` - Differentiates simulaneous items.
 * `spawn` - Diffentiates locations from where to show items. Each Dialog or Notification component has its own `spawn` identifier.
@@ -504,7 +562,7 @@ To show a sequence of items, option `queued` must be set to `true`. `notificatio
 
 ### `exists`
 
-Returns a boolean that indicates if an item with given identity options exists.
+Returns a boolean that indicates if an item with given identity options is displayed.
 
 To check if any dialog exists:
 
@@ -522,53 +580,151 @@ const exists = dialog.exists({
 
 **Signature**
 
-`dialog.exists(identityOptions?) => boolean`
-
-`notification.exists(identityOptions?) => boolean`
-
+```typescript
+exists: (identityOptions?: IdentityOptions) => boolean;
+```
 
 ### `getCount`
 
-Returns the number that items.
+Returns the number of items. Also counts the queued items that are not yet displayed.
 
 ```javascript
-const count = dialog.getCount()
+const count = notification.getCount()
 ```
 
 When identity options are used, only resets the items that match the identity options:
 
 ```javascript
-const count = dialog.getCount({
+const count = notification.getCount({
   id: "settings", // example: use id and/or spawn
 })
 ```
 
 **Signature**
 
-`dialog.getCount(identityOptions?) => number`
-
-`notification.getCount(identityOptions?) => number`
-
-
+```typescript
+getCount: (identityOptions?: IdentityOptions) => number;
+```
 
 
-## TODO
+### Timer functions
+
+#### `pause`
+
+Pauses an item if it has a timer.
+
+Without identity options, `pause` will pause all items within the same namespace (so: all notifications, or all dialogs):
+
+```javascript
+notification.pause()
+```
+
+When identity options are used, pauses the items (within the same namespace) that match the identity options:
+
+```javascript
+notification.pause({
+  id: "settings", // example: use id and/or spawn
+})
+```
+
+**Signature**
+
+```typescript
+pause: (identityOptions?: IdentityOptions) => Promise<Item[]>;
+```
 
 
+#### `resume`
+
+Resumes a paused item.
+
+Without identity options, `resume` will resume all paused items within the same namespace (so: all notifications, or all dialogs):
+
+```javascript
+notification.resume()
+```
+
+When identity options are used, resumes the items (within the same namespace) that match the identity options:
+
+```javascript
+notification.resume({
+  id: "settings", // example: use id and/or spawn
+})
+```
+
+Optional `minimumDuration` can be passed to nudge the timer so it will show at least for `minimumDuration` ms:
+
+```javascript
+notification.resume({
+  minimumDuration: 3000
+})
+```
 
 
-* getCount
-* 
-* timer functions: pause, resume (minimumDuration)
-* isPaused, getRemaining
+**Signature**
+
+```typescript
+type TimerResumeOptions = {
+  minimumDuration?: number;
+}
+type CommandOptions = IdentityOptions & TimerResumeOptions;
+
+resume: (commandOptions?: CommandOptions) => Promise<Item[]>;
+```
+
+
+#### `isPaused`
+
+Returns whether an item has been paused.
+
+```javascript
+notification.isPaused()
+```
+
+When identity options are used, finds the item that matches the identity:
+
+```javascript
+notification.isPaused({
+  id: "settings", // example: use id and/or spawn
+})
+```
+
+
+**Signature**
+
+```typescript
+isPaused: (identityOptions?: IdentityOptions) => boolean | undefined;
+```
+
+#### `getRemaining`
+
+Returns the remaining timer duration in ms. Returns `undefined` when no timer is running. 
+
+```javascript
+const remaining = notification.getRemaining()
+```
+
+When identity options are used, finds the item that matches the identity:
+
+```javascript
+const remaining = notification.getRemaining({
+  id: "settings", // example: use id and/or spawn
+})
+```
+
+**Signature**
+
+```typescript
+getRemaining: (identityOptions?: IdentityOptions) => number | undefined;
+```
 
 
 
 ## Size
 
-* Dialogic for React: 4.3 Kb gzipped
-* Dialogic for Mithril: 4.2 Kb gzipped
-* Dialogic for Svelte: 7.4 Kb gzipped
+* Dialogic for React: 4.4 Kb gzipped
+* Dialogic for Mithril: 4.3 Kb gzipped
+* Dialogic for Svelte: 7.5 Kb gzipped
 
 ## License
 
