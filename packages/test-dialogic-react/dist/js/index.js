@@ -2018,13 +2018,12 @@ var hide = function hide(ns) {
 
       if (maybeExistingItem.just) {
         var existingItem = maybeExistingItem.just;
-        var domElement = existingItem.dialogicOptions.domElement;
 
-        var item = _objectSpread({}, maybeExistingItem.just, {
-          dialogicOptions: _objectSpread({}, existingItem, {}, dialogicOptions, {
-            domElement: domElement
-          }),
-          passThroughOptions: passThroughOptions
+        var item = _objectSpread({}, existingItem, {
+          dialogicOptions: _objectSpread({}, existingItem.dialogicOptions, {}, dialogicOptions),
+          passThroughOptions: _objectSpread({}, existingItem.passThroughOptions, {
+            passThroughOptions: passThroughOptions
+          })
         });
 
         actions.replace(ns, existingItem.id, item);
@@ -2149,8 +2148,8 @@ var getOverridingTransitionOptions = function getOverridingTransitionOptions(ite
 /**
  * Triggers a `hideItem` for each item in the store.
  * Queued items: will trigger `hideItem` only for the first item, then reset the store.
- * `dialogicOptions` may contain specific transition options. This comes in handy when all items should hide in the same manner.
- * */
+ * Optional `dialogicOptions` may be passed with specific transition options. This comes in handy when all items should hide in the same way.
+ */
 
 
 var hideAll = function hideAll(ns) {

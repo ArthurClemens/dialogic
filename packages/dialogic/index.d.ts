@@ -120,7 +120,7 @@ export namespace Dialogic {
 
   type Options = {
     dialogic?: DialogicOptions;
-  }
+  } & PassThroughOptions;
 
   type MaybeItem = {
     just?: Item;

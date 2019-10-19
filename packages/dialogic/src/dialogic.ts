@@ -167,15 +167,16 @@ export const hide = (ns: string) => (defaultDialogicOptions?: Dialogic.DefaultDi
   const maybeExistingItem: Dialogic.MaybeItem = selectors.find(ns, identityOptions);
   if (maybeExistingItem.just) {
     const existingItem = maybeExistingItem.just;
-    const domElement = existingItem.dialogicOptions.domElement;
     const item = {
-      ...maybeExistingItem.just,
+      ...existingItem,
       dialogicOptions: {
-        ...existingItem,
+        ...existingItem.dialogicOptions,
         ...dialogicOptions,
-        domElement
       },
-      passThroughOptions,
+      passThroughOptions: {
+        ...existingItem.passThroughOptions,
+        passThroughOptions
+      }
     }
     actions.replace(ns, existingItem.id, item);
     if (item.transitionState !== transitionStates.hiding) {
@@ -312,9 +313,8 @@ export const hideAll = (ns: string) => (defaultDialogicOptions: Dialogic.Default
 export const getCount = (ns: string) => (identityOptions?: Dialogic.IdentityOptions) =>
   selectors.getCount(ns, identityOptions);
 
-const transitionItem = (item: Dialogic.Item, mode: string) => {
-  return transition(item.dialogicOptions, mode);
-};
+const transitionItem = (item: Dialogic.Item, mode: string) =>
+  transition(item.dialogicOptions, mode);
 
 const deferredHideItem = async function(item: Dialogic.Item, timer: Dialogic.Timer, timeout: number) {
   timer.actions.start(() => (

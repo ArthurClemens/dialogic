@@ -147,7 +147,7 @@ When `queued` is `true` (which is the default for notifications), any further ca
 ```typescript
 type Options = {
   dialogic?: DialogicOptions; // see below
-}
+} & PassThroughOptions;
 
 type PassThroughOptions = {
   [key:string]: any;
@@ -723,7 +723,7 @@ getRemaining: (identityOptions?: IdentityOptions) => number | undefined;
 ## Size
 
 * Dialogic for React: 4.4 Kb gzipped
-* Dialogic for Mithril: 4.3 Kb gzipped
+* Dialogic for Mithril: 4.2 Kb gzipped
 * Dialogic for Svelte: 7.5 Kb gzipped
 
 ## License
