@@ -118,7 +118,7 @@ const createInstance = (ns: string) => (defaultDialogicOptions: Dialogic.Default
         return resolve(item);
       }
     };
-
+    
     const item: Dialogic.Item = {
       ns,
       identityOptions,
@@ -211,21 +211,21 @@ export const resume = (ns: string) => (defaultDialogicOptions?: Dialogic.Default
   return Promise.all(items);
 };
 
-export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getResultPromise") => (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions: Dialogic.IdentityOptions) => {
+export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getResultPromise", defaultValue: false | 0 | undefined) => (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions?: Dialogic.IdentityOptions) => {
   const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
   if (maybeItem.just) {
     if (maybeItem.just && maybeItem.just.timer) {
       return maybeItem.just.timer.selectors[timerProp]();
     } else {
-      return undefined
+      return defaultValue
     }
   } else {
-    return undefined;
+    return defaultValue;
   }
 };
 
-export const isPaused = getTimerProperty("isPaused");
-export const getRemaining = getTimerProperty("getRemaining");
+export const isPaused = getTimerProperty("isPaused", false);
+export const getRemaining = getTimerProperty("getRemaining", 0);
 
 export const exists = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions: Dialogic.IdentityOptions) =>
   !!getValidItems(ns, identityOptions).length;
@@ -320,7 +320,7 @@ const deferredHideItem = async function(item: Dialogic.Item, timer: Dialogic.Tim
   timer.actions.start(() => (
     hideItem(item)
   ), timeout);
-  return getTimerProperty("getResultPromise")
+  return getTimerProperty("getResultPromise", undefined)
 };
 
 export const showItem: Dialogic.InitiateItemTransitionFn = async function(item) {

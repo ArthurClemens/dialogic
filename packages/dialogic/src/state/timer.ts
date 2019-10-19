@@ -5,11 +5,11 @@ type PatchFn = (state: Dialogic.TimerState) => Dialogic.TimerState;
 
 const initialState = {
   callback: () => {},
-  isPaused: undefined,
+  isPaused: false,
   onAbort: () => {},
   onDone: () => {},
   promise: undefined,
-  remaining: undefined,
+  remaining: 0,
   startTime: undefined,
   timeoutFn: () => {},
   timerId: undefined,
@@ -25,7 +25,7 @@ const appendStartTimer = (state: Dialogic.TimerState, callback: Dialogic.TimerCa
     timeoutFn,
     promise: new Promise((resolve, reject) => {
       state.onDone = () => resolve();
-      state.onAbort = () => reject();
+      state.onAbort = () => resolve();
     }),
     ...(state.isPaused
       ? {}
@@ -72,8 +72,8 @@ const appendResumeTimer = (state: Dialogic.TimerState, minimumDuration?: number)
 };
 
 const getRemaining = (state: Dialogic.TimerState) => 
-  state.remaining === undefined
-    ? undefined
+  state.remaining === 0
+    ? 0
     : state.remaining - (new Date().getTime() - (state.startTime || 0));
 
 export const Timer = () => {

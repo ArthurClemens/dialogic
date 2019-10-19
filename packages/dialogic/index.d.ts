@@ -43,8 +43,8 @@ export namespace Dialogic {
     exists: (identityOptions?: IdentityOptions) => boolean;
     getCount: (identityOptions?: IdentityOptions) => number;
     // Timer state
-    isPaused: (identityOptions?: IdentityOptions) => boolean | undefined;
-    getRemaining: (identityOptions?: IdentityOptions) => number | undefined;
+    isPaused: (identityOptions?: IdentityOptions) => boolean;
+    getRemaining: (identityOptions?: IdentityOptions) => number;
   }
 
   type DefaultDialogicOptions = {
@@ -163,7 +163,7 @@ export namespace Dialogic {
     /**
      * Returns the paused state.
      */
-    isPaused: () => boolean | undefined;
+    isPaused: () => boolean;
 
     /**
      * The promise that is handled when the timer is done or canceled.
@@ -173,14 +173,14 @@ export namespace Dialogic {
     /**
      * Returns the remaining duration in milliseconds.
      */
-    getRemaining: () => number | undefined;
+    getRemaining: () => number;
   }
 
   type TimerState = {
     timerId?: number;
     startTime?: number;
-    remaining?: number;
-    isPaused?: boolean;
+    remaining: number;
+    isPaused: boolean;
     callback: TimerCallback;
     timeoutFn: () => void;
     promise?: Promise<any>;

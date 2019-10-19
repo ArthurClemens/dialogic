@@ -431,11 +431,11 @@ const selectors = {
 
 const initialState = {
     callback: () => { },
-    isPaused: undefined,
+    isPaused: false,
     onAbort: () => { },
     onDone: () => { },
     promise: undefined,
-    remaining: undefined,
+    remaining: 0,
     startTime: undefined,
     timeoutFn: () => { },
     timerId: undefined,
@@ -450,7 +450,7 @@ const appendStartTimer = (state, callback, duration, updateState) => {
         timeoutFn,
         promise: new Promise((resolve, reject) => {
             state.onDone = () => resolve();
-            state.onAbort = () => reject();
+            state.onAbort = () => resolve();
         }),
         ...(state.isPaused
             ? {}
@@ -491,8 +491,8 @@ const appendResumeTimer = (state, minimumDuration) => {
         timerId: window.setTimeout(state.timeoutFn, remaining),
     };
 };
-const getRemaining = (state) => state.remaining === undefined
-    ? undefined
+const getRemaining = (state) => state.remaining === 0
+    ? 0
     : state.remaining - (new Date().getTime() - (state.startTime || 0));
 const Timer = () => {
     const timer = {
@@ -761,22 +761,22 @@ const resume = (ns) => (defaultDialogicOptions) => (commandOptions) => {
     items.forEach((item) => item.timer && item.timer.actions.resume(options.minimumDuration));
     return Promise.all(items);
 };
-const getTimerProperty = (timerProp) => (ns) => (defaultDialogicOptions) => (identityOptions) => {
+const getTimerProperty = (timerProp, defaultValue) => (ns) => (defaultDialogicOptions) => (identityOptions) => {
     const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
     if (maybeItem.just) {
         if (maybeItem.just && maybeItem.just.timer) {
             return maybeItem.just.timer.selectors[timerProp]();
         }
         else {
-            return undefined;
+            return defaultValue;
         }
     }
     else {
-        return undefined;
+        return defaultValue;
     }
 };
-const isPaused = getTimerProperty("isPaused");
-const getRemaining$1 = getTimerProperty("getRemaining");
+const isPaused = getTimerProperty("isPaused", false);
+const getRemaining$1 = getTimerProperty("getRemaining", 0);
 const exists = (ns) => (defaultDialogicOptions) => (identityOptions) => !!getValidItems(ns, identityOptions).length;
 const getValidItems = (ns, identityOptions) => {
     const allItems = selectors.getAll(ns);
@@ -844,7 +844,7 @@ const getCount = (ns) => (identityOptions) => selectors.getCount(ns, identityOpt
 const transitionItem = (item, mode) => transition(item.dialogicOptions, mode);
 const deferredHideItem = async function (item, timer, timeout) {
     timer.actions.start(() => (hideItem(item)), timeout);
-    return getTimerProperty("getResultPromise");
+    return getTimerProperty("getResultPromise", undefined);
 };
 const showItem = async function (item) {
     if (item.transitionState !== transitionStates.displaying) {
