@@ -35,7 +35,7 @@ export namespace Dialogic {
     show: (options: Options, fnOptions?: any) => Promise<Item>;
     hide: (options?: Options, fnOptions?: any) => Promise<Item>;
     hideAll: (dialogicOptions?: Options) => Promise<Item[]>;
-    resetAll: (dialogicOptions?: Options) => Promise<Item[]>;
+    resetAll: (identityOptions?: Options) => Promise<Item[]>;
     // Timer commands
     pause: (identityOptions?: CommandOptions, fnOptions?: any) => Promise<Item>;
     resume: (commandOptions?: CommandOptions, fnOptions?: CommandOptions) => Promise<Item>;

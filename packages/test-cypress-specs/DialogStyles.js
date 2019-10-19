@@ -2,7 +2,7 @@
 
 describe("Dialog: styles", () => {
 
-  before(() => {
+  beforeEach(() => {
     cy.visit("/DialogStyles");
   });
 

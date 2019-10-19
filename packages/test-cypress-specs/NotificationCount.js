@@ -2,7 +2,7 @@
 
 describe("Notification: count", () => {
 
-  before(() => {
+  beforeEach(() => {
     cy.visit("/NotificationCount");
   });
 

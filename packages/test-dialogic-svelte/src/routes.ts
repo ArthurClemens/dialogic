@@ -4,6 +4,7 @@ import DialogClassName from "./cypress-tests/DialogClassName.svelte";
 import DialogClassNameDelay from "./cypress-tests/DialogClassNameDelay.svelte";
 import DialogStyles from "./cypress-tests/DialogStyles.svelte";
 import DialogIds from "./cypress-tests/DialogIds.svelte";
+import DialogExists from "./cypress-tests/DialogExists.svelte";
 import DialogCount from "./cypress-tests/DialogCount.svelte";
 import DialogHideAll from "./cypress-tests/DialogHideAll.svelte";
 import DialogResetAll from "./cypress-tests/DialogResetAll.svelte";
@@ -21,6 +22,7 @@ export default {
   "/DialogClassNameDelay": DialogClassNameDelay,
   "/DialogStyles": DialogStyles,
   "/DialogIds": DialogIds,
+  "/DialogExists": DialogExists,
   "/DialogCount": DialogCount,
   "/DialogHideAll": DialogHideAll,
   "/DialogResetAll": DialogResetAll,

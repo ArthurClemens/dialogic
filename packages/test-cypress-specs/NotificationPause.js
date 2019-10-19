@@ -2,7 +2,7 @@
 
 describe("Notification: pause", () => {
 
-  before(() => {
+  beforeEach(() => {
     cy.visit("/NotificationPause");
   });
 

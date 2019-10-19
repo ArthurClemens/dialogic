@@ -19,7 +19,7 @@ const showAll = () => {
 
 describe("Dialog: reset all", () => {
 
-  before(() => {
+  beforeEach(() => {
     cy.visit("/DialogResetAll");
   });
 

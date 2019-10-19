@@ -232,18 +232,16 @@ export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getRe
 export const isPaused = getTimerProperty("isPaused");
 export const getRemaining = getTimerProperty("getRemaining");
 
-export const exists = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions: Dialogic.IdentityOptions) => {
-  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
-  return !!maybeItem.just;
-};
+export const exists = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions: Dialogic.IdentityOptions) =>
+  !!getValidItems(ns, identityOptions).length;
 
-const getValidItems = (ns: string, dialogicOptions?: Dialogic.DialogicOptions) => {
+const getValidItems = (ns: string, identityOptions?: Dialogic.IdentityOptions) => {
   const allItems = selectors.getAll(ns);
   let validItems;
-  if (dialogicOptions) {
+  if (identityOptions) {
     validItems = pipe(
-      filterBySpawn(dialogicOptions),
-      filterById(dialogicOptions)
+      filterBySpawn(identityOptions),
+      filterById(identityOptions)
     )(allItems);
   } else {
     validItems = allItems;
@@ -251,8 +249,8 @@ const getValidItems = (ns: string, dialogicOptions?: Dialogic.DialogicOptions) =
   return validItems;
 };
 
-export const resetAll = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (dialogicOptions?: Dialogic.DialogicOptions) => {
-  const validItems = getValidItems(ns, dialogicOptions);
+export const resetAll = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions?: Dialogic.IdentityOptions) => {
+  const validItems = getValidItems(ns, identityOptions);
   const items: Dialogic.Item[] = [];
   
   validItems.forEach((item: Dialogic.Item) => {
@@ -260,7 +258,7 @@ export const resetAll = (ns: string) => (defaultDialogicOptions: Dialogic.Defaul
     items.push(item);
   });
 
-  if (dialogicOptions) {
+  if (identityOptions) {
     items.forEach((item: Dialogic.Item) => {
       actions.remove(ns, item.id);
     });
@@ -287,8 +285,12 @@ const getOverridingTransitionOptions = (item: Dialogic.Item, dialogicOptions: Di
  * `dialogicOptions` may contain specific transition options. This comes in handy when all items should hide in the same manner.
  * */
 export const hideAll = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (dialogicOptions?: Dialogic.DialogicOptions) => {
-  const validItems = getValidItems(ns, dialogicOptions);
   const options = dialogicOptions || {};
+  const identityOptions: Dialogic.IdentityOptions = {
+    id: options.id,
+    spawn: options.spawn
+  };
+  const validItems = getValidItems(ns, identityOptions);
   const regularItems = validItems.filter((item: Dialogic.Item) => !options.queued && !item.dialogicOptions.queued);
   const queuedItems = validItems.filter((item: Dialogic.Item) => options.queued || item.dialogicOptions.queued);
 

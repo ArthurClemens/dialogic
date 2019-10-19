@@ -19,7 +19,7 @@ const showAll = () => {
 
 describe("Dialog: hide all", () => {
 
-  before(() => {
+  beforeEach(() => {
     cy.visit("/DialogHideAll");
   });
 

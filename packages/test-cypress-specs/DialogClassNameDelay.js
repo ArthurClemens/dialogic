@@ -2,7 +2,7 @@
 
 describe("Dialog: className delay", () => {
 
-  before(() => {
+  beforeEach(() => {
     cy.visit("/DialogClassNameDelay");
   });
 

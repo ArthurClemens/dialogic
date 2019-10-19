@@ -2,7 +2,7 @@
 
 describe("Dialog: ids", () => {
 
-  before(() => {
+  beforeEach(() => {
     cy.visit("/DialogIds");
   });
 

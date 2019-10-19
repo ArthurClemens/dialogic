@@ -782,29 +782,26 @@ const getTimerProperty = (timerProp) => (ns) => (defaultDialogicOptions) => (ide
 };
 const isPaused = getTimerProperty("isPaused");
 const getRemaining$1 = getTimerProperty("getRemaining");
-const exists = (ns) => (defaultDialogicOptions) => (identityOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
-    return !!maybeItem.just;
-};
-const getValidItems = (ns, dialogicOptions) => {
+const exists = (ns) => (defaultDialogicOptions) => (identityOptions) => !!getValidItems(ns, identityOptions).length;
+const getValidItems = (ns, identityOptions) => {
     const allItems = selectors.getAll(ns);
     let validItems;
-    if (dialogicOptions) {
-        validItems = pipe(filterBySpawn(dialogicOptions), filterById(dialogicOptions))(allItems);
+    if (identityOptions) {
+        validItems = pipe(filterBySpawn(identityOptions), filterById(identityOptions))(allItems);
     }
     else {
         validItems = allItems;
     }
     return validItems;
 };
-const resetAll = (ns) => (defaultDialogicOptions) => (dialogicOptions) => {
-    const validItems = getValidItems(ns, dialogicOptions);
+const resetAll = (ns) => (defaultDialogicOptions) => (identityOptions) => {
+    const validItems = getValidItems(ns, identityOptions);
     const items = [];
     validItems.forEach((item) => {
         item.timer && item.timer.actions.abort();
         items.push(item);
     });
-    if (dialogicOptions) {
+    if (identityOptions) {
         items.forEach((item) => {
             actions.remove(ns, item.id);
         });
@@ -829,8 +826,12 @@ const getOverridingTransitionOptions = (item, dialogicOptions) => {
  * `dialogicOptions` may contain specific transition options. This comes in handy when all items should hide in the same manner.
  * */
 const hideAll = (ns) => (defaultDialogicOptions) => (dialogicOptions) => {
-    const validItems = getValidItems(ns, dialogicOptions);
     const options = dialogicOptions || {};
+    const identityOptions = {
+        id: options.id,
+        spawn: options.spawn
+    };
+    const validItems = getValidItems(ns, identityOptions);
     const regularItems = validItems.filter((item) => !options.queued && !item.dialogicOptions.queued);
     const queuedItems = validItems.filter((item) => options.queued || item.dialogicOptions.queued);
     const items = [];
@@ -958,15 +959,11 @@ const Instance = ({ attrs: componentAttrs }) => {
             domElement = vnode.dom;
             onMount();
         },
-        view: ({ attrs }) => {
-            const className = attrs.dialogicOptions.className;
-            console.log("attrs.passThroughOptions", attrs.passThroughOptions);
-            return m("div", { className }, m(attrs.dialogicOptions.component, {
-                ...attrs.passThroughOptions,
-                show,
-                hide,
-            }));
-        }
+        view: ({ attrs }) => m("div", { className: attrs.dialogicOptions.className }, m(attrs.dialogicOptions.component, {
+            ...attrs.passThroughOptions,
+            show,
+            hide,
+        }))
     };
 };
 

@@ -2,7 +2,7 @@
 
 describe("Dialog: count", () => {
 
-  before(() => {
+  beforeEach(() => {
     cy.visit("/DialogCount");
   });
 
@@ -50,6 +50,31 @@ describe("Dialog: count", () => {
     cy.get("[data-test-id=count-id]").should("contain", "Count id: 2");
     cy.get("[data-test-id=count-spawn]").should("contain", "Count spawn: 2");
     cy.get("[data-test-id=count-spawn-id]").should("contain", "Count spawn, id: 1");
+
+  });
+
+  it("should count queued items", () => {
+    cy.get("[data-test-id=count-spawn-queued]").should("contain", "Count spawn, queued: 0");
+
+    cy.get("[data-test-id=button-show-queued]").should("exist").click();
+    cy.get("[data-test-id=content-default-spawn2]").should("exist");
+
+    cy.get("[data-test-id=count-all]").should("contain", "Count all: 1");
+    cy.get("[data-test-id=count-id]").should("contain", "Count id: 0");
+    cy.get("[data-test-id=count-spawn]").should("contain", "Count spawn: 0");
+    cy.get("[data-test-id=count-spawn-id]").should("contain", "Count spawn, id: 0");
+    cy.get("[data-test-id=count-spawn-queued]").should("contain", "Count spawn, queued: 1");
+
+    cy.get("[data-test-id=button-show-queued]").should("exist").click();
+    cy.wait(100);
+    cy.get("[data-test-id=button-show-queued]").should("exist").click();
+    cy.wait(100);
+
+    cy.get("[data-test-id=count-all]").should("contain", "Count all: 3");
+    cy.get("[data-test-id=count-id]").should("contain", "Count id: 0");
+    cy.get("[data-test-id=count-spawn]").should("contain", "Count spawn: 0");
+    cy.get("[data-test-id=count-spawn-id]").should("contain", "Count spawn, id: 0");
+    cy.get("[data-test-id=count-spawn-queued]").should("contain", "Count spawn, queued: 3");
 
   });
 

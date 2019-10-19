@@ -35,11 +35,9 @@ export const Instance: InstanceFn = ({ attrs: componentAttrs }) => {
       domElement = vnode.dom as HTMLElement;
       onMount();
     },
-    view: ({ attrs }) => {
-      const className = attrs.dialogicOptions.className;
-      console.log("attrs.passThroughOptions", attrs.passThroughOptions);
-      return m("div",
-        { className },
+    view: ({ attrs }) =>
+      m("div",
+        { className: attrs.dialogicOptions.className },
         m(attrs.dialogicOptions.component,
           {
             ...attrs.passThroughOptions,
@@ -48,6 +46,5 @@ export const Instance: InstanceFn = ({ attrs: componentAttrs }) => {
           }
         )
       )
-    }
   };
 };

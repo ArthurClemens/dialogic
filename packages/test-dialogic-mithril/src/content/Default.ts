@@ -4,9 +4,8 @@ import { Dialogic } from "dialogic";
 type Default = Component<Dialogic.ContentComponentOptions>;
 
 export const Default: Default = {
-  view: ({ attrs }) => {
-    console.log("attrs.title", attrs.title);
-    return m("div",
+  view: ({ attrs }) =>
+    m("div",
       {
         className: attrs.className,
         "data-test-id": `content-default${attrs.contentId ? `-${attrs.contentId}` : ''}`
@@ -22,6 +21,5 @@ export const Default: Default = {
           "Hide from component"
         )
       ]
-    );
-  }
+    )
 };

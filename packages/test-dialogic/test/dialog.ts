@@ -104,57 +104,59 @@ test.serial("toggle: should show and hide the item", t => {
 
 test.serial("resetAll (no dialogic options specified): should remove all", t => {
   dialog.resetAll();
-  const spawn = "reset-all";
-  const createDialog = (id: string) => {
+  const createDialog = (identityOptions?: object) => {
     const options = {
-      dialogic: {
-        id,
-        spawn
-      }
+      dialogic: identityOptions
     };
     return dialog.show(options);
-  }
+  };
 
   return Promise.all([
-    createDialog("1"),
-    createDialog("2")
+    createDialog(),
+    createDialog({ id: "1" }),
+    createDialog({ id: "2", spawn: "reset-all" })
   ]).then(items => {
-    t.is(items.length, 2);
-    t.is(dialog.exists({ id: "1", spawn }), true);
-    t.is(dialog.exists({ id: "2", spawn }), true);
+    t.is(items.length, 3);
+    t.is(dialog.exists(), true);
+    t.is(dialog.exists({ id: "1" }), true);
+    t.is(dialog.exists({ id: "2", spawn: "reset-all" }), true);
 
     return dialog.resetAll()
       .then(() => {
-        t.is(dialog.exists({ id: "1", spawn }), false);
-        t.is(dialog.exists({ id: "2", spawn }), false);
+        t.is(dialog.exists(), false);
+        t.is(dialog.exists({ id: "1" }), false);
+        t.is(dialog.exists({ id: "2", spawn: "reset-all" }), false);
       });
   });
 });
 
 test.serial("resetAll (different spawn specified): should remove some", t => {
   dialog.resetAll();
-  const createDialog = (id: string) => {
+  const createDialog = (identityOptions?: object) => {
     const options = {
-      dialogic: {
-        id,
-        spawn: `reset-all-${id}`
-      }
+      dialogic: identityOptions
     };
     return dialog.show(options);
-  }
+  };
 
   return Promise.all([
-    createDialog("1"),
-    createDialog("2")
+    createDialog(),
+    createDialog({ id: "1" }),
+    createDialog({ id: "2", spawn: "reset-all-1" }),
+    createDialog({ spawn: "reset-all-2" }),
   ]).then(items => {
-    t.is(items.length, 2);
-    t.is(dialog.exists({ id: "1", spawn: "reset-all-1" }), true);
-    t.is(dialog.exists({ id: "2", spawn: "reset-all-2" }), true);
+    t.is(items.length, 4);
+    t.is(dialog.exists(), true);
+    t.is(dialog.exists({ id: "1" }), true);
+    t.is(dialog.exists({ id: "2", spawn: "reset-all-1" }), true);
+    t.is(dialog.exists({ spawn: "reset-all-2" }), true);
 
     return dialog.resetAll({ spawn: "reset-all-1" })
       .then(items => {
-        t.is(dialog.exists({ id: "1", spawn: "reset-all-1" }), false);
-        t.is(dialog.exists({ id: "2", spawn: "reset-all-2" }), true);
+        t.is(dialog.exists(), true);
+        t.is(dialog.exists({ id: "1" }), true);
+        t.is(dialog.exists({ id: "2", spawn: "reset-all-1" }), false);
+        t.is(dialog.exists({ spawn: "reset-all-2" }), true);
       });
   });
 });

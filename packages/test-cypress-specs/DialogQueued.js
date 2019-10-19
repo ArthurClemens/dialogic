@@ -2,7 +2,7 @@
 
 describe("Dialog: queued", () => {
 
-  before(() => {
+  beforeEach(() => {
     cy.visit("/DialogQueued");
   });
 

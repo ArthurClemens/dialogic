@@ -3,6 +3,7 @@ import DialogClassName from "./cypress-tests/DialogClassName";
 import DialogClassNameDelay from "./cypress-tests/DialogClassNameDelay";
 import DialogStyles from "./cypress-tests/DialogStyles";
 import DialogIds from "./cypress-tests/DialogIds";
+import DialogExists from "./cypress-tests/DialogExists";
 import DialogCount from "./cypress-tests/DialogCount";
 import DialogHideAll from "./cypress-tests/DialogHideAll";
 import DialogResetAll from "./cypress-tests/DialogResetAll";
@@ -36,6 +37,7 @@ const routes = {
   "/DialogClassNameDelay": DialogClassNameDelay,
   "/DialogStyles": DialogStyles,
   "/DialogIds": DialogIds,
+  "/DialogExists": DialogExists,
   "/DialogCount": DialogCount,
   "/DialogHideAll": DialogHideAll,
   "/DialogResetAll": DialogResetAll,

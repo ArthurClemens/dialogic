@@ -8,22 +8,25 @@
   - [Dialog and Notification component](#dialog-and-notification-component)
     - [Options](#options)
   - [`show`](#show)
-    - [`dialogic` options](#dialogic-options)
-      - [`component`](#component)
-      - [`className`](#classname)
-      - [`styles`](#styles)
-      - [`timeout`](#timeout)
-      - [`queued`](#queued)
-      - [`toggle`](#toggle)
-      - [`didShow`](#didshow)
-      - [`didHide`](#didhide)
-    - [Component options](#component-options)
   - [`hide`](#hide)
-    - [`dialogic` options](#dialogic-options-1)
+  - [`dialogic` options](#dialogic-options)
+    - [`component`](#component)
+    - [`className`](#classname)
+    - [`styles`](#styles)
+    - [`timeout`](#timeout)
+    - [`queued`](#queued)
+    - [`toggle`](#toggle)
+    - [`didShow`](#didshow)
+    - [`didHide`](#didhide)
+    - [Component options](#component-options)
+  - [`hideAll`](#hideall)
+  - [`resetAll`](#resetall)
   - [Handling multiple items with identity options](#handling-multiple-items-with-identity-options)
     - [Simultaneous, at the same location](#simultaneous-at-the-same-location)
     - [Simultaneous, at different locations](#simultaneous-at-different-locations)
     - [Sequence of items](#sequence-of-items)
+  - [`exists`](#exists)
+  - [`getCount`](#getcount)
 - [TODO](#todo)
 - [Size](#size)
 - [License](#license)
@@ -88,7 +91,7 @@ The usage of the component varies somewhat per JS library - see library specific
 
 ### Dialog and Notification component
 
-Location where the dialog or notification (hereafter: "item") will be drawn.
+Location where the dialog or notification (after this: "item") will be drawn.
 
 With Mithril:
 
@@ -106,7 +109,7 @@ With React:
 
 With Svelte:
 
-```javascript
+```jsx
 <Dialog />
 <Dialog spawn="settings" />
 ```
@@ -120,7 +123,7 @@ With Svelte:
 
 ### `show`
 
-Shows a dialog.
+Shows an item.
 
 ```javascript
 dialog.show({
@@ -134,16 +137,43 @@ dialog.show({
 
 **Signature**
 
-`dialog.show({ dialogic: itemProps, ...componentProps }) => Promise<Item>`
+`dialog.show({ dialogic: dialogicOptions, ...componentProps }) => Promise<Item>`
 
-`notification.show({ dialogic: itemProps, ...componentProps }) => Promise<Item>`
-
-See [index.d.ts](https://github.com/ArthurClemens/dialogic/blob/development/packages/dialogic/index.d.ts) for more type information.
+`notification.show({ dialogic: dialogicOptions, ...componentProps }) => Promise<Item>`
 
 
-#### `dialogic` options
 
-Options are explained in more detail below.
+### `hide`
+
+Hides an item.
+
+```javascript
+dialog.hide()
+```
+
+When identity options are used, only hides the item that match the identity options:
+
+```javascript
+dialog.hide({
+  dialogic: {
+    id: "settings", // example: use id and/or spawn
+  }
+})
+```
+
+
+**Signature**
+
+`dialog.hide({ dialogic?: dialogicOptions, ...componentProps? }) => Promise<Item>`
+
+`notification.hide({ dialogic?: dialogicOptions, ...componentProps? }) => Promise<Item>`
+
+
+
+
+### `dialogic` options
+
+Options passed to `show`, `hide` and `hideAll`. The options are further explained below.
 
 | **Name** | **Type** | **Required** | **Description** | **Default value** |
 | --- | --- | --- | --- | --- | 
@@ -162,14 +192,14 @@ Options are explained in more detail below.
 
 
 
-##### `component`
+#### `component`
 
 Pass the component that will be rendered.
 
 * [Example with Mithril](./packages/dialogic-mithril/README.md#component)
 
 
-##### `className`
+#### `className`
 
 Create transitions by writing styles using the format `className-suffix` - where suffix is defined by its transition point.
 
@@ -200,7 +230,7 @@ Define those classes in CSS to create transitions. For example with `className` 
 }
 ```
 
-##### `styles`
+#### `styles`
 
 Pass a style object in JavaScript instead of using a CSS file. This allows for more dynamic styling based on the current element state.
 
@@ -247,7 +277,7 @@ dialog.show({
 ```
 
 
-##### `timeout`
+#### `timeout`
 
 Creates a timer. The timer starts when the item is completely shown. After timeout the item will be hidden. Use `0` to prevent the timer from running.
 
@@ -270,7 +300,7 @@ See: timer functions.
 
 
 
-##### `queued`
+#### `queued`
 
 When `true`, items are shown sequentially, instead of replacing the previous item (when using the same `id` and `spawn`) or shown simultaneously (when using a different `id` or `spawn`).
 
@@ -285,7 +315,7 @@ dialog.show({
 ```
 
 
-##### `toggle`
+#### `toggle`
 
 Set to `true` to make `dialog.show()` switch between shown and hidden state.
 
@@ -300,7 +330,7 @@ dialog.show({
 ```
 
 
-##### `didShow`
+#### `didShow`
 
 Function called when the item is completely shown (after transitioning).
 
@@ -314,7 +344,7 @@ dialog.show({
 })
 ```
 
-##### `didHide`
+#### `didHide`
 
 Function called when the item is completely hidden (after transitioning).
 
@@ -343,50 +373,54 @@ dialog.show({
 })
 ```
 
-### `hide`
 
-Hides an item.
+### `hideAll`
+
+Hides all items. All items are transitioned to their hide state.
 
 ```javascript
-dialog.hide()
+dialog.hideAll()
 ```
 
-When identity options are used:
+When identity options are used, only hides the items that match the identity options:
 
 ```javascript
-dialog.show({
-  dialogic: {
-    id: "settings",
-    // and/or spawn
-  }
+dialog.hideAll({
+  id: "settings", // example: use id and/or spawn
 })
 ```
-
-```javascript
-dialog.hide({
-  id: "settings",
-  // and/or spawn
-})
-```
-
 
 **Signature**
 
-`dialog.hide(identityProps) => Promise<Item>`
+`dialog.hideAll({ dialogic?: dialogicOptions }) => Promise<Item[]>`
 
-`notification.hide(identityProps) => Promise<Item>`
+`notification.hideAll({ dialogic?: dialogicOptions }) => Promise<Item[]>`
 
 See [index.d.ts](https://github.com/ArthurClemens/dialogic/blob/development/packages/dialogic/index.d.ts) for more type information.
 
-#### `dialogic` options
 
-Options are explained in more detail below.
+### `resetAll`
 
-| **Name** | **Type** | **Required** | **Description** | **Default value** |
-| --- | --- | --- | --- | --- | 
-| `id` | `string` | No | Dialog identifier, useful when using multiple (stacked) items. See [Handling multiple items with identity options](#handling-multiple-items-with-identity-options) | "default_dialog" or "default_notification" |
-| `spawn` | `string` | No | Spawn identifier, useful when using multiple spawn locations. See [Handling multiple items with identity options](#handling-multiple-items-with-identity-options) | "default_spawn" |
-| **Returns** | `Promise<Item>` |||
+Resets and hides all items. All items are reset without any transitions.
+
+```javascript
+dialog.resetAll()
+```
+
+When identity options are used, only resets the items that match the identity options:
+
+```javascript
+dialog.resetAll({
+  id: "settings", // example: use id and/or spawn
+})
+```
+
+**Signature**
+
+`dialog.resetAll(identityOptions?) => Promise<Item[]>`
+
+`notification.resetAll(identityOptions?) => Promise<Item[]>`
+
 
 
 
@@ -468,14 +502,63 @@ To show a sequence of items, option `queued` must be set to `true`. `notificatio
 
 
 
+### `exists`
+
+Returns a boolean that indicates if an item with given identity options exists.
+
+To check if any dialog exists:
+
+```javascript
+const exists = dialog.exists()
+```
+
+When identity options are used, only checks for items that match the identity options:
+
+```javascript
+const exists = dialog.exists({
+  id: "settings", // example: use id and/or spawn
+})
+```
+
+**Signature**
+
+`dialog.exists(identityOptions?) => boolean`
+
+`notification.exists(identityOptions?) => boolean`
+
+
+### `getCount`
+
+Returns the number that items.
+
+```javascript
+const count = dialog.getCount()
+```
+
+When identity options are used, only resets the items that match the identity options:
+
+```javascript
+const count = dialog.getCount({
+  id: "settings", // example: use id and/or spawn
+})
+```
+
+**Signature**
+
+`dialog.getCount(identityOptions?) => number`
+
+`notification.getCount(identityOptions?) => number`
+
+
+
+
 ## TODO
 
 
 
-* hideAll
-* resetAll
-* exists
+
 * getCount
+* 
 * timer functions: pause, resume (minimumDuration)
 * isPaused, getRemaining
 
