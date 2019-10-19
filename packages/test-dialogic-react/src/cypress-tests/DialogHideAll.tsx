@@ -11,6 +11,16 @@ export default () => {
   const fns3 = createFns({ instance: dialog, component: Default, className: "dialog",       spawn: "1", title: "Spawn" });
   const fns4 = createFns({ instance: dialog, component: Default, className: "dialog",       spawn: "1", id: "1", title: "Spawn and ID" });
 
+  const hideAllStyles = {
+    showEnd: {
+      opacity: "1",
+    },
+    hideEnd: {
+      transition: "all 450ms ease-in-out",
+      opacity: "0",
+    },
+  };
+
   return (
     <div className="test">
       <div className="control" data-test-id="count-all">{`Count all: ${dialog.getCount()}`}</div>
@@ -21,6 +31,9 @@ export default () => {
         <div className="buttons">
           <button className="button" data-test-id="button-hide-all" onClick={() => dialog.hideAll()}>
             Hide all
+          </button>
+          <button className="button" data-test-id="button-hide-all-simultaneously" onClick={() => dialog.hideAll({ styles: hideAllStyles })}>
+            Hide all simultaneously
           </button>
           <button className="button" data-test-id="button-hide-all-id" onClick={() => dialog.hideAll({ id: "1" })}>
             Hide all with id

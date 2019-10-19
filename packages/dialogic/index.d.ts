@@ -32,20 +32,20 @@ export namespace Dialogic {
     // Configuration
     defaultDialogicOptions: DefaultDialogicOptions;
     // Commands
-    show: (options: Options, fnOptions?: any) => Promise<Item>;
-    hide: (options?: Options, fnOptions?: any) => Promise<Item>;
-    hideAll: (dialogicOptions?: Options) => Promise<Item[]>;
-    resetAll: (identityOptions?: Options) => Promise<Item[]>;
+    show: (options: Options, componentOptions?: PassThroughOptions) => Promise<Item>;
+    hide: (options?: Options, componentOptions?: PassThroughOptions) => Promise<Item>;
+    hideAll: (dialogicOptions?: DialogicOptions) => Promise<Item[]>;
+    resetAll: (identityOptions?: IdentityOptions) => Promise<Item[]>;
     // Timer commands
-    pause: (identityOptions?: CommandOptions, fnOptions?: any) => Promise<Item>;
-    resume: (commandOptions?: CommandOptions, fnOptions?: CommandOptions) => Promise<Item>;
+    pause: (identityOptions?: IdentityOptions) => Promise<Item[]>;
+    resume: (commandOptions?: CommandOptions) => Promise<Item[]>;
     // State
     exists: (identityOptions?: IdentityOptions) => boolean;
     getCount: (identityOptions?: IdentityOptions) => number;
     // Timer state
     isPaused: (identityOptions?: IdentityOptions) => boolean | undefined;
     getRemaining: (identityOptions?: IdentityOptions) => number | undefined;
-  };
+  }
 
   type DefaultDialogicOptions = {
     id: string;
@@ -83,7 +83,7 @@ export namespace Dialogic {
     onHide: DialogicalInstanceDispatchFn;
   }
   
-  interface PassThroughOptions {
+  type PassThroughOptions = {
     [key:string]: any;
   }
   
@@ -112,17 +112,15 @@ export namespace Dialogic {
     didHide?: ConfirmFn;
     didShow?: ConfirmFn;
     domElement?: HTMLElement;
-    id?: string;
     queued?: boolean;
-    spawn?: string;
     styles?: TransitionStyles | TransitionStylesFn;
     timeout?: number;
     toggle?: boolean;
-  } & TimerResumeOptions;
+  } & IdentityOptions;
 
   type Options = {
     dialogic?: DialogicOptions;
-  } & PassThroughOptions;
+  }
 
   type MaybeItem = {
     just?: Item;

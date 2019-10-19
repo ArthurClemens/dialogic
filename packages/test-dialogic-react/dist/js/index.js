@@ -1849,22 +1849,6 @@ var transitionStates = {
   hiding: 2
 };
 
-var performOnItem = function performOnItem(fn) {
-  return function (ns) {
-    return function (defaultDialogicOptions) {
-      return function (options) {
-        var maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(options);
-
-        if (maybeItem.just) {
-          return fn(ns, maybeItem.just, options);
-        } else {
-          return Promise.resolve();
-        }
-      };
-    };
-  };
-};
-
 var getMaybeItem = function getMaybeItem(ns) {
   return function (defaultDialogicOptions) {
     return function (identityOptions) {
@@ -2057,22 +2041,38 @@ var hide = function hide(ns) {
   };
 };
 
-var pause = performOnItem(function (ns, item) {
-  if (item && item.timer) {
-    item.timer.actions.pause();
-  }
+var pause = function pause(ns) {
+  return function (defaultDialogicOptions) {
+    return function (identityOptions) {
+      var items = getValidItems(ns, identityOptions).filter(function (item) {
+        return !!item.timer;
+      });
+      items.forEach(function (item) {
+        return item.timer && item.timer.actions.pause();
+      });
+      return Promise.all(items);
+    };
+  };
+};
 
-  return Promise.resolve(item);
-});
-var resume = performOnItem(function (ns, item) {
-  var commandOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-  if (item && item.timer) {
-    item.timer.actions.resume(commandOptions.minimumDuration);
-  }
-
-  return Promise.resolve(item);
-});
+var resume = function resume(ns) {
+  return function (defaultDialogicOptions) {
+    return function (commandOptions) {
+      var options = commandOptions || {};
+      var identityOptions = {
+        id: options.id,
+        spawn: options.spawn
+      };
+      var items = getValidItems(ns, identityOptions).filter(function (item) {
+        return !!item.timer;
+      });
+      items.forEach(function (item) {
+        return item.timer && item.timer.actions.resume(options.minimumDuration);
+      });
+      return Promise.all(items);
+    };
+  };
+};
 
 var getTimerProperty = function getTimerProperty(timerProp) {
   return function (ns) {
@@ -33475,7 +33475,7 @@ if (false) {} else {
 /*!****************************************************************!*\
   !*** ../node_modules/react-router-dom/esm/react-router-dom.js ***!
   \****************************************************************/
-/*! exports provided: MemoryRouter, Prompt, Redirect, Route, Router, StaticRouter, Switch, __RouterContext, generatePath, matchPath, useHistory, useLocation, useParams, useRouteMatch, withRouter, BrowserRouter, HashRouter, Link, NavLink */
+/*! exports provided: BrowserRouter, HashRouter, Link, NavLink, MemoryRouter, Prompt, Redirect, Route, Router, StaticRouter, Switch, __RouterContext, generatePath, matchPath, useHistory, useLocation, useParams, useRouteMatch, withRouter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38948,6 +38948,15 @@ __webpack_require__.r(__webpack_exports__);
     const fns2 = Object(_createFns__WEBPACK_IMPORTED_MODULE_1__["createFns"])({ instance: dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"], component: _content_Default__WEBPACK_IMPORTED_MODULE_2__["Default"], className: "dialog dialog-delay", id: "1", title: "ID" });
     const fns3 = Object(_createFns__WEBPACK_IMPORTED_MODULE_1__["createFns"])({ instance: dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"], component: _content_Default__WEBPACK_IMPORTED_MODULE_2__["Default"], className: "dialog", spawn: "1", title: "Spawn" });
     const fns4 = Object(_createFns__WEBPACK_IMPORTED_MODULE_1__["createFns"])({ instance: dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"], component: _content_Default__WEBPACK_IMPORTED_MODULE_2__["Default"], className: "dialog", spawn: "1", id: "1", title: "Spawn and ID" });
+    const hideAllStyles = {
+        showEnd: {
+            opacity: "1",
+        },
+        hideEnd: {
+            transition: "all 450ms ease-in-out",
+            opacity: "0",
+        },
+    };
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "test" },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "control", "data-test-id": "count-all" }, `Count all: ${dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"].getCount()}`),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "control", "data-test-id": "count-id" }, `Count id: ${dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"].getCount({ id: "1" })}`),
@@ -38956,6 +38965,7 @@ __webpack_require__.r(__webpack_exports__);
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "control", "data-test-id": "hide-all" },
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "buttons" },
                 react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button", "data-test-id": "button-hide-all", onClick: () => dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"].hideAll() }, "Hide all"),
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button", "data-test-id": "button-hide-all-simultaneously", onClick: () => dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"].hideAll({ styles: hideAllStyles }) }, "Hide all simultaneously"),
                 react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button", "data-test-id": "button-hide-all-id", onClick: () => dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"].hideAll({ id: "1" }) }, "Hide all with id"),
                 react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button", "data-test-id": "button-hide-all-spawn", onClick: () => dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"].hideAll({ spawn: "1" }) }, "Hide all with spawn"),
                 react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button", "data-test-id": "button-hide-all-spawn-id", onClick: () => dialogic_react__WEBPACK_IMPORTED_MODULE_4__["dialog"].hideAll({ id: "1", spawn: "1" }) }, "Hide all with spawn and id"))),

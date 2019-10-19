@@ -1813,15 +1813,6 @@ var app = (function () {
         displaying: 1,
         hiding: 2,
     };
-    const performOnItem = fn => ns => defaultDialogicOptions => (options) => {
-        const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(options);
-        if (maybeItem.just) {
-            return fn(ns, maybeItem.just, options);
-        }
-        else {
-            return Promise.resolve();
-        }
-    };
     const getMaybeItem = (ns) => (defaultDialogicOptions) => (identityOptions) => selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
     const filterBySpawn = (identityOptions) => (items) => identityOptions.spawn !== undefined
         ? items.filter(item => (item.identityOptions.spawn === identityOptions.spawn))
@@ -1960,18 +1951,23 @@ var app = (function () {
         }
         return Promise.resolve();
     };
-    const pause = performOnItem((ns, item) => {
-        if (item && item.timer) {
-            item.timer.actions.pause();
-        }
-        return Promise.resolve(item);
-    });
-    const resume = performOnItem((ns, item, commandOptions = {}) => {
-        if (item && item.timer) {
-            item.timer.actions.resume(commandOptions.minimumDuration);
-        }
-        return Promise.resolve(item);
-    });
+    const pause = (ns) => (defaultDialogicOptions) => (identityOptions) => {
+        const items = getValidItems(ns, identityOptions)
+            .filter(item => !!item.timer);
+        items.forEach((item) => item.timer && item.timer.actions.pause());
+        return Promise.all(items);
+    };
+    const resume = (ns) => (defaultDialogicOptions) => (commandOptions) => {
+        const options = commandOptions || {};
+        const identityOptions = {
+            id: options.id,
+            spawn: options.spawn
+        };
+        const items = getValidItems(ns, identityOptions)
+            .filter(item => !!item.timer);
+        items.forEach((item) => item.timer && item.timer.actions.resume(options.minimumDuration));
+        return Promise.all(items);
+    };
     const getTimerProperty = (timerProp) => (ns) => (defaultDialogicOptions) => (identityOptions) => {
         const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
         if (maybeItem.just) {
@@ -2029,8 +2025,8 @@ var app = (function () {
     /**
      * Triggers a `hideItem` for each item in the store.
      * Queued items: will trigger `hideItem` only for the first item, then reset the store.
-     * `dialogicOptions` may contain specific transition options. This comes in handy when all items should hide in the same manner.
-     * */
+     * Optional `dialogicOptions` may be passed with specific transition options. This comes in handy when all items should hide in the same way.
+     */
     const hideAll = (ns) => (defaultDialogicOptions) => (dialogicOptions) => {
         const options = dialogicOptions || {};
         const identityOptions = {
@@ -4502,7 +4498,7 @@ var app = (function () {
     const file$a = "src/cypress-tests/DialogHideAll.svelte";
 
     function create_fragment$f(ctx) {
-    	var div9, div0, t0_value = `Count all: ${ctx.$dialogCount}` + "", t0, t1, div1, t2_value = `Count id: ${ctx.$dialogCountId1}` + "", t2, t3, div2, t4_value = `Count spawn: ${ctx.$dialogCountSpawn1}` + "", t4, t5, div3, t6_value = `Count spawn, id: ${ctx.$dialogCountSpawn1Id1}` + "", t6, t7, div5, div4, button0, t9, button1, t11, button2, t13, button3, t15, div6, t16, t17, t18, t19, div7, t20, div8, current, dispose;
+    	var div9, div0, t0_value = `Count all: ${ctx.$dialogCount}` + "", t0, t1, div1, t2_value = `Count id: ${ctx.$dialogCountId1}` + "", t2, t3, div2, t4_value = `Count spawn: ${ctx.$dialogCountSpawn1}` + "", t4, t5, div3, t6_value = `Count spawn, id: ${ctx.$dialogCountSpawn1Id1}` + "", t6, t7, div5, div4, button0, t9, button1, t11, button2, t13, button3, t15, button4, t17, div6, t18, t19, t20, t21, div7, t22, div8, current, dispose;
 
     	var buttons0_spread_levels = [
     		ctx.fns1
@@ -4573,71 +4569,78 @@ var app = (function () {
     			button0.textContent = "Hide all";
     			t9 = space();
     			button1 = element("button");
-    			button1.textContent = "Hide all with id";
+    			button1.textContent = "Hide all simultaneously";
     			t11 = space();
     			button2 = element("button");
-    			button2.textContent = "Hide all with spawn";
+    			button2.textContent = "Hide all with id";
     			t13 = space();
     			button3 = element("button");
-    			button3.textContent = "Hide all with spawn and id";
+    			button3.textContent = "Hide all with spawn";
     			t15 = space();
+    			button4 = element("button");
+    			button4.textContent = "Hide all with spawn and id";
+    			t17 = space();
     			div6 = element("div");
     			buttons0.$$.fragment.c();
-    			t16 = space();
-    			buttons1.$$.fragment.c();
-    			t17 = space();
-    			buttons2.$$.fragment.c();
     			t18 = space();
-    			buttons3.$$.fragment.c();
+    			buttons1.$$.fragment.c();
     			t19 = space();
+    			buttons2.$$.fragment.c();
+    			t20 = space();
+    			buttons3.$$.fragment.c();
+    			t21 = space();
     			div7 = element("div");
     			dialog0.$$.fragment.c();
-    			t20 = space();
+    			t22 = space();
     			div8 = element("div");
     			dialog1.$$.fragment.c();
     			attr_dev(div0, "class", "control");
     			attr_dev(div0, "data-test-id", "count-all");
-    			add_location(div0, file$a, 17, 2, 930);
+    			add_location(div0, file$a, 27, 2, 1102);
     			attr_dev(div1, "class", "control");
     			attr_dev(div1, "data-test-id", "count-id");
-    			add_location(div1, file$a, 18, 2, 1015);
+    			add_location(div1, file$a, 28, 2, 1187);
     			attr_dev(div2, "class", "control");
     			attr_dev(div2, "data-test-id", "count-spawn");
-    			add_location(div2, file$a, 19, 2, 1101);
+    			add_location(div2, file$a, 29, 2, 1273);
     			attr_dev(div3, "class", "control");
     			attr_dev(div3, "data-test-id", "count-spawn-id");
-    			add_location(div3, file$a, 20, 2, 1196);
+    			add_location(div3, file$a, 30, 2, 1368);
     			attr_dev(button0, "class", "button");
     			attr_dev(button0, "data-test-id", "button-hide-all");
-    			add_location(button0, file$a, 23, 6, 1379);
+    			add_location(button0, file$a, 33, 6, 1551);
     			attr_dev(button1, "class", "button");
-    			attr_dev(button1, "data-test-id", "button-hide-all-id");
-    			add_location(button1, file$a, 26, 6, 1507);
+    			attr_dev(button1, "data-test-id", "button-hide-all-simultaneously");
+    			add_location(button1, file$a, 36, 6, 1679);
     			attr_dev(button2, "class", "button");
-    			attr_dev(button2, "data-test-id", "button-hide-all-spawn");
-    			add_location(button2, file$a, 29, 6, 1657);
+    			attr_dev(button2, "data-test-id", "button-hide-all-id");
+    			add_location(button2, file$a, 39, 6, 1862);
     			attr_dev(button3, "class", "button");
-    			attr_dev(button3, "data-test-id", "button-hide-all-spawn-id");
-    			add_location(button3, file$a, 32, 6, 1816);
+    			attr_dev(button3, "data-test-id", "button-hide-all-spawn");
+    			add_location(button3, file$a, 42, 6, 2012);
+    			attr_dev(button4, "class", "button");
+    			attr_dev(button4, "data-test-id", "button-hide-all-spawn-id");
+    			add_location(button4, file$a, 45, 6, 2171);
     			attr_dev(div4, "class", "buttons");
-    			add_location(div4, file$a, 22, 4, 1351);
+    			add_location(div4, file$a, 32, 4, 1523);
     			attr_dev(div5, "class", "control");
     			attr_dev(div5, "data-test-id", "hide-all");
-    			add_location(div5, file$a, 21, 2, 1301);
+    			add_location(div5, file$a, 31, 2, 1473);
     			attr_dev(div6, "class", "content");
-    			add_location(div6, file$a, 37, 2, 2010);
+    			add_location(div6, file$a, 50, 2, 2365);
     			attr_dev(div7, "class", "spawn default-spawn");
-    			add_location(div7, file$a, 43, 2, 2181);
+    			add_location(div7, file$a, 56, 2, 2536);
     			attr_dev(div8, "class", "spawn custom-spawn");
-    			add_location(div8, file$a, 46, 2, 2241);
+    			add_location(div8, file$a, 59, 2, 2596);
     			attr_dev(div9, "class", "test");
-    			add_location(div9, file$a, 16, 0, 909);
+    			add_location(div9, file$a, 26, 0, 1081);
 
     			dispose = [
     				listen_dev(button0, "click", ctx.click_handler),
     				listen_dev(button1, "click", ctx.click_handler_1),
     				listen_dev(button2, "click", ctx.click_handler_2),
-    				listen_dev(button3, "click", ctx.click_handler_3)
+    				listen_dev(button3, "click", ctx.click_handler_3),
+    				listen_dev(button4, "click", ctx.click_handler_4)
     			];
     		},
 
@@ -4668,19 +4671,21 @@ var app = (function () {
     			append_dev(div4, button2);
     			append_dev(div4, t13);
     			append_dev(div4, button3);
-    			append_dev(div9, t15);
+    			append_dev(div4, t15);
+    			append_dev(div4, button4);
+    			append_dev(div9, t17);
     			append_dev(div9, div6);
     			mount_component(buttons0, div6, null);
-    			append_dev(div6, t16);
-    			mount_component(buttons1, div6, null);
-    			append_dev(div6, t17);
-    			mount_component(buttons2, div6, null);
     			append_dev(div6, t18);
+    			mount_component(buttons1, div6, null);
+    			append_dev(div6, t19);
+    			mount_component(buttons2, div6, null);
+    			append_dev(div6, t20);
     			mount_component(buttons3, div6, null);
-    			append_dev(div9, t19);
+    			append_dev(div9, t21);
     			append_dev(div9, div7);
     			mount_component(dialog0, div7, null);
-    			append_dev(div9, t20);
+    			append_dev(div9, t22);
     			append_dev(div9, div8);
     			mount_component(dialog1, div8, null);
     			current = true;
@@ -4785,7 +4790,7 @@ var app = (function () {
     	
 
       const fns1 = createFns({ instance: dialog$1, component: Default, className: "dialog", title: "Default" });
-      const fns2 = createFns({ instance: dialog$1, component: Default, className: "dialog", id: "1", title: "ID" });
+      const fns2 = createFns({ instance: dialog$1, component: Default, className: "dialog dialog-delay", id: "1", title: "ID" });
       const fns3 = createFns({ instance: dialog$1, component: Default, className: "dialog", spawn: "1", title: "Spawn" });
       const fns4 = createFns({ instance: dialog$1, component: Default, className: "dialog", spawn: "1", id: "1", title: "Spawn and ID" });
       const dialogCount = dialog$1.getCount(); validate_store(dialogCount, 'dialogCount'); component_subscribe($$self, dialogCount, $$value => { $dialogCount = $$value; $$invalidate('$dialogCount', $dialogCount); });
@@ -4793,13 +4798,25 @@ var app = (function () {
       const dialogCountSpawn1 = dialog$1.getCount({ spawn: "1" }); validate_store(dialogCountSpawn1, 'dialogCountSpawn1'); component_subscribe($$self, dialogCountSpawn1, $$value => { $dialogCountSpawn1 = $$value; $$invalidate('$dialogCountSpawn1', $dialogCountSpawn1); });
       const dialogCountSpawn1Id1 = dialog$1.getCount({ spawn: "1", id: "1" }); validate_store(dialogCountSpawn1Id1, 'dialogCountSpawn1Id1'); component_subscribe($$self, dialogCountSpawn1Id1, $$value => { $dialogCountSpawn1Id1 = $$value; $$invalidate('$dialogCountSpawn1Id1', $dialogCountSpawn1Id1); });
 
+      const hideAllStyles = {
+        showEnd: {
+          opacity: "1",
+        },
+        hideEnd: {
+          transition: "all 450ms ease-in-out",
+          opacity: "0",
+        },
+      };
+
     	const click_handler = () => dialog$1.hideAll();
 
-    	const click_handler_1 = () => dialog$1.hideAll({ id: "1" });
+    	const click_handler_1 = () => dialog$1.hideAll({ styles: hideAllStyles });
 
-    	const click_handler_2 = () => dialog$1.hideAll({ spawn: "1" });
+    	const click_handler_2 = () => dialog$1.hideAll({ id: "1" });
 
-    	const click_handler_3 = () => dialog$1.hideAll({ id: "1", spawn: "1" });
+    	const click_handler_3 = () => dialog$1.hideAll({ spawn: "1" });
+
+    	const click_handler_4 = () => dialog$1.hideAll({ id: "1", spawn: "1" });
 
     	$$self.$capture_state = () => {
     		return {};
@@ -4821,6 +4838,7 @@ var app = (function () {
     		dialogCountId1,
     		dialogCountSpawn1,
     		dialogCountSpawn1Id1,
+    		hideAllStyles,
     		$dialogCount,
     		$dialogCountId1,
     		$dialogCountSpawn1,
@@ -4828,7 +4846,8 @@ var app = (function () {
     		click_handler,
     		click_handler_1,
     		click_handler_2,
-    		click_handler_3
+    		click_handler_3,
+    		click_handler_4
     	};
     }
 

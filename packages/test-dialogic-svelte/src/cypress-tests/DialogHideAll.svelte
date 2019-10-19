@@ -5,13 +5,23 @@
   import { createFns } from "./createFns.ts";
 
   const fns1 = createFns({ instance: dialog, component: Default, className: "dialog", title: "Default" });
-  const fns2 = createFns({ instance: dialog, component: Default, className: "dialog", id: "1", title: "ID" });
+  const fns2 = createFns({ instance: dialog, component: Default, className: "dialog dialog-delay", id: "1", title: "ID" });
   const fns3 = createFns({ instance: dialog, component: Default, className: "dialog", spawn: "1", title: "Spawn" });
   const fns4 = createFns({ instance: dialog, component: Default, className: "dialog", spawn: "1", id: "1", title: "Spawn and ID" });
   const dialogCount = dialog.getCount();
   const dialogCountId1 = dialog.getCount({ id: "1" });
   const dialogCountSpawn1 = dialog.getCount({ spawn: "1" });
   const dialogCountSpawn1Id1 = dialog.getCount({ spawn: "1", id: "1" });
+
+  const hideAllStyles = {
+    showEnd: {
+      opacity: "1",
+    },
+    hideEnd: {
+      transition: "all 450ms ease-in-out",
+      opacity: "0",
+    },
+  };
 </script>
 
 <div class="test">
@@ -23,6 +33,9 @@
     <div class="buttons">
       <button class="button" data-test-id="button-hide-all" on:click={() => dialog.hideAll()}>
         Hide all
+      </button>
+      <button class="button" data-test-id="button-hide-all-simultaneously" on:click={() => dialog.hideAll({ styles: hideAllStyles })}>
+        Hide all simultaneously
       </button>
       <button class="button" data-test-id="button-hide-all-id" on:click={() => dialog.hideAll({ id: "1" })}>
         Hide all with id

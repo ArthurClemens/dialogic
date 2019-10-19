@@ -10,6 +10,16 @@ export default () => {
   const fns3 = createFns({ instance: dialog, component: Default, className: "dialog",       spawn: "1", title: "Spawn" });
   const fns4 = createFns({ instance: dialog, component: Default, className: "dialog",       spawn: "1", id: "1", title: "Spawn and ID" });
 
+  const hideAllStyles = {
+    showEnd: {
+      opacity: "1",
+    },
+    hideEnd: {
+      transition: "all 450ms ease-in-out",
+      opacity: "0",
+    },
+  };
+
   return {
     view: () => {
       return m(".test",[
@@ -27,6 +37,14 @@ export default () => {
                 "data-test-id": "button-hide-all"
               },
               "Hide all"
+            ),
+            m("button", 
+              {
+                className: "button",
+                onclick: () => dialog.hideAll({ styles: hideAllStyles }),
+                "data-test-id": "button-hide-all-simultaneous"
+              },
+              "Hide all simulaneously"
             ),
             m("button", 
               {

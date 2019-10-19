@@ -607,15 +607,6 @@ const transitionStates = {
     displaying: 1,
     hiding: 2,
 };
-const performOnItem = fn => ns => defaultDialogicOptions => (options) => {
-    const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(options);
-    if (maybeItem.just) {
-        return fn(ns, maybeItem.just, options);
-    }
-    else {
-        return Promise.resolve();
-    }
-};
 const getMaybeItem = (ns) => (defaultDialogicOptions) => (identityOptions) => selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
 const filterBySpawn = (identityOptions) => (items) => identityOptions.spawn !== undefined
     ? items.filter(item => (item.identityOptions.spawn === identityOptions.spawn))
@@ -754,18 +745,23 @@ const hide = (ns) => (defaultDialogicOptions) => (options) => {
     }
     return Promise.resolve();
 };
-const pause = performOnItem((ns, item) => {
-    if (item && item.timer) {
-        item.timer.actions.pause();
-    }
-    return Promise.resolve(item);
-});
-const resume = performOnItem((ns, item, commandOptions = {}) => {
-    if (item && item.timer) {
-        item.timer.actions.resume(commandOptions.minimumDuration);
-    }
-    return Promise.resolve(item);
-});
+const pause = (ns) => (defaultDialogicOptions) => (identityOptions) => {
+    const items = getValidItems(ns, identityOptions)
+        .filter(item => !!item.timer);
+    items.forEach((item) => item.timer && item.timer.actions.pause());
+    return Promise.all(items);
+};
+const resume = (ns) => (defaultDialogicOptions) => (commandOptions) => {
+    const options = commandOptions || {};
+    const identityOptions = {
+        id: options.id,
+        spawn: options.spawn
+    };
+    const items = getValidItems(ns, identityOptions)
+        .filter(item => !!item.timer);
+    items.forEach((item) => item.timer && item.timer.actions.resume(options.minimumDuration));
+    return Promise.all(items);
+};
 const getTimerProperty = (timerProp) => (ns) => (defaultDialogicOptions) => (identityOptions) => {
     const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
     if (maybeItem.just) {
@@ -823,8 +819,8 @@ const getOverridingTransitionOptions = (item, dialogicOptions) => {
 /**
  * Triggers a `hideItem` for each item in the store.
  * Queued items: will trigger `hideItem` only for the first item, then reset the store.
- * `dialogicOptions` may contain specific transition options. This comes in handy when all items should hide in the same manner.
- * */
+ * Optional `dialogicOptions` may be passed with specific transition options. This comes in handy when all items should hide in the same way.
+ */
 const hideAll = (ns) => (defaultDialogicOptions) => (dialogicOptions) => {
     const options = dialogicOptions || {};
     const identityOptions = {

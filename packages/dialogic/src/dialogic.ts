@@ -6,10 +6,6 @@ import { pipe } from "./utils";
 
 export { states, actions, selectors } from "./state/store";
 
-type PerformFn = (ns:string, item: Dialogic.Item, options: Dialogic.IdentityOptions | Dialogic.CommandOptions) => any;
-type PerformOnItemNsFn = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (options: Dialogic.IdentityOptions | Dialogic.CommandOptions) => Promise<Dialogic.Item>;
-type PerformOnItemFn = (fn: PerformFn) => PerformOnItemNsFn;
-
 let uid = 0;
 const getUid = () =>
   uid === Number.MAX_SAFE_INTEGER
@@ -20,15 +16,6 @@ const transitionStates = {
   default: 0,
   displaying: 1,
   hiding: 2,
-};
-
-export const performOnItem: PerformOnItemFn = fn => ns => defaultDialogicOptions => (options: Dialogic.IdentityOptions | Dialogic.CommandOptions) => {
-  const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultDialogicOptions)(options);
-  if (maybeItem.just) {
-    return fn(ns, maybeItem.just, options);
-  } else {
-    return Promise.resolve();
-  }
 };
 
 const getMaybeItem = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions?: Dialogic.IdentityOptions) => 
@@ -200,21 +187,28 @@ export const hide = (ns: string) => (defaultDialogicOptions?: Dialogic.DefaultDi
   return Promise.resolve();
 };
 
-export const pause: PerformOnItemNsFn =
-  performOnItem((ns, item) => {
-    if (item && item.timer) {
-      item.timer.actions.pause();
-    }
-    return Promise.resolve(item);
-  });
+export const pause = (ns: string) => (defaultDialogicOptions?: Dialogic.DefaultDialogicOptions) => (identityOptions?: Dialogic.IdentityOptions) => {
+  const items = getValidItems(ns, identityOptions)
+    .filter(item => !!item.timer);
+  items.forEach((item: Dialogic.Item) =>
+    item.timer && item.timer.actions.pause()
+  );
+  return Promise.all(items);
+};
 
-export const resume: PerformOnItemNsFn =
-  performOnItem((ns, item, commandOptions: Dialogic.CommandOptions = {}) => {
-    if (item && item.timer) {
-      item.timer.actions.resume(commandOptions.minimumDuration);
-    }
-    return Promise.resolve(item);
-  });
+export const resume = (ns: string) => (defaultDialogicOptions?: Dialogic.DefaultDialogicOptions) => (commandOptions?: Dialogic.CommandOptions) => {
+  const options = commandOptions || {};
+  const identityOptions = {
+    id: options.id,
+    spawn: options.spawn
+  };
+  const items = getValidItems(ns, identityOptions)
+    .filter(item => !!item.timer);
+  items.forEach((item: Dialogic.Item) =>
+    item.timer && item.timer.actions.resume(options.minimumDuration)
+  );
+  return Promise.all(items);
+};
 
 export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getResultPromise") => (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions: Dialogic.IdentityOptions) => {
   const maybeItem: Dialogic.MaybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
@@ -235,7 +229,9 @@ export const getRemaining = getTimerProperty("getRemaining");
 export const exists = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions: Dialogic.IdentityOptions) =>
   !!getValidItems(ns, identityOptions).length;
 
-const getValidItems = (ns: string, identityOptions?: Dialogic.IdentityOptions) => {
+type getValidItemsFn = (ns: string, identityOptions?: Dialogic.IdentityOptions) => Dialogic.Item[];
+
+const getValidItems: getValidItemsFn = (ns, identityOptions) => {
   const allItems = selectors.getAll(ns);
   let validItems;
   if (identityOptions) {
@@ -282,8 +278,8 @@ const getOverridingTransitionOptions = (item: Dialogic.Item, dialogicOptions: Di
 /**
  * Triggers a `hideItem` for each item in the store.
  * Queued items: will trigger `hideItem` only for the first item, then reset the store.
- * `dialogicOptions` may contain specific transition options. This comes in handy when all items should hide in the same manner.
- * */
+ * Optional `dialogicOptions` may be passed with specific transition options. This comes in handy when all items should hide in the same way.
+ */
 export const hideAll = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (dialogicOptions?: Dialogic.DialogicOptions) => {
   const options = dialogicOptions || {};
   const identityOptions: Dialogic.IdentityOptions = {
