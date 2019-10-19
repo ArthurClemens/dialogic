@@ -3,7 +3,7 @@
   import Default from "./content/Default.svelte";
   import Buttons from "./Buttons.svelte";
   import Remaining from "./Remaining.svelte";
-  import { createFns } from "./createFns";
+  import { createFns } from "./createFns.ts";
 
   notification.resetAll();
   const fns1 = createFns({ instance: notification, component: Default, className: "notification", title: "Default", timeout: 2000 });

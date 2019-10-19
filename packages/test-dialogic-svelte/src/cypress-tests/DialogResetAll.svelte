@@ -2,7 +2,7 @@
   import { Dialog, dialog } from "dialogic-svelte";
   import Default from "./content/Default.svelte";
   import Buttons from "./Buttons.svelte";
-  import { createFns } from "./createFns";
+  import { createFns } from "./createFns.ts";
 
   const fns1 = createFns({ instance: dialog, component: Default, className: "dialog", title: "Default" });
   const fns2 = createFns({ instance: dialog, component: Default, className: "dialog dialog-delay", id: "1", title: "ID" });

@@ -19,7 +19,7 @@ export const dialog: Dialogic.DialogicInstance;
 export const notification: Dialogic.DialogicInstance;
 
 type ConfirmFn = {
-  (item: Dialogic.Item):  void;
+  (item: Dialogic.Item): void;
 }
 
 export namespace Dialogic {
@@ -33,9 +33,9 @@ export namespace Dialogic {
     defaultDialogicOptions: DefaultDialogicOptions;
     // Commands
     show: (options: Options, fnOptions?: any) => Promise<Item>;
-    hide: (identityOptions?: IdentityOptions, fnOptions?: any) => Promise<Item>;
-    hideAll: (dialogicOptions?: DialogicOptions) => Promise<Item[]>;
-    resetAll: (dialogicOptions?: DialogicOptions) => Promise<Item[]>;
+    hide: (options?: Options, fnOptions?: any) => Promise<Item>;
+    hideAll: (dialogicOptions?: Options) => Promise<Item[]>;
+    resetAll: (dialogicOptions?: Options) => Promise<Item[]>;
     // Timer commands
     pause: (identityOptions?: CommandOptions, fnOptions?: any) => Promise<Item>;
     resume: (commandOptions?: CommandOptions, fnOptions?: CommandOptions) => Promise<Item>;

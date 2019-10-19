@@ -81,7 +81,9 @@ test.serial("hide: should hide the item", t => {
   return notification.show(options)
     .then(() => {
       t.is(notification.exists(identityOptions), true);
-      return notification.hide(identityOptions).then(item => {
+      return notification.hide({
+        dialogic: identityOptions
+      }).then(item => {
         t.is(item.id, "notification-show-hide-default_notification");
         t.is(notification.exists(identityOptions), false);
       })

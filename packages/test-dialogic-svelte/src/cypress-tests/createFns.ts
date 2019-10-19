@@ -48,10 +48,16 @@ export const createFns: CreateFnsFn = ({ instance, component, className, title, 
   const showFn = () => instance.show(
     {
       ...props,
-      title: title + " " + getRandomId(),
+      title: `${title} ${getRandomId()}`,
     }
   );
-  const hideFn = () => instance.hide(props.dialogic);
+  
+  const hideFn = () => instance.hide(
+    {
+      ...props,
+      title: `${title} ${getRandomId()} hiding`,
+    }
+  );
 
   return {
     showFn,

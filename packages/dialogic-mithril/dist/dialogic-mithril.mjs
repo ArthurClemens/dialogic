@@ -657,18 +657,26 @@ const getMergedIdentityOptions = (defaultDialogicOptions, identityOptions = {}) 
     id: identityOptions.id || defaultDialogicOptions.id,
     spawn: identityOptions.spawn || defaultDialogicOptions.spawn,
 });
+const handleOptions = (defaultDialogicOptions, options = {}) => {
+    const identityOptions = {
+        id: options.dialogic ? options.dialogic.id : undefined,
+        spawn: options.dialogic ? options.dialogic.spawn : undefined
+    };
+    const mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions || {}, identityOptions);
+    const dialogicOptions = {
+        ...defaultDialogicOptions,
+        ...options.dialogic
+    };
+    const passThroughOptions = getPassThroughOptions(options);
+    return {
+        identityOptions: mergedIdentityOptions,
+        dialogicOptions,
+        passThroughOptions,
+    };
+};
 const createInstance = (ns) => (defaultDialogicOptions) => (options = {}) => {
+    const { identityOptions, dialogicOptions, passThroughOptions } = handleOptions(defaultDialogicOptions, options);
     return new Promise(resolve => {
-        const identityOptions = {
-            id: options.dialogic ? options.dialogic.id : undefined,
-            spawn: options.dialogic ? options.dialogic.spawn : undefined
-        };
-        const mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions, identityOptions);
-        const dialogicOptions = {
-            ...defaultDialogicOptions,
-            ...options.dialogic
-        };
-        const passThroughOptions = getPassThroughOptions(options);
         const callbacks = {
             didShow: (item) => {
                 if (dialogicOptions.didShow) {
@@ -685,20 +693,20 @@ const createInstance = (ns) => (defaultDialogicOptions) => (options = {}) => {
         };
         const item = {
             ns,
-            identityOptions: mergedIdentityOptions,
+            identityOptions,
             dialogicOptions,
             callbacks,
             passThroughOptions,
-            id: createId(mergedIdentityOptions, ns),
+            id: createId(identityOptions, ns),
             timer: dialogicOptions.timeout
                 ? Timer()
                 : undefined,
             key: getUid().toString(),
             transitionState: transitionStates.default,
         };
-        const maybeExistingItem = selectors.find(ns, mergedIdentityOptions);
+        const maybeExistingItem = selectors.find(ns, identityOptions);
         if (maybeExistingItem.just && dialogicOptions.toggle) {
-            const hideResult = hide(ns)(defaultDialogicOptions)(identityOptions);
+            const hideResult = hide(ns)(defaultDialogicOptions)(options);
             return resolve(hideResult);
         }
         if (maybeExistingItem.just && !dialogicOptions.queued) {
@@ -721,14 +729,31 @@ const createInstance = (ns) => (defaultDialogicOptions) => (options = {}) => {
     });
 };
 const show = createInstance;
-const hide = performOnItem((ns, item) => {
-    if (item.transitionState !== transitionStates.hiding) {
-        return hideItem(item);
+const hide = (ns) => (defaultDialogicOptions) => (options) => {
+    const { identityOptions, dialogicOptions, passThroughOptions } = handleOptions(defaultDialogicOptions, options);
+    const maybeExistingItem = selectors.find(ns, identityOptions);
+    if (maybeExistingItem.just) {
+        const existingItem = maybeExistingItem.just;
+        const domElement = existingItem.dialogicOptions.domElement;
+        const item = {
+            ...maybeExistingItem.just,
+            dialogicOptions: {
+                ...existingItem,
+                ...dialogicOptions,
+                domElement
+            },
+            passThroughOptions,
+        };
+        actions.replace(ns, existingItem.id, item);
+        if (item.transitionState !== transitionStates.hiding) {
+            return hideItem(item);
+        }
+        else {
+            return Promise.resolve(item);
+        }
     }
-    else {
-        return Promise.resolve(item);
-    }
-});
+    return Promise.resolve();
+};
 const pause = performOnItem((ns, item) => {
     if (item && item.timer) {
         item.timer.actions.pause();
@@ -765,10 +790,7 @@ const getValidItems = (ns, dialogicOptions) => {
     const allItems = selectors.getAll(ns);
     let validItems;
     if (dialogicOptions) {
-        const combinedOptions = {
-            ...dialogicOptions,
-        };
-        validItems = pipe(filterBySpawn(combinedOptions), filterById(combinedOptions))(allItems);
+        validItems = pipe(filterBySpawn(dialogicOptions), filterById(dialogicOptions))(allItems);
     }
     else {
         validItems = allItems;
@@ -792,12 +814,12 @@ const resetAll = (ns) => (defaultDialogicOptions) => (dialogicOptions) => {
     }
     return Promise.resolve(items);
 };
-const getOverridingTransitionOptions = (item, options) => {
+const getOverridingTransitionOptions = (item, dialogicOptions) => {
     return {
         ...item,
         dialogicOptions: {
             ...item.dialogicOptions,
-            ...options
+            ...dialogicOptions
         }
     };
 };
@@ -912,32 +934,33 @@ const onInstanceMounted = (ns) => (event) => handleDispatch(ns)(event, showItem)
 const onShowInstance = (ns) => (event) => handleDispatch(ns)(event, showItem);
 const onHideInstance = (ns) => (event) => handleDispatch(ns)(event, hideItem);
 
-const Instance = ({ attrs }) => {
+const Instance = ({ attrs: componentAttrs }) => {
     let domElement;
-    const className = attrs.dialogicOptions.className;
     const dispatchTransition = (dispatchFn) => {
         dispatchFn({
             detail: {
-                identityOptions: attrs.identityOptions,
+                identityOptions: componentAttrs.identityOptions,
                 domElement
             }
         });
     };
     const onMount = () => {
-        dispatchTransition(attrs.onMount);
+        dispatchTransition(componentAttrs.onMount);
     };
     const show = () => {
-        dispatchTransition(attrs.onShow);
+        dispatchTransition(componentAttrs.onShow);
     };
     const hide = () => {
-        dispatchTransition(attrs.onHide);
+        dispatchTransition(componentAttrs.onHide);
     };
     return {
         oncreate: (vnode) => {
             domElement = vnode.dom;
             onMount();
         },
-        view: () => {
+        view: ({ attrs }) => {
+            const className = attrs.dialogicOptions.className;
+            console.log("attrs.passThroughOptions", attrs.passThroughOptions);
             return m("div", { className }, m(attrs.dialogicOptions.component, {
                 ...attrs.passThroughOptions,
                 show,

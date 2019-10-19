@@ -1,7 +1,7 @@
 import React from "react";
 import { createFns } from "./createFns";
 import { Default } from "../content/Default";
-import { buttons } from "./buttons";
+import { Buttons } from "./Buttons";
 import { notification, Notification, useDialogicState } from "dialogic-react";
 import { Remaining } from "./Remaining";
 
@@ -31,7 +31,7 @@ export default () => {
         <Remaining getRemainingFn={notification.getRemaining} />
       </div>
       <div className="content">
-        {buttons({ ...fns1 })}
+        <Buttons { ...fns1 } />
       </div>
       <div className="spawn default-spawn">
         <Notification />

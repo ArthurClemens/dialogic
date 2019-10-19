@@ -74,7 +74,7 @@ describe("Notification: count", () => {
 
             // Hiding the current dialog should result in an empty queue
             cy.get("[data-test-id=button-hide-default]").should("exist").click();
-            cy.wait(500);
+            cy.wait(5000);
             cy.get("[data-test-id=count-all]").should("contain", "Count all: 0");
         });
       })
@@ -113,7 +113,7 @@ describe("Notification: count", () => {
 
     cy.get("[data-test-id=button-show-id1spawn1]").should("exist").click();
 
-    cy.wait(300);
+    cy.wait(50);
     cy.get("[data-test-id=count-all]").should("contain", "Count all: 10");
     cy.get("[data-test-id=count-id]").should("contain", "Count id: 4");
     cy.get("[data-test-id=count-spawn]").should("contain", "Count spawn: 3");

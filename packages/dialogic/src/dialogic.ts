@@ -91,22 +91,32 @@ const getMergedIdentityOptions = (defaultDialogicOptions: Dialogic.DefaultDialog
   spawn: identityOptions.spawn || defaultDialogicOptions.spawn,
 }) as Dialogic.IdentityOptions;
 
+const handleOptions = (defaultDialogicOptions?: Dialogic.DefaultDialogicOptions, options: Dialogic.Options = {}) => {
+  const identityOptions = {
+    id: options.dialogic ? options.dialogic.id : undefined,
+    spawn: options.dialogic ? options.dialogic.spawn : undefined
+  };
+  const mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions || {} as Dialogic.DefaultDialogicOptions, identityOptions);
+  
+  const dialogicOptions: Dialogic.DialogicOptions = {
+    ...defaultDialogicOptions,
+    ...options.dialogic
+  };
+
+  const passThroughOptions = getPassThroughOptions(options);
+
+  return {
+    identityOptions: mergedIdentityOptions,
+    dialogicOptions,
+    passThroughOptions,
+  }
+};
+
 const createInstance = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (options: Dialogic.Options = {}) => {
+  const { identityOptions, dialogicOptions, passThroughOptions } = handleOptions(defaultDialogicOptions, options);
+
   return new Promise(resolve => {
 
-    const identityOptions = {
-      id: options.dialogic ? options.dialogic.id : undefined,
-      spawn: options.dialogic ? options.dialogic.spawn : undefined
-    };
-    const mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions, identityOptions);
-    
-    const dialogicOptions: Dialogic.DialogicOptions = {
-      ...defaultDialogicOptions,
-      ...options.dialogic
-    };
-
-    const passThroughOptions = getPassThroughOptions(options);
-    
     const callbacks: Dialogic.Callbacks = {
       didShow: (item: Dialogic.Item) => {
         if (dialogicOptions.didShow) {
@@ -124,11 +134,11 @@ const createInstance = (ns: string) => (defaultDialogicOptions: Dialogic.Default
 
     const item: Dialogic.Item = {
       ns,
-      identityOptions: mergedIdentityOptions,
+      identityOptions,
       dialogicOptions,
       callbacks,
       passThroughOptions,
-      id: createId(mergedIdentityOptions, ns),
+      id: createId(identityOptions, ns),
       timer: dialogicOptions.timeout
         ? Timer()
         : undefined, // when timeout is undefined or 0
@@ -136,10 +146,10 @@ const createInstance = (ns: string) => (defaultDialogicOptions: Dialogic.Default
       transitionState: transitionStates.default,
     };
     
-    const maybeExistingItem: Dialogic.MaybeItem = selectors.find(ns, mergedIdentityOptions);
+    const maybeExistingItem: Dialogic.MaybeItem = selectors.find(ns, identityOptions);
 
     if (maybeExistingItem.just && dialogicOptions.toggle) {
-      const hideResult = hide(ns)(defaultDialogicOptions)(identityOptions);
+      const hideResult = hide(ns)(defaultDialogicOptions)(options);
       return resolve(hideResult);
     }
 
@@ -165,14 +175,30 @@ const createInstance = (ns: string) => (defaultDialogicOptions: Dialogic.Default
 
 export const show = createInstance;
 
-export const hide: PerformOnItemNsFn =
-  performOnItem((ns, item) => {
+export const hide = (ns: string) => (defaultDialogicOptions?: Dialogic.DefaultDialogicOptions) => (options?: Dialogic.Options) => {
+  const { identityOptions, dialogicOptions, passThroughOptions } = handleOptions(defaultDialogicOptions, options);
+  const maybeExistingItem: Dialogic.MaybeItem = selectors.find(ns, identityOptions);
+  if (maybeExistingItem.just) {
+    const existingItem = maybeExistingItem.just;
+    const domElement = existingItem.dialogicOptions.domElement;
+    const item = {
+      ...maybeExistingItem.just,
+      dialogicOptions: {
+        ...existingItem,
+        ...dialogicOptions,
+        domElement
+      },
+      passThroughOptions,
+    }
+    actions.replace(ns, existingItem.id, item);
     if (item.transitionState !== transitionStates.hiding) {
       return hideItem(item);
     } else {
       return Promise.resolve(item);
     }
-  });
+  }
+  return Promise.resolve();
+};
 
 export const pause: PerformOnItemNsFn =
   performOnItem((ns, item) => {
@@ -215,12 +241,9 @@ const getValidItems = (ns: string, dialogicOptions?: Dialogic.DialogicOptions) =
   const allItems = selectors.getAll(ns);
   let validItems;
   if (dialogicOptions) {
-    const combinedOptions = {
-      ...dialogicOptions,
-    };
     validItems = pipe(
-      filterBySpawn(combinedOptions),
-      filterById(combinedOptions)
+      filterBySpawn(dialogicOptions),
+      filterById(dialogicOptions)
     )(allItems);
   } else {
     validItems = allItems;
@@ -248,12 +271,12 @@ export const resetAll = (ns: string) => (defaultDialogicOptions: Dialogic.Defaul
   return Promise.resolve(items);
 };
 
-const getOverridingTransitionOptions = (item: Dialogic.Item, options: Dialogic.DialogicOptions) => {
+const getOverridingTransitionOptions = (item: Dialogic.Item, dialogicOptions: Dialogic.DialogicOptions) => {
   return {
     ...item,
     dialogicOptions: {
       ...item.dialogicOptions,
-      ...options
+      ...dialogicOptions
     }
   };
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { DialogicTests } from "../..";
 
 type ButtonsProps = {
@@ -9,23 +9,23 @@ type ButtonsProps = {
   spawn?: string;
 }
 
-export const buttons = ({ showFn, hideFn, id, spawn, name }: ButtonsProps) => {
-  const genName = name || `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}` || "default";
+export const Buttons: FunctionComponent<ButtonsProps> = props => {
+  const genName = props.name || `${props.id ? `id${props.id}` : ''}${props.spawn ? `spawn${props.spawn}` : ''}` || "default";
   return (
     <div className="buttons">
-      {showFn && (
+      {props.showFn && (
         <button
           className="button primary"
-          onClick={showFn}
+          onClick={props.showFn}
           data-test-id={`button-show-${genName}`}
         >
           {`Show ${genName}`}
         </button>
       )}
-      {hideFn && (
+      {props.hideFn && (
         <button
           className="button"
-          onClick={hideFn}
+          onClick={props.hideFn}
           data-test-id={`button-hide-${genName}`}
         >
           {`Hide ${genName}`}

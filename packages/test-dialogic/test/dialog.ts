@@ -71,7 +71,9 @@ test.serial("hide: should hide the item", t => {
   return dialog.show(options)
     .then(() => {
       t.is(dialog.exists(identityOptions), true);
-      return dialog.hide(identityOptions).then(item => {
+      return dialog.hide({
+        dialogic: identityOptions
+      }).then(item => {
         t.is(item.id, "dialog-show-hide-default_dialog");
         t.is(dialog.exists(identityOptions), false);
       })
@@ -271,7 +273,9 @@ test.serial("promises: show and hide should return promises", t => {
       // t.log("show promise");
       t.is(item.id, "dialog-default_dialog-promises");
 
-      return dialog.hide(identityOptions)
+      return dialog.hide({
+        dialogic: identityOptions
+      })
         .then(item => {
           // t.log("hide promise");
           t.is(item.id, "dialog-default_dialog-promises"); 
