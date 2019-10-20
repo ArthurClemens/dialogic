@@ -69,9 +69,12 @@ _item: a dialog/modal or a notification_
   * Manage timings with CSS (or use transition options)
   * Use any UI library
 
+Dialogic does __not__ provide any styling for dialogs or notifications. This gives you the freedom to plug into your own codebase or use any other UI library.
+
+
 ## Demo
 
-[Demo pages](https://arthurclemens.github.io/dialogic/)
+[Demo pages](https://arthurclemens.github.io/dialogic/) (currently Mithril only)
 
 ## Status
 
