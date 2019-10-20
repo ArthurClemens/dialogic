@@ -3,7 +3,6 @@
 - [Supported JavaScript libraries](#supported-javascript-libraries)
 - [Features](#features)
 - [Demo](#demo)
-- [Status](#status)
 - [Usage](#usage)
 - [API](#api)
   - [Dialog and Notification component](#dialog-and-notification-component)
@@ -76,13 +75,6 @@ Dialogic does __not__ provide any styling for dialogs or notifications. This giv
 ## Demo
 
 [Demo page](https://arthurclemens.github.io/dialogic/)
-
-## Status
-
-* Core functionality: stable
-* Tests: complete
-* Documentation: in progress
-* Demos: in progress
 
 
 ## Usage
