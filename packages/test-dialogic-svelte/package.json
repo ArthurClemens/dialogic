@@ -6,7 +6,6 @@
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
-    "lint": "eslint ./src",
     "build": "npm run clean && rollup -c ./rollup.config.js",
     "autobuild": "rollup -c ./rollup.config.js -w",
     "dev": "run-p start:dev autobuild",

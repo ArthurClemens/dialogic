@@ -6,7 +6,6 @@
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
-    "lint": "eslint ./src",
     "dev": "npm-run-all --parallel dev:watch dev:serve",
     "dev:serve": "ENTRY=./src/index.tsx ../../node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ../../scripts/webpack.config.dev.js --disableHostCheck true --port 3000 --host 0.0.0.0",
     "dev:watch": "ENTRY=./src/index.tsx ../../node_modules/webpack/bin/webpack.js --watch --config ../../scripts/webpack.config.dev.js",

@@ -1,0 +1,35 @@
+.dialog {
+  transition: opacity 300ms;
+}
+.dialog-show-start {
+  opacity: 0;
+}
+.dialog-show-end {
+  opacity: 1;
+}
+.dialog-hide-start {
+  opacity: 1;
+}
+.dialog-hide-end {
+  opacity: 0;
+}
+
+.notification {
+  transition: opacity 300ms;
+}
+.notification-show-start {
+  opacity: 0;
+}
+.notification-show-end {
+  opacity: 1;
+}
+.notification-hide-start {
+  opacity: 1;
+}
+.notification-hide-end {
+  opacity: 0;
+}
+
+body {
+  padding: 20px;
+}

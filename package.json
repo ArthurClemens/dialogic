@@ -2,7 +2,7 @@
   "name": "dialogic-repo",
   "private": true,
   "scripts": {
-    "postinstall": "node_modules/cypress/bin/cypress install"
+    "postinstall": "lerna bootstrap && node_modules/cypress/bin/cypress install && npm audit fix"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
