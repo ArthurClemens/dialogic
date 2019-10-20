@@ -13,7 +13,8 @@
     "webpack": "ENTRY=./src/index.ts ../../node_modules/webpack/bin/webpack.js --config ../../scripts/webpack.config.prod.js",
     "build": "npm run clean && npm run webpack",
     "serve": "http-server -c-1 -p 8080 dist",
-    "clean": "rm -rf dist/js/*"
+    "clean": "rm -rf dist/js/*",
+    "github": "npm run build && node scripts/github.js"
   },
   "dependencies": {
     "dialogic-mithril": "^0.2.0",

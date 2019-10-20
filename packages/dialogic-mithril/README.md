@@ -4,6 +4,11 @@ Manage dialogs and notifications.
 
 [Main documentation](../../README.md)
 
+## Install
+
+`npm install dialogic-mithril`
+
+
 ## Usage
 
 ### Dialog
