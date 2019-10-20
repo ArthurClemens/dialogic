@@ -2,6 +2,7 @@
 
 - [Supported JavaScript libraries](#supported-javascript-libraries)
 - [Features](#features)
+- [Demo](#demo)
 - [Status](#status)
 - [Usage](#usage)
 - [API](#api)
@@ -68,12 +69,16 @@ _item: a dialog/modal or a notification_
   * Manage timings with CSS (or use transition options)
   * Use any UI library
 
+## Demo
+
+[Demo pages](https://arthurclemens.github.io/dialogic/)
+
 ## Status
 
 * Core functionality: stable
 * Tests: complete
 * Documentation: in progress
-* Demos: TODO
+* Demos: in progress
 
 
 ## Usage
