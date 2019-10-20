@@ -33,6 +33,7 @@
     - [`resume`](#resume)
     - [`isPaused`](#ispaused)
     - [`getRemaining`](#getremaining)
+  - [`useDialogicState`](#usedialogicstate)
 - [Size](#size)
 - [License](#license)
 
@@ -593,6 +594,9 @@ const exists = dialog.exists({
 exists: (identityOptions?: IdentityOptions) => boolean;
 ```
 
+React: requires `useDialogicState`.
+
+
 ### `getCount`
 
 Returns the number of items. Also counts the queued items that are not yet displayed.
@@ -614,6 +618,8 @@ const count = notification.getCount({
 ```typescript
 getCount: (identityOptions?: IdentityOptions) => number;
 ```
+
+React: requires `useDialogicState`.
 
 
 ### Timer functions
@@ -705,6 +711,9 @@ notification.isPaused({
 isPaused: (identityOptions?: IdentityOptions) => boolean;
 ```
 
+React: requires `useDialogicState`.
+
+
 #### `getRemaining`
 
 Returns the remaining timer duration in ms.
@@ -727,6 +736,26 @@ const remaining = notification.getRemaining({
 getRemaining: (identityOptions?: IdentityOptions) => number;
 ```
 
+React: requires `useDialogicState`.
+
+
+### `useDialogicState` 
+
+For React only.
+
+To retrieve the current state, hook `useDialogicState` should be called:
+
+```jsx
+import { dialog, useDialogicState } from "dialogic-react";
+
+const MyComponent = props => {
+  useDialogicState();
+
+  return (
+    <div>{dialog.getCount()}</div>
+  )
+}
+```
 
 ## Size
 
