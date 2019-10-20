@@ -1,0 +1,31 @@
+{
+  "name": "demo-dialogic-react",
+  "private": true,
+  "description": "Dialogic for React demo",
+  "version": "0.2.0",
+  "license": "MIT",
+  "scripts": {
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
+    "dev": "npm-run-all --parallel dev:watch dev:serve",
+    "dev:serve": "ENTRY=./src/index.tsx ../../node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ../../scripts/webpack.config.dev.js --disableHostCheck true --port 3000 --host 0.0.0.0",
+    "dev:watch": "ENTRY=./src/index.tsx ../../node_modules/webpack/bin/webpack.js --watch --config ../../scripts/webpack.config.dev.js",
+    "webpack": "ENTRY=./src/index.tsx ../../node_modules/webpack/bin/webpack.js --config ../../scripts/webpack.config.prod.js",
+    "build": "npm run clean && npm run webpack",
+    "serve": "http-server -c-1 -p 8080 dist",
+    "clean": "rm -rf dist/js/*",
+    "github": "npm run build && node scripts/github.js"
+  },
+  "dependencies": {
+    "dialogic-react": "^0.2.0",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.9",
+    "@types/react-dom": "^16.9.2",
+    "dialogic": "^0.2.0",
+    "http-server": "^0.11.1",
+    "npm-run-all": "^4.1.5",
+    "start-server-and-test": "^1.10.6"
+  }
+}

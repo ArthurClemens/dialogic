@@ -1,3 +1,7 @@
+/**
+ * This example uses Material IO
+ */
+
 import m from "mithril";
 import { dialog, notification } from "dialogic-mithril";
 import { DialogComponent } from "./DialogComponent";

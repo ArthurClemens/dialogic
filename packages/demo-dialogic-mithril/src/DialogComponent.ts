@@ -1,3 +1,7 @@
+/**
+ * This example uses Material IO
+ */
+
 import m, { Component } from "mithril";
 import { dialog } from "dialogic-mithril";
 
@@ -32,26 +36,22 @@ const DialogContent: Component<DialogContentProps> = {
           m("footer.mdc-dialog__actions",
             [
               m("button.mdc-button.mdc-dialog__button", 
-                m("span.mdc-button__label",
-                  {
-                    onclick: () => {
-                      dialog.hide();
-                      attrs.onReject();
-                    }
-                  }, 
-                  "Never mind"
-                )
+                {
+                  onclick: () => {
+                    dialog.hide();
+                    attrs.onReject();
+                  }
+                },
+                m("span.mdc-button__label", "Never mind")
               ),
               m("button.mdc-button.mdc-dialog__button", 
-                m("span.mdc-button__label",
-                  {
-                    onclick: () => {
-                      dialog.hide();
-                      attrs.onAccept();
-                    }
-                  }, 
-                  "Yes, retry"
-                )
+                {
+                  onclick: () => {
+                    dialog.hide();
+                    attrs.onAccept();
+                  }
+                },
+                m("span.mdc-button__label", "Yes, retry")
               )
             ]
           )
