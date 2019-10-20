@@ -1,0 +1,80 @@
+<!doctype html>
+<head>
+  <title>Dialogic: manage dialogs and notifications</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap">
+  <style>
+    * {
+      font-family: 'Varela Round', sans-serif !important;
+    }
+    .page {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .hero {
+      height: 100%;
+    }
+    .masthead {
+      padding: 20px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .masthead h1.ui.header {
+      margin: 0;
+      font-size: 6em;
+      font-weight: normal;
+    }
+    .masthead h2 {
+      margin: 0;
+      font-size: 3em;
+      font-weight: normal;
+    }
+    main {
+      flex-grow: 1;
+    }
+    .buttons {
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      margin: -5px;
+      margin-top: 40px;
+    }
+    .ui.huge.primary.button {
+      margin: 5px;
+    }
+    footer {
+      flex-shrink: 0;
+      color: #999;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui text">
+          <h1 class="ui inverted header">
+              Dialogic
+          </h1>
+          <h2>
+              manage dialogs and notifications
+          </h2>
+        </div>
+        <div class="buttons">
+          <a href="./mithril/index.html" class="ui huge primary button">Mithril</a>
+          <div class="ui huge primary button disabled">React</div>
+          <div class="ui huge primary button disabled">Svelte</div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <a href='https://github.com/ArthurClemens/dialogic'>Main documentation on GitHub</a>
+    </footer>
+  </div>
+</body>

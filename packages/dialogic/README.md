@@ -1,3 +1,0 @@
-# Dialogic
-
-[Documentation](../../README.md)
