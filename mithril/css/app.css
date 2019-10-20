@@ -1,3 +1,24 @@
+.page { 
+  display: flex;
+  flex-direction: column;
+}
+
+body, #root, .page {
+  height: 100%;
+}
+
+main {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+footer {
+  flex-shrink: 0;
+  color: #999;
+  padding: 20px;
+}
+
+
 .dialog {
   transition: opacity 300ms;
 }
@@ -28,29 +49,6 @@
 }
 .notification-hide-end {
   opacity: 0;
-}
-
-body {
-  padding: 20px;
-}
-
-body, #root, .demo {
-  height: 100%;
-}
-
-.demo {
-  display: flex;
-  flex-direction: column;
-}
-
-main {
-  flex-grow: 1;
-}
-
-footer {
-  flex-shrink: 0;
-  font-size: small;
-  color: #999;
 }
 
 
