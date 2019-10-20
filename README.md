@@ -75,7 +75,7 @@ Dialogic does __not__ provide any styling for dialogs or notifications. This giv
 
 ## Demo
 
-[Demo pages](https://arthurclemens.github.io/dialogic/) (currently Mithril only)
+[Demo page](https://arthurclemens.github.io/dialogic/)
 
 ## Status
 

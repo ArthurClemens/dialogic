@@ -4,6 +4,12 @@ Manage dialogs and notifications.
 
 [Main documentation](../../README.md)
 
+
+## Demo
+
+[Demo page](https://arthurclemens.github.io/dialogic/)
+
+
 ## Install
 
 `npm install dialogic-mithril`
@@ -20,7 +26,7 @@ import { dialog, Dialog } from "dialogic-mithril";
 
 const App = {
   view: () => [
-    m(".button", {
+    m("button", {
       onclick: () => {
         dialog.show({
           dialogic: {
