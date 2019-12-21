@@ -83,7 +83,7 @@ const App = () => (
     }}>
       Show notification
     </button>
-    <Dialog /> {/* notification will be drawn by this component */}
+    <Notification /> {/* notification will be drawn by this component */}
   </>
 );
 

@@ -6,7 +6,3 @@ To start local development with live reload:
 
 * From the root: `npm install`
 * From this directory: `npm run dev`
-
-[Interactive demo](
-xxx
-)
