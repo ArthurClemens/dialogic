@@ -2,7 +2,7 @@
   "name": "demo-dialogic-react",
   "private": true,
   "description": "Dialogic for React demo",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
@@ -16,7 +16,7 @@
     "github": "npm run build && node scripts/github.js"
   },
   "dependencies": {
-    "dialogic-react": "^0.2.1",
+    "dialogic-react": "^0.2.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2"
   },
