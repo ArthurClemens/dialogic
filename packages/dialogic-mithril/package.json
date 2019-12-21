@@ -15,7 +15,7 @@
     "dialogic": "^0.2.0"
   },
   "devDependencies": {
-    "@types/mithril": "2.0.0",
+    "@types/mithril": "2.0.2",
     "mithril": "^2.0.4"
   },
   "files": [

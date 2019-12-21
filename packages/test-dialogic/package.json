@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "ava": "^2.4.0",
-    "browser-env": "^3.2.6",
+    "browser-env": "^3.3.0",
     "dialogic": "^0.2.0",
-    "ts-node": "^8.4.1"
+    "ts-node": "^8.5.4"
   }
 }

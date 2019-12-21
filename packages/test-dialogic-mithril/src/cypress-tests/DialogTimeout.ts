@@ -11,7 +11,7 @@ export default () => {
 
   return {
     view: () => {
-      return m(".test", { key: Math.random() }, [
+      return m(".test", { key: new Date().getTime() }, [
         m(".control",
           { "data-test-id": "reset-all" }, 
           m(".buttons", [

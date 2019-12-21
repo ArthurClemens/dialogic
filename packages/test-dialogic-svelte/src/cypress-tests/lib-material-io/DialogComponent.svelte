@@ -3,8 +3,8 @@ import DemoContent from "./DemoContent.svelte";
 import { dialog } from "dialogic-svelte";
 
 export let isModal = false;
-export let show;
-export let hide;
+// export let show;
+// export let hide;
 </script>
 
 <div
