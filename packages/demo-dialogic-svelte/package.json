@@ -10,7 +10,7 @@
     "autobuild": "rollup -c ./rollup.config.js -w",
     "dev": "run-p start:dev autobuild",
     "start:dev": "sirv public --dev --port 3000",
-    "clean": "rm -rf dist/js/*",
+    "clean": "rm -rf public/js/*",
     "serve": "http-server -c-1 -p 8080 public",
     "github": "npm run build && node scripts/github.js"
   },
