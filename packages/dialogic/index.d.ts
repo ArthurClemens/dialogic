@@ -173,13 +173,13 @@ export namespace Dialogic {
     /**
      * Returns the remaining duration in milliseconds.
      */
-    getRemaining: () => number;
+    getRemaining: () => number | undefined;
   }
 
   type TimerState = {
     timerId?: number;
     startTime?: number;
-    remaining: number;
+    remaining: number | undefined;
     isPaused: boolean;
     callback: TimerCallback;
     timeoutFn: () => void;

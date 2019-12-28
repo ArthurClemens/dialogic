@@ -435,7 +435,7 @@ const initialState = {
     onAbort: () => { },
     onDone: () => { },
     promise: undefined,
-    remaining: 0,
+    remaining: undefined,
     startTime: undefined,
     timeoutFn: () => { },
     timerId: undefined,
@@ -491,8 +491,8 @@ const appendResumeTimer = (state, minimumDuration) => {
         timerId: window.setTimeout(state.timeoutFn, remaining),
     };
 };
-const getRemaining = (state) => state.remaining === 0
-    ? 0
+const getRemaining = (state) => (state.remaining === 0 || state.remaining === undefined)
+    ? state.remaining
     : state.remaining - (new Date().getTime() - (state.startTime || 0));
 const Timer = () => {
     const timer = {
@@ -776,7 +776,7 @@ const getTimerProperty = (timerProp, defaultValue) => (ns) => (defaultDialogicOp
     }
 };
 const isPaused = getTimerProperty("isPaused", false);
-const getRemaining$1 = getTimerProperty("getRemaining", 0);
+const getRemaining$1 = getTimerProperty("getRemaining", undefined);
 const exists = (ns) => (defaultDialogicOptions) => (identityOptions) => !!getValidItems(ns, identityOptions).length;
 const getValidItems = (ns, identityOptions) => {
     const allItems = selectors.getAll(ns);

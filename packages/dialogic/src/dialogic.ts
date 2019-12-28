@@ -225,7 +225,7 @@ export const getTimerProperty = (timerProp: "isPaused" | "getRemaining" | "getRe
 };
 
 export const isPaused = getTimerProperty("isPaused", false);
-export const getRemaining = getTimerProperty("getRemaining", 0);
+export const getRemaining = getTimerProperty("getRemaining", undefined);
 
 export const exists = (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => (identityOptions: Dialogic.IdentityOptions) =>
   !!getValidItems(ns, identityOptions).length;

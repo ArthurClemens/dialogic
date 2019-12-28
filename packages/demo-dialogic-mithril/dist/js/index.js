@@ -2127,7 +2127,7 @@ var initialState = {
   onAbort: function onAbort() {},
   onDone: function onDone() {},
   promise: undefined,
-  remaining: 0,
+  remaining: undefined,
   startTime: undefined,
   timeoutFn: function timeoutFn() {},
   timerId: undefined
@@ -2188,7 +2188,7 @@ var appendResumeTimer = function appendResumeTimer(state, minimumDuration) {
 };
 
 var _getRemaining = function getRemaining(state) {
-  return state.remaining === 0 ? 0 : state.remaining - (new Date().getTime() - (state.startTime || 0));
+  return state.remaining === 0 || state.remaining === undefined ? state.remaining : state.remaining - (new Date().getTime() - (state.startTime || 0));
 };
 
 var Timer = function Timer() {
@@ -2529,7 +2529,7 @@ var getTimerProperty = function getTimerProperty(timerProp, defaultValue) {
 };
 
 var isPaused = getTimerProperty("isPaused", false);
-var getRemaining$1 = getTimerProperty("getRemaining", 0);
+var getRemaining$1 = getTimerProperty("getRemaining", undefined);
 
 var exists = function exists(ns) {
   return function (defaultDialogicOptions) {
@@ -4872,76 +4872,82 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const NotificationComponent = ({
-    view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar.mdc-snackbar--open", mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__surface", mithril__WEBPACK_IMPORTED_MODULE_0___default()(NotificationContent)))
+    view: ({ attrs }) => mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar.mdc-snackbar--open", mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__surface", mithril__WEBPACK_IMPORTED_MODULE_0___default()(NotificationContent, attrs)))
 });
 const NotificationContent = {
-    view: () => [
-        mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__label", "Can't send photo. Retry in 5 seconds."),
-        mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__actions", mithril__WEBPACK_IMPORTED_MODULE_0___default()("button.mdc-button.mdc-snackbar__action", {
-            onclick: () => {
-                dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].pause();
-                dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
-                    dialogic: {
-                        component: _DialogComponent__WEBPACK_IMPORTED_MODULE_2__["DialogComponent"],
-                        className: "dialog",
-                    },
-                    title: "Retry sending?",
-                    body: "We have noticed a slow internet connection. Sending may take a bit longer than usual.",
-                    onAccept: () => {
-                        dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].hide();
-                        dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].resume();
-                    },
-                    onReject: () => {
-                        dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].resume({ minimumDuration: 2000 });
-                    }
-                });
-            }
-        }, "Retry"))
-    ]
+    view: ({ attrs }) => {
+        return [
+            attrs.remainingSeconds !== undefined
+                ? mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__label", [
+                    "Can't send photo. Retry in ",
+                    attrs.remainingSeconds,
+                    " seconds."
+                ])
+                : mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__label", "Can't send photo."),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__actions", mithril__WEBPACK_IMPORTED_MODULE_0___default()("button.mdc-button.mdc-snackbar__action", {
+                onclick: () => {
+                    dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].pause();
+                    dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
+                        dialogic: {
+                            component: _DialogComponent__WEBPACK_IMPORTED_MODULE_2__["DialogComponent"],
+                            className: "dialog",
+                        },
+                        title: "Retry sending?",
+                        body: "We have noticed a slow internet connection. Sending may take a bit longer than usual.",
+                        onAccept: () => {
+                            dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].hide();
+                            dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].resume();
+                        },
+                        onReject: () => {
+                            dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].resume({ minimumDuration: 2000 });
+                        }
+                    });
+                }
+            }, "Retry"))
+        ];
+    }
 };
 
 
 /***/ }),
 
-/***/ "./Remaining.ts":
-/*!**********************!*\
-  !*** ./Remaining.ts ***!
-  \**********************/
-/*! exports provided: Remaining */
+/***/ "./RemainingLabel.ts":
+/*!***************************!*\
+  !*** ./RemainingLabel.ts ***!
+  \***************************/
+/*! exports provided: RemainingLabel */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Remaining", function() { return Remaining; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RemainingLabel", function() { return RemainingLabel; });
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _remaining__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./remaining */ "./remaining.ts");
+/* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
 
-const Remaining = ({ attrs }) => {
-    let displayValue = 0;
-    let reqId;
-    const update = () => {
-        const remaining = attrs.getRemaining();
-        if (remaining !== undefined) {
-            if (displayValue !== remaining) {
-                mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw();
-                displayValue = Math.max(remaining, 0);
-            }
-        }
-        else {
-            displayValue = undefined;
+
+
+const RemainingLabel = () => {
+    let remainingSeconds;
+    Object(_remaining__WEBPACK_IMPORTED_MODULE_1__["remaining"])({
+        getRemaining: dialogic_mithril__WEBPACK_IMPORTED_MODULE_2__["notification"].getRemaining,
+        exists: () => true,
+        roundToSeconds: false,
+        callback: (value) => {
+            remainingSeconds = value;
             mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw();
-        }
-        reqId = window.requestAnimationFrame(update);
-    };
+        },
+    });
     return {
-        oncreate: () => reqId = window.requestAnimationFrame(update),
-        onremove: () => window.cancelAnimationFrame(reqId),
-        view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()("span", {
-            style: {
-                minWidth: "3em",
-                textAlign: "left"
-            }
-        }, displayValue === undefined ? "undefined" : displayValue.toString())
+        view: () => {
+            return mithril__WEBPACK_IMPORTED_MODULE_0___default()("span", {
+                style: {
+                    minWidth: "3em",
+                    textAlign: "left"
+                }
+            }, remainingSeconds === undefined ? "undefined" : remainingSeconds.toString());
+        },
     };
 };
 
@@ -4960,15 +4966,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
-/* harmony import */ var _Remaining__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Remaining */ "./Remaining.ts");
-/* harmony import */ var _NotificationComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./NotificationComponent */ "./NotificationComponent.ts");
-/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles.css */ "./styles.css");
-/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_styles_css__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _RemainingLabel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RemainingLabel */ "./RemainingLabel.ts");
+/* harmony import */ var _remaining__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./remaining */ "./remaining.ts");
+/* harmony import */ var _NotificationComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./NotificationComponent */ "./NotificationComponent.ts");
+/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./styles.css */ "./styles.css");
+/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_styles_css__WEBPACK_IMPORTED_MODULE_5__);
 
 
 
 
 
+
+const NotificationComponentWithSeconds = () => {
+    let remainingSeconds;
+    Object(_remaining__WEBPACK_IMPORTED_MODULE_3__["remaining"])({
+        getRemaining: dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getRemaining,
+        exists: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].exists(),
+        roundToSeconds: true,
+        callback: (value) => {
+            if (value !== remainingSeconds) {
+                remainingSeconds = value;
+                mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw();
+            }
+        },
+    });
+    return {
+        view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()(_NotificationComponent__WEBPACK_IMPORTED_MODULE_4__["NotificationComponent"], {
+            remainingSeconds
+        })
+    };
+};
 const App = {
     view: () => {
         return [
@@ -4981,8 +5008,9 @@ const App = {
                             onclick: () => {
                                 dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].show({
                                     dialogic: {
-                                        component: _NotificationComponent__WEBPACK_IMPORTED_MODULE_3__["NotificationComponent"],
+                                        component: NotificationComponentWithSeconds,
                                         className: "notification",
+                                        timeout: 5000,
                                     }
                                 });
                             }
@@ -5019,7 +5047,7 @@ const App = {
                         ]),
                         mithril__WEBPACK_IMPORTED_MODULE_0___default()(".ui.label", [
                             "Remaining",
-                            mithril__WEBPACK_IMPORTED_MODULE_0___default()(".detail", mithril__WEBPACK_IMPORTED_MODULE_0___default()(_Remaining__WEBPACK_IMPORTED_MODULE_2__["Remaining"], { getRemaining: dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getRemaining }))
+                            mithril__WEBPACK_IMPORTED_MODULE_0___default()(".detail", mithril__WEBPACK_IMPORTED_MODULE_0___default()(_RemainingLabel__WEBPACK_IMPORTED_MODULE_2__["RemainingLabel"]))
                         ]),
                     ]),
                 ]),
@@ -5036,6 +5064,48 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
     mithril__WEBPACK_IMPORTED_MODULE_0___default.a.mount(rootElement, App);
 }
+
+
+/***/ }),
+
+/***/ "./remaining.ts":
+/*!**********************!*\
+  !*** ./remaining.ts ***!
+  \**********************/
+/*! exports provided: remaining */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "remaining", function() { return remaining; });
+const remaining = (props) => {
+    let displayValue;
+    let reqId;
+    let isActive;
+    const update = () => {
+        const remaining = props.getRemaining();
+        if (!props.exists()) {
+            window.cancelAnimationFrame(reqId);
+            isActive = false;
+            props.callback(undefined);
+        }
+        else {
+            if (displayValue !== remaining) {
+                displayValue = remaining === undefined
+                    ? remaining
+                    : props.roundToSeconds
+                        ? Math.round(Math.max(remaining, 0) / 1000)
+                        : Math.max(remaining, 0);
+            }
+        }
+        props.callback(displayValue);
+        if (isActive) {
+            reqId = window.requestAnimationFrame(update);
+        }
+    };
+    isActive = true;
+    reqId = window.requestAnimationFrame(update);
+};
 
 
 /***/ }),

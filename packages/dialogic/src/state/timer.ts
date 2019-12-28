@@ -9,7 +9,7 @@ const initialState = {
   onAbort: () => {},
   onDone: () => {},
   promise: undefined,
-  remaining: 0,
+  remaining: undefined,
   startTime: undefined,
   timeoutFn: () => {},
   timerId: undefined,
@@ -72,8 +72,8 @@ const appendResumeTimer = (state: Dialogic.TimerState, minimumDuration?: number)
 };
 
 const getRemaining = (state: Dialogic.TimerState) => 
-  state.remaining === 0
-    ? 0
+  (state.remaining === 0 || state.remaining === undefined)
+    ? state.remaining
     : state.remaining - (new Date().getTime() - (state.startTime || 0));
 
 export const Timer = () => {
