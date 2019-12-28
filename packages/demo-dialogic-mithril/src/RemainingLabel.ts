@@ -1,5 +1,5 @@
 import m from "mithril";
-import { remaining } from "./remaining";
+import { remaining } from "dialogic";
 import { notification } from "dialogic-mithril";
 
 export const RemainingLabel = () => {

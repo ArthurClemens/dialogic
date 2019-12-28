@@ -1,7 +1,7 @@
 import m from "mithril";
 import { Dialog, notification, Notification } from "dialogic-mithril";
 import { RemainingLabel } from "./RemainingLabel";
-import { remaining } from "./remaining";
+import { remaining } from "dialogic";
 import { NotificationComponent } from "./NotificationComponent";
 import "./styles.css";
 
@@ -40,8 +40,7 @@ const App = {
                   dialogic: {
                     component: NotificationComponentWithSeconds,
                     className: "notification",
-                    timeout: 5000,
-
+                    timeout: 5000
                   }
                 })
               }

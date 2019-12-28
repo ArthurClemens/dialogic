@@ -912,5 +912,34 @@ const dialog = dialogical({ ns: "dialog" });
 
 const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
 
-export { actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, resetAll, resume, selectors, setDomElement, show, showItem, states };
+const remaining = (props) => {
+    let displayValue;
+    let reqId;
+    let isActive;
+    const update = () => {
+        const remaining = props.getRemaining();
+        if (!props.exists()) {
+            window.cancelAnimationFrame(reqId);
+            isActive = false;
+            props.callback(undefined);
+        }
+        else {
+            if (displayValue !== remaining) {
+                displayValue = remaining === undefined
+                    ? remaining
+                    : props.roundToSeconds
+                        ? Math.round(Math.max(remaining, 0) / 1000)
+                        : Math.max(remaining, 0);
+            }
+        }
+        props.callback(displayValue);
+        if (isActive) {
+            reqId = window.requestAnimationFrame(update);
+        }
+    };
+    isActive = true;
+    reqId = window.requestAnimationFrame(update);
+};
+
+export { actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, remaining, resetAll, resume, selectors, setDomElement, show, showItem, states };
 //# sourceMappingURL=dialogic.mjs.map

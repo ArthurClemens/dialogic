@@ -1,4 +1,5 @@
 import Stream from "mithril/stream";
+import { RemainingProps } from "./src/remaining";
 
 export const showItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
 export const hideItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
@@ -14,6 +15,7 @@ export const actions: {
   store: (ns: string, newItems: Dialogic.Item[]) => void;
   refresh: () => void;
 }
+export const remaining: (props: RemainingProps) => void;
 
 export const dialog: Dialogic.DialogicInstance;
 export const notification: Dialogic.DialogicInstance;

@@ -1,5 +1,5 @@
 
-type RemainingProps = {
+export type RemainingProps = {
   getRemaining: () => number | undefined;
   exists: () => boolean;
   roundToSeconds?: boolean;
