@@ -1,9 +1,11 @@
 <script>
 	import { Dialog, notification, Notification } from "dialogic-svelte";
 	import NotificationComponent from "./NotificationComponent.svelte";
-	import Remaining from "./Remaining.svelte";
+	import RemainingLabel from "./RemainingLabel.svelte";
+	import { remaining } from "dialogic";
 
 	const notificationIsPaused = notification.isPaused();
+	const notificationExists = notification.exists();
 	const notificationCount = notification.getCount();
 </script>
 
@@ -19,6 +21,7 @@
 						dialogic: {
 							component: NotificationComponent,
 							className: "notification",
+							timeout: 4000
 						}
 					})
 				}}>
@@ -66,12 +69,14 @@
 					{$notificationIsPaused}
 				</div>
 			</div>
-			<div class="ui label">
-				Remaining
-				<div class="detail">
-					<Remaining getRemaining={notification.getRemaining} />
+			{#if $notificationExists}
+				<div class="ui label">
+					Remaining
+					<div class="detail">
+						<RemainingLabel instance={notification} roundToSeconds={false} />
+					</div>
 				</div>
-			</div>
+			{/if}
 		</div>
 	</main>
 	<footer>

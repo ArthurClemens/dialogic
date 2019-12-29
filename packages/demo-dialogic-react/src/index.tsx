@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Dialog, notification, Notification, useDialogicState } from "dialogic-react";
-import { Remaining } from "./Remaining";
+import { RemainingLabel } from "./RemainingLabel";
 import { NotificationComponent } from "./NotificationComponent";
 
 import "./styles.css";
@@ -23,7 +23,9 @@ const App = () => {
                   dialogic: {
                     component: NotificationComponent,
                     className: "notification",
-                  }
+                    timeout: 4000
+                  },
+                  roundToSeconds: true
                 })
               }}>
               Add notification
@@ -70,12 +72,14 @@ const App = () => {
                 {notification.isPaused().toString()}
               </span>
             </div>
-            <div className="ui label">
-              Remaining
-              <span className="detail">
-                <Remaining getRemaining={notification.getRemaining} />
-              </span>
-            </div>
+            {notification.exists() && (
+              <div className="ui label">
+                Remaining
+                <span className="detail">
+                  <RemainingLabel />
+                </span>
+              </div>
+            )}
           </div>
         </main>
         <footer>

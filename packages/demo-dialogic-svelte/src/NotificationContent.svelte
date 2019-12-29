@@ -1,10 +1,27 @@
 <script>
   import { dialog, notification } from "dialogic-svelte";
   import DialogComponent from "./DialogComponent.svelte";
+  import { remaining } from "dialogic";
+
+  let remainingSeconds;
+
+  remaining({
+    getRemaining: notification.getRemaining,
+    exists: () => notification.exists(),
+    roundToSeconds: true,
+    callback: (newValue) => {
+      remainingSeconds = newValue;
+    },
+  });
+
 </script>
 
 <div class="mdc-snackbar__label">
-  Can't send photo. Retry in 5 seconds.
+  {#if remainingSeconds !== undefined}
+    Can't send photo. Retry in {remainingSeconds} seconds.
+  {:else}
+    Can't send photo.
+  {/if}
 </div>
 <div class="mdc-snackbar__actions">
   <button

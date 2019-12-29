@@ -7,30 +7,26 @@ export type RemainingProps = {
 }
 
 export const remaining = (props: RemainingProps) => {
-  let displayValue: number | undefined;
+  let displayValue: number | undefined = undefined;
   let reqId: number;
-  let isActive: boolean;
+  let isCanceled: boolean = false;
 
   const update = () => {
     const remaining = props.getRemaining();
-    if (!props.exists()) {
-      window.cancelAnimationFrame(reqId);
-      isActive = false;
-      props.callback(undefined);
-    } else {
-      if (displayValue !== remaining) {
-        displayValue = remaining === undefined
-          ? remaining
-          : props.roundToSeconds
-            ? Math.round(Math.max(remaining, 0) / 1000)
-            : Math.max(remaining, 0);
-      }
+    if (displayValue !== remaining) {
+      displayValue = remaining === undefined
+        ? remaining
+        : props.roundToSeconds
+          ? Math.round(Math.max(remaining, 0) / 1000)
+          : Math.max(remaining, 0);
     }
     props.callback(displayValue);
-    if (isActive) {
+    if (!props.exists()) {
+      window.cancelAnimationFrame(reqId);
+      isCanceled = true;
+    } else if (!isCanceled) {
       reqId = window.requestAnimationFrame(update);
     }
   };
-  isActive = true;
   reqId = window.requestAnimationFrame(update);
 };

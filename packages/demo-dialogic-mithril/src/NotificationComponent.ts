@@ -27,15 +27,11 @@ type NotificationContent = Component<NotificationContentProps>;
 const NotificationContent: NotificationContent = {
   view: ({ attrs }) => {
     return [
-      attrs.remainingSeconds !== undefined
-        ? m(".mdc-snackbar__label",
-          [
-            "Can't send photo. Retry in ",
-            attrs.remainingSeconds,
-            " seconds."
-          ]
-        )
-        : m(".mdc-snackbar__label", "Can't send photo."),
+      m(".mdc-snackbar__label",
+        attrs.remainingSeconds !== undefined
+          ? `Can't send photo. Retry in ${attrs.remainingSeconds} seconds.`
+          : "Can't send photo."
+      ),
       m(".mdc-snackbar__actions",
         m("button.mdc-button.mdc-snackbar__action",
           {

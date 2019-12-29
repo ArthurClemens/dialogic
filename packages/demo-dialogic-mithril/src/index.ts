@@ -14,7 +14,6 @@ const NotificationComponentWithSeconds = () => {
     callback: (value) => {
       if (value !== remainingSeconds) {
         remainingSeconds = value;
-        m.redraw();
       }
     },
   });
@@ -40,7 +39,7 @@ const App = {
                   dialogic: {
                     component: NotificationComponentWithSeconds,
                     className: "notification",
-                    timeout: 5000
+                    timeout: 4000
                   }
                 })
               }

@@ -1,8 +1,12 @@
 {
   "version": 3,
   "file": "bundle.css",
-  "sources": [],
-  "sourcesContent": [],
+  "sources": [
+    "../src/RemainingLabel.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\n  import { remaining } from \"dialogic\";\n\n  export let instance;\n  export let roundToSeconds;\n  let remainingSeconds;\n\n  remaining({\n    getRemaining: instance.getRemaining,\n    exists: () => instance.exists(),\n    roundToSeconds: roundToSeconds,\n    callback: (newValue) => {\n      remainingSeconds = newValue;\n    },\n  });\n  \n</script>\n\n<div class=\"remaining\">\n  <span>\n    {remainingSeconds === undefined\n      ? \"0\"\n      : remainingSeconds.toString()\n    }\n  </span>\n</div>\n\n<style>\n.remaining {\n  min-width: 3em;\n  text-align: left;\n}\n</style>\n"
+  ],
   "names": [],
-  "mappings": ""
+  "mappings": "AA4BA,UAAU,cAAC,CAAC,AACV,SAAS,CAAE,GAAG,CACd,UAAU,CAAE,IAAI,AAClB,CAAC"
 }

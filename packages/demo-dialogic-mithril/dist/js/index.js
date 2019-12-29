@@ -6169,13 +6169,9 @@ const NotificationComponent = ({
 const NotificationContent = {
     view: ({ attrs }) => {
         return [
-            attrs.remainingSeconds !== undefined
-                ? mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__label", [
-                    "Can't send photo. Retry in ",
-                    attrs.remainingSeconds,
-                    " seconds."
-                ])
-                : mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__label", "Can't send photo."),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__label", attrs.remainingSeconds !== undefined
+                ? `Can't send photo. Retry in ${attrs.remainingSeconds} seconds.`
+                : "Can't send photo."),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__actions", mithril__WEBPACK_IMPORTED_MODULE_0___default()("button.mdc-button.mdc-snackbar__action", {
                 onclick: () => {
                     dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].pause();

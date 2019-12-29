@@ -1661,7 +1661,7 @@ var initialState = {
   onAbort: function onAbort() {},
   onDone: function onDone() {},
   promise: undefined,
-  remaining: 0,
+  remaining: undefined,
   startTime: undefined,
   timeoutFn: function timeoutFn() {},
   timerId: undefined
@@ -1722,7 +1722,7 @@ var appendResumeTimer = function appendResumeTimer(state, minimumDuration) {
 };
 
 var _getRemaining = function getRemaining(state) {
-  return state.remaining === 0 ? 0 : state.remaining - (new Date().getTime() - (state.startTime || 0));
+  return state.remaining === 0 || state.remaining === undefined ? state.remaining : state.remaining - (new Date().getTime() - (state.startTime || 0));
 };
 
 var Timer = function Timer() {
@@ -2063,7 +2063,7 @@ var getTimerProperty = function getTimerProperty(timerProp, defaultValue) {
 };
 
 var isPaused = getTimerProperty("isPaused", false);
-var getRemaining$1 = getTimerProperty("getRemaining", 0);
+var getRemaining$1 = getTimerProperty("getRemaining", undefined);
 
 var exists = function exists(ns) {
   return function (defaultDialogicOptions) {
@@ -2498,6 +2498,1294 @@ var Dialogical = function Dialogical(type) {
 
 var Dialog = Dialogical(dialog);
 var Notification = Dialogical(notification);
+
+
+/***/ }),
+
+/***/ "../../dialogic/dist/dialogic.mjs":
+/*!**********************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic/dist/dialogic.mjs ***!
+  \**********************************************************************************************/
+/*! exports provided: actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, remaining, resetAll, resume, selectors, setDomElement, show, showItem, states */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "actions", function() { return actions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dialog", function() { return dialog; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dialogical", function() { return dialogical; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "exists", function() { return exists; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filterCandidates", function() { return filterCandidates; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCount", function() { return getCount; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRemaining", function() { return getRemaining$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTimerProperty", function() { return getTimerProperty; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hide", function() { return hide; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hideAll", function() { return hideAll; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hideItem", function() { return hideItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isPaused", function() { return isPaused; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "notification", function() { return notification; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pause", function() { return pause; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "remaining", function() { return remaining; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resetAll", function() { return resetAll; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resume", function() { return resume; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectors", function() { return selectors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setDomElement", function() { return setDomElement; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "show", function() { return show; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showItem", function() { return showItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "states", function() { return states; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "../../../node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../../../node_modules/@babel/runtime/helpers/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../../node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../../node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../../node_modules/@babel/runtime/helpers/toConsumableArray.js");
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4__);
+
+
+
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+var pipe = function pipe() {
+  for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
+    fns[_key] = arguments[_key];
+  }
+
+  return function (x) {
+    return fns.filter(Boolean).reduce(function (y, f) {
+      return f(y);
+    }, x);
+  };
+};
+
+var getStyleValue = function getStyleValue(_ref) {
+  var domElement = _ref.domElement,
+      prop = _ref.prop;
+
+  if (window.getComputedStyle) {
+    var defaultView = document.defaultView;
+
+    if (defaultView) {
+      var style = defaultView.getComputedStyle(domElement);
+
+      if (style) {
+        return style.getPropertyValue(prop);
+      }
+    }
+  }
+
+  return undefined;
+};
+
+var MODE = {
+  SHOW: "show",
+  HIDE: "hide"
+};
+
+var removeTransitionClassNames = function removeTransitionClassNames(domElement, transitionClassNames) {
+  var _domElement$classList;
+
+  return (_domElement$classList = domElement.classList).remove.apply(_domElement$classList, _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(transitionClassNames.showStart).concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(transitionClassNames.showEnd), _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(transitionClassNames.hideStart), _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(transitionClassNames.hideEnd)));
+};
+
+var applyTransitionStyles = function applyTransitionStyles(domElement, step, styles) {
+  var transitionStyle = styles[step] || {};
+  Object.keys(transitionStyle).forEach(function (key) {
+    var value = transitionStyle[key].toString();
+    domElement.style[key] = value; // if (domElement.style[key] !== value) {
+    // 	console.warn(`Invalid style: ${key}: ${value} (${domElement.style[key]})`);
+    // }
+  });
+};
+
+var applyNoDurationTransitionStyle = function applyNoDurationTransitionStyle(domElement) {
+  return domElement.style.transitionDuration = "0ms";
+};
+
+var getTransitionStyles = function getTransitionStyles(domElement, styles) {
+  return (typeof styles === "function" ? styles(domElement) : styles) || {};
+};
+
+var createClassList = function createClassList(className, step) {
+  return className.split(/ /).map(function (n) {
+    return "".concat(n, "-").concat(step);
+  });
+};
+
+var applyStylesForState = function applyStylesForState(domElement, props, step, isEnterStep) {
+  if (props.styles) {
+    var styles = getTransitionStyles(domElement, props.styles);
+    applyTransitionStyles(domElement, "default", styles);
+    isEnterStep && applyNoDurationTransitionStyle(domElement);
+    applyTransitionStyles(domElement, step, styles);
+  }
+
+  if (props.className) {
+    var _domElement$classList2;
+
+    var transitionClassNames = {
+      showStart: createClassList(props.className, "show-start"),
+      showEnd: createClassList(props.className, "show-end"),
+      hideStart: createClassList(props.className, "hide-start"),
+      hideEnd: createClassList(props.className, "hide-end")
+    };
+    removeTransitionClassNames(domElement, transitionClassNames);
+    transitionClassNames && (_domElement$classList2 = domElement.classList).add.apply(_domElement$classList2, _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(transitionClassNames[step]));
+  } // reflow
+
+
+  domElement.scrollTop;
+};
+
+var getDuration = function getDuration(domElement) {
+  var durationStyleValue = getStyleValue({
+    domElement: domElement,
+    prop: "transition-duration"
+  });
+  var durationValue = durationStyleValue !== undefined ? styleDurationToMs(durationStyleValue) : 0;
+  var delayStyleValue = getStyleValue({
+    domElement: domElement,
+    prop: "transition-delay"
+  });
+  var delayValue = delayStyleValue !== undefined ? styleDurationToMs(delayStyleValue) : 0;
+  return durationValue + delayValue;
+};
+
+var steps = {
+  showStart: {
+    nextStep: "showEnd"
+  },
+  showEnd: {
+    nextStep: undefined
+  },
+  hideStart: {
+    nextStep: "hideEnd"
+  },
+  hideEnd: {
+    nextStep: undefined
+  }
+};
+
+var transition = function transition(props, mode) {
+  var domElement = props.domElement;
+
+  if (!domElement) {
+    return Promise.resolve("no domElement");
+  }
+
+  var currentStep = mode === MODE.SHOW ? "showStart" : "hideStart";
+  return new Promise(function (resolve) {
+    applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
+    setTimeout(function () {
+      var nextStep = steps[currentStep].nextStep;
+
+      if (nextStep) {
+        currentStep = nextStep;
+        applyStylesForState(domElement, props, currentStep); // addEventListener sometimes hangs this function because it never finishes
+        // Using setTimeout instead of addEventListener gives more consistent results
+
+        var duration = getDuration(domElement);
+        setTimeout(resolve, duration);
+      }
+    }, 0);
+  });
+};
+
+var styleDurationToMs = function styleDurationToMs(durationStr) {
+  var parsed = parseFloat(durationStr) * (durationStr.indexOf("ms") === -1 ? 1000 : 1);
+  return isNaN(parsed) ? 0 : parsed;
+};
+
+function createCommonjsModule(fn, module) {
+  return module = {
+    exports: {}
+  }, fn(module, module.exports), module.exports;
+}
+
+var stream = createCommonjsModule(function (module) {
+  (function () {
+    /* eslint-enable */
+    Stream.SKIP = {};
+    Stream.lift = lift;
+    Stream.scan = scan;
+    Stream.merge = merge;
+    Stream.combine = combine;
+    Stream.scanMerge = scanMerge;
+    Stream["fantasy-land/of"] = Stream;
+    var warnedHalt = false;
+    Object.defineProperty(Stream, "HALT", {
+      get: function get() {
+        warnedHalt || console.log("HALT is deprecated and has been renamed to SKIP");
+        warnedHalt = true;
+        return Stream.SKIP;
+      }
+    });
+
+    function Stream(value) {
+      var dependentStreams = [];
+      var dependentFns = [];
+
+      function stream(v) {
+        if (arguments.length && v !== Stream.SKIP) {
+          value = v;
+
+          if (open(stream)) {
+            stream._changing();
+
+            stream._state = "active";
+            dependentStreams.forEach(function (s, i) {
+              s(dependentFns[i](value));
+            });
+          }
+        }
+
+        return value;
+      }
+
+      stream.constructor = Stream;
+      stream._state = arguments.length && value !== Stream.SKIP ? "active" : "pending";
+      stream._parents = [];
+
+      stream._changing = function () {
+        if (open(stream)) stream._state = "changing";
+        dependentStreams.forEach(function (s) {
+          s._changing();
+        });
+      };
+
+      stream._map = function (fn, ignoreInitial) {
+        var target = ignoreInitial ? Stream() : Stream(fn(value));
+
+        target._parents.push(stream);
+
+        dependentStreams.push(target);
+        dependentFns.push(fn);
+        return target;
+      };
+
+      stream.map = function (fn) {
+        return stream._map(fn, stream._state !== "active");
+      };
+
+      var end;
+
+      function createEnd() {
+        end = Stream();
+        end.map(function (value) {
+          if (value === true) {
+            stream._parents.forEach(function (p) {
+              p._unregisterChild(stream);
+            });
+
+            stream._state = "ended";
+            stream._parents.length = dependentStreams.length = dependentFns.length = 0;
+          }
+
+          return value;
+        });
+        return end;
+      }
+
+      stream.toJSON = function () {
+        return value != null && typeof value.toJSON === "function" ? value.toJSON() : value;
+      };
+
+      stream["fantasy-land/map"] = stream.map;
+
+      stream["fantasy-land/ap"] = function (x) {
+        return combine(function (s1, s2) {
+          return s1()(s2());
+        }, [x, stream]);
+      };
+
+      stream._unregisterChild = function (child) {
+        var childIndex = dependentStreams.indexOf(child);
+
+        if (childIndex !== -1) {
+          dependentStreams.splice(childIndex, 1);
+          dependentFns.splice(childIndex, 1);
+        }
+      };
+
+      Object.defineProperty(stream, "end", {
+        get: function get() {
+          return end || createEnd();
+        }
+      });
+      return stream;
+    }
+
+    function combine(fn, streams) {
+      var ready = streams.every(function (s) {
+        if (s.constructor !== Stream) throw new Error("Ensure that each item passed to stream.combine/stream.merge/lift is a stream");
+        return s._state === "active";
+      });
+      var stream = ready ? Stream(fn.apply(null, streams.concat([streams]))) : Stream();
+      var changed = [];
+      var mappers = streams.map(function (s) {
+        return s._map(function (value) {
+          changed.push(s);
+
+          if (ready || streams.every(function (s) {
+            return s._state !== "pending";
+          })) {
+            ready = true;
+            stream(fn.apply(null, streams.concat([changed])));
+            changed = [];
+          }
+
+          return value;
+        }, true);
+      });
+      var endStream = stream.end.map(function (value) {
+        if (value === true) {
+          mappers.forEach(function (mapper) {
+            mapper.end(true);
+          });
+          endStream.end(true);
+        }
+
+        return undefined;
+      });
+      return stream;
+    }
+
+    function merge(streams) {
+      return combine(function () {
+        return streams.map(function (s) {
+          return s();
+        });
+      }, streams);
+    }
+
+    function scan(fn, acc, origin) {
+      var stream = origin.map(function (v) {
+        var next = fn(acc, v);
+        if (next !== Stream.SKIP) acc = next;
+        return next;
+      });
+      stream(acc);
+      return stream;
+    }
+
+    function scanMerge(tuples, seed) {
+      var streams = tuples.map(function (tuple) {
+        return tuple[0];
+      });
+      var stream = combine(function () {
+        var changed = arguments[arguments.length - 1];
+        streams.forEach(function (stream, i) {
+          if (changed.indexOf(stream) > -1) seed = tuples[i][1](seed, stream());
+        });
+        return seed;
+      }, streams);
+      stream(seed);
+      return stream;
+    }
+
+    function lift() {
+      var fn = arguments[0];
+      var streams = Array.prototype.slice.call(arguments, 1);
+      return merge(streams).map(function (streams) {
+        return fn.apply(undefined, streams);
+      });
+    }
+
+    function open(s) {
+      return s._state === "pending" || s._state === "active" || s._state === "changing";
+    }
+
+    module["exports"] = Stream;
+  })();
+});
+
+var findItem = function findItem(id, items) {
+  return items.find(function (item) {
+    return item.id === id;
+  });
+};
+
+var itemIndex = function itemIndex(id, items) {
+  var item = findItem(id, items);
+  return items.indexOf(item);
+};
+
+var removeItem = function removeItem(id, items) {
+  var index = itemIndex(id, items);
+
+  if (index !== -1) {
+    items.splice(index, 1);
+  }
+
+  return items;
+};
+
+var createId = function createId(identityOptions, ns) {
+  return [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join("-");
+};
+
+var store = {
+  initialState: {
+    store: {}
+  },
+  actions: function actions(update) {
+    return {
+      /**
+       * Add an item to the end of the list.
+       */
+      add: function add(ns, item) {
+        update(function (state) {
+          var items = state.store[ns] || [];
+          state.store[ns] = [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(items), [item]);
+
+          if (item.timer) {
+            // When the timer state updates, refresh the store so that UI can pick up the change
+            item.timer.states.map(function () {
+              return store.actions(update).refresh();
+            });
+          }
+
+          return state;
+        });
+      },
+
+      /**
+       * Removes the first item with a match on `id`.
+       */
+      remove: function remove(ns, id) {
+        update(function (state) {
+          var items = state.store[ns] || [];
+          var remaining = removeItem(id, items);
+          state.store[ns] = remaining;
+          return state;
+        });
+      },
+
+      /**
+       * Replaces the first item with a match on `id` with a newItem.
+       */
+      replace: function replace(ns, id, newItem) {
+        update(function (state) {
+          var items = state.store[ns] || [];
+
+          if (items) {
+            var index = itemIndex(id, items);
+
+            if (index !== -1) {
+              items[index] = newItem;
+              state.store[ns] = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(items);
+            }
+          }
+
+          return state;
+        });
+      },
+
+      /**
+       * Removes all items within a namespace.
+       */
+      removeAll: function removeAll(ns) {
+        update(function (state) {
+          state.store[ns] = [];
+          return state;
+        });
+      },
+
+      /**
+       * Replaces all items within a namespace.
+       */
+      store: function store(ns, newItems) {
+        update(function (state) {
+          state.store[ns] = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(newItems);
+          return state;
+        });
+      },
+      refresh: function refresh() {
+        update(function (state) {
+          return _objectSpread({}, state);
+        });
+      }
+    };
+  },
+  selectors: function selectors(states) {
+    var fns = {
+      getStore: function getStore() {
+        var state = states();
+        return state.store;
+      },
+      find: function find(ns, identityOptions) {
+        var state = states();
+        var items = state.store[ns] || [];
+        var id = createId(identityOptions, ns);
+        var item = items.find(function (item) {
+          return item.id === id;
+        });
+        return item ? {
+          just: item
+        } : {
+          nothing: undefined
+        };
+      },
+      getAll: function getAll(ns, identityOptions) {
+        var state = states();
+        var items = state.store[ns] || [];
+        var spawn = identityOptions !== undefined ? identityOptions.spawn : undefined;
+        var id = identityOptions !== undefined ? identityOptions.id : undefined;
+        var itemsBySpawn = spawn !== undefined ? items.filter(function (item) {
+          return item.identityOptions.spawn === spawn;
+        }) : items;
+        var itemsById = id !== undefined ? itemsBySpawn.filter(function (item) {
+          return item.identityOptions.id === id;
+        }) : itemsBySpawn;
+        return itemsById;
+      },
+      getCount: function getCount(ns, identityOptions) {
+        return fns.getAll(ns, identityOptions).length;
+      }
+    };
+    return fns;
+  }
+};
+var update = stream();
+var states = stream.scan(function (state, patch) {
+  return patch(state);
+}, _objectSpread({}, store.initialState), update);
+
+var actions = _objectSpread({}, store.actions(update));
+
+var selectors = _objectSpread({}, store.selectors(states)); // states.map(state => 
+//   console.log(JSON.stringify(state, null, 2))
+// );
+
+
+var initialState = {
+  callback: function callback() {},
+  isPaused: false,
+  onAbort: function onAbort() {},
+  onDone: function onDone() {},
+  promise: undefined,
+  remaining: undefined,
+  startTime: undefined,
+  timeoutFn: function timeoutFn() {},
+  timerId: undefined
+};
+
+var appendStartTimer = function appendStartTimer(state, callback, duration, updateState) {
+  var timeoutFn = function timeoutFn() {
+    callback();
+    state.onDone();
+    updateState();
+  };
+
+  return _objectSpread({
+    timeoutFn: timeoutFn,
+    promise: new Promise(function (resolve, reject) {
+      state.onDone = function () {
+        return resolve();
+      };
+
+      state.onAbort = function () {
+        return resolve();
+      };
+    })
+  }, state.isPaused ? {} : {
+    startTime: new Date().getTime(),
+    timerId: window.setTimeout(timeoutFn, duration),
+    remaining: duration
+  });
+};
+
+var appendStopTimeout = function appendStopTimeout(state) {
+  window.clearTimeout(state.timerId);
+  return {
+    timerId: initialState.timerId
+  };
+};
+
+var appendStopTimer = function appendStopTimer(state) {
+  return _objectSpread({}, appendStopTimeout(state));
+};
+
+var appendPauseTimer = function appendPauseTimer(state) {
+  return _objectSpread({}, appendStopTimeout(state), {
+    isPaused: true,
+    remaining: _getRemaining(state)
+  });
+};
+
+var appendResumeTimer = function appendResumeTimer(state, minimumDuration) {
+  window.clearTimeout(state.timerId);
+  var remaining = minimumDuration ? Math.max(state.remaining || 0, minimumDuration) : state.remaining;
+  return {
+    startTime: new Date().getTime(),
+    isPaused: false,
+    remaining: remaining,
+    timerId: window.setTimeout(state.timeoutFn, remaining)
+  };
+};
+
+var _getRemaining = function getRemaining(state) {
+  return state.remaining === 0 || state.remaining === undefined ? state.remaining : state.remaining - (new Date().getTime() - (state.startTime || 0));
+};
+
+var Timer = function Timer() {
+  var timer = {
+    initialState: initialState,
+    actions: function actions(update) {
+      return {
+        start: function start(callback, duration) {
+          update(function (state) {
+            return _objectSpread({}, state, {}, appendStopTimeout(state), {}, appendStartTimer(state, callback, duration, function () {
+              return timer.actions(update).done();
+            }), {}, state.isPaused && appendPauseTimer(state));
+          });
+        },
+        stop: function stop() {
+          update(function (state) {
+            return _objectSpread({}, state, {}, appendStopTimer(state), {}, initialState);
+          });
+        },
+        pause: function pause() {
+          update(function (state) {
+            return _objectSpread({}, state, {}, !state.isPaused && appendPauseTimer(state));
+          });
+        },
+        resume: function resume(minimumDuration) {
+          update(function (state) {
+            return _objectSpread({}, state, {}, state.isPaused && appendResumeTimer(state, minimumDuration));
+          });
+        },
+        abort: function abort() {
+          update(function (state) {
+            state.onAbort();
+            return _objectSpread({}, state, {}, appendStopTimeout(state));
+          });
+        },
+        done: function done() {
+          update(function (state) {
+            return initialState;
+          });
+        },
+        refresh: function refresh() {
+          update(function (state) {
+            return _objectSpread({}, state);
+          });
+        }
+      };
+    },
+    selectors: function selectors(states) {
+      return {
+        isPaused: function isPaused() {
+          var state = states();
+          return state.isPaused;
+        },
+        getRemaining: function getRemaining() {
+          var state = states();
+          return state.isPaused ? state.remaining : _getRemaining(state);
+        },
+        getResultPromise: function getResultPromise() {
+          var state = states();
+          return state.promise;
+        }
+      };
+    }
+  };
+  var update = stream();
+  var states = stream.scan(function (state, patch) {
+    return patch(state);
+  }, _objectSpread({}, timer.initialState), update);
+
+  var actions = _objectSpread({}, timer.actions(update));
+
+  var selectors = _objectSpread({}, timer.selectors(states)); // states.map(state => 
+  //   console.log(JSON.stringify(state, null, 2))
+  // );
+
+
+  return {
+    states: states,
+    actions: actions,
+    selectors: selectors
+  };
+};
+
+var uid = 0;
+
+var getUid = function getUid() {
+  return uid === Number.MAX_SAFE_INTEGER ? 0 : uid++;
+};
+
+var transitionStates = {
+  "default": 0,
+  displaying: 1,
+  hiding: 2
+};
+
+var getMaybeItem = function getMaybeItem(ns) {
+  return function (defaultDialogicOptions) {
+    return function (identityOptions) {
+      return selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
+    };
+  };
+};
+
+var filterBySpawn = function filterBySpawn(identityOptions) {
+  return function (items) {
+    return identityOptions.spawn !== undefined ? items.filter(function (item) {
+      return item.identityOptions.spawn === identityOptions.spawn;
+    }) : items;
+  };
+};
+
+var filterById = function filterById(identityOptions) {
+  return function (items) {
+    return identityOptions.id !== undefined ? items.filter(function (item) {
+      return item.identityOptions.id === identityOptions.id;
+    }) : items;
+  };
+};
+/**
+ * Gets a list of all non-queued items.
+ * From the queued items only the first item is listed.
+ * */
+
+
+var filterFirstInQueue = function filterFirstInQueue(nsItems) {
+  var queuedCount = 0;
+  return nsItems.map(function (item) {
+    return {
+      item: item,
+      queueCount: item.dialogicOptions.queued ? queuedCount++ : 0
+    };
+  }).filter(function (_ref2) {
+    var queueCount = _ref2.queueCount;
+    return queueCount === 0;
+  }).map(function (_ref3) {
+    var item = _ref3.item;
+    return item;
+  });
+};
+
+var filterCandidates = function filterCandidates(ns, items, identityOptions) {
+  var nsItems = items[ns] || [];
+
+  if (nsItems.length == 0) {
+    return [];
+  }
+
+  return pipe(filterBySpawn(identityOptions), filterFirstInQueue)(nsItems);
+};
+
+var getPassThroughOptions = function getPassThroughOptions(options) {
+  var copy = _objectSpread({}, options);
+
+  delete copy.dialogic;
+  return copy;
+};
+
+var getMergedIdentityOptions = function getMergedIdentityOptions(defaultDialogicOptions) {
+  var identityOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return {
+    id: identityOptions.id || defaultDialogicOptions.id,
+    spawn: identityOptions.spawn || defaultDialogicOptions.spawn
+  };
+};
+
+var handleOptions = function handleOptions(defaultDialogicOptions) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var identityOptions = {
+    id: options.dialogic ? options.dialogic.id : undefined,
+    spawn: options.dialogic ? options.dialogic.spawn : undefined
+  };
+  var mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions || {}, identityOptions);
+
+  var dialogicOptions = _objectSpread({}, defaultDialogicOptions, {}, options.dialogic);
+
+  var passThroughOptions = getPassThroughOptions(options);
+  return {
+    identityOptions: mergedIdentityOptions,
+    dialogicOptions: dialogicOptions,
+    passThroughOptions: passThroughOptions
+  };
+};
+
+var createInstance = function createInstance(ns) {
+  return function (defaultDialogicOptions) {
+    return function () {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      var _handleOptions = handleOptions(defaultDialogicOptions, options),
+          identityOptions = _handleOptions.identityOptions,
+          dialogicOptions = _handleOptions.dialogicOptions,
+          passThroughOptions = _handleOptions.passThroughOptions;
+
+      return new Promise(function (resolve) {
+        var callbacks = {
+          didShow: function didShow(item) {
+            if (dialogicOptions.didShow) {
+              dialogicOptions.didShow(item);
+            }
+
+            return resolve(item);
+          },
+          didHide: function didHide(item) {
+            if (dialogicOptions.didHide) {
+              dialogicOptions.didHide(item);
+            }
+
+            return resolve(item);
+          }
+        };
+        var item = {
+          ns: ns,
+          identityOptions: identityOptions,
+          dialogicOptions: dialogicOptions,
+          callbacks: callbacks,
+          passThroughOptions: passThroughOptions,
+          id: createId(identityOptions, ns),
+          timer: dialogicOptions.timeout ? Timer() : undefined,
+          key: getUid().toString(),
+          transitionState: transitionStates["default"]
+        };
+        var maybeExistingItem = selectors.find(ns, identityOptions);
+
+        if (maybeExistingItem.just && dialogicOptions.toggle) {
+          var hideResult = hide(ns)(defaultDialogicOptions)(options);
+          return resolve(hideResult);
+        }
+
+        if (maybeExistingItem.just && !dialogicOptions.queued) {
+          var existingItem = maybeExistingItem.just; // Preserve dialogicOptions
+
+          var _dialogicOptions = existingItem.dialogicOptions;
+
+          var replacingItem = _objectSpread({}, item, {
+            transitionState: existingItem.transitionState,
+            dialogicOptions: _dialogicOptions
+          });
+
+          actions.replace(ns, existingItem.id, replacingItem);
+        } else {
+          actions.add(ns, item); // This will instantiate and draw the instance
+          // The instance will call `showDialog` in `onMount`
+        }
+
+        resolve(item);
+      });
+    };
+  };
+};
+
+var show = createInstance;
+
+var hide = function hide(ns) {
+  return function (defaultDialogicOptions) {
+    return function (options) {
+      var _handleOptions2 = handleOptions(defaultDialogicOptions, options),
+          identityOptions = _handleOptions2.identityOptions,
+          dialogicOptions = _handleOptions2.dialogicOptions,
+          passThroughOptions = _handleOptions2.passThroughOptions;
+
+      var maybeExistingItem = selectors.find(ns, identityOptions);
+
+      if (maybeExistingItem.just) {
+        var existingItem = maybeExistingItem.just;
+
+        var item = _objectSpread({}, existingItem, {
+          dialogicOptions: _objectSpread({}, existingItem.dialogicOptions, {}, dialogicOptions),
+          passThroughOptions: _objectSpread({}, existingItem.passThroughOptions, {
+            passThroughOptions: passThroughOptions
+          })
+        });
+
+        actions.replace(ns, existingItem.id, item);
+
+        if (item.transitionState !== transitionStates.hiding) {
+          return hideItem(item);
+        } else {
+          return Promise.resolve(item);
+        }
+      }
+
+      return Promise.resolve();
+    };
+  };
+};
+
+var pause = function pause(ns) {
+  return function (defaultDialogicOptions) {
+    return function (identityOptions) {
+      var items = getValidItems(ns, identityOptions).filter(function (item) {
+        return !!item.timer;
+      });
+      items.forEach(function (item) {
+        return item.timer && item.timer.actions.pause();
+      });
+      return Promise.all(items);
+    };
+  };
+};
+
+var resume = function resume(ns) {
+  return function (defaultDialogicOptions) {
+    return function (commandOptions) {
+      var options = commandOptions || {};
+      var identityOptions = {
+        id: options.id,
+        spawn: options.spawn
+      };
+      var items = getValidItems(ns, identityOptions).filter(function (item) {
+        return !!item.timer;
+      });
+      items.forEach(function (item) {
+        return item.timer && item.timer.actions.resume(options.minimumDuration);
+      });
+      return Promise.all(items);
+    };
+  };
+};
+
+var getTimerProperty = function getTimerProperty(timerProp, defaultValue) {
+  return function (ns) {
+    return function (defaultDialogicOptions) {
+      return function (identityOptions) {
+        var maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
+
+        if (maybeItem.just) {
+          if (maybeItem.just && maybeItem.just.timer) {
+            return maybeItem.just.timer.selectors[timerProp]();
+          } else {
+            return defaultValue;
+          }
+        } else {
+          return defaultValue;
+        }
+      };
+    };
+  };
+};
+
+var isPaused = getTimerProperty("isPaused", false);
+var getRemaining$1 = getTimerProperty("getRemaining", undefined);
+
+var exists = function exists(ns) {
+  return function (defaultDialogicOptions) {
+    return function (identityOptions) {
+      return !!getValidItems(ns, identityOptions).length;
+    };
+  };
+};
+
+var getValidItems = function getValidItems(ns, identityOptions) {
+  var allItems = selectors.getAll(ns);
+  var validItems;
+
+  if (identityOptions) {
+    validItems = pipe(filterBySpawn(identityOptions), filterById(identityOptions))(allItems);
+  } else {
+    validItems = allItems;
+  }
+
+  return validItems;
+};
+
+var resetAll = function resetAll(ns) {
+  return function (defaultDialogicOptions) {
+    return function (identityOptions) {
+      var validItems = getValidItems(ns, identityOptions);
+      var items = [];
+      validItems.forEach(function (item) {
+        item.timer && item.timer.actions.abort();
+        items.push(item);
+      });
+
+      if (identityOptions) {
+        items.forEach(function (item) {
+          actions.remove(ns, item.id);
+        });
+      } else {
+        actions.removeAll(ns);
+      }
+
+      return Promise.resolve(items);
+    };
+  };
+};
+
+var getOverridingTransitionOptions = function getOverridingTransitionOptions(item, dialogicOptions) {
+  return _objectSpread({}, item, {
+    dialogicOptions: _objectSpread({}, item.dialogicOptions, {}, dialogicOptions)
+  });
+};
+/**
+ * Triggers a `hideItem` for each item in the store.
+ * Queued items: will trigger `hideItem` only for the first item, then reset the store.
+ * Optional `dialogicOptions` may be passed with specific transition options. This comes in handy when all items should hide in the same way.
+ */
+
+
+var hideAll = function hideAll(ns) {
+  return function (defaultDialogicOptions) {
+    return function (dialogicOptions) {
+      var options = dialogicOptions || {};
+      var identityOptions = {
+        id: options.id,
+        spawn: options.spawn
+      };
+      var validItems = getValidItems(ns, identityOptions);
+      var regularItems = validItems.filter(function (item) {
+        return !options.queued && !item.dialogicOptions.queued;
+      });
+      var queuedItems = validItems.filter(function (item) {
+        return options.queued || item.dialogicOptions.queued;
+      });
+      var items = [];
+      regularItems.forEach(function (item) {
+        return items.push(hideItem(getOverridingTransitionOptions(item, options)));
+      });
+
+      if (queuedItems.length > 0) {
+        var _queuedItems = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default()(queuedItems, 1),
+            current = _queuedItems[0]; // Make sure that any remaining items don't suddenly appear
+
+
+        actions.store(ns, [current]); // Transition the current item
+
+        items.push(hideItem(getOverridingTransitionOptions(current, options)));
+      }
+
+      return Promise.all(items);
+    };
+  };
+};
+
+var getCount = function getCount(ns) {
+  return function (identityOptions) {
+    return selectors.getCount(ns, identityOptions);
+  };
+};
+
+var transitionItem = function transitionItem(item, mode) {
+  return transition(item.dialogicOptions, mode);
+};
+
+var deferredHideItem =
+/*#__PURE__*/
+function () {
+  var _ref4 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+  /*#__PURE__*/
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(item, timer, timeout) {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            timer.actions.start(function () {
+              return hideItem(item);
+            }, timeout);
+            return _context.abrupt("return", getTimerProperty("getResultPromise", undefined));
+
+          case 2:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function deferredHideItem(_x, _x2, _x3) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+var showItem =
+/*#__PURE__*/
+function () {
+  var _ref5 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+  /*#__PURE__*/
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(item) {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            if (!(item.transitionState !== transitionStates.displaying)) {
+              _context2.next = 4;
+              break;
+            }
+
+            item.transitionState = transitionStates.displaying;
+            _context2.next = 4;
+            return transitionItem(item, MODE.SHOW);
+
+          case 4:
+            _context2.t0 = item.callbacks.didShow;
+
+            if (!_context2.t0) {
+              _context2.next = 8;
+              break;
+            }
+
+            _context2.next = 8;
+            return item.callbacks.didShow(item);
+
+          case 8:
+            if (!(item.dialogicOptions.timeout && item.timer)) {
+              _context2.next = 11;
+              break;
+            }
+
+            _context2.next = 11;
+            return deferredHideItem(item, item.timer, item.dialogicOptions.timeout);
+
+          case 11:
+            return _context2.abrupt("return", Promise.resolve(item));
+
+          case 12:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function showItem(_x4) {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+var hideItem =
+/*#__PURE__*/
+function () {
+  var _ref6 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(
+  /*#__PURE__*/
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(item) {
+    var copy;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            item.transitionState = transitionStates.hiding; // Stop any running timer
+
+            if (item.timer) {
+              item.timer.actions.stop();
+            }
+
+            _context3.next = 4;
+            return transitionItem(item, MODE.HIDE);
+
+          case 4:
+            _context3.t0 = item.callbacks.didHide;
+
+            if (!_context3.t0) {
+              _context3.next = 8;
+              break;
+            }
+
+            _context3.next = 8;
+            return item.callbacks.didHide(item);
+
+          case 8:
+            copy = _objectSpread({}, item);
+            actions.remove(item.ns, item.id);
+            return _context3.abrupt("return", Promise.resolve(copy));
+
+          case 11:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+
+  return function hideItem(_x5) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
+var setDomElement = function setDomElement(domElement, item) {
+  item.dialogicOptions.domElement = domElement;
+};
+
+var dialogical = function dialogical(_ref7) {
+  var ns = _ref7.ns,
+      queued = _ref7.queued,
+      timeout = _ref7.timeout;
+  var defaultId = "default_".concat(ns);
+  var defaultSpawn = "default_".concat(ns);
+
+  var defaultDialogicOptions = _objectSpread({
+    id: defaultId,
+    spawn: defaultSpawn
+  }, queued && {
+    queued: queued
+  }, {}, timeout !== undefined && {
+    timeout: timeout
+  });
+
+  return {
+    // Identification
+    ns: ns,
+    defaultId: defaultId,
+    defaultSpawn: defaultSpawn,
+    // Configuration
+    defaultDialogicOptions: defaultDialogicOptions,
+    // Commands
+    show: show(ns)(defaultDialogicOptions),
+    hide: hide(ns)(defaultDialogicOptions),
+    hideAll: hideAll(ns)(defaultDialogicOptions),
+    resetAll: resetAll(ns)(defaultDialogicOptions),
+    // Timer commands
+    pause: pause(ns)(defaultDialogicOptions),
+    resume: resume(ns)(defaultDialogicOptions),
+    // State
+    exists: exists(ns)(defaultDialogicOptions),
+    getCount: getCount(ns),
+    // Timer state
+    isPaused: isPaused(ns)(defaultDialogicOptions),
+    getRemaining: getRemaining$1(ns)(defaultDialogicOptions)
+  };
+};
+
+var dialog = dialogical({
+  ns: "dialog"
+});
+var notification = dialogical({
+  ns: "notification",
+  queued: true,
+  timeout: 3000
+});
+
+var remaining = function remaining(props) {
+  var displayValue = undefined;
+  var reqId;
+  var isCanceled = false;
+
+  var update = function update() {
+    var remaining = props.getRemaining();
+
+    if (displayValue !== remaining) {
+      displayValue = remaining === undefined ? remaining : props.roundToSeconds ? Math.round(Math.max(remaining, 0) / 1000) : Math.max(remaining, 0);
+    }
+
+    props.callback(displayValue);
+
+    if (!props.exists()) {
+      window.cancelAnimationFrame(reqId);
+      isCanceled = true;
+    } else if (!isCanceled) {
+      reqId = window.requestAnimationFrame(update);
+    }
+  };
+
+  reqId = window.requestAnimationFrame(update);
+};
+
 
 
 /***/ }),
@@ -34652,69 +35940,72 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var dialogic_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dialogic-react */ "../../dialogic-react/dist/dialogic-react.mjs");
 /* harmony import */ var _DialogComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DialogComponent */ "./DialogComponent.tsx");
+/* harmony import */ var _useRemaining__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./useRemaining */ "./useRemaining.ts");
 /**
  * This example uses Material IO
  */
 
 
 
-const NotificationComponent = () => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "mdc-snackbar mdc-snackbar--open" },
+
+const NotificationComponent = props => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "mdc-snackbar mdc-snackbar--open" },
     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "mdc-snackbar__surface" },
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationContent, null))));
-const NotificationContent = () => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null,
-    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "mdc-snackbar__label" }, "Can't send photo. Retry in 5 seconds."),
-    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "mdc-snackbar__actions" },
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button mdc-button mdc-snackbar__action", onClick: () => {
-                dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"].pause();
-                dialogic_react__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
-                    dialogic: {
-                        component: _DialogComponent__WEBPACK_IMPORTED_MODULE_2__["DialogComponent"],
-                        className: "dialog",
-                    },
-                    title: "Retry sending?",
-                    body: "We have noticed a slow internet connection. Sending may take a bit longer than usual.",
-                    onAccept: () => {
-                        dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"].hide();
-                        dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"].resume();
-                    },
-                    onReject: () => {
-                        dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"].resume({ minimumDuration: 2000 });
-                    }
-                });
-            } }, "Retry"))));
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationContent, Object.assign({}, props)))));
+const NotificationContent = props => {
+    const [remainingSeconds] = Object(_useRemaining__WEBPACK_IMPORTED_MODULE_3__["useRemaining"])({ instance: dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"], roundToSeconds: props.roundToSeconds });
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null,
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "mdc-snackbar__label" }, remainingSeconds !== undefined
+            ? `Can't send photo. Retry in ${remainingSeconds} seconds.`
+            : "Can't send photo."),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "mdc-snackbar__actions" },
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button mdc-button mdc-snackbar__action", onClick: () => {
+                    dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"].pause();
+                    dialogic_react__WEBPACK_IMPORTED_MODULE_1__["dialog"].show({
+                        dialogic: {
+                            component: _DialogComponent__WEBPACK_IMPORTED_MODULE_2__["DialogComponent"],
+                            className: "dialog",
+                        },
+                        title: "Retry sending?",
+                        body: "We have noticed a slow internet connection. Sending may take a bit longer than usual.",
+                        onAccept: () => {
+                            dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"].hide();
+                            dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"].resume();
+                        },
+                        onReject: () => {
+                            dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"].resume({ minimumDuration: 2000 });
+                        }
+                    });
+                } }, "Retry"))));
+};
 
 
 /***/ }),
 
-/***/ "./Remaining.tsx":
-/*!***********************!*\
-  !*** ./Remaining.tsx ***!
-  \***********************/
-/*! exports provided: Remaining */
+/***/ "./RemainingLabel.tsx":
+/*!****************************!*\
+  !*** ./RemainingLabel.tsx ***!
+  \****************************/
+/*! exports provided: RemainingLabel */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Remaining", function() { return Remaining; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RemainingLabel", function() { return RemainingLabel; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _useAnimationFrame__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./useAnimationFrame */ "./useAnimationFrame.ts");
+/* harmony import */ var dialogic_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dialogic-react */ "../../dialogic-react/dist/dialogic-react.mjs");
+/* harmony import */ var _useRemaining__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./useRemaining */ "./useRemaining.ts");
 
 
-const Remaining = props => {
-    const [displayValue, setDisplayValue] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])();
-    Object(_useAnimationFrame__WEBPACK_IMPORTED_MODULE_1__["useAnimationFrame"])(() => {
-        const remaining = props.getRemaining();
-        if (remaining !== 0 && displayValue !== remaining) {
-            setDisplayValue(Math.max(remaining, 0));
-        }
-        else {
-            setDisplayValue(undefined);
-        }
-    });
-    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, displayValue === undefined
+
+const RemainingLabel = () => {
+    const [remainingSeconds] = Object(_useRemaining__WEBPACK_IMPORTED_MODULE_2__["useRemaining"])({ instance: dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"], roundToSeconds: false });
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", { style: {
+            minWidth: "3em",
+            textAlign: "left"
+        } }, remainingSeconds === undefined
         ? "0"
-        : displayValue.toString()));
+        : remainingSeconds.toString()));
 };
 
 
@@ -34734,7 +36025,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "../node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var dialogic_react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dialogic-react */ "../../dialogic-react/dist/dialogic-react.mjs");
-/* harmony import */ var _Remaining__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Remaining */ "./Remaining.tsx");
+/* harmony import */ var _RemainingLabel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./RemainingLabel */ "./RemainingLabel.tsx");
 /* harmony import */ var _NotificationComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./NotificationComponent */ "./NotificationComponent.tsx");
 /* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./styles.css */ "./styles.css");
 /* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_styles_css__WEBPACK_IMPORTED_MODULE_5__);
@@ -34757,7 +36048,9 @@ const App = () => {
                                 dialogic: {
                                     component: _NotificationComponent__WEBPACK_IMPORTED_MODULE_4__["NotificationComponent"],
                                     className: "notification",
-                                }
+                                    timeout: 4000
+                                },
+                                roundToSeconds: true
                             });
                         } }, "Add notification"),
                     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "ui button", onClick: () => {
@@ -34779,10 +36072,10 @@ const App = () => {
                     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "ui label" },
                         "Is paused",
                         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", { className: "detail" }, dialogic_react__WEBPACK_IMPORTED_MODULE_2__["notification"].isPaused().toString())),
-                    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "ui label" },
+                    dialogic_react__WEBPACK_IMPORTED_MODULE_2__["notification"].exists() && (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "ui label" },
                         "Remaining",
                         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", { className: "detail" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Remaining__WEBPACK_IMPORTED_MODULE_3__["Remaining"], { getRemaining: dialogic_react__WEBPACK_IMPORTED_MODULE_2__["notification"].getRemaining }))))),
+                            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_RemainingLabel__WEBPACK_IMPORTED_MODULE_3__["RemainingLabel"], null)))))),
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", null,
                 "Dialogic: manage dialogs and notifications. ",
                 react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", { href: 'https://github.com/ArthurClemens/dialogic' }, "Main documentation on GitHub"))),
@@ -34806,40 +36099,40 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
 
 /***/ }),
 
-/***/ "./useAnimationFrame.ts":
-/*!******************************!*\
-  !*** ./useAnimationFrame.ts ***!
-  \******************************/
-/*! exports provided: useAnimationFrame */
+/***/ "./useRemaining.ts":
+/*!*************************!*\
+  !*** ./useRemaining.ts ***!
+  \*************************/
+/*! exports provided: useRemaining */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useAnimationFrame", function() { return useAnimationFrame; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useRemaining", function() { return useRemaining; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var dialogic__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dialogic */ "../../dialogic/dist/dialogic.mjs");
 
-const useAnimationFrame = (callback) => {
-    const requestRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])();
-    const previousTimeRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])();
-    const animate = (time) => {
-        if (previousTimeRef.current !== undefined) {
-            const deltaTime = time - previousTimeRef.current;
-            callback(deltaTime);
-        }
-        previousTimeRef.current = time;
-        requestRef.current = requestAnimationFrame(animate);
-    };
+
+const useRemaining = props => {
+    const [value, setValue] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(undefined);
+    const didCancelRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(false);
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-        requestRef.current = requestAnimationFrame(animate);
-        // Unmount
+        Object(dialogic__WEBPACK_IMPORTED_MODULE_1__["remaining"])({
+            getRemaining: props.instance.getRemaining,
+            exists: () => props.instance.exists(),
+            roundToSeconds: props.roundToSeconds,
+            callback: (newValue) => {
+                if (!didCancelRef.current) {
+                    setValue(newValue);
+                }
+            },
+        });
         return () => {
-            const id = requestRef.current;
-            if (id !== undefined) {
-                cancelAnimationFrame(id);
-            }
+            didCancelRef.current = true;
         };
     }, []);
+    return [value];
 };
 
 
