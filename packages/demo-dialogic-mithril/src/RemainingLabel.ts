@@ -5,8 +5,7 @@ import { notification } from "dialogic-mithril";
 export const RemainingLabel = () => {
   let remainingSeconds: number | undefined;
   remaining({
-    getRemaining: notification.getRemaining,
-    exists: () => true, // always run
+    instance: notification,
     roundToSeconds: false,
     callback: (value) => {
       remainingSeconds = value;
@@ -23,7 +22,7 @@ export const RemainingLabel = () => {
             textAlign: "left"
           }
         },
-        remainingSeconds === undefined ? "undefined" : remainingSeconds.toString()
+        remainingSeconds === undefined ? "0" : remainingSeconds.toString()
       )
     },
   }

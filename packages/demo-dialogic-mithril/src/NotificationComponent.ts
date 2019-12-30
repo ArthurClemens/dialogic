@@ -5,26 +5,40 @@
 import m, { Component } from "mithril";
 import { dialog, notification } from "dialogic-mithril";
 import { DialogComponent } from "./DialogComponent";
+import { remaining } from "dialogic";
 
-type NotificationComponentProps = {
-  remainingSeconds: number | undefined;
+type NotificationComponentProps = {}
+
+type NotificationComponent = (props: NotificationComponentProps) => Component<NotificationComponentProps>;
+
+export const NotificationComponent: NotificationComponent = props => {
+  let remainingSeconds: number | undefined;
+  remaining({
+    instance: notification,
+    roundToSeconds: true,
+    callback: (value) => {
+      if (value !== remainingSeconds) {
+        remainingSeconds = value;
+        m.redraw();
+      }
+    },
+  });
+
+  return {
+    view: () =>
+      m(".mdc-snackbar.mdc-snackbar--open",  
+        m(".mdc-snackbar__surface",
+          m(NotificationContent, { remainingSeconds })
+        )
+      )
+  };
+};
+
+type NotificationContentProps = {
+  remainingSeconds: undefined | number;
 }
 
-type NotificationComponent = Component<NotificationComponentProps>;
-
-export const NotificationComponent: NotificationComponent = ({
-  view: ({ attrs }) =>
-    m(".mdc-snackbar.mdc-snackbar--open",  
-      m(".mdc-snackbar__surface",
-        m(NotificationContent, attrs)
-      )
-    )
-});
-
-type NotificationContentProps = {} & NotificationComponentProps
-type NotificationContent = Component<NotificationContentProps>;
-
-const NotificationContent: NotificationContent = {
+const NotificationContent: Component<NotificationContentProps> = {
   view: ({ attrs }) => {
     return [
       m(".mdc-snackbar__label",

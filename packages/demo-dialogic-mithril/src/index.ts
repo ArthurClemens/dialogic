@@ -1,29 +1,8 @@
 import m from "mithril";
 import { Dialog, notification, Notification } from "dialogic-mithril";
 import { RemainingLabel } from "./RemainingLabel";
-import { remaining } from "dialogic";
 import { NotificationComponent } from "./NotificationComponent";
 import "./styles.css";
-
-const NotificationComponentWithSeconds = () => {
-  let remainingSeconds: number | undefined;
-  remaining({
-    getRemaining: notification.getRemaining,
-    exists: () => notification.exists(),
-    roundToSeconds: true,
-    callback: (value) => {
-      if (value !== remainingSeconds) {
-        remainingSeconds = value;
-      }
-    },
-  });
-  return {
-    view: () =>
-      m(NotificationComponent, {
-        remainingSeconds
-      })
-  };
-};
 
 const App = {
   view: () => {
@@ -37,7 +16,7 @@ const App = {
               onclick: () => {
                 notification.show({
                   dialogic: {
-                    component: NotificationComponentWithSeconds,
+                    component: NotificationComponent,
                     className: "notification",
                     timeout: 4000
                   }
@@ -78,12 +57,14 @@ const App = {
                 notification.isPaused().toString()
               )
             ]),
-            m(".ui.label", [
-              "Remaining",
-              m(".detail", 
-                m(RemainingLabel)
-              )
-            ]),
+            notification.exists() && (
+              m(".ui.label", [
+                "Remaining",
+                m(".detail", 
+                  m(RemainingLabel)
+                )
+              ])
+            ),
           ]),
         ]),
         m("footer", [

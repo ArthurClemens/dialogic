@@ -1,7 +1,12 @@
+/**
+ * Utility script that uses an animation frame to pass the current remaining value
+ * (which is utilized when setting `timeout`).
+ */
+
+import { Dialogic } from "../index";
 
 export type RemainingProps = {
-  getRemaining: () => number | undefined;
-  exists: () => boolean;
+  instance: Dialogic.DialogicInstance;
   roundToSeconds?: boolean;
   callback: (displayValue: number | undefined) => any;
 }
@@ -12,7 +17,7 @@ export const remaining = (props: RemainingProps) => {
   let isCanceled: boolean = false;
 
   const update = () => {
-    const remaining = props.getRemaining();
+    const remaining = props.instance.getRemaining();
     if (displayValue !== remaining) {
       displayValue = remaining === undefined
         ? remaining
@@ -21,7 +26,7 @@ export const remaining = (props: RemainingProps) => {
           : Math.max(remaining, 0);
     }
     props.callback(displayValue);
-    if (!props.exists()) {
+    if (!props.instance.exists()) {
       window.cancelAnimationFrame(reqId);
       isCanceled = true;
     } else if (!isCanceled) {

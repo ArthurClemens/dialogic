@@ -3760,6 +3760,10 @@ var notification = dialogical({
   queued: true,
   timeout: 3000
 });
+/**
+ * Utility script that uses an animation frame to pass the current remaining value
+ * (which is utilized when setting `timeout`).
+ */
 
 var remaining = function remaining(props) {
   var displayValue = undefined;
@@ -3767,7 +3771,7 @@ var remaining = function remaining(props) {
   var isCanceled = false;
 
   var update = function update() {
-    var remaining = props.getRemaining();
+    var remaining = props.instance.getRemaining();
 
     if (displayValue !== remaining) {
       displayValue = remaining === undefined ? remaining : props.roundToSeconds ? Math.round(Math.max(remaining, 0) / 1000) : Math.max(remaining, 0);
@@ -3775,7 +3779,7 @@ var remaining = function remaining(props) {
 
     props.callback(displayValue);
 
-    if (!props.exists()) {
+    if (!props.instance.exists()) {
       window.cancelAnimationFrame(reqId);
       isCanceled = true;
     } else if (!isCanceled) {
@@ -36119,8 +36123,7 @@ const useRemaining = props => {
     const didCancelRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(false);
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
         Object(dialogic__WEBPACK_IMPORTED_MODULE_1__["remaining"])({
-            getRemaining: props.instance.getRemaining,
-            exists: () => props.instance.exists(),
+            instance: props.instance,
             roundToSeconds: props.roundToSeconds,
             callback: (newValue) => {
                 if (!didCancelRef.current) {

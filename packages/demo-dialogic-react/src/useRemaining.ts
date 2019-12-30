@@ -10,8 +10,7 @@ export const useRemaining: UseRemainingFn = props => {
   useEffect(
     () => {
       remaining({
-        getRemaining: props.instance.getRemaining,
-        exists: () => props.instance.exists(),
+        instance: props.instance,
         roundToSeconds: props.roundToSeconds,
         callback: (newValue) => {
           if (!didCancelRef.current) {

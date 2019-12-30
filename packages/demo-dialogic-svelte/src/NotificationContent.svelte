@@ -6,8 +6,7 @@
   let remainingSeconds;
 
   remaining({
-    getRemaining: notification.getRemaining,
-    exists: () => notification.exists(),
+    instance: notification,
     roundToSeconds: true,
     callback: (newValue) => {
       remainingSeconds = newValue;

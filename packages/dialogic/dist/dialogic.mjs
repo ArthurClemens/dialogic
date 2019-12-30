@@ -912,12 +912,16 @@ const dialog = dialogical({ ns: "dialog" });
 
 const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
 
+/**
+ * Utility script that uses an animation frame to pass the current remaining value
+ * (which is utilized when setting `timeout`).
+ */
 const remaining = (props) => {
     let displayValue = undefined;
     let reqId;
     let isCanceled = false;
     const update = () => {
-        const remaining = props.getRemaining();
+        const remaining = props.instance.getRemaining();
         if (displayValue !== remaining) {
             displayValue = remaining === undefined
                 ? remaining
@@ -926,7 +930,7 @@ const remaining = (props) => {
                     : Math.max(remaining, 0);
         }
         props.callback(displayValue);
-        if (!props.exists()) {
+        if (!props.instance.exists()) {
             window.cancelAnimationFrame(reqId);
             isCanceled = true;
         }

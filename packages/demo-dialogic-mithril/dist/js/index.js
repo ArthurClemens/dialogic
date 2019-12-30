@@ -4208,33 +4208,33 @@ var notification = dialogical({
   queued: true,
   timeout: 3000
 });
+/**
+ * Utility script that uses an animation frame to pass the current remaining value
+ * (which is utilized when setting `timeout`).
+ */
 
 var remaining = function remaining(props) {
-  var displayValue;
+  var displayValue = undefined;
   var reqId;
-  var isActive;
+  var isCanceled = false;
 
   var update = function update() {
-    var remaining = props.getRemaining();
+    var remaining = props.instance.getRemaining();
 
-    if (!props.exists()) {
-      window.cancelAnimationFrame(reqId);
-      isActive = false;
-      props.callback(undefined);
-    } else {
-      if (displayValue !== remaining) {
-        displayValue = remaining === undefined ? remaining : props.roundToSeconds ? Math.round(Math.max(remaining, 0) / 1000) : Math.max(remaining, 0);
-      }
+    if (displayValue !== remaining) {
+      displayValue = remaining === undefined ? remaining : props.roundToSeconds ? Math.round(Math.max(remaining, 0) / 1000) : Math.max(remaining, 0);
     }
 
     props.callback(displayValue);
 
-    if (isActive) {
+    if (!props.instance.exists()) {
+      window.cancelAnimationFrame(reqId);
+      isCanceled = true;
+    } else if (!isCanceled) {
       reqId = window.requestAnimationFrame(update);
     }
   };
 
-  isActive = true;
   reqId = window.requestAnimationFrame(update);
 };
 
@@ -6157,15 +6157,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
 /* harmony import */ var _DialogComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DialogComponent */ "./DialogComponent.ts");
+/* harmony import */ var dialogic__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! dialogic */ "../../dialogic/dist/dialogic.mjs");
 /**
  * This example uses Material IO
  */
 
 
 
-const NotificationComponent = ({
-    view: ({ attrs }) => mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar.mdc-snackbar--open", mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__surface", mithril__WEBPACK_IMPORTED_MODULE_0___default()(NotificationContent, attrs)))
-});
+
+const NotificationComponent = props => {
+    let remainingSeconds;
+    Object(dialogic__WEBPACK_IMPORTED_MODULE_3__["remaining"])({
+        instance: dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"],
+        roundToSeconds: true,
+        callback: (value) => {
+            if (value !== remainingSeconds) {
+                remainingSeconds = value;
+                mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw();
+            }
+        },
+    });
+    return {
+        view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar.mdc-snackbar--open", mithril__WEBPACK_IMPORTED_MODULE_0___default()(".mdc-snackbar__surface", mithril__WEBPACK_IMPORTED_MODULE_0___default()(NotificationContent, { remainingSeconds })))
+    };
+};
 const NotificationContent = {
     view: ({ attrs }) => {
         return [
@@ -6219,8 +6234,7 @@ __webpack_require__.r(__webpack_exports__);
 const RemainingLabel = () => {
     let remainingSeconds;
     Object(dialogic__WEBPACK_IMPORTED_MODULE_1__["remaining"])({
-        getRemaining: dialogic_mithril__WEBPACK_IMPORTED_MODULE_2__["notification"].getRemaining,
-        exists: () => true,
+        instance: dialogic_mithril__WEBPACK_IMPORTED_MODULE_2__["notification"],
         roundToSeconds: false,
         callback: (value) => {
             remainingSeconds = value;
@@ -6234,7 +6248,7 @@ const RemainingLabel = () => {
                     minWidth: "3em",
                     textAlign: "left"
                 }
-            }, remainingSeconds === undefined ? "undefined" : remainingSeconds.toString());
+            }, remainingSeconds === undefined ? "0" : remainingSeconds.toString());
         },
     };
 };
@@ -6255,35 +6269,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
 /* harmony import */ var _RemainingLabel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RemainingLabel */ "./RemainingLabel.ts");
-/* harmony import */ var dialogic__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! dialogic */ "../../dialogic/dist/dialogic.mjs");
-/* harmony import */ var _NotificationComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./NotificationComponent */ "./NotificationComponent.ts");
-/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./styles.css */ "./styles.css");
-/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_styles_css__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _NotificationComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./NotificationComponent */ "./NotificationComponent.ts");
+/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles.css */ "./styles.css");
+/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_styles_css__WEBPACK_IMPORTED_MODULE_4__);
 
 
 
 
 
-
-const NotificationComponentWithSeconds = () => {
-    let remainingSeconds;
-    Object(dialogic__WEBPACK_IMPORTED_MODULE_3__["remaining"])({
-        getRemaining: dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].getRemaining,
-        exists: () => dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].exists(),
-        roundToSeconds: true,
-        callback: (value) => {
-            if (value !== remainingSeconds) {
-                remainingSeconds = value;
-                mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw();
-            }
-        },
-    });
-    return {
-        view: () => mithril__WEBPACK_IMPORTED_MODULE_0___default()(_NotificationComponent__WEBPACK_IMPORTED_MODULE_4__["NotificationComponent"], {
-            remainingSeconds
-        })
-    };
-};
 const App = {
     view: () => {
         return [
@@ -6296,9 +6289,9 @@ const App = {
                             onclick: () => {
                                 dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].show({
                                     dialogic: {
-                                        component: NotificationComponentWithSeconds,
+                                        component: _NotificationComponent__WEBPACK_IMPORTED_MODULE_3__["NotificationComponent"],
                                         className: "notification",
-                                        timeout: 5000
+                                        timeout: 4000
                                     }
                                 });
                             }
@@ -6333,10 +6326,10 @@ const App = {
                             "Is paused",
                             mithril__WEBPACK_IMPORTED_MODULE_0___default()(".detail", dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].isPaused().toString())
                         ]),
-                        mithril__WEBPACK_IMPORTED_MODULE_0___default()(".ui.label", [
+                        dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["notification"].exists() && (mithril__WEBPACK_IMPORTED_MODULE_0___default()(".ui.label", [
                             "Remaining",
                             mithril__WEBPACK_IMPORTED_MODULE_0___default()(".detail", mithril__WEBPACK_IMPORTED_MODULE_0___default()(_RemainingLabel__WEBPACK_IMPORTED_MODULE_2__["RemainingLabel"]))
-                        ]),
+                        ])),
                     ]),
                 ]),
                 mithril__WEBPACK_IMPORTED_MODULE_0___default()("footer", [

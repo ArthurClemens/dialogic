@@ -6,8 +6,7 @@
   let remainingSeconds;
 
   remaining({
-    getRemaining: instance.getRemaining,
-    exists: () => instance.exists(),
+    instance,
     roundToSeconds: roundToSeconds,
     callback: (newValue) => {
       remainingSeconds = newValue;
