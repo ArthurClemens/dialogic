@@ -1,6 +1,5 @@
 import React from "react";
-import { notification } from "dialogic-react";
-import { useRemaining } from "./useRemaining";
+import { notification, useRemaining } from "dialogic-react";
 
 export const RemainingLabel = () => {
   const [remainingSeconds] = useRemaining({ instance: notification, roundToSeconds: false });

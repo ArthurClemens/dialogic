@@ -3,9 +3,8 @@
  */
 
 import React, { FunctionComponent } from "react";
-import { dialog, notification } from "dialogic-react";
+import { dialog, notification, useRemaining } from "dialogic-react";
 import { DialogComponent } from "./DialogComponent";
-import { useRemaining } from "./useRemaining";
 
 type NotificationComponentProps = {
   roundToSeconds: boolean;
