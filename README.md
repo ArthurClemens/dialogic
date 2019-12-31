@@ -7,32 +7,34 @@
 - [API](#api)
   - [Dialog and Notification component](#dialog-and-notification-component)
     - [Options](#options)
-  - [`show`](#show)
-  - [`hide`](#hide)
-  - [`dialogic` options](#dialogic-options)
-    - [`component`](#component)
-    - [`className`](#classname)
-    - [`styles`](#styles)
-    - [`timeout`](#timeout)
-    - [`queued`](#queued)
-    - [`toggle`](#toggle)
-    - [`didShow`](#didshow)
-    - [`didHide`](#didhide)
+  - [show](#show)
+  - [hide](#hide)
+  - [dialogic options](#dialogic-options)
+    - [component](#component)
+    - [className](#classname)
+    - [styles](#styles)
+    - [timeout](#timeout)
+    - [queued](#queued)
+    - [toggle](#toggle)
+    - [didShow](#didshow)
+    - [didHide](#didhide)
     - [Component options](#component-options)
-  - [`hideAll`](#hideall)
-  - [`resetAll`](#resetall)
+  - [hideAll](#hideall)
+  - [resetAll](#resetall)
   - [Handling multiple items with identity options](#handling-multiple-items-with-identity-options)
     - [Simultaneous, at the same location](#simultaneous-at-the-same-location)
     - [Simultaneous, at different locations](#simultaneous-at-different-locations)
     - [Sequence of items](#sequence-of-items)
-  - [`exists`](#exists)
-  - [`getCount`](#getcount)
+  - [exists](#exists)
+  - [getCount](#getcount)
   - [Timer functions](#timer-functions)
-    - [`pause`](#pause)
-    - [`resume`](#resume)
-    - [`isPaused`](#ispaused)
-    - [`getRemaining`](#getremaining)
-  - [`useDialogicState`](#usedialogicstate)
+    - [pause](#pause)
+    - [resume](#resume)
+    - [isPaused](#ispaused)
+    - [getRemaining](#getremaining)
+    - [Getting updates on the remaining time](#getting-updates-on-the-remaining-time)
+    - [useRemaining](#useremaining)
+  - [useDialogicState](#usedialogicstate)
 - [Size](#size)
 - [License](#license)
 
@@ -725,11 +727,35 @@ const remaining = notification.getRemaining({
 **Signature**
 
 ```typescript
-getRemaining: (identityOptions?: IdentityOptions) => number;
+getRemaining: (identityOptions?: IdentityOptions) => number | undefined;
 ```
 
 React: requires `useDialogicState`.
 
+
+#### Getting updates on the remaining time
+
+The `dialogic` module contains a helper function `remaining` that continuously returns the current remaining time.
+
+See the demos for an example.
+
+When using React, you can use the hook `useRemaining` (see below).
+
+
+#### `useRemaining` 
+
+For React only.
+
+Hook to fetch the current remaining time.
+
+```jsx
+import { notification, useRemaining } from "dialogic-react";
+
+const MyComponent = props => {
+  const [remainingSeconds] = useRemaining({ instance: notification, roundToSeconds: true });
+  // ...
+}
+```
 
 ### `useDialogicState` 
 
@@ -751,7 +777,7 @@ const MyComponent = props => {
 
 ## Size
 
-* Dialogic for React: 4.4 Kb gzipped
+* Dialogic for React: 4.5 Kb gzipped
 * Dialogic for Mithril: 4.3 Kb gzipped
 * Dialogic for Svelte: 7.5 Kb gzipped
 
