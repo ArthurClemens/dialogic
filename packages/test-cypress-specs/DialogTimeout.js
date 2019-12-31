@@ -7,10 +7,10 @@ describe("Dialog: timeout", () => {
   });
 
   it("getRemaining should show the remaining time", () => {
-    cy.get("[data-test-id=remaining-value]").should("contain", "0");
+    cy.get("[data-test-id=remaining-value]").should("contain", "undefined");
     cy.get("[data-test-id=button-show-default]").should("exist").click();
     cy.wait(1000);
-    cy.get("[data-test-id=remaining-value]").should("not.contain", "0");
+    cy.get("[data-test-id=remaining-value]").should("not.contain", "undefined");
 
     cy.clock().then((clock) => {
       clock.tick(100);
@@ -25,7 +25,7 @@ describe("Dialog: timeout", () => {
   });
 
   it("pause button should pause the timer, resume should continue from where it left off", () => {
-    cy.get("[data-test-id=remaining-value]").should("contain", "0");
+    cy.get("[data-test-id=remaining-value]").should("contain", "undefined");
     cy.get("[data-test-id=is-paused]").should("contain", "Is paused: false");
     cy.get("[data-test-id=button-show-default]").should("exist").click();
     cy.wait(500);
@@ -53,7 +53,7 @@ describe("Dialog: timeout", () => {
 
     cy.wait(2000);
     cy.get("[data-test-id=is-paused]").should("contain", "Is paused: false");
-    cy.get("[data-test-id=remaining-value]").should("contain", "0");
+    cy.get("[data-test-id=remaining-value]").should("contain", "undefined");
   });
 
 });

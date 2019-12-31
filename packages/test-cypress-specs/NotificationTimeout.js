@@ -23,7 +23,7 @@ describe("Notification: timeout", () => {
   });
 
   it("With timeout 0, getRemaining should show 0", () => {
-    cy.get("[data-test-id=remaining-value]").should("contain", "0");
+    cy.get("[data-test-id=remaining-value]").should("contain", "undefined");
     cy.get("[data-test-id=button-show-zero-timeout]").should("exist").click();
     cy.wait(500);
     cy.clock().then((clock) => {
@@ -32,7 +32,7 @@ describe("Notification: timeout", () => {
       cy.get("[data-test-id=remaining-value]").should("exist");
       cy.get("[data-test-id=remaining-value]").should(($remainingValue) => {
         const text = $remainingValue.text();
-        expect(text).to.eq("0");
+        expect(text).to.eq("undefined");
       });
     });
   });

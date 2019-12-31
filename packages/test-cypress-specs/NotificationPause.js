@@ -8,7 +8,7 @@ describe("Notification: pause", () => {
 
   it("pause button should pause the timer, resume should continue from where it left off", () => {
     cy.get("[data-test-id=pause-default] [data-test-id=is-paused]").should("contain", "Is paused: false");
-    cy.get("[data-test-id=pause-default] [data-test-id=remaining-value]").should("contain", "0");
+    cy.get("[data-test-id=pause-default] [data-test-id=remaining-value]").should("contain", "undefined");
     cy.get("[data-test-id=pause-default] [data-test-id=button-show-default]").should("exist").click();
     cy.wait(500);
     cy.get("[data-test-id=pause-default] [data-test-id=button-pause]").should("exist").click();
@@ -35,7 +35,7 @@ describe("Notification: pause", () => {
 
     cy.wait(2000);
     cy.get("[data-test-id=pause-default] [data-test-id=is-paused]").should("contain", "Is paused: false");
-    cy.get("[data-test-id=pause-default] [data-test-id=remaining-value]").should("contain", "0");
+    cy.get("[data-test-id=pause-default] [data-test-id=remaining-value]").should("contain", "undefined");
   });
 
 });
