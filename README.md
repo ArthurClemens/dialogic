@@ -277,6 +277,19 @@ Define those classes in CSS to create transitions. For example with `className` 
 }
 ```
 
+Use regular CSS syntax to define delays. Note that delays should be written at the "end" transition.
+
+In this example, the dialog will transition towards the end fully visible and with a delay of half a second:
+
+```css
+.dialog-show-end {
+  opacity: 1;
+  transition-delay: 500ms;
+}
+```
+
+
+
 #### `styles`
 
 Pass a style object in JavaScript instead of using a CSS file. This allows for more dynamic styling based on the current element state.
