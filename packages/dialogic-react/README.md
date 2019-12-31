@@ -1,6 +1,6 @@
 # Dialogic for React
 
-[Main page](../../README.md)
+[Main documentation](https://github.com/ArthurClemens/dialogic/blob/development/README.md)
 
 ## Demo
 

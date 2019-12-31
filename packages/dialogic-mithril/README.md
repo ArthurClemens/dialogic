@@ -2,8 +2,7 @@
 
 Manage dialogs and notifications.
 
-[Main documentation](../../README.md)
-
+[Main documentation](https://github.com/ArthurClemens/dialogic/blob/development/README.md)
 
 ## Demo
 
