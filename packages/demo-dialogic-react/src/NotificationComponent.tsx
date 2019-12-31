@@ -25,7 +25,7 @@ const NotificationContent: FunctionComponent<NotificationComponentProps> = props
     <>
       <div className="mdc-snackbar__label">
         {remainingSeconds !== undefined
-          ? `Can't send photo. Retry in ${remainingSeconds} seconds.`
+          ? `Can't send photo. Retrying in ${remainingSeconds} seconds.`
           : "Can't send photo."
         }
       </div>
@@ -40,7 +40,7 @@ const NotificationContent: FunctionComponent<NotificationComponentProps> = props
                 className: "dialog",
               },
               title: "Retry sending?",
-              body: "We have noticed a slow internet connection. Sending may take a bit longer than usual.",
+              body: "We have noticed a slow internet connection. Even when you retry now, sending may take longer than usual.",
               onAccept: () => {
                 notification.hide();
                 notification.resume();
@@ -50,7 +50,7 @@ const NotificationContent: FunctionComponent<NotificationComponentProps> = props
               }
             });
           }}>
-          Retry
+          Retry now
         </button>
       </div>
     </>

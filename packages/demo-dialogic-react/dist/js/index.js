@@ -34719,7 +34719,7 @@ const NotificationContent = props => {
     const [remainingSeconds] = Object(dialogic_react__WEBPACK_IMPORTED_MODULE_1__["useRemaining"])({ instance: dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"], roundToSeconds: props.roundToSeconds });
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null,
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "mdc-snackbar__label" }, remainingSeconds !== undefined
-            ? `Can't send photo. Retry in ${remainingSeconds} seconds.`
+            ? `Can't send photo. Retrying in ${remainingSeconds} seconds.`
             : "Can't send photo."),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "mdc-snackbar__actions" },
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button mdc-button mdc-snackbar__action", onClick: () => {
@@ -34730,7 +34730,7 @@ const NotificationContent = props => {
                             className: "dialog",
                         },
                         title: "Retry sending?",
-                        body: "We have noticed a slow internet connection. Sending may take a bit longer than usual.",
+                        body: "We have noticed a slow internet connection. Even when you retry now, sending may take longer than usual.",
                         onAccept: () => {
                             dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"].hide();
                             dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"].resume();
@@ -34739,7 +34739,7 @@ const NotificationContent = props => {
                             dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"].resume({ minimumDuration: 2000 });
                         }
                     });
-                } }, "Retry"))));
+                } }, "Retry now"))));
 };
 
 

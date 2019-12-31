@@ -17,7 +17,7 @@
 
 <div class="mdc-snackbar__label">
   {#if remainingSeconds !== undefined}
-    Can't send photo. Retry in {remainingSeconds} seconds.
+    Can't send photo. Retrying in {remainingSeconds} seconds.
   {:else}
     Can't send photo.
   {/if}
@@ -33,7 +33,7 @@
           className: "dialog",
         },
         title: "Retry sending?",
-        body: "We have noticed a slow internet connection. Sending may take a bit longer than usual.",
+        body: "We have noticed a slow internet connection. Even when you retry now, sending may take longer than usual.",
         onAccept: () => {
           notification.hide();
           notification.resume();
@@ -43,6 +43,6 @@
         }
       });
     }}>
-    Retry
+    Retry now
   </button>
 </div>
