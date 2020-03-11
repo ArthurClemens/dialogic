@@ -1,5 +1,4 @@
 import Stream from "mithril/stream";
-import { RemainingProps } from "./src/remaining";
 
 export const showItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
 export const hideItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
@@ -15,7 +14,7 @@ export const actions: {
   store: (ns: string, newItems: Dialogic.Item[]) => void;
   refresh: () => void;
 }
-export const remaining: (props: RemainingProps) => void;
+export const remaining: (props: Dialogic.RemainingProps) => void;
 
 export const dialog: Dialogic.DialogicInstance;
 export const notification: Dialogic.DialogicInstance;
@@ -255,5 +254,22 @@ export namespace Dialogic {
     show: () => Promise<string>;
     hide: () => Promise<string>;
   } & PassThroughOptions;
+
+  type RemainingProps = {
+    /**
+     * Dialogic instance: notification, dialog, or custom.
+     */
+    instance: DialogicInstance;
+  
+    /**
+     * Set to true to return seconds instead of milliseconds.
+     */
+    roundToSeconds?: boolean;
+  
+    /**
+     * Returns the remaining time as milliseconds. Returns `undefined` when the timer is not running (before and after the timer runs).
+     */
+    callback: (displayValue: number | undefined) => any;
+  }
 
 }

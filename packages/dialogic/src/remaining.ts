@@ -5,24 +5,7 @@
 
 import { Dialogic } from "../index";
 
-export type RemainingProps = {
-  /**
-   * Dialogic instance: notification, dialog, or custom.
-   */
-  instance: Dialogic.DialogicInstance;
-
-  /**
-   * Set to true to return seconds instead of milliseconds.
-   */
-  roundToSeconds?: boolean;
-
-  /**
-   * Returns the remaining time as milliseconds. Returns `undefined` when the timer is not running (before and after the timer runs).
-   */
-  callback: (displayValue: number | undefined) => any;
-}
-
-export const remaining = (props: RemainingProps) => {
+export const remaining = (props: Dialogic.RemainingProps) => {
   let displayValue: number | undefined = undefined;
   let reqId: number;
   let isCanceled: boolean = false;
