@@ -36,6 +36,7 @@
     - [`useRemaining`](#useremaining)
   - [`useDialogicState`](#usedialogicstate)
 - [Size](#size)
+- [And also](#and-also)
 - [License](#license)
 
 ## Supported JavaScript libraries
@@ -794,6 +795,12 @@ const MyComponent = props => {
 * Dialogic for React: 4.5 Kb gzipped
 * Dialogic for Mithril: 4.3 Kb gzipped
 * Dialogic for Svelte: 7.5 Kb gzipped
+
+
+## And also
+
+Dialogic uses the [Meiosis state pattern](http://meiosis.js.org/) for state management.
+
 
 ## License
 
