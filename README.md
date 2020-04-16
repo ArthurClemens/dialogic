@@ -72,6 +72,7 @@ _item: a dialog/modal or a notification_
   * Use custom CSS classes or style options
   * Manage timings with CSS (or use transition options)
   * Use any UI library
+* Written in TypeScript 
 
 Dialogic does __not__ provide any styling for dialogs or notifications. This gives you the freedom to plug into your own codebase or use any other UI library.
 
