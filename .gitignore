@@ -3,5 +3,4 @@ node_modules
 npm-debug.log*
 *.log
 *.lock
-package-lock.json
 .rpt2_cache
