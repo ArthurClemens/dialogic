@@ -1250,9 +1250,21 @@ var Wrapper = function Wrapper(props) {
   }));
 };
 
+var useDialogicState = function useDialogicState() {
+  // Subscribe to changes
+  Object(use_stream__WEBPACK_IMPORTED_MODULE_4__["useStream"])({
+    model: function model() {
+      return {
+        _: dialogic__WEBPACK_IMPORTED_MODULE_2__["states"]
+      };
+    },
+    defer: true
+  });
+};
+
 var Dialogical = function Dialogical(type) {
   return function (props) {
-    // useDialogicState();
+    useDialogicState();
     var identityOptions = {
       id: props.id || type.defaultId,
       spawn: props.spawn || type.defaultSpawn
@@ -1268,19 +1280,6 @@ var Dialogical = function Dialogical(type) {
       ns: type.ns
     });
   };
-};
-
-var useDialogicState = function useDialogicState() {
-  // Subscribe to changes
-  var model = Object(use_stream__WEBPACK_IMPORTED_MODULE_4__["useStream"])({
-    model: function model() {
-      return {
-        states: dialogic__WEBPACK_IMPORTED_MODULE_2__["states"]
-      };
-    },
-    defer: true
-  });
-  return model ? [model.states().store] : [{}];
 };
 
 var useRemaining = function useRemaining(props) {

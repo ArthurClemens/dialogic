@@ -63,8 +63,18 @@ const Wrapper = props => {
     return (React.createElement(React.Fragment, null, filtered.map(item => React.createElement(Instance, { key: item.key, identityOptions: item.identityOptions, dialogicOptions: item.dialogicOptions, passThroughOptions: item.passThroughOptions, onMount: nsOnInstanceMounted, onShow: nsOnShowInstance, onHide: nsOnHideInstance }))));
 };
 
+const useDialogicState = () => {
+    // Subscribe to changes
+    useStream({
+        model: () => ({
+            _: states,
+        }),
+        defer: true,
+    });
+};
+
 const Dialogical = type => props => {
-    // useDialogicState();
+    useDialogicState();
     const identityOptions = {
         id: props.id || type.defaultId,
         spawn: props.spawn || type.defaultSpawn,
@@ -76,17 +86,6 @@ const Dialogical = type => props => {
         }
     }, []);
     return React.createElement(Wrapper, { identityOptions: identityOptions, ns: type.ns });
-};
-
-const useDialogicState = () => {
-    // Subscribe to changes
-    const model = useStream({
-        model: () => ({
-            states,
-        }),
-        defer: true,
-    });
-    return model ? [model.states().store] : [{}];
 };
 
 const useRemaining = props => {
