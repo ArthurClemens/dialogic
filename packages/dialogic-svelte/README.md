@@ -1,6 +1,18 @@
 # Dialogic for Svelte
 
-[Main documentation](https://github.com/ArthurClemens/dialogic/blob/development/README.md)
+Manage dialogs and notifications.
+
+- [API](#api)
+- [Demo](#demo)
+- [Usage](#usage)
+  - [Dialog](#dialog)
+  - [Notification](#notification)
+- [Size](#size)
+
+
+## API
+
+See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/development/README.md)
 
 ## Demo
 
@@ -137,3 +149,7 @@
   </div>
 </div>
 ```
+
+## Size
+
+7.34 KB with all dependencies, minified and gzipped

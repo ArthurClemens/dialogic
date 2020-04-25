@@ -35,7 +35,6 @@
     - [Getting updates on the remaining time](#getting-updates-on-the-remaining-time)
     - [`useRemaining`](#useremaining)
   - [`useDialogicState`](#usedialogicstate)
-- [Size](#size)
 - [And also](#and-also)
 - [License](#license)
 
@@ -126,9 +125,9 @@ With Svelte:
 
 #### Options
 
-| **Name** | **Type** | **Required** | **Description** | **Default value** |
-| --- | --- | --- | --- | --- | 
-| `spawn` | `string` | No | Spawn identifier, useful when using multiple spawn locations. See [Handling multiple items with identity options](#handling-multiple-items-with-identity-options) | "default_spawn" |
+| **Name** | **Type** | **Required** | **Description**                                                                                                                                                   | **Default value** |
+| -------- | -------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `spawn`  | `string` | No           | Spawn identifier, useful when using multiple spawn locations. See [Handling multiple items with identity options](#handling-multiple-items-with-identity-options) | "default_spawn"   |
 
 
 ### `show`
@@ -201,19 +200,19 @@ hide: (options?: Options, componentOptions?: PassThroughOptions) => Promise<Item
 
 Options passed to `show`, `hide` and `hideAll`. The options are further explained below.
 
-| **Name** | **Type** | **Required** | **Description** | **Default value** |
-| --- | --- | --- | --- | --- | 
-| `component` | Function component | No | The component to render as an item. | |
-| `className` | `string` | No | Class added to the wrapper around `component`; also the base name for transition classes (more below). | | 
-| `styles` | `TransitionStyles` object or `(domElement: HTMLElement) => TransitionStyles` | No | Pass transition styles in JS. |  |
-| `timeout` | `number` (ms) | No | Creates a timer. When the dialog is completely shown the timer is started automatically. After timeout the dialog is hidden. Use `0` to prevent the timer from running. | For notifications `3000` | 
-| `queued`  | `boolean` | No | Set to `true` to manage multiple dialogs in time (more useful for notifications). | `false`; for notifications `true` | 
-| `toggle`  | `boolean` | No | Set to `true` to make `show()` switch between shown and hidden state. | `false` | 
-| `didShow` | `(item: Dialogic.Item) => void` | No | Function called when the item is completely shown (after transitioning). | |
-| `didHide` | `(item: Dialogic.Item) => void` | No | Function called when the item is completely hidden (after transitioning). | |
-| `id` | `string` | No | Dialog identifier, useful when using multiple (stacked) items. See [Handling multiple items with identity options](#handling-multiple-items-with-identity-options) | "default_dialog" or "default_notification" |
-| `spawn` | `string` | No | Spawn identifier, useful when using multiple spawn locations. See [Handling multiple items with identity options](#handling-multiple-items-with-identity-options) | "default_spawn" |
-| `...componentOptions` | `any` | No | Options to pass to the `component`. |  |
+| **Name**              | **Type**                                                                     | **Required** | **Description**                                                                                                                                                         | **Default value**                          |
+| --------------------- | ---------------------------------------------------------------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `component`           | Function component                                                           | No           | The component to render as an item.                                                                                                                                     |                                            |
+| `className`           | `string`                                                                     | No           | Class added to the wrapper around `component`; also the base name for transition classes (more below).                                                                  |                                            |
+| `styles`              | `TransitionStyles` object or `(domElement: HTMLElement) => TransitionStyles` | No           | Pass transition styles in JS.                                                                                                                                           |                                            |
+| `timeout`             | `number` (ms)                                                                | No           | Creates a timer. When the dialog is completely shown the timer is started automatically. After timeout the dialog is hidden. Use `0` to prevent the timer from running. | For notifications `3000`                   |
+| `queued`              | `boolean`                                                                    | No           | Set to `true` to manage multiple dialogs in time (more useful for notifications).                                                                                       | `false`; for notifications `true`          |
+| `toggle`              | `boolean`                                                                    | No           | Set to `true` to make `show()` switch between shown and hidden state.                                                                                                   | `false`                                    |
+| `didShow`             | `(item: Dialogic.Item) => void`                                              | No           | Function called when the item is completely shown (after transitioning).                                                                                                |                                            |
+| `didHide`             | `(item: Dialogic.Item) => void`                                              | No           | Function called when the item is completely hidden (after transitioning).                                                                                               |                                            |
+| `id`                  | `string`                                                                     | No           | Dialog identifier, useful when using multiple (stacked) items. See [Handling multiple items with identity options](#handling-multiple-items-with-identity-options)      | "default_dialog" or "default_notification" |
+| `spawn`               | `string`                                                                     | No           | Spawn identifier, useful when using multiple spawn locations. See [Handling multiple items with identity options](#handling-multiple-items-with-identity-options)       | "default_spawn"                            |
+| `...componentOptions` | `any`                                                                        | No           | Options to pass to the `component`.                                                                                                                                     |                                            |
 
 
 **Signature**
@@ -252,12 +251,12 @@ Pass the component that will be rendered.
 
 Create transitions by writing styles using the format `className-suffix` - where suffix is defined by its transition point.
 
-| **Class suffix** | **When is the class set** | **What should the style do** |
-| --- | --- | --- |
-| `-show-start` | Start of show transition | Initial state before the item is shown |
-| `-show-end`   | End of show transition | State for the shown item, including the transition (properties, duration) |
-| `-hide-start` | Start of hide transition | Initial state before the item is hidden |
-| `-hide-end`   | End of hide transition | State for the hidden item, including the transition (properties, duration) |
+| **Class suffix** | **When is the class set** | **What should the style do**                                               |
+| ---------------- | ------------------------- | -------------------------------------------------------------------------- |
+| `-show-start`    | Start of show transition  | Initial state before the item is shown                                     |
+| `-show-end`      | End of show transition    | State for the shown item, including the transition (properties, duration)  |
+| `-hide-start`    | Start of hide transition  | Initial state before the item is hidden                                    |
+| `-hide-end`      | End of hide transition    | State for the hidden item, including the transition (properties, duration) |
 
 
 Define those classes in CSS to create transitions. For example with `className` "dialog":
@@ -297,13 +296,13 @@ In this example, the dialog will transition towards the end fully visible and wi
 
 Pass a style object in JavaScript instead of using a CSS file. This allows for more dynamic styling based on the current element state.
 
-| **Property** | **When is the style read** | **What should the style do** |
-| --- | --- | --- |
-| `default`   | The default style is read at every transition moment and combined with the other styles below. | Anything that saves duplication. |
-| `showStart` | Start of show transition | Initial state before the item is shown |
-| `showEnd`   | End of show transition | State for the shown item, including the transition (properties, duration) |
-| `hideStart` | Start of hide transition | Initial state before the item is hidden |
-| `hideEnd`   | End of hide transition | State for the hidden item, including the transition (properties, duration) |
+| **Property** | **When is the style read**                                                                     | **What should the style do**                                               |
+| ------------ | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `default`    | The default style is read at every transition moment and combined with the other styles below. | Anything that saves duplication.                                           |
+| `showStart`  | Start of show transition                                                                       | Initial state before the item is shown                                     |
+| `showEnd`    | End of show transition                                                                         | State for the shown item, including the transition (properties, duration)  |
+| `hideStart`  | Start of hide transition                                                                       | Initial state before the item is hidden                                    |
+| `hideEnd`    | End of hide transition                                                                         | State for the hidden item, including the transition (properties, duration) |
 
 Either pass a styles object, or pass a function that returns the styles object. Because the function accepts the item's DOM elemment, styles can be modified by the current DOM state.
 
@@ -790,12 +789,6 @@ const MyComponent = props => {
   )
 }
 ```
-
-## Size
-
-* Dialogic for React: 4.5 Kb gzipped
-* Dialogic for Mithril: 4.3 Kb gzipped
-* Dialogic for Svelte: 7.5 Kb gzipped
 
 
 ## And also

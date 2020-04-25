@@ -1,48 +1,35 @@
-import { terser } from "rollup-plugin-terser";
-import commonjs from "rollup-plugin-commonjs";
-import fs from "fs";
-import pathmodify from "rollup-plugin-pathmodify";
-import resolve from "rollup-plugin-node-resolve";
-import typescript from "rollup-plugin-typescript2";
+import typescript from '@rollup/plugin-typescript';
+import fs from 'fs';
+import cleanup from 'rollup-plugin-cleanup';
+import { terser } from 'rollup-plugin-terser';
 
-const env = process.env;
-const pkg = JSON.parse(fs.readFileSync("./package.json"));
-const production = !process.env.ROLLUP_WATCH;
-const isModule = !!process.env.MODULE;
-const isTypeScript = !!process.env.TYPESCRIPT;
-const format = isModule
-  ? "es"
-  : "umd";
+const { env } = process;
+const pkg = JSON.parse(fs.readFileSync('./package.json'));
+
+const isModule = !!parseInt(env.MODULE, 10);
+const format = isModule ? 'es' : 'umd';
+const target = isModule ? 'ESNEXT' : 'es5';
 const file = isModule
-  ? `${process.env.DEST || pkg.main}.mjs`
-  : `${process.env.DEST || pkg.main}.js`;
+  ? `${process.env.DEST || pkg.module}`
+  : `${process.env.DEST || pkg.main}.min.js`;
+const isTypeScript = !!parseInt(env.TYPESCRIPT, 10);
+const input = env.ENTRY || 'src/index.js';
 
 export default {
-  input: env.ENTRY || "src/index.ts",
+  input,
   output: {
-    sourcemap: true,
+    name: env.MODULE_NAME,
     format,
-    name: pkg.name,
-    file
+    file,
   },
   plugins: [
-    pathmodify({
-      aliases: [
-        {
-          id: "mithril/stream",
-          resolveTo: "node_modules/mithril/stream/stream.js"
-        },
-        {
-          id: "mithril",
-          resolveTo: "node_modules/mithril/mithril.js"
-        },
-      ]
+    isTypeScript &&
+      typescript({
+        target,
+      }),
+    !isModule && terser(),
+    cleanup({
+      comments: 'none',
     }),
-    resolve({ browser: true }),
-    commonjs(),
-    isTypeScript && typescript({
-      abortOnError: false
-    }),
-    production && !isModule && terser()
-  ]
+  ],
 };

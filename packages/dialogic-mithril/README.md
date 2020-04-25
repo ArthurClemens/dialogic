@@ -2,7 +2,17 @@
 
 Manage dialogs and notifications.
 
-[Main documentation](https://github.com/ArthurClemens/dialogic/blob/development/README.md)
+- [API](#api)
+- [Demo](#demo)
+- [Install](#install)
+- [Usage](#usage)
+  - [Dialog](#dialog)
+  - [Notification](#notification)
+- [Size](#size)
+
+## API
+
+See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/development/README.md)
 
 ## Demo
 
@@ -140,3 +150,7 @@ const NotificationView = {
   opacity: 0;
 }
 ```
+
+## Size
+
+ 3.06 KB with all dependencies, minified and gzipped

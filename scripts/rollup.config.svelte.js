@@ -1,5 +1,5 @@
-import config from "./rollup.config";
-import svelte from "rollup-plugin-svelte";
+import config from './rollup.config';
+import svelte from 'rollup-plugin-svelte';
 
 const production = !process.env.ROLLUP_WATCH;
 

@@ -3,14 +3,20 @@
   "version": "0.3.1",
   "description": "Logic for dialogs and notifications",
   "main": "dist/dialogic-svelte",
-  "module": "dist/dialogic-svelte.mjs",
+  "module": "dist/dialogic-svelte.js",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
     "clean": "rm -rf dist/*",
-    "rollup": "MODULE_NAME=dialogicSvelte ENTRY=./src/index.js ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.svelte.js && ENTRY=./src/index.js ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.svelte.js ",
+    "rollup": "MODULE=1 MODULE_NAME=dialogicSvelte ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.svelte.js",
     "build": "npm run clean && npm run rollup && npm run size",
-    "size": "gzip -c dist/dialogic-svelte.js | wc -c"
+    "size": "size-limit",
+    "size:why": "size-limit --why"
   },
+  "size-limit": [
+    {
+      "path": "dist/dialogic-svelte.js"
+    }
+  ],
   "dependencies": {
     "dialogic": "^0.3.1"
   },
@@ -21,5 +27,9 @@
   "svelte": "src/index.js",
   "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
   "homepage": "https://github.com/ArthurClemens/dialogic",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^4.4.5",
+    "size-limit": "^4.4.5"
+  }
 }

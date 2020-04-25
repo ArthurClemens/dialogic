@@ -1,9 +1,16 @@
-import Stream from "mithril/stream";
+import Stream from 'mithril/stream';
 
 export const showItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
 export const hideItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
-export const setDomElement: (domElement: HTMLElement, item: Dialogic.Item) => void;
-export const filterCandidates: (ns: string, items: Dialogic.NamespaceStore, identityOptions: Dialogic.IdentityOptions) => Dialogic.Item[];
+export const setDomElement: (
+  domElement: HTMLElement,
+  item: Dialogic.Item,
+) => void;
+export const filterCandidates: (
+  ns: string,
+  items: Dialogic.NamespaceStore,
+  identityOptions: Dialogic.IdentityOptions,
+) => Dialogic.Item[];
 export const states: Dialogic.States;
 export const selectors: Dialogic.StateSelectors;
 export const actions: {
@@ -13,7 +20,7 @@ export const actions: {
   removeAll: (ns: string) => void;
   store: (ns: string, newItems: Dialogic.Item[]) => void;
   refresh: () => void;
-}
+};
 export const remaining: (props: Dialogic.RemainingProps) => void;
 
 export const dialog: Dialogic.DialogicInstance;
@@ -21,10 +28,11 @@ export const notification: Dialogic.DialogicInstance;
 
 type ConfirmFn = {
   (item: Dialogic.Item): void;
-}
+};
+
+export { Stream };
 
 export namespace Dialogic {
-
   type DialogicInstance = {
     // Identification
     ns: string;
@@ -33,8 +41,14 @@ export namespace Dialogic {
     // Configuration
     defaultDialogicOptions: DefaultDialogicOptions;
     // Commands
-    show: (options: Options, componentOptions?: PassThroughOptions) => Promise<Item>;
-    hide: (options?: Options, componentOptions?: PassThroughOptions) => Promise<Item>;
+    show: (
+      options: Options,
+      componentOptions?: PassThroughOptions,
+    ) => Promise<Item>;
+    hide: (
+      options?: Options,
+      componentOptions?: PassThroughOptions,
+    ) => Promise<Item>;
     hideAll: (dialogicOptions?: DialogicOptions) => Promise<Item[]>;
     resetAll: (identityOptions?: IdentityOptions) => Promise<Item[]>;
     // Timer commands
@@ -46,19 +60,19 @@ export namespace Dialogic {
     // Timer state
     isPaused: (identityOptions?: IdentityOptions) => boolean;
     getRemaining: (identityOptions?: IdentityOptions) => number;
-  }
+  };
 
   type DefaultDialogicOptions = {
     id: string;
     spawn: string;
     queued?: boolean;
     timeout?: number;
-  }
+  };
 
   type IdentityOptions = {
     id?: string;
     spawn?: string;
-  }
+  };
 
   type ComponentOptions = {
     onMount?: (args?: any) => any;
@@ -71,7 +85,7 @@ export namespace Dialogic {
   type DialogicalWrapperOptions = {
     ns: string;
     identityOptions: IdentityOptions;
-  }
+  };
 
   type DialogicalInstanceDispatchFn = (event: InstanceEvent) => void;
 
@@ -82,12 +96,12 @@ export namespace Dialogic {
     onMount: DialogicalInstanceDispatchFn;
     onShow: DialogicalInstanceDispatchFn;
     onHide: DialogicalInstanceDispatchFn;
-  }
-  
+  };
+
   type PassThroughOptions = {
-    [key:string]: any;
-  }
-  
+    [key: string]: any;
+  };
+
   // TransitionFns
 
   type TransitionFn = (domElement?: HTMLElement) => any;
@@ -95,7 +109,7 @@ export namespace Dialogic {
   type TransitionFns = {
     show?: TransitionFn;
     hide?: TransitionFn;
-  }
+  };
 
   type TransitionStyles = {
     default?: Partial<CSSStyleDeclaration>;
@@ -103,10 +117,10 @@ export namespace Dialogic {
     showEnd?: Partial<CSSStyleDeclaration>;
     hideStart?: Partial<CSSStyleDeclaration>;
     hideEnd?: Partial<CSSStyleDeclaration>;
-  }
+  };
 
   type TransitionStylesFn = (domElement: HTMLElement) => TransitionStyles;
-  
+
   type DialogicOptions = {
     className?: string;
     component?: any;
@@ -126,12 +140,12 @@ export namespace Dialogic {
   type MaybeItem = {
     just?: Item;
     nothing?: undefined;
-  }
+  };
 
   type Callbacks = {
     didHide: ConfirmFn;
     didShow: ConfirmFn;
-  }
+  };
 
   type Item = {
     ns: string;
@@ -143,15 +157,15 @@ export namespace Dialogic {
     dialogicOptions: DialogicOptions;
     transitionState: number;
     callbacks: Callbacks;
-  }
+  };
 
   type NamespaceStore = {
     [key: string]: Item[];
-  }
+  };
 
   type State = {
     store: NamespaceStore;
-  }
+  };
 
   type InitiateItemTransitionFn = (item: Item) => Promise<Item>;
 
@@ -175,7 +189,7 @@ export namespace Dialogic {
      * Returns the remaining duration in milliseconds.
      */
     getRemaining: () => number | undefined;
-  }
+  };
 
   type TimerState = {
     timerId?: number;
@@ -185,13 +199,13 @@ export namespace Dialogic {
     callback: TimerCallback;
     timeoutFn: () => void;
     promise?: Promise<any>;
-    onDone: TOnFinishFn; 
+    onDone: TOnFinishFn;
     onAbort: TOnFinishFn;
-  }
+  };
 
   type TimerResumeOptions = {
     minimumDuration?: number;
-  }
+  };
 
   type TimerActions = {
     /**
@@ -226,13 +240,13 @@ export namespace Dialogic {
      * Updates the current state. Used to get the state for selectors.getRemaining.
      */
     refresh: () => void;
-  }
+  };
 
   type Timer = {
     states: TimerStates;
     actions: TimerActions;
     selectors: TimerStateSelectors;
-  }
+  };
 
   type States = Stream<State>;
 
@@ -241,14 +255,14 @@ export namespace Dialogic {
     find: (ns: string, identityOptions: IdentityOptions) => MaybeItem;
     getAll: (ns: string, identityOptions?: IdentityOptions) => Item[];
     getCount: (ns: string, identityOptions?: IdentityOptions) => number;
-  }
+  };
 
   type InstanceEvent = {
     detail: {
       identityOptions: IdentityOptions;
-      domElement: HTMLElement
-    }
-  }
+      domElement: HTMLElement;
+    };
+  };
 
   type ContentComponentOptions = {
     show: () => Promise<string>;
@@ -260,16 +274,15 @@ export namespace Dialogic {
      * Dialogic instance: notification, dialog, or custom.
      */
     instance: DialogicInstance;
-  
+
     /**
      * Set to true to return seconds instead of milliseconds.
      */
     roundToSeconds?: boolean;
-  
+
     /**
      * Returns the remaining time as milliseconds. Returns `undefined` when the timer is not running (before and after the timer runs).
      */
     callback: (displayValue: number | undefined) => any;
-  }
-
+  };
 }

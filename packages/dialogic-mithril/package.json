@@ -3,20 +3,30 @@
   "version": "0.3.1",
   "description": "Logic for dialogs and notifications",
   "main": "dist/dialogic-mithril",
-  "module": "dist/dialogic-mithril.mjs",
+  "module": "dist/dialogic-mithril.js",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
     "clean": "rm -rf dist/*",
-    "rollup": "MODULE_NAME=dialogicMithril TYPESCRIPT=1 ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.umd.js && TYPESCRIPT=1 ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.es.js ",
+    "rollup": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=1 MODULE_NAME=dialogicMithril ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js",
     "build": "npm run clean && npm run rollup && npm run size",
-    "size": "gzip -c dist/dialogic-mithril.js | wc -c"
+    "size": "size-limit",
+    "size:why": "size-limit --why"
   },
+  "size-limit": [
+    {
+      "path": "dist/dialogic-mithril.js"
+    }
+  ],
   "dependencies": {
     "dialogic": "^0.3.1"
   },
-  "devDependencies": {
-    "@types/mithril": "2.0.2",
+  "peerDependencies": {
     "mithril": "^2.0.4"
+  },
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^4.4.5",
+    "@types/mithril": "2.0.2",
+    "size-limit": "^4.4.5"
   },
   "files": [
     "dist",

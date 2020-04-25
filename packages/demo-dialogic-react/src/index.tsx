@@ -1,10 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { Dialog, notification, Notification, useDialogicState } from "dialogic-react";
-import { RemainingLabel } from "./RemainingLabel";
-import { NotificationComponent } from "./NotificationComponent";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {
+  Dialog,
+  notification,
+  Notification,
+  useDialogicState,
+} from 'dialogic-react';
+import { RemainingLabel } from './RemainingLabel';
+import { NotificationComponent } from './NotificationComponent';
 
-import "./styles.css";
+import './styles.css';
 
 const App = () => {
   useDialogicState();
@@ -14,7 +19,10 @@ const App = () => {
       <div className="page">
         <main>
           <h1>Dialogic for React demo</h1>
-          <div className="message">Add one or more notifications, then click on the Retry button in the message.</div>
+          <div className="message">
+            Add one or more notifications, then click on the Retry button in the
+            message.
+          </div>
           <div className="ui message">
             <button
               className="ui button primary"
@@ -22,49 +30,52 @@ const App = () => {
                 notification.show({
                   dialogic: {
                     component: NotificationComponent,
-                    className: "notification",
-                    timeout: 4000
+                    className: 'notification',
+                    timeout: 4000,
                   },
-                  roundToSeconds: true
-                })
-              }}>
+                  roundToSeconds: true,
+                });
+              }}
+            >
               Add notification
             </button>
             <button
               className="ui button"
               onClick={() => {
-                notification.pause()
-              }}>
+                notification.pause();
+              }}
+            >
               Pause
             </button>
             <button
               className="ui button"
               onClick={() => {
-                notification.resume()
-              }}>
+                notification.resume();
+              }}
+            >
               Resume
             </button>
             <button
               className="ui button"
               onClick={() => {
-                notification.hideAll()
-              }}>
+                notification.hideAll();
+              }}
+            >
               Hide all
             </button>
             <button
               className="ui button"
               onClick={() => {
-                notification.resetAll()
-              }}>
+                notification.resetAll();
+              }}
+            >
               Reset all
             </button>
           </div>
           <div className="ui message">
             <div className="ui label">
               Notifications
-              <span className="detail">
-                {notification.getCount()}
-              </span>
+              <span className="detail">{notification.getCount()}</span>
             </div>
             <div className="ui label">
               Is paused
@@ -83,7 +94,10 @@ const App = () => {
           </div>
         </main>
         <footer>
-          Dialogic: manage dialogs and notifications. <a href='https://github.com/ArthurClemens/dialogic'>Main documentation on GitHub</a>
+          Dialogic: manage dialogs and notifications.{' '}
+          <a href="https://github.com/ArthurClemens/dialogic">
+            Main documentation on GitHub
+          </a>
         </footer>
       </div>
       <Dialog />
@@ -92,5 +106,5 @@ const App = () => {
   );
 };
 
-const mountNode = document.querySelector("#root");
+const mountNode = document.querySelector('#root');
 ReactDOM.render(<App />, mountNode);

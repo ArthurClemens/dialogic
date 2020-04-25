@@ -1,2 +1,762 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"function"==typeof define&&define.amd?define(["exports"],e):e((t=t||self).dialogic={})}(this,(function(t){"use strict";const e=(...t)=>e=>t.filter(Boolean).reduce((t,e)=>e(t),e),n=({domElement:t,prop:e})=>{if(window.getComputedStyle){const n=document.defaultView;if(n){const i=n.getComputedStyle(t);if(i)return i.getPropertyValue(e)}}},i="show",o="hide",s=(t,e,n)=>{const i=n[e]||{};Object.keys(i).forEach(e=>{const n=i[e].toString();t.style[e]=n})},r=(t,e)=>t.split(/ /).map(t=>`${t}-${e}`),a=(t,e,n,i)=>{if(e.styles){const o=((t,e)=>("function"==typeof e?e(t):e)||{})(t,e.styles);s(t,"default",o),i&&(t=>t.style.transitionDuration="0ms")(t),s(t,n,o)}if(e.className){const i={showStart:r(e.className,"show-start"),showEnd:r(e.className,"show-end"),hideStart:r(e.className,"hide-start"),hideEnd:r(e.className,"hide-end")};((t,e)=>t.classList.remove(...e.showStart,...e.showEnd,...e.hideStart,...e.hideEnd))(t,i),i&&t.classList.add(...i[n])}t.scrollTop},d={showStart:{nextStep:"showEnd"},showEnd:{nextStep:void 0},hideStart:{nextStep:"hideEnd"},hideEnd:{nextStep:void 0}},u=(t,e)=>{const o=t.domElement;if(!o)return Promise.resolve("no domElement");let s=e===i?"showStart":"hideStart";return new Promise(e=>{a(o,t,s,"showStart"===s),setTimeout(()=>{const i=d[s].nextStep;if(i){a(o,t,s=i);const r=(t=>{const e=n({domElement:t,prop:"transition-duration"}),i=void 0!==e?c(e):0,o=n({domElement:t,prop:"transition-delay"});return i+(void 0!==o?c(o):0)})(o);setTimeout(e,r)}},0)})},c=t=>{const e=parseFloat(t)*(-1===t.indexOf("ms")?1e3:1);return isNaN(e)?0:e};var l=function(t,e){return t(e={exports:{}},e.exports),e.exports}((function(t){!function(){n.SKIP={},n.lift=function(){var t=arguments[0];return o(Array.prototype.slice.call(arguments,1)).map((function(e){return t.apply(void 0,e)}))},n.scan=function(t,e,i){var o=i.map((function(i){var o=t(e,i);return o!==n.SKIP&&(e=o),o}));return o(e),o},n.merge=o,n.combine=i,n.scanMerge=function(t,e){var n=t.map((function(t){return t[0]})),o=i((function(){var i=arguments[arguments.length-1];return n.forEach((function(n,o){i.indexOf(n)>-1&&(e=t[o][1](e,n()))})),e}),n);return o(e),o},n["fantasy-land/of"]=n;var e=!1;function n(t){var e,o=[],r=[];function a(e){return arguments.length&&e!==n.SKIP&&(t=e,s(a)&&(a._changing(),a._state="active",o.forEach((function(e,n){e(r[n](t))})))),t}return a.constructor=n,a._state=arguments.length&&t!==n.SKIP?"active":"pending",a._parents=[],a._changing=function(){s(a)&&(a._state="changing"),o.forEach((function(t){t._changing()}))},a._map=function(e,i){var s=i?n():n(e(t));return s._parents.push(a),o.push(s),r.push(e),s},a.map=function(t){return a._map(t,"active"!==a._state)},a.toJSON=function(){return null!=t&&"function"==typeof t.toJSON?t.toJSON():t},a["fantasy-land/map"]=a.map,a["fantasy-land/ap"]=function(t){return i((function(t,e){return t()(e())}),[t,a])},a._unregisterChild=function(t){var e=o.indexOf(t);-1!==e&&(o.splice(e,1),r.splice(e,1))},Object.defineProperty(a,"end",{get:function(){return e||((e=n()).map((function(t){return!0===t&&(a._parents.forEach((function(t){t._unregisterChild(a)})),a._state="ended",a._parents.length=o.length=r.length=0),t})),e)}}),a}function i(t,e){var i=e.every((function(t){if(t.constructor!==n)throw new Error("Ensure that each item passed to stream.combine/stream.merge/lift is a stream");return"active"===t._state})),o=i?n(t.apply(null,e.concat([e]))):n(),s=[],r=e.map((function(n){return n._map((function(r){return s.push(n),(i||e.every((function(t){return"pending"!==t._state})))&&(i=!0,o(t.apply(null,e.concat([s]))),s=[]),r}),!0)})),a=o.end.map((function(t){!0===t&&(r.forEach((function(t){t.end(!0)})),a.end(!0))}));return o}function o(t){return i((function(){return t.map((function(t){return t()}))}),t)}function s(t){return"pending"===t._state||"active"===t._state||"changing"===t._state}Object.defineProperty(n,"HALT",{get:function(){return e||console.log("HALT is deprecated and has been renamed to SKIP"),e=!0,n.SKIP}}),t.exports=n}()}));const m=(t,e)=>{const n=((t,e)=>e.find(e=>e.id===t))(t,e);return e.indexOf(n)},p=(t,e)=>[e,t.id,t.spawn].filter(Boolean).join("-"),f={initialState:{store:{}},actions:t=>({add:(e,n)=>{t(i=>{const o=i.store[e]||[];return i.store[e]=[...o,n],n.timer&&n.timer.states.map(()=>f.actions(t).refresh()),i})},remove:(e,n)=>{t(t=>{const i=t.store[e]||[],o=((t,e)=>{const n=m(t,e);return-1!==n&&e.splice(n,1),e})(n,i);return t.store[e]=o,t})},replace:(e,n,i)=>{t(t=>{const o=t.store[e]||[];if(o){const s=m(n,o);-1!==s&&(o[s]=i,t.store[e]=[...o])}return t})},removeAll:e=>{t(t=>(t.store[e]=[],t))},store:(e,n)=>{t(t=>(t.store[e]=[...n],t))},refresh:()=>{t(t=>({...t}))}}),selectors:t=>{const e={getStore:()=>{return t().store},find:(e,n)=>{const i=t().store[e]||[],o=p(n,e),s=i.find(t=>t.id===o);return s?{just:s}:{nothing:void 0}},getAll:(e,n)=>{const i=t().store[e]||[],o=void 0!==n?n.spawn:void 0,s=void 0!==n?n.id:void 0,r=void 0!==o?i.filter(t=>t.identityOptions.spawn===o):i;return void 0!==s?r.filter(t=>t.identityOptions.id===s):r},getCount:(t,n)=>e.getAll(t,n).length};return e}},g=l(),h=l.scan((t,e)=>e(t),{...f.initialState},g),w={...f.actions(g)},v={...f.selectors(h)},S={callback:()=>{},isPaused:!1,onAbort:()=>{},onDone:()=>{},promise:void 0,remaining:void 0,startTime:void 0,timeoutFn:()=>{},timerId:void 0},O=(t,e,n,i)=>{const o=()=>{e(),t.onDone(),i()};return{timeoutFn:o,promise:new Promise((e,n)=>{t.onDone=()=>e(),t.onAbort=()=>e()}),...t.isPaused?{}:{startTime:(new Date).getTime(),timerId:window.setTimeout(o,n),remaining:n}}},y=t=>(window.clearTimeout(t.timerId),{timerId:S.timerId}),P=t=>({...y(t)}),E=t=>({...y(t),isPaused:!0,remaining:T(t)}),_=(t,e)=>{window.clearTimeout(t.timerId);const n=e?Math.max(t.remaining||0,e):t.remaining;return{startTime:(new Date).getTime(),isPaused:!1,remaining:n,timerId:window.setTimeout(t.timeoutFn,n)}},T=t=>0===t.remaining||void 0===t.remaining?t.remaining:t.remaining-((new Date).getTime()-(t.startTime||0)),x=()=>{const t={initialState:S,actions:e=>({start:(n,i)=>{e(o=>({...o,...y(o),...O(o,n,i,()=>t.actions(e).done()),...o.isPaused&&E(o)}))},stop:()=>{e(t=>({...t,...P(t),...S}))},pause:()=>{e(t=>({...t,...!t.isPaused&&E(t)}))},resume:t=>{e(e=>({...e,...e.isPaused&&_(e,t)}))},abort:()=>{e(t=>(t.onAbort(),{...t,...y(t)}))},done:()=>{e(t=>S)},refresh:()=>{e(t=>({...t}))}}),selectors:t=>({isPaused:()=>{return t().isPaused},getRemaining:()=>{const e=t();return e.isPaused?e.remaining:T(e)},getResultPromise:()=>{return t().promise}})},e=l(),n=l.scan((t,e)=>e(t),{...t.initialState},e);return{states:n,actions:{...t.actions(e)},selectors:{...t.selectors(n)}}};let b=0;const A=()=>b===Number.MAX_SAFE_INTEGER?0:b++,I=0,j=1,q=2,N=t=>e=>void 0!==t.spawn?e.filter(e=>e.identityOptions.spawn===t.spawn):e,C=t=>{let e=0;return t.map(t=>({item:t,queueCount:t.dialogicOptions.queued?e++:0})).filter(({queueCount:t})=>0===t).map(({item:t})=>t)},D=(t,e={})=>({id:e.id||t.id,spawn:e.spawn||t.spawn}),k=(t,e={})=>{const n={id:e.dialogic?e.dialogic.id:void 0,spawn:e.dialogic?e.dialogic.spawn:void 0};return{identityOptions:D(t||{},n),dialogicOptions:{...t,...e.dialogic},passThroughOptions:(t=>{const e={...t};return delete e.dialogic,e})(e)}},F=t=>e=>(n={})=>{const{identityOptions:i,dialogicOptions:o,passThroughOptions:s}=k(e,n);return new Promise(r=>{const a={didShow:t=>(o.didShow&&o.didShow(t),r(t)),didHide:t=>(o.didHide&&o.didHide(t),r(t))},d={ns:t,identityOptions:i,dialogicOptions:o,callbacks:a,passThroughOptions:s,id:p(i,t),timer:o.timeout?x():void 0,key:A().toString(),transitionState:I},u=v.find(t,i);if(u.just&&o.toggle){const i=R(t)(e)(n);return r(i)}if(u.just&&!o.queued){const e=u.just,n=e.dialogicOptions,i={...d,transitionState:e.transitionState,dialogicOptions:n};w.replace(t,e.id,i)}else w.add(t,d);r(d)})},R=t=>e=>n=>{const{identityOptions:i,dialogicOptions:o,passThroughOptions:s}=k(e,n),r=v.find(t,i);if(r.just){const e=r.just,n={...e,dialogicOptions:{...e.dialogicOptions,...o},passThroughOptions:{...e.passThroughOptions,passThroughOptions:s}};return w.replace(t,e.id,n),n.transitionState!==q?U(n):Promise.resolve(n)}return Promise.resolve()},H=t=>e=>e=>{const n=B(t,e).filter(t=>!!t.timer);return n.forEach(t=>t.timer&&t.timer.actions.pause()),Promise.all(n)},M=t=>e=>e=>{const n=e||{},i={id:n.id,spawn:n.spawn},o=B(t,i).filter(t=>!!t.timer);return o.forEach(t=>t.timer&&t.timer.actions.resume(n.minimumDuration)),Promise.all(o)},K=(t,e)=>n=>i=>o=>{const s=(t=>e=>n=>v.find(t,D(e,n)))(n)(i)(o);return s.just&&s.just&&s.just.timer?s.just.timer.selectors[t]():e},L=K("isPaused",!1),$=K("getRemaining",void 0),J=t=>e=>e=>!!B(t,e).length,B=(t,n)=>{const i=v.getAll(t);let o;return o=n?e(N(n),(t=>e=>void 0!==t.id?e.filter(e=>e.identityOptions.id===t.id):e)(n))(i):i},V=t=>e=>e=>{const n=B(t,e),i=[];return n.forEach(t=>{t.timer&&t.timer.actions.abort(),i.push(t)}),e?i.forEach(e=>{w.remove(t,e.id)}):w.removeAll(t),Promise.resolve(i)},G=(t,e)=>({...t,dialogicOptions:{...t.dialogicOptions,...e}}),X=t=>e=>e=>{const n=e||{},i={id:n.id,spawn:n.spawn},o=B(t,i),s=o.filter(t=>!n.queued&&!t.dialogicOptions.queued),r=o.filter(t=>n.queued||t.dialogicOptions.queued),a=[];if(s.forEach(t=>a.push(U(G(t,n)))),r.length>0){const[e]=r;w.store(t,[e]),a.push(U(G(e,n)))}return Promise.all(a)},z=t=>e=>v.getCount(t,e),Q=(t,e)=>u(t.dialogicOptions,e),U=async function(t){t.transitionState=q,t.timer&&t.timer.actions.stop(),await Q(t,o),t.callbacks.didHide&&await t.callbacks.didHide(t);const e={...t};return w.remove(t.ns,t.id),Promise.resolve(e)},W=({ns:t,queued:e,timeout:n})=>{const i=`default_${t}`,o=`default_${t}`,s={id:i,spawn:o,...e&&{queued:e},...void 0!==n&&{timeout:n}};return{ns:t,defaultId:i,defaultSpawn:o,defaultDialogicOptions:s,show:F(t)(s),hide:R(t)(s),hideAll:X(t)(s),resetAll:V(t)(s),pause:H(t)(s),resume:M(t)(s),exists:J(t)(s),getCount:z(t),isPaused:L(t)(s),getRemaining:$(t)(s)}},Y=W({ns:"dialog"}),Z=W({ns:"notification",queued:!0,timeout:3e3});t.actions=w,t.dialog=Y,t.dialogical=W,t.exists=J,t.filterCandidates=(t,n,i)=>{const o=n[t]||[];return 0==o.length?[]:e(N(i),C)(o)},t.getCount=z,t.getRemaining=$,t.getTimerProperty=K,t.hide=R,t.hideAll=X,t.hideItem=U,t.isPaused=L,t.notification=Z,t.pause=H,t.remaining=t=>{let e,n=void 0,i=!1;const o=()=>{const s=t.instance.getRemaining();n!==s&&(n=void 0===s?s:t.roundToSeconds?Math.round(Math.max(s,0)/1e3):Math.max(s,0)),t.callback(n),t.instance.exists()?i||(e=window.requestAnimationFrame(o)):(window.cancelAnimationFrame(e),i=!0)};e=window.requestAnimationFrame(o)},t.resetAll=V,t.resume=M,t.selectors=v,t.setDomElement=(t,e)=>{e.dialogicOptions.domElement=t},t.show=F,t.showItem=async function(t){return t.transitionState!==j&&(t.transitionState=j,await Q(t,i)),t.callbacks.didShow&&await t.callbacks.didShow(t),t.dialogicOptions.timeout&&t.timer&&await async function(t,e,n){return e.actions.start(()=>U(t),n),K("getResultPromise",void 0)}(t,t.timer,t.dialogicOptions.timeout),Promise.resolve(t)},t.states=h,Object.defineProperty(t,"__esModule",{value:!0})}));
-//# sourceMappingURL=dialogic.js.map
+import Stream from 'mithril/stream';
+export { default as Stream } from 'mithril/stream';
+
+const pipe = (...fns) => (x) => fns.filter(Boolean).reduce((y, f) => f(y), x);
+const getStyleValue = ({ domElement, prop, }) => {
+    const defaultView = document.defaultView;
+    if (defaultView) {
+        const style = defaultView.getComputedStyle(domElement);
+        if (style) {
+            return style.getPropertyValue(prop);
+        }
+    }
+};
+
+const MODE = {
+    SHOW: "show",
+    HIDE: "hide"
+};
+const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(...transitionClassNames.showStart, ...transitionClassNames.showEnd, ...transitionClassNames.hideStart, ...transitionClassNames.hideEnd);
+const applyTransitionStyles = (domElement, step, styles) => {
+    const transitionStyle = styles[step] || {};
+    Object.keys(transitionStyle).forEach((key) => {
+        const value = transitionStyle[key].toString();
+        domElement.style[key] = value;
+        // if (domElement.style[key] !== value) {
+        // 	console.warn(`Invalid style: ${key}: ${value} (${domElement.style[key]})`);
+        // }
+    });
+};
+const applyNoDurationTransitionStyle = (domElement) => domElement.style.transitionDuration = "0ms";
+const getTransitionStyles = (domElement, styles) => (typeof styles === "function"
+    ? styles(domElement)
+    : styles) || {};
+const createClassList = (className, step) => className.split(/ /).map((n) => `${n}-${step}`);
+const applyStylesForState = (domElement, props, step, isEnterStep) => {
+    if (props.styles) {
+        const styles = getTransitionStyles(domElement, props.styles);
+        applyTransitionStyles(domElement, "default", styles);
+        isEnterStep && applyNoDurationTransitionStyle(domElement);
+        applyTransitionStyles(domElement, step, styles);
+    }
+    if (props.className) {
+        const transitionClassNames = {
+            showStart: createClassList(props.className, "show-start"),
+            showEnd: createClassList(props.className, "show-end"),
+            hideStart: createClassList(props.className, "hide-start"),
+            hideEnd: createClassList(props.className, "hide-end"),
+        };
+        removeTransitionClassNames(domElement, transitionClassNames);
+        transitionClassNames && domElement.classList.add(...transitionClassNames[step]);
+    }
+    // reflow
+    domElement.scrollTop;
+};
+const getDuration = (domElement) => {
+    const durationStyleValue = getStyleValue({ domElement, prop: "transition-duration" });
+    const durationValue = durationStyleValue !== undefined
+        ? styleDurationToMs(durationStyleValue)
+        : 0;
+    const delayStyleValue = getStyleValue({ domElement, prop: "transition-delay" });
+    const delayValue = delayStyleValue !== undefined
+        ? styleDurationToMs(delayStyleValue)
+        : 0;
+    return durationValue + delayValue;
+};
+const steps = {
+    showStart: {
+        nextStep: "showEnd"
+    },
+    showEnd: {
+        nextStep: undefined
+    },
+    hideStart: {
+        nextStep: "hideEnd"
+    },
+    hideEnd: {
+        nextStep: undefined
+    },
+};
+const transition = (props, mode) => {
+    const domElement = props.domElement;
+    if (!domElement) {
+        return Promise.resolve("no domElement");
+    }
+    let currentStep = mode === MODE.SHOW
+        ? "showStart"
+        : "hideStart";
+    return new Promise(resolve => {
+        applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
+        setTimeout(() => {
+            const nextStep = steps[currentStep].nextStep;
+            if (nextStep) {
+                currentStep = nextStep;
+                applyStylesForState(domElement, props, currentStep);
+                // addEventListener sometimes hangs this function because it never finishes
+                // Using setTimeout instead of addEventListener gives more consistent results
+                const duration = getDuration(domElement);
+                setTimeout(resolve, duration);
+            }
+        }, 0);
+    });
+};
+const styleDurationToMs = (durationStr) => {
+    const parsed = parseFloat(durationStr) * (durationStr.indexOf("ms") === -1 ? 1000 : 1);
+    return isNaN(parsed)
+        ? 0
+        : parsed;
+};
+
+const findItem = (id, items) => {
+    return items.find(item => item.id === id);
+};
+const itemIndex = (id, items) => {
+    const item = findItem(id, items);
+    return items.indexOf(item);
+};
+const removeItem = (id, items) => {
+    const index = itemIndex(id, items);
+    if (index !== -1) {
+        items.splice(index, 1);
+    }
+    return items;
+};
+const createId = (identityOptions, ns) => [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join("-");
+const store = {
+    initialState: {
+        store: {},
+    },
+    actions: (update) => {
+        return {
+            /**
+             * Add an item to the end of the list.
+             */
+            add: (ns, item) => {
+                update((state) => {
+                    const items = state.store[ns] || [];
+                    state.store[ns] = [...items, item];
+                    if (item.timer) {
+                        // When the timer state updates, refresh the store so that UI can pick up the change
+                        item.timer.states.map(() => store.actions(update).refresh());
+                    }
+                    return state;
+                });
+            },
+            /**
+             * Removes the first item with a match on `id`.
+             */
+            remove: (ns, id) => {
+                update((state) => {
+                    const items = state.store[ns] || [];
+                    const remaining = removeItem(id, items);
+                    state.store[ns] = remaining;
+                    return state;
+                });
+            },
+            /**
+             * Replaces the first item with a match on `id` with a newItem.
+             */
+            replace: (ns, id, newItem) => {
+                update((state) => {
+                    const items = state.store[ns] || [];
+                    if (items) {
+                        const index = itemIndex(id, items);
+                        if (index !== -1) {
+                            items[index] = newItem;
+                            state.store[ns] = [...items];
+                        }
+                    }
+                    return state;
+                });
+            },
+            /**
+             * Removes all items within a namespace.
+             */
+            removeAll: (ns) => {
+                update((state) => {
+                    state.store[ns] = [];
+                    return state;
+                });
+            },
+            /**
+             * Replaces all items within a namespace.
+             */
+            store: (ns, newItems) => {
+                update((state) => {
+                    state.store[ns] = [...newItems];
+                    return state;
+                });
+            },
+            refresh: () => {
+                update((state) => {
+                    return {
+                        ...state,
+                    };
+                });
+            },
+        };
+    },
+    selectors: (states) => {
+        const fns = {
+            getStore: () => {
+                const state = states();
+                return state.store;
+            },
+            find: (ns, identityOptions) => {
+                const state = states();
+                const items = state.store[ns] || [];
+                const id = createId(identityOptions, ns);
+                const item = items.find((item) => item.id === id);
+                return item
+                    ? { just: item }
+                    : { nothing: undefined };
+            },
+            getAll: (ns, identityOptions) => {
+                const state = states();
+                const items = state.store[ns] || [];
+                const spawn = identityOptions !== undefined
+                    ? identityOptions.spawn
+                    : undefined;
+                const id = identityOptions !== undefined
+                    ? identityOptions.id
+                    : undefined;
+                const itemsBySpawn = spawn !== undefined
+                    ? items.filter(item => item.identityOptions.spawn === spawn)
+                    : items;
+                const itemsById = id !== undefined
+                    ? itemsBySpawn.filter(item => item.identityOptions.id === id)
+                    : itemsBySpawn;
+                return itemsById;
+            },
+            getCount: (ns, identityOptions) => fns.getAll(ns, identityOptions).length,
+        };
+        return fns;
+    },
+};
+const update = Stream();
+const states = Stream.scan((state, patch) => patch(state), {
+    ...store.initialState,
+}, update);
+const actions = {
+    ...store.actions(update),
+};
+const selectors = {
+    ...store.selectors(states),
+};
+// states.map(state => 
+//   console.log(JSON.stringify(state, null, 2))
+// );
+
+const initialState = {
+    callback: () => { },
+    isPaused: false,
+    onAbort: () => { },
+    onDone: () => { },
+    promise: undefined,
+    remaining: undefined,
+    startTime: undefined,
+    timeoutFn: () => { },
+    timerId: undefined,
+};
+const appendStartTimer = (state, callback, duration, updateState) => {
+    const timeoutFn = () => {
+        callback();
+        state.onDone();
+        updateState();
+    };
+    return {
+        timeoutFn,
+        promise: new Promise((resolve, reject) => {
+            state.onDone = () => resolve();
+            state.onAbort = () => resolve();
+        }),
+        ...(state.isPaused
+            ? {}
+            : {
+                startTime: new Date().getTime(),
+                timerId: window.setTimeout(timeoutFn, duration),
+                remaining: duration,
+            })
+    };
+};
+const appendStopTimeout = (state) => {
+    window.clearTimeout(state.timerId);
+    return {
+        timerId: initialState.timerId
+    };
+};
+const appendStopTimer = (state) => {
+    return {
+        ...appendStopTimeout(state),
+    };
+};
+const appendPauseTimer = (state) => {
+    return {
+        ...appendStopTimeout(state),
+        isPaused: true,
+        remaining: getRemaining(state)
+    };
+};
+const appendResumeTimer = (state, minimumDuration) => {
+    window.clearTimeout(state.timerId);
+    const remaining = minimumDuration
+        ? Math.max(state.remaining || 0, minimumDuration)
+        : state.remaining;
+    return {
+        startTime: new Date().getTime(),
+        isPaused: false,
+        remaining,
+        timerId: window.setTimeout(state.timeoutFn, remaining),
+    };
+};
+const getRemaining = (state) => (state.remaining === 0 || state.remaining === undefined)
+    ? state.remaining
+    : state.remaining - (new Date().getTime() - (state.startTime || 0));
+const Timer = () => {
+    const timer = {
+        initialState,
+        actions: (update) => {
+            return {
+                start: (callback, duration) => {
+                    update((state) => {
+                        return {
+                            ...state,
+                            ...appendStopTimeout(state),
+                            ...appendStartTimer(state, callback, duration, () => timer.actions(update).done()),
+                            ...(state.isPaused && appendPauseTimer(state)),
+                        };
+                    });
+                },
+                stop: () => {
+                    update((state) => {
+                        return {
+                            ...state,
+                            ...appendStopTimer(state),
+                            ...initialState
+                        };
+                    });
+                },
+                pause: () => {
+                    update((state) => {
+                        return {
+                            ...state,
+                            ...(!state.isPaused && appendPauseTimer(state)),
+                        };
+                    });
+                },
+                resume: (minimumDuration) => {
+                    update((state) => {
+                        return {
+                            ...state,
+                            ...(state.isPaused && appendResumeTimer(state, minimumDuration))
+                        };
+                    });
+                },
+                abort: () => {
+                    update((state) => {
+                        state.onAbort();
+                        return {
+                            ...state,
+                            ...appendStopTimeout(state),
+                        };
+                    });
+                },
+                done: () => {
+                    update((state) => {
+                        return initialState;
+                    });
+                },
+                refresh: () => {
+                    update((state) => {
+                        return {
+                            ...state,
+                        };
+                    });
+                },
+            };
+        },
+        selectors: (states) => {
+            return {
+                isPaused: () => {
+                    const state = states();
+                    return state.isPaused;
+                },
+                getRemaining: () => {
+                    const state = states();
+                    return state.isPaused
+                        ? state.remaining
+                        : getRemaining(state);
+                },
+                getResultPromise: () => {
+                    const state = states();
+                    return state.promise;
+                },
+            };
+        },
+    };
+    const update = Stream();
+    const states = Stream.scan((state, patch) => patch(state), {
+        ...timer.initialState,
+    }, update);
+    const actions = {
+        ...timer.actions(update),
+    };
+    const selectors = {
+        ...timer.selectors(states),
+    };
+    // states.map(state => 
+    //   console.log(JSON.stringify(state, null, 2))
+    // );
+    return {
+        states,
+        actions,
+        selectors,
+    };
+};
+
+let uid = 0;
+const getUid = () => uid === Number.MAX_SAFE_INTEGER
+    ? 0
+    : uid++;
+const transitionStates = {
+    default: 0,
+    displaying: 1,
+    hiding: 2,
+};
+const getMaybeItem = (ns) => (defaultDialogicOptions) => (identityOptions) => selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
+const filterBySpawn = (identityOptions) => (items) => identityOptions.spawn !== undefined
+    ? items.filter(item => (item.identityOptions.spawn === identityOptions.spawn))
+    : items;
+const filterById = (identityOptions) => (items) => identityOptions.id !== undefined
+    ? items.filter(item => (item.identityOptions.id === identityOptions.id))
+    : items;
+/**
+ * Gets a list of all non-queued items.
+ * From the queued items only the first item is listed.
+ * */
+const filterFirstInQueue = (nsItems) => {
+    let queuedCount = 0;
+    return nsItems
+        .map(item => ({
+        item,
+        queueCount: item.dialogicOptions.queued
+            ? queuedCount++
+            : 0
+    }))
+        .filter(({ queueCount }) => queueCount === 0)
+        .map(({ item }) => item);
+};
+const filterCandidates = (ns, items, identityOptions) => {
+    const nsItems = items[ns] || [];
+    if (nsItems.length == 0) {
+        return [];
+    }
+    return pipe(filterBySpawn(identityOptions), filterFirstInQueue)(nsItems);
+};
+const getPassThroughOptions = options => {
+    const copy = {
+        ...options,
+    };
+    delete copy.dialogic;
+    return copy;
+};
+const getMergedIdentityOptions = (defaultDialogicOptions, identityOptions = {}) => ({
+    id: identityOptions.id || defaultDialogicOptions.id,
+    spawn: identityOptions.spawn || defaultDialogicOptions.spawn,
+});
+const handleOptions = (defaultDialogicOptions, options = {}) => {
+    const identityOptions = {
+        id: options.dialogic ? options.dialogic.id : undefined,
+        spawn: options.dialogic ? options.dialogic.spawn : undefined
+    };
+    const mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions || {}, identityOptions);
+    const dialogicOptions = {
+        ...defaultDialogicOptions,
+        ...options.dialogic
+    };
+    const passThroughOptions = getPassThroughOptions(options);
+    return {
+        identityOptions: mergedIdentityOptions,
+        dialogicOptions,
+        passThroughOptions,
+    };
+};
+const createInstance = (ns) => (defaultDialogicOptions) => (options = {}) => {
+    const { identityOptions, dialogicOptions, passThroughOptions } = handleOptions(defaultDialogicOptions, options);
+    return new Promise(resolve => {
+        const callbacks = {
+            didShow: (item) => {
+                if (dialogicOptions.didShow) {
+                    dialogicOptions.didShow(item);
+                }
+                return resolve(item);
+            },
+            didHide: (item) => {
+                if (dialogicOptions.didHide) {
+                    dialogicOptions.didHide(item);
+                }
+                return resolve(item);
+            }
+        };
+        const item = {
+            ns,
+            identityOptions,
+            dialogicOptions,
+            callbacks,
+            passThroughOptions,
+            id: createId(identityOptions, ns),
+            timer: dialogicOptions.timeout
+                ? Timer()
+                : undefined,
+            key: getUid().toString(),
+            transitionState: transitionStates.default,
+        };
+        const maybeExistingItem = selectors.find(ns, identityOptions);
+        if (maybeExistingItem.just && dialogicOptions.toggle) {
+            const hideResult = hide(ns)(defaultDialogicOptions)(options);
+            return resolve(hideResult);
+        }
+        if (maybeExistingItem.just && !dialogicOptions.queued) {
+            const existingItem = maybeExistingItem.just;
+            // Preserve dialogicOptions
+            const dialogicOptions = existingItem.dialogicOptions;
+            const replacingItem = {
+                ...item,
+                transitionState: existingItem.transitionState,
+                dialogicOptions
+            };
+            actions.replace(ns, existingItem.id, replacingItem);
+        }
+        else {
+            actions.add(ns, item);
+            // This will instantiate and draw the instance
+            // The instance will call `showDialog` in `onMount`
+        }
+        resolve(item);
+    });
+};
+const show = createInstance;
+const hide = (ns) => (defaultDialogicOptions) => (options) => {
+    const { identityOptions, dialogicOptions, passThroughOptions } = handleOptions(defaultDialogicOptions, options);
+    const maybeExistingItem = selectors.find(ns, identityOptions);
+    if (maybeExistingItem.just) {
+        const existingItem = maybeExistingItem.just;
+        const item = {
+            ...existingItem,
+            dialogicOptions: {
+                ...existingItem.dialogicOptions,
+                ...dialogicOptions,
+            },
+            passThroughOptions: {
+                ...existingItem.passThroughOptions,
+                passThroughOptions
+            }
+        };
+        actions.replace(ns, existingItem.id, item);
+        if (item.transitionState !== transitionStates.hiding) {
+            return hideItem(item);
+        }
+        else {
+            return Promise.resolve(item);
+        }
+    }
+    return Promise.resolve();
+};
+const pause = (ns) => (defaultDialogicOptions) => (identityOptions) => {
+    const items = getValidItems(ns, identityOptions)
+        .filter(item => !!item.timer);
+    items.forEach((item) => item.timer && item.timer.actions.pause());
+    return Promise.all(items);
+};
+const resume = (ns) => (defaultDialogicOptions) => (commandOptions) => {
+    const options = commandOptions || {};
+    const identityOptions = {
+        id: options.id,
+        spawn: options.spawn
+    };
+    const items = getValidItems(ns, identityOptions)
+        .filter(item => !!item.timer);
+    items.forEach((item) => item.timer && item.timer.actions.resume(options.minimumDuration));
+    return Promise.all(items);
+};
+const getTimerProperty = (timerProp, defaultValue) => (ns) => (defaultDialogicOptions) => (identityOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
+    if (maybeItem.just) {
+        if (maybeItem.just && maybeItem.just.timer) {
+            return maybeItem.just.timer.selectors[timerProp]();
+        }
+        else {
+            return defaultValue;
+        }
+    }
+    else {
+        return defaultValue;
+    }
+};
+const isPaused = getTimerProperty("isPaused", false);
+const getRemaining$1 = getTimerProperty("getRemaining", undefined);
+const exists = (ns) => (defaultDialogicOptions) => (identityOptions) => !!getValidItems(ns, identityOptions).length;
+const getValidItems = (ns, identityOptions) => {
+    const allItems = selectors.getAll(ns);
+    let validItems;
+    if (identityOptions) {
+        validItems = pipe(filterBySpawn(identityOptions), filterById(identityOptions))(allItems);
+    }
+    else {
+        validItems = allItems;
+    }
+    return validItems;
+};
+const resetAll = (ns) => (defaultDialogicOptions) => (identityOptions) => {
+    const validItems = getValidItems(ns, identityOptions);
+    const items = [];
+    validItems.forEach((item) => {
+        item.timer && item.timer.actions.abort();
+        items.push(item);
+    });
+    if (identityOptions) {
+        items.forEach((item) => {
+            actions.remove(ns, item.id);
+        });
+    }
+    else {
+        actions.removeAll(ns);
+    }
+    return Promise.resolve(items);
+};
+const getOverridingTransitionOptions = (item, dialogicOptions) => {
+    return {
+        ...item,
+        dialogicOptions: {
+            ...item.dialogicOptions,
+            ...dialogicOptions
+        }
+    };
+};
+/**
+ * Triggers a `hideItem` for each item in the store.
+ * Queued items: will trigger `hideItem` only for the first item, then reset the store.
+ * Optional `dialogicOptions` may be passed with specific transition options. This comes in handy when all items should hide in the same way.
+ */
+const hideAll = (ns) => (defaultDialogicOptions) => (dialogicOptions) => {
+    const options = dialogicOptions || {};
+    const identityOptions = {
+        id: options.id,
+        spawn: options.spawn
+    };
+    const validItems = getValidItems(ns, identityOptions);
+    const regularItems = validItems.filter((item) => !options.queued && !item.dialogicOptions.queued);
+    const queuedItems = validItems.filter((item) => options.queued || item.dialogicOptions.queued);
+    const items = [];
+    regularItems.forEach((item) => items.push(hideItem(getOverridingTransitionOptions(item, options))));
+    if (queuedItems.length > 0) {
+        const [current,] = queuedItems;
+        // Make sure that any remaining items don't suddenly appear
+        actions.store(ns, [current]);
+        // Transition the current item
+        items.push(hideItem(getOverridingTransitionOptions(current, options)));
+    }
+    return Promise.all(items);
+};
+const getCount = (ns) => (identityOptions) => selectors.getCount(ns, identityOptions);
+const transitionItem = (item, mode) => transition(item.dialogicOptions, mode);
+const deferredHideItem = async function (item, timer, timeout) {
+    timer.actions.start(() => (hideItem(item)), timeout);
+    return getTimerProperty("getResultPromise", undefined);
+};
+const showItem = async function (item) {
+    if (item.transitionState !== transitionStates.displaying) {
+        item.transitionState = transitionStates.displaying;
+        await (transitionItem(item, MODE.SHOW));
+    }
+    item.callbacks.didShow && await (item.callbacks.didShow(item));
+    if (item.dialogicOptions.timeout && item.timer) {
+        await (deferredHideItem(item, item.timer, item.dialogicOptions.timeout));
+    }
+    return Promise.resolve(item);
+};
+const hideItem = async function (item) {
+    item.transitionState = transitionStates.hiding;
+    // Stop any running timer
+    if (item.timer) {
+        item.timer.actions.stop();
+    }
+    await (transitionItem(item, MODE.HIDE));
+    item.callbacks.didHide && await (item.callbacks.didHide(item));
+    const copy = {
+        ...item
+    };
+    actions.remove(item.ns, item.id);
+    return Promise.resolve(copy);
+};
+const setDomElement = (domElement, item) => {
+    item.dialogicOptions.domElement = domElement;
+};
+
+const dialogical = ({ ns, queued, timeout }) => {
+    const defaultId = `default_${ns}`;
+    const defaultSpawn = `default_${ns}`;
+    const defaultDialogicOptions = {
+        id: defaultId,
+        spawn: defaultSpawn,
+        ...(queued && { queued }),
+        ...(timeout !== undefined && { timeout }),
+    };
+    return {
+        // Identification
+        ns,
+        defaultId,
+        defaultSpawn,
+        // Configuration
+        defaultDialogicOptions,
+        // Commands
+        show: show(ns)(defaultDialogicOptions),
+        hide: hide(ns)(defaultDialogicOptions),
+        hideAll: hideAll(ns)(defaultDialogicOptions),
+        resetAll: resetAll(ns)(defaultDialogicOptions),
+        // Timer commands
+        pause: pause(ns)(defaultDialogicOptions),
+        resume: resume(ns)(defaultDialogicOptions),
+        // State
+        exists: exists(ns)(defaultDialogicOptions),
+        getCount: getCount(ns),
+        // Timer state
+        isPaused: isPaused(ns)(defaultDialogicOptions),
+        getRemaining: getRemaining$1(ns)(defaultDialogicOptions),
+    };
+};
+
+const dialog = dialogical({ ns: "dialog" });
+
+const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
+
+/**
+ * Utility script that uses an animation frame to pass the current remaining value
+ * (which is utilized when setting `timeout`).
+ */
+const remaining = (props) => {
+    let displayValue = undefined;
+    let reqId;
+    let isCanceled = false;
+    const update = () => {
+        const remaining = props.instance.getRemaining();
+        if (displayValue !== remaining) {
+            displayValue = remaining === undefined
+                ? remaining
+                : props.roundToSeconds
+                    ? Math.round(Math.max(remaining, 0) / 1000)
+                    : Math.max(remaining, 0);
+        }
+        props.callback(displayValue);
+        if (!props.instance.exists()) {
+            window.cancelAnimationFrame(reqId);
+            isCanceled = true;
+        }
+        else if (!isCanceled) {
+            reqId = window.requestAnimationFrame(update);
+        }
+    };
+    reqId = window.requestAnimationFrame(update);
+};
+
+export { actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, remaining, resetAll, resume, selectors, setDomElement, show, showItem, states };
