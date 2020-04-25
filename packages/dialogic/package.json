@@ -1,6 +1,6 @@
 {
   "name": "dialogic",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Logic for dialogs and notifications",
   "main": "dist/dialogic",
   "module": "dist/dialogic.js",
@@ -11,8 +11,8 @@
     "build": "npm run clean && npm run rollup"
   },
   "dependencies": {
-    "mithril": "^2.0.4",
-    "@types/mithril": "2.0.2"
+    "@types/mithril": "2.0.2",
+    "mithril": "^2.0.4"
   },
   "files": [
     "dist",
