@@ -110,8 +110,6 @@ const useRemaining = props => {
 
 const MakeAppear = (allProps) => {
     const { instance, ...props } = allProps;
-    console.log('MakeAppearDialog', 'instance', instance);
-    console.log('MakeAppearDialog', 'props', props);
     useEffect(() => {
         instance.show(props);
         return () => {
