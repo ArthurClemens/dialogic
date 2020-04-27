@@ -1,6 +1,6 @@
 {
   "name": "dialogic",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Logic for dialogs and notifications",
   "main": "dist/dialogic",
   "module": "dist/dialogic.js",
