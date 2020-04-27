@@ -10,8 +10,10 @@ export const MakeAppear = <T,>(
     instance.show(props);
 
     return () => {
-      if (appearPath && window.location.pathname !== appearPath) {
-        instance.hide(props);
+      if (appearPath !== undefined) {
+        if (window.location.pathname !== appearPath) {
+          instance.hide(props);
+        }
       } else {
         instance.hide(props);
       }
