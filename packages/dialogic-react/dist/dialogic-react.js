@@ -109,11 +109,16 @@ const useRemaining = props => {
 };
 
 const MakeAppear = (allProps) => {
-    const { instance, ...props } = allProps;
+    const { instance, appearPath, ...props } = allProps;
     useEffect(() => {
         instance.show(props);
         return () => {
-            instance.hide(props);
+            if (props.appearPath && window.location.pathname !== appearPath) {
+                instance.hide(props);
+            }
+            else {
+                instance.hide(props);
+            }
         };
     }, [props, window.location]);
     return null;

@@ -24,6 +24,7 @@ export const ProfilePage = () => {
       </div>
       <Route path={dialogUrl}>
         <MakeAppearDialog<EditProfileDialogProps>
+          appearPath={dialogUrl}
           dialogic={{
             component: EditProfileDialog,
             className: 'dialog',

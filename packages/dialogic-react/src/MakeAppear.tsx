@@ -1,27 +1,25 @@
 import React, { PropsWithChildren, useEffect } from 'react';
-import { dialog, notification, Dialogic } from 'dialogic';
-
-type MakeAppearProps<T> = {
-  instance: Dialogic.DialogicInstance;
-} & Dialogic.Options &
-  T;
+import { dialog, notification } from 'dialogic';
+import { MakeAppearProps, MakeAppearInstanceProps } from '../index.d';
 
 export const MakeAppear = <T,>(
   allProps: PropsWithChildren<MakeAppearProps<T>>,
 ) => {
-  const { instance, ...props } = allProps;
+  const { instance, appearPath, ...props } = allProps;
   useEffect(() => {
     instance.show(props);
 
     return () => {
-      instance.hide(props);
+      if (props.appearPath && window.location.pathname !== appearPath) {
+        instance.hide(props);
+      } else {
+        instance.hide(props);
+      }
     };
   }, [props, window.location]);
 
   return null;
 };
-
-type MakeAppearInstanceProps<T> = Dialogic.Options & T;
 
 export const MakeAppearDialog = <T,>(
   props: PropsWithChildren<MakeAppearInstanceProps<T>>,

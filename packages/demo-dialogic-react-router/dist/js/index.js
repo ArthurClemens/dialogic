@@ -1345,14 +1345,17 @@ var useRemaining = function useRemaining(props) {
 
 var MakeAppear = function MakeAppear(allProps) {
   var instance = allProps.instance,
-      props = _babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0___default()(allProps, ["instance"]);
+      appearPath = allProps.appearPath,
+      props = _babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0___default()(allProps, ["instance", "appearPath"]);
 
-  console.log('MakeAppearDialog', 'instance', instance);
-  console.log('MakeAppearDialog', 'props', props);
   Object(react__WEBPACK_IMPORTED_MODULE_4__["useEffect"])(function () {
     instance.show(props);
     return function () {
-      instance.hide(props);
+      if (props.appearPath && window.location.pathname !== appearPath) {
+        instance.hide(props);
+      } else {
+        instance.hide(props);
+      }
     };
   }, [props, window.location]);
   return null;
@@ -35690,7 +35693,7 @@ const ProfilePage = () => {
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { className: "button", to: "/" }, "Go to home"),
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { className: "button is-link", to: dialogUrl }, "Edit profile")),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], { path: dialogUrl },
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(dialogic_react__WEBPACK_IMPORTED_MODULE_4__["MakeAppearDialog"], { dialogic: {
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(dialogic_react__WEBPACK_IMPORTED_MODULE_4__["MakeAppearDialog"], { appearPath: dialogUrl, dialogic: {
                     component: _EditProfileDialog__WEBPACK_IMPORTED_MODULE_3__["EditProfileDialog"],
                     className: 'dialog',
                 }, title: "Update your e-mail", email: "allan@company.com", onSave: email => {

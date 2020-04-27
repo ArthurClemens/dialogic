@@ -14,13 +14,17 @@ export const Notification: FunctionComponent<Dialogic.ComponentOptions>;
 export const useDialogicState: UseDialogicState;
 export const useRemaining: UseRemaining;
 
-type MakeAppearProps<T> = Dialogic.Options & T;
+export type MakeAppearProps<T> = {
+  instance: Dialogic.DialogicInstance;
+  appearPath?: string;
+} & Dialogic.Options &
+  T;
 
 export const MakeAppear: <T>(
   props: PropsWithChildren<MakeAppearProps<T>>,
 ) => null;
 
-type MakeAppearInstanceProps<T> = Dialogic.Options & T;
+export type MakeAppearInstanceProps<T> = Dialogic.Options & T;
 
 export const MakeAppearDialog: <T>(
   props: PropsWithChildren<MakeAppearInstanceProps<T>>,
