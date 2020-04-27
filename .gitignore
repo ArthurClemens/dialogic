@@ -4,3 +4,4 @@ npm-debug.log*
 *.log
 *.lock
 .rpt2_cache
+index.js.LICENSE*

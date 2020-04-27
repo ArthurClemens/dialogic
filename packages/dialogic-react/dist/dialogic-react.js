@@ -108,7 +108,22 @@ const useRemaining = props => {
     return [value];
 };
 
+const MakeAppear = (allProps) => {
+    const { instance, ...props } = allProps;
+    console.log('MakeAppearDialog', 'instance', instance);
+    console.log('MakeAppearDialog', 'props', props);
+    useEffect(() => {
+        instance.show(props);
+        return () => {
+            instance.hide(props);
+        };
+    }, [props, window.location]);
+    return null;
+};
+const MakeAppearDialog = (props) => React.createElement(MakeAppear, Object.assign({}, props, { instance: dialog }));
+const MakeAppearNotification = (props) => React.createElement(MakeAppear, Object.assign({}, props, { instance: notification }));
+
 const Dialog = Dialogical(dialog);
 const Notification = Dialogical(notification);
 
-export { Dialog, Dialogical, Notification, useDialogicState, useRemaining };
+export { Dialog, Dialogical, MakeAppear, MakeAppearDialog, MakeAppearNotification, Notification, useDialogicState, useRemaining };

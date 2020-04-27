@@ -35,7 +35,8 @@
     - [Getting updates on the remaining time](#getting-updates-on-the-remaining-time)
     - [`useRemaining`](#useremaining)
   - [`useDialogicState`](#usedialogicstate)
-- [And also](#and-also)
+  - [React and dialog routes](#react-and-dialog-routes)
+- [Shout out](#shout-out)
 - [License](#license)
 
 ## Supported JavaScript libraries
@@ -111,14 +112,14 @@ m(Dialog, { spawn: "settings" })
 
 With React:
 
-```jsx
+```tsx
 <Dialog />
 <Dialog spawn="settings" />
 ```
 
 With Svelte:
 
-```jsx
+```tsx
 <Dialog />
 <Dialog spawn="settings" />
 ```
@@ -560,7 +561,7 @@ m(Dialog, { spawn: "settings" })
 
 With React:
 
-```jsx
+```tsx
 <Dialog spawn="1" />
 <Dialog spawn="settings" />
 ```
@@ -763,7 +764,7 @@ For React only.
 
 Hook to fetch the current remaining time.
 
-```jsx
+```tsx
 import { notification, useRemaining } from "dialogic-react";
 
 const MyComponent = props => {
@@ -778,7 +779,7 @@ For React only.
 
 To retrieve the current state, hook `useDialogicState` should be called:
 
-```jsx
+```tsx
 import { dialog, useDialogicState } from "dialogic-react";
 
 const MyComponent = props => {
@@ -790,8 +791,76 @@ const MyComponent = props => {
 }
 ```
 
+### React and dialog routes
 
-## And also
+it is often desired to let a dialog have its own URL so that page refresh will still show the dialog, and using the browser back button will hide the dialog.
+
+A common pattern is to create a Route that contains the dialog component:
+
+```tsx
+import { Route, useRouteMatch } from 'react-router-dom';
+
+const match = useRouteMatch();
+const dialogUrl = `${match.url}/edit`;
+
+<Route path={dialogUrl}>
+  // Dialog should appear here
+</Route>
+```
+
+Helper component `MakeAppearDialog` simply calls `dialog.show()` on mount, and `dialog.hide()` on unmount. Use it like this:
+
+```tsx
+<Route path={dialogUrl}>
+  <MakeAppearDialog<T>
+    // ... dialogic props
+    // ... component props
+  />
+</Route>
+```
+
+This can be used for notications too, using `MakeAppearNotification` (although this will be not very common).
+
+
+Full example:
+
+```tsx
+import { Route, Link, useRouteMatch, useHistory } from 'react-router-dom';
+import { notification, MakeAppearDialog } from 'dialogic-react';
+import { EditProfileDialog, EditProfileDialogProps } from './EditProfileDialog';
+import { saveConfirmationProps } from './SaveConfirmation';
+
+export const ProfilePage = () => {
+  const match = useRouteMatch();
+  const history = useHistory();
+  const dialogUrl = `${match.url}/edit`;
+  const dialogReturnUrl = match.url;
+
+  return (
+    <Route path={dialogUrl}>
+      <MakeAppearDialog<EditProfileDialogProps>
+        dialogic={{
+          component: EditProfileDialog,
+          className: 'dialog',
+        }}
+        title="Update your e-mail"
+        email="allan@company.com"
+        onSave={email => {
+          history.push(dialogReturnUrl);
+          notification.show(saveConfirmationProps);
+        }}
+        onCancel={() => {
+          history.push(dialogReturnUrl);
+        }}
+      />
+    </Route>
+  );
+};
+
+```
+
+
+## Shout out
 
 Dialogic uses the [Meiosis state pattern](http://meiosis.js.org/) for state management.
 
