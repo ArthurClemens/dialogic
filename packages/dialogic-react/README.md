@@ -148,4 +148,4 @@ const NotificationView = props => {
 
 ## Size
 
-7.21 KB with all dependencies, minified and gzipped
+7.24 KB with all dependencies, minified and gzipped

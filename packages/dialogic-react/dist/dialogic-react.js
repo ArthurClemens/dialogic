@@ -113,7 +113,7 @@ const MakeAppear = (allProps) => {
     useEffect(() => {
         instance.show(props);
         return () => {
-            if (props.appearPath && window.location.pathname !== appearPath) {
+            if (appearPath && window.location.pathname !== appearPath) {
                 instance.hide(props);
             }
             else {
