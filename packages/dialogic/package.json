@@ -3,13 +3,14 @@
   "version": "0.4.4",
   "description": "Logic for dialogs and notifications",
   "main": "dist/dialogic",
-  "module": "dist/dialogic.js",
+  "module": "dist/dialogic.module.js",
   "type": "module",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
     "clean": "rm -rf dist/*",
-    "rollup": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=1 MODULE_NAME=dialogic ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js",
-    "build": "npm run clean && npm run rollup"
+    "build": "npm run clean && npm run build:module && npm run build:umd",
+    "build:module": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=1 MODULE_NAME=dialogic ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js",
+    "build:umd": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=0 MODULE_NAME=dialogic ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js"
   },
   "dependencies": {
     "@types/mithril": "2.0.2",

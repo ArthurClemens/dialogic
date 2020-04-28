@@ -2,13 +2,14 @@
   "include": ["src/**/*", "index.d.ts"],
   "exclude": ["node_modules/*"],
   "compilerOptions": {
-    "target": "ESNEXT",                  
-    "module": "ESNEXT",                  
-    "strict": true,                      
-    "noUnusedLocals": true,              
-    "moduleResolution": "node",          
-    "types": [],                         
+    "target": "ESNEXT",
+    "module": "ESNEXT",
+    "lib": ["es5", "es2017", "dom"],
+    "strict": true,
+    "noUnusedLocals": true,
+    "moduleResolution": "node",
+    "types": [],
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true              
+    "esModuleInterop": true
   }
 }
