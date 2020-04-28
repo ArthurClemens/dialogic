@@ -3,7 +3,7 @@
   "version": "0.4.6",
   "description": "Logic for dialogs and notifications",
   "main": "dist/dialogic",
-  "module": "dist/dialogic.mjs",
+  "module": "dist/dialogic.module.js",
   "type": "module",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
