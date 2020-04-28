@@ -2,7 +2,7 @@
   "name": "tests-dialogic-svelte",
   "private": true,
   "description": "Test Dialogic with Svelte",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
@@ -19,8 +19,8 @@
     "cypress:open": "../../node_modules/cypress/bin/cypress open"
   },
   "dependencies": {
-    "dialogic": "^0.4.6",
-    "dialogic-svelte": "^0.4.6",
+    "dialogic": "^0.4.7",
+    "dialogic-svelte": "^0.4.7",
     "svelte": "^3.21.0",
     "svelte-spa-router": "^2.1.0"
   },
