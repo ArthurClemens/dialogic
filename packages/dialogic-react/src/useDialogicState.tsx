@@ -1,7 +1,6 @@
 import { states, Dialogic } from 'dialogic';
 import { useStream } from 'use-stream';
-
-export type UseDialogicState = () => void;
+import { UseDialogicState } from '../index.d';
 
 type TModel = {
   _: Dialogic.States;

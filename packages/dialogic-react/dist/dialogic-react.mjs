@@ -95,7 +95,7 @@ const useRemaining = props => {
         remaining({
             instance: props.instance,
             roundToSeconds: props.roundToSeconds,
-            callback: (newValue) => {
+            callback: newValue => {
                 if (!didCancelRef.current) {
                     setValue(newValue);
                 }

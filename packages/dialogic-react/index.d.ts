@@ -1,7 +1,5 @@
 import { FunctionComponent, PropsWithChildren } from 'react';
 import { dialog, notification, Dialogic } from 'dialogic';
-import { UseDialogicState } from './src/useDialogicState';
-import { UseRemaining } from './src/useRemaining';
 
 export { dialog, notification };
 
@@ -33,3 +31,12 @@ export const MakeAppearDialog: <T>(
 export const MakeAppearNotification: <T>(
   props: PropsWithChildren<MakeAppearInstanceProps<T>>,
 ) => null;
+
+export type UseDialogicState = () => void;
+export type UseRemaining = ({
+  instance,
+  roundToSeconds,
+}: {
+  instance: Dialogic.DialogicInstance;
+  roundToSeconds: boolean;
+}) => [number | undefined];
