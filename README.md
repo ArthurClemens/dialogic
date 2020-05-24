@@ -35,9 +35,7 @@
     - [Getting updates on the remaining time](#getting-updates-on-the-remaining-time)
     - [`useRemaining`](#useremaining)
   - [`useDialogicState`](#usedialogicstate)
-  - [`MakeAppearDialog` for React and dialog routes](#makeappeardialog-for-react-and-dialog-routes)
-    - [Options](#options-1)
-    - [Full example](#full-example)
+  - [React and dialog routes](#react-and-dialog-routes)
 - [Shout out](#shout-out)
 - [License](#license)
 
@@ -267,16 +265,13 @@ Define those classes in CSS to create transitions. For example with `className` 
 ```css
 .dialog {
   transition: opacity 300ms ease-in-out;
-}
-.dialog-show-start {
   opacity: 0;
 }
+.dialog-show-start {}
 .dialog-show-end {
   opacity: 1;
 }
-.dialog-hide-start {
-  opacity: 1;
-}
+.dialog-hide-start {}
 .dialog-hide-end {
   opacity: 0;
 }
@@ -793,83 +788,9 @@ const MyComponent = props => {
 }
 ```
 
-### `MakeAppearDialog` for React and dialog routes
+### React and dialog routes
 
-It's often desired to let a dialog have its own URL so that page refresh will still show the dialog, and using the browser back button will hide the dialog.
-
-A common pattern is to create a Route that contains the dialog component:
-
-```tsx
-import { Route, useRouteMatch } from 'react-router-dom';
-
-const match = useRouteMatch();
-const dialogPath = `${match.url}/edit`;
-
-<Route path={dialogPath}>
-  // Dialog should appear here
-</Route>
-```
-
-Helper component `MakeAppearDialog` simply calls `dialog.show()` on mount, and `dialog.hide()` on unmount. Use it like this:
-
-```tsx
-<Route path={dialogPath}>
-  <MakeAppearDialog<T>
-    appearPath={dialogPath} // optional
-    // ... dialogic props
-    // ... component props
-  />
-</Route>
-```
-
-Prop `appearPath` provides an extra check for hiding the dialog. It should normally not be used, but I've seen situations that React Router renders a route twice, making the dialog disappear again.
-
-Similarly, `MakeAppearNotification` can be used fro notications - although this will be not very common.
-
-#### Options
-
-| **Name**     | **Type** | **Required** | **Description**                                                                               | **Default value** |
-| ------------ | -------- | ------------ | --------------------------------------------------------------------------------------------- | ----------------- |
-| `appearPath` | `string` | No           | Dialog path, equal to the Route path. Used for an extra check if the dialog should be hidden. | None              |
-
-
-#### Full example
-
-```tsx
-import { Route, Link, useRouteMatch, useHistory } from 'react-router-dom';
-import { notification, MakeAppearDialog } from 'dialogic-react';
-import { EditProfileDialog, EditProfileDialogProps } from './EditProfileDialog';
-import { saveConfirmationProps } from './SaveConfirmation';
-
-export const ProfilePage = () => {
-  const match = useRouteMatch();
-  const history = useHistory();
-  const dialogPath = `${match.url}/edit`;
-  const dialogReturnPath = match.url;
-
-  return (
-    <Route path={dialogPath}>
-      <MakeAppearDialog<EditProfileDialogProps>
-        appearPath={dialogPath}
-        dialogic={{
-          component: EditProfileDialog,
-          className: 'dialog',
-        }}
-        title="Update your e-mail"
-        email="allan@company.com"
-        onSave={email => {
-          history.push(dialogReturnPath);
-          notification.show(saveConfirmationProps);
-        }}
-        onCancel={() => {
-          history.push(dialogReturnPath);
-        }}
-      />
-    </Route>
-  );
-};
-
-```
+See: [React dialog routes](./packages/dialogic-react/README.md#dialog-routes)
 
 
 ## Shout out

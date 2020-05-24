@@ -131,7 +131,9 @@ export namespace Dialogic {
     styles?: TransitionStyles | TransitionStylesFn;
     timeout?: number;
     toggle?: boolean;
-  } & IdentityOptions;
+  } & IdentityOptions & {
+      __transitionTimeoutId__?: number;
+    };
 
   type Options = {
     dialogic?: DialogicOptions;

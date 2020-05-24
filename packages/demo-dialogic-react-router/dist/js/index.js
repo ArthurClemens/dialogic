@@ -1146,11 +1146,11 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "../../dialogic-react/dist/dialogic-react.js":
-/*!*********************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/dist/dialogic-react.js ***!
-  \*********************************************************************************************************/
-/*! exports provided: dialog, notification, Dialog, Dialogical, MakeAppear, MakeAppearDialog, MakeAppearNotification, Notification, useDialogicState, useRemaining */
+/***/ "../../dialogic-react/dist/dialogic-react.mjs":
+/*!**********************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/dist/dialogic-react.mjs ***!
+  \**********************************************************************************************************/
+/*! exports provided: dialog, notification, Dialog, Dialogical, MakeAppear, MakeAppearDialog, MakeAppearNotification, Notification, useDialogicState, useMakeAppear, useMakeAppearDialog, useMakeAppearNotification, useRemaining */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1162,23 +1162,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MakeAppearNotification", function() { return MakeAppearNotification; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Notification", function() { return Notification; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useDialogicState", function() { return useDialogicState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useMakeAppear", function() { return useMakeAppear; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useMakeAppearDialog", function() { return useMakeAppearDialog; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useMakeAppearNotification", function() { return useMakeAppearNotification; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useRemaining", function() { return useRemaining; });
-/* harmony import */ var _babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../../dialogic-react/node_modules/@babel/runtime/helpers/objectWithoutProperties.js");
-/* harmony import */ var _babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../dialogic-react/node_modules/@babel/runtime/helpers/slicedToArray.js");
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "../../dialogic-react/node_modules/@babel/runtime/helpers/extends.js");
-/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var dialogic__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! dialogic */ "../../dialogic/dist/dialogic.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "dialog", function() { return dialogic__WEBPACK_IMPORTED_MODULE_3__["dialog"]; });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../dialogic-react/node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../dialogic-react/node_modules/@babel/runtime/helpers/toConsumableArray.js");
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../dialogic-react/node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "../../dialogic-react/node_modules/@babel/runtime/helpers/extends.js");
+/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var dialogic__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic */ "../../dialogic/dist/dialogic.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "dialog", function() { return dialogic__WEBPACK_IMPORTED_MODULE_4__["dialog"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "notification", function() { return dialogic__WEBPACK_IMPORTED_MODULE_3__["notification"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "notification", function() { return dialogic__WEBPACK_IMPORTED_MODULE_4__["notification"]; });
 
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var use_stream__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! use-stream */ "../../dialogic-react/node_modules/use-stream/dist/use-stream.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var use_stream__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! use-stream */ "../../dialogic-react/node_modules/use-stream/dist/use-stream.mjs");
 
 
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 
 
@@ -1188,14 +1199,14 @@ __webpack_require__.r(__webpack_exports__);
 var handleDispatch = function handleDispatch(ns) {
   return function (event, fn) {
     // Update dispatching item:
-    var maybeItem = dialogic__WEBPACK_IMPORTED_MODULE_3__["selectors"].find(ns, event.detail.identityOptions);
+    var maybeItem = dialogic__WEBPACK_IMPORTED_MODULE_4__["selectors"].find(ns, event.detail.identityOptions);
 
     if (maybeItem.just) {
-      Object(dialogic__WEBPACK_IMPORTED_MODULE_3__["setDomElement"])(event.detail.domElement, maybeItem.just);
+      Object(dialogic__WEBPACK_IMPORTED_MODULE_4__["setDomElement"])(event.detail.domElement, maybeItem.just);
     } // Find item to transition:
 
 
-    var maybeTransitioningItem = dialogic__WEBPACK_IMPORTED_MODULE_3__["selectors"].find(ns, event.detail.identityOptions);
+    var maybeTransitioningItem = dialogic__WEBPACK_IMPORTED_MODULE_4__["selectors"].find(ns, event.detail.identityOptions);
 
     if (maybeTransitioningItem.just) {
       fn(maybeTransitioningItem.just);
@@ -1205,27 +1216,27 @@ var handleDispatch = function handleDispatch(ns) {
 
 var onInstanceMounted = function onInstanceMounted(ns) {
   return function (event) {
-    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_3__["showItem"]);
+    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_4__["showItem"]);
   };
 };
 
 var onShowInstance = function onShowInstance(ns) {
   return function (event) {
-    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_3__["showItem"]);
+    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_4__["showItem"]);
   };
 };
 
 var onHideInstance = function onHideInstance(ns) {
   return function (event) {
-    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_3__["hideItem"]);
+    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_4__["hideItem"]);
   };
 };
 
 var Instance = function Instance(props) {
-  var domElementRef = Object(react__WEBPACK_IMPORTED_MODULE_4__["useRef"])();
+  var domElementRef = Object(react__WEBPACK_IMPORTED_MODULE_5__["useRef"])();
   var className = props.dialogicOptions.className;
   var Component = props.dialogicOptions.component;
-  var domElementCb = Object(react__WEBPACK_IMPORTED_MODULE_4__["useCallback"])(function (node) {
+  var domElementCb = Object(react__WEBPACK_IMPORTED_MODULE_5__["useCallback"])(function (node) {
     if (node !== null) {
       domElementRef.current = node;
       onMount();
@@ -1259,10 +1270,10 @@ var Instance = function Instance(props) {
     dispatchTransition(props.onHide);
   };
 
-  return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
+  return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
     ref: domElementCb,
     className: className
-  }, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(Component, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_2___default()({}, props.passThroughOptions, {
+  }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(Component, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default()({}, props.passThroughOptions, {
     show: show,
     hide: hide
   })));
@@ -1273,9 +1284,9 @@ var Wrapper = function Wrapper(props) {
   var nsOnShowInstance = onShowInstance(props.ns);
   var nsOnHideInstance = onHideInstance(props.ns);
   var identityOptions = props.identityOptions || {};
-  var filtered = Object(dialogic__WEBPACK_IMPORTED_MODULE_3__["filterCandidates"])(props.ns, dialogic__WEBPACK_IMPORTED_MODULE_3__["selectors"].getStore(), identityOptions);
-  return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_4___default.a.Fragment, null, filtered.map(function (item) {
-    return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(Instance, {
+  var filtered = Object(dialogic__WEBPACK_IMPORTED_MODULE_4__["filterCandidates"])(props.ns, dialogic__WEBPACK_IMPORTED_MODULE_4__["selectors"].getStore(), identityOptions);
+  return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_5___default.a.Fragment, null, filtered.map(function (item) {
+    return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(Instance, {
       key: item.key,
       identityOptions: item.identityOptions,
       dialogicOptions: item.dialogicOptions,
@@ -1289,10 +1300,10 @@ var Wrapper = function Wrapper(props) {
 
 var useDialogicState = function useDialogicState() {
   // Subscribe to changes
-  Object(use_stream__WEBPACK_IMPORTED_MODULE_5__["useStream"])({
+  Object(use_stream__WEBPACK_IMPORTED_MODULE_6__["useStream"])({
     model: function model() {
       return {
-        _: dialogic__WEBPACK_IMPORTED_MODULE_3__["states"]
+        _: dialogic__WEBPACK_IMPORTED_MODULE_4__["states"]
       };
     },
     defer: true
@@ -1307,27 +1318,177 @@ var Dialogical = function Dialogical(type) {
       spawn: props.spawn || type.defaultSpawn
     }; // Mount
 
-    Object(react__WEBPACK_IMPORTED_MODULE_4__["useEffect"])(function () {
+    Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
       if (typeof props.onMount === 'function') {
         props.onMount();
       }
     }, []);
-    return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(Wrapper, {
+    return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(Wrapper, {
       identityOptions: identityOptions,
       ns: type.ns
     });
   };
 };
+/**
+ * Hook to automatically show an instance on URL location match.
+ * Usage:
+ 
+ import { dialog, useMakeAppear } from 'dialogic-react';
+
+ const content = 'Some async loaded content';
+ const dialogPath = '/login';
+ const dialogBasePath = '/';
+
+ useMakeAppear({
+   pathname: dialogPath,
+   instance: dialog,
+   predicate: () => !!content,
+   deps: [content],
+   props: {
+     dialogic: {
+      component: LoginDialog,
+      className: 'dialogic',
+    },
+    returnPath: dialogBasePath,
+    content,
+   }
+ })
+ */
+
+
+var useMakeAppear = function useMakeAppear(allProps) {
+  var pathname = allProps.pathname,
+      _allProps$locationPat = allProps.locationPathname,
+      locationPathname = _allProps$locationPat === void 0 ? window.location.pathname : _allProps$locationPat,
+      instance = allProps.instance,
+      _allProps$predicate = allProps.predicate,
+      predicate = _allProps$predicate === void 0 ? function () {
+    return true;
+  } : _allProps$predicate,
+      _allProps$deps = allProps.deps,
+      deps = _allProps$deps === void 0 ? [] : _allProps$deps,
+      props = allProps.props;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_5__["useState"])(false),
+      _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default()(_useState, 2),
+      isHiding = _useState2[0],
+      setIsHiding = _useState2[1];
+
+  var showInstance = function showInstance() {
+    setIsHiding(false);
+    instance.show(props);
+  };
+
+  var hideInstance = function hideInstance() {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        force = _ref.force;
+
+    if (force || !isHiding) {
+      setIsHiding(true);
+      instance.hide(props);
+    }
+  };
+
+  Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
+    if (locationPathname === pathname) {
+      if (predicate()) {
+        setIsHiding(false);
+        showInstance();
+      }
+    } else {
+      hideInstance();
+    }
+
+    return function () {
+      hideInstance({
+        force: true
+      });
+    }; // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(deps), [locationPathname]));
+};
+/**
+ * `useMakeAppear` with `instance` preset to `dialog`.
+ * Usage:
+ 
+ import { useMakeAppearDialog } from 'dialogic-react';
+
+ const content = 'Some async loaded content';
+ const dialogPath = '/login';
+ const dialogBasePath = '/';
+
+ useMakeAppear({
+   pathname: dialogPath,
+   predicate: () => !!content,
+   deps: [content],
+   props: {
+     dialogic: {
+      component: LoginDialog,
+      className: 'dialogic',
+    },
+    returnPath: dialogBasePath,
+    content,
+   }
+ })
+ */
+
+
+var useMakeAppearDialog = function useMakeAppearDialog(props) {
+  return useMakeAppear(_objectSpread({}, props, {
+    instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["dialog"]
+  }));
+};
+/**
+ * `useMakeAppear` with `instance` preset to `notification`.
+ */
+
+
+var useMakeAppearNotification = function useMakeAppearNotification(props) {
+  return useMakeAppear(_objectSpread({}, props, {
+    instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["notification"]
+  }));
+};
+/**
+ * Helper component that wraps `useMakeAppear` to use in JSX syntax.
+ */
+
+
+var MakeAppear = function MakeAppear(allProps) {
+  var instance = allProps.instance,
+      pathname = allProps.pathname,
+      predicate = allProps.predicate,
+      deps = allProps.deps,
+      props = allProps.props;
+  useMakeAppear({
+    instance: instance,
+    props: props,
+    predicate: predicate,
+    pathname: pathname,
+    deps: deps
+  });
+  return null;
+};
+
+var MakeAppearDialog = function MakeAppearDialog(props) {
+  return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(MakeAppear, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default()({}, props, {
+    instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["dialog"]
+  }));
+};
+
+var MakeAppearNotification = function MakeAppearNotification(props) {
+  return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(MakeAppear, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default()({}, props, {
+    instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["notification"]
+  }));
+};
 
 var useRemaining = function useRemaining(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_4__["useState"])(undefined),
-      _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1___default()(_useState, 2),
-      value = _useState2[0],
-      setValue = _useState2[1];
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_5__["useState"])(undefined),
+      _useState4 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default()(_useState3, 2),
+      value = _useState4[0],
+      setValue = _useState4[1];
 
-  var didCancelRef = Object(react__WEBPACK_IMPORTED_MODULE_4__["useRef"])(false);
-  Object(react__WEBPACK_IMPORTED_MODULE_4__["useEffect"])(function () {
-    Object(dialogic__WEBPACK_IMPORTED_MODULE_3__["remaining"])({
+  var didCancelRef = Object(react__WEBPACK_IMPORTED_MODULE_5__["useRef"])(false);
+  Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
+    Object(dialogic__WEBPACK_IMPORTED_MODULE_4__["remaining"])({
       instance: props.instance,
       roundToSeconds: props.roundToSeconds,
       callback: function callback(newValue) {
@@ -1343,38 +1504,8 @@ var useRemaining = function useRemaining(props) {
   return [value];
 };
 
-var MakeAppear = function MakeAppear(allProps) {
-  var instance = allProps.instance,
-      appearPath = allProps.appearPath,
-      props = _babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0___default()(allProps, ["instance", "appearPath"]);
-
-  Object(react__WEBPACK_IMPORTED_MODULE_4__["useEffect"])(function () {
-    instance.show(props);
-    return function () {
-      if (props.appearPath && window.location.pathname !== appearPath) {
-        instance.hide(props);
-      } else {
-        instance.hide(props);
-      }
-    };
-  }, [props, window.location]);
-  return null;
-};
-
-var MakeAppearDialog = function MakeAppearDialog(props) {
-  return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(MakeAppear, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_2___default()({}, props, {
-    instance: dialogic__WEBPACK_IMPORTED_MODULE_3__["dialog"]
-  }));
-};
-
-var MakeAppearNotification = function MakeAppearNotification(props) {
-  return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(MakeAppear, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_2___default()({}, props, {
-    instance: dialogic__WEBPACK_IMPORTED_MODULE_3__["notification"]
-  }));
-};
-
-var Dialog = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_3__["dialog"]);
-var Notification = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_3__["notification"]);
+var Dialog = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_4__["dialog"]);
+var Notification = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_4__["notification"]);
 
 
 /***/ }),
@@ -1415,6 +1546,49 @@ module.exports = _arrayWithHoles;
 
 /***/ }),
 
+/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/arrayWithoutHoles.js":
+/*!*******************************************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/arrayWithoutHoles.js ***!
+  \*******************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray */ "../../dialogic-react/node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return arrayLikeToArray(arr);
+}
+
+module.exports = _arrayWithoutHoles;
+
+/***/ }),
+
+/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/defineProperty.js":
+/*!****************************************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/defineProperty.js ***!
+  \****************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+
+/***/ }),
+
 /***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/extends.js":
 /*!*********************************************************************************************************************************!*\
   !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/extends.js ***!
@@ -1441,6 +1615,21 @@ function _extends() {
 }
 
 module.exports = _extends;
+
+/***/ }),
+
+/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/iterableToArray.js":
+/*!*****************************************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/iterableToArray.js ***!
+  \*****************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+}
+
+module.exports = _iterableToArray;
 
 /***/ }),
 
@@ -1497,61 +1686,18 @@ module.exports = _nonIterableRest;
 
 /***/ }),
 
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/objectWithoutProperties.js":
-/*!*************************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/objectWithoutProperties.js ***!
-  \*************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var objectWithoutPropertiesLoose = __webpack_require__(/*! ./objectWithoutPropertiesLoose */ "../../dialogic-react/node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js");
-
-function _objectWithoutProperties(source, excluded) {
-  if (source == null) return {};
-  var target = objectWithoutPropertiesLoose(source, excluded);
-  var key, i;
-
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-
-  return target;
-}
-
-module.exports = _objectWithoutProperties;
-
-/***/ }),
-
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js":
-/*!******************************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js ***!
-  \******************************************************************************************************************************************************/
+/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/nonIterableSpread.js":
+/*!*******************************************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/nonIterableSpread.js ***!
+  \*******************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
-module.exports = _objectWithoutPropertiesLoose;
+module.exports = _nonIterableSpread;
 
 /***/ }),
 
@@ -1578,6 +1724,29 @@ module.exports = _slicedToArray;
 
 /***/ }),
 
+/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/toConsumableArray.js":
+/*!*******************************************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/toConsumableArray.js ***!
+  \*******************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayWithoutHoles = __webpack_require__(/*! ./arrayWithoutHoles */ "../../dialogic-react/node_modules/@babel/runtime/helpers/arrayWithoutHoles.js");
+
+var iterableToArray = __webpack_require__(/*! ./iterableToArray */ "../../dialogic-react/node_modules/@babel/runtime/helpers/iterableToArray.js");
+
+var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray */ "../../dialogic-react/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js");
+
+var nonIterableSpread = __webpack_require__(/*! ./nonIterableSpread */ "../../dialogic-react/node_modules/@babel/runtime/helpers/nonIterableSpread.js");
+
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
+}
+
+module.exports = _toConsumableArray;
+
+/***/ }),
+
 /***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js":
 /*!****************************************************************************************************************************************************!*\
   !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js ***!
@@ -1600,10 +1769,10 @@ module.exports = _unsupportedIterableToArray;
 
 /***/ }),
 
-/***/ "../../dialogic-react/node_modules/use-stream/dist/use-stream.js":
-/*!*****************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/use-stream/dist/use-stream.js ***!
-  \*****************************************************************************************************************************/
+/***/ "../../dialogic-react/node_modules/use-stream/dist/use-stream.mjs":
+/*!******************************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/use-stream/dist/use-stream.mjs ***!
+  \******************************************************************************************************************************/
 /*! exports provided: useStream */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1620,7 +1789,6 @@ const useStream = ({ model, onMount, onDestroy, onUpdate, deps = [], defer, debu
     const [streamValues, setStreamValues] = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState({});
     // Distinguish update from mount:
     const isInitedRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef(false);
-    // Keep reference of all streams that update streamValues so they can be stopped:
     const subsRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef([]);
     const subscribe = (memo) => {
         if (debug) {
@@ -1629,8 +1797,8 @@ const useStream = ({ model, onMount, onDestroy, onUpdate, deps = [], defer, debu
         subsRef.current = Object.keys(memo)
             .map((key) => {
             const stream = memo[key];
-            return stream.map && typeof stream.map === 'function'
-                ? stream.map((value) => {
+            if (stream.map && typeof stream.map === 'function') {
+                return stream.map((value) => {
                     if (debug) {
                         debug('Will update %s', key);
                     }
@@ -1639,8 +1807,9 @@ const useStream = ({ model, onMount, onDestroy, onUpdate, deps = [], defer, debu
                         [key]: value,
                     });
                     return null;
-                })
-                : null;
+                });
+            }
+            return false;
         })
             .filter(Boolean);
     };
@@ -1712,10 +1881,10 @@ const useStream = ({ model, onMount, onDestroy, onUpdate, deps = [], defer, debu
 
 /***/ }),
 
-/***/ "../../dialogic/dist/dialogic.js":
-/*!*********************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic/dist/dialogic.js ***!
-  \*********************************************************************************************/
+/***/ "../../dialogic/dist/dialogic.mjs":
+/*!**********************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic/dist/dialogic.mjs ***!
+  \**********************************************************************************************/
 /*! exports provided: Stream, actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, remaining, resetAll, resume, selectors, setDomElement, show, showItem, states */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1796,8 +1965,8 @@ var getStyleValue = function getStyleValue(_ref) {
 };
 
 var MODE = {
-  SHOW: "show",
-  HIDE: "hide"
+  SHOW: 'show',
+  HIDE: 'hide'
 };
 
 var removeTransitionClassNames = function removeTransitionClassNames(domElement, transitionClassNames) {
@@ -1817,11 +1986,11 @@ var applyTransitionStyles = function applyTransitionStyles(domElement, step, sty
 };
 
 var applyNoDurationTransitionStyle = function applyNoDurationTransitionStyle(domElement) {
-  return domElement.style.transitionDuration = "0ms";
+  return domElement.style.transitionDuration = '0ms';
 };
 
 var getTransitionStyles = function getTransitionStyles(domElement, styles) {
-  return (typeof styles === "function" ? styles(domElement) : styles) || {};
+  return (typeof styles === 'function' ? styles(domElement) : styles) || {};
 };
 
 var createClassList = function createClassList(className, step) {
@@ -1833,7 +2002,7 @@ var createClassList = function createClassList(className, step) {
 var applyStylesForState = function applyStylesForState(domElement, props, step, isEnterStep) {
   if (props.styles) {
     var styles = getTransitionStyles(domElement, props.styles);
-    applyTransitionStyles(domElement, "default", styles);
+    applyTransitionStyles(domElement, 'default', styles);
     isEnterStep && applyNoDurationTransitionStyle(domElement);
     applyTransitionStyles(domElement, step, styles);
   }
@@ -1842,10 +2011,10 @@ var applyStylesForState = function applyStylesForState(domElement, props, step, 
     var _domElement$classList2;
 
     var transitionClassNames = {
-      showStart: createClassList(props.className, "show-start"),
-      showEnd: createClassList(props.className, "show-end"),
-      hideStart: createClassList(props.className, "hide-start"),
-      hideEnd: createClassList(props.className, "hide-end")
+      showStart: createClassList(props.className, 'show-start'),
+      showEnd: createClassList(props.className, 'show-end'),
+      hideStart: createClassList(props.className, 'hide-start'),
+      hideEnd: createClassList(props.className, 'hide-end')
     };
     removeTransitionClassNames(domElement, transitionClassNames);
     transitionClassNames && (_domElement$classList2 = domElement.classList).add.apply(_domElement$classList2, _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(transitionClassNames[step]));
@@ -1858,12 +2027,12 @@ var applyStylesForState = function applyStylesForState(domElement, props, step, 
 var getDuration = function getDuration(domElement) {
   var durationStyleValue = getStyleValue({
     domElement: domElement,
-    prop: "transition-duration"
+    prop: 'transition-duration'
   });
   var durationValue = durationStyleValue !== undefined ? styleDurationToMs(durationStyleValue) : 0;
   var delayStyleValue = getStyleValue({
     domElement: domElement,
-    prop: "transition-delay"
+    prop: 'transition-delay'
   });
   var delayValue = delayStyleValue !== undefined ? styleDurationToMs(delayStyleValue) : 0;
   return durationValue + delayValue;
@@ -1871,13 +2040,13 @@ var getDuration = function getDuration(domElement) {
 
 var steps = {
   showStart: {
-    nextStep: "showEnd"
+    nextStep: 'showEnd'
   },
   showEnd: {
     nextStep: undefined
   },
   hideStart: {
-    nextStep: "hideEnd"
+    nextStep: 'hideEnd'
   },
   hideEnd: {
     nextStep: undefined
@@ -1888,12 +2057,13 @@ var transition = function transition(props, mode) {
   var domElement = props.domElement;
 
   if (!domElement) {
-    return Promise.resolve("no domElement");
+    return Promise.resolve('no domElement');
   }
 
-  var currentStep = mode === MODE.SHOW ? "showStart" : "hideStart";
+  clearTimeout(props.__transitionTimeoutId__);
+  var currentStep = mode === MODE.SHOW ? 'showStart' : 'hideStart';
   return new Promise(function (resolve) {
-    applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
+    applyStylesForState(domElement, props, currentStep, currentStep === 'showStart');
     setTimeout(function () {
       var nextStep = steps[currentStep].nextStep;
 
@@ -1903,14 +2073,14 @@ var transition = function transition(props, mode) {
         // Using setTimeout instead of addEventListener gives more consistent results
 
         var duration = getDuration(domElement);
-        setTimeout(resolve, duration);
+        props.__transitionTimeoutId__ = setTimeout(resolve, duration);
       }
     }, 0);
   });
 };
 
 var styleDurationToMs = function styleDurationToMs(durationStr) {
-  var parsed = parseFloat(durationStr) * (durationStr.indexOf("ms") === -1 ? 1000 : 1);
+  var parsed = parseFloat(durationStr) * (durationStr.indexOf('ms') === -1 ? 1000 : 1);
   return isNaN(parsed) ? 0 : parsed;
 };
 
@@ -1936,7 +2106,7 @@ var removeItem = function removeItem(id, items) {
 };
 
 var createId = function createId(identityOptions, ns) {
-  return [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join("-");
+  return [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join('-');
 };
 
 var store = {
@@ -2068,7 +2238,7 @@ var states = mithril_stream__WEBPACK_IMPORTED_MODULE_5___default.a.scan(function
 
 var actions = _objectSpread({}, store.actions(update));
 
-var selectors = _objectSpread({}, store.selectors(states)); // states.map(state => 
+var selectors = _objectSpread({}, store.selectors(states)); // states.map(state =>
 //   console.log(JSON.stringify(state, null, 2))
 // );
 
@@ -2227,7 +2397,7 @@ var Timer = function Timer() {
 var uid = 0;
 
 var getUid = function getUid() {
-  return uid === Number.MAX_SAFE_INTEGER ? 0 : uid++;
+  return uid === Number.MAX_VALUE ? 0 : uid++;
 };
 
 var transitionStates = {
@@ -2314,7 +2484,9 @@ var handleOptions = function handleOptions(defaultDialogicOptions) {
   };
   var mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions || {}, identityOptions);
 
-  var dialogicOptions = _objectSpread({}, defaultDialogicOptions, {}, options.dialogic);
+  var dialogicOptions = _objectSpread({}, defaultDialogicOptions, {}, options.dialogic, {
+    __transitionTimeoutId__: 0
+  });
 
   var passThroughOptions = getPassThroughOptions(options);
   return {
@@ -2480,8 +2652,8 @@ var getTimerProperty = function getTimerProperty(timerProp, defaultValue) {
   };
 };
 
-var isPaused = getTimerProperty("isPaused", false);
-var getRemaining$1 = getTimerProperty("getRemaining", undefined);
+var isPaused = getTimerProperty('isPaused', false);
+var getRemaining$1 = getTimerProperty('getRemaining', undefined);
 
 var exists = function exists(ns) {
   return function (defaultDialogicOptions) {
@@ -2593,7 +2765,7 @@ var deferredHideItem = /*#__PURE__*/function () {
             timer.actions.start(function () {
               return hideItem(item);
             }, timeout);
-            return _context.abrupt("return", getTimerProperty("getResultPromise", undefined));
+            return _context.abrupt("return", getTimerProperty('getResultPromise', undefined));
 
           case 2:
           case "end":
@@ -35548,7 +35720,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_styles_css__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _HomePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./HomePage */ "./HomePage.tsx");
 /* harmony import */ var _ProfilePage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ProfilePage */ "./ProfilePage.tsx");
-/* harmony import */ var dialogic_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-react */ "../../dialogic-react/dist/dialogic-react.js");
+/* harmony import */ var dialogic_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-react */ "../../dialogic-react/dist/dialogic-react.mjs");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "../node_modules/react-router-dom/esm/react-router-dom.js");
 
 
@@ -35673,7 +35845,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CurrentPathBadge__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CurrentPathBadge */ "./CurrentPathBadge.tsx");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "../node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _EditProfileDialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./EditProfileDialog */ "./EditProfileDialog.tsx");
-/* harmony import */ var dialogic_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-react */ "../../dialogic-react/dist/dialogic-react.js");
+/* harmony import */ var dialogic_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-react */ "../../dialogic-react/dist/dialogic-react.mjs");
 /* harmony import */ var _SaveConfirmation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SaveConfirmation */ "./SaveConfirmation.tsx");
 
 
@@ -35684,26 +35856,35 @@ __webpack_require__.r(__webpack_exports__);
 const ProfilePage = () => {
     const match = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useRouteMatch"])();
     const history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useHistory"])();
-    const dialogUrl = `${match.url}/edit`;
-    const dialogReturnUrl = match.url;
+    const dialogPath = `${match.url}/edit`;
+    const dialogReturnPath = match.url;
+    Object(dialogic_react__WEBPACK_IMPORTED_MODULE_4__["useMakeAppearDialog"])({
+        pathname: dialogPath,
+        locationPathname: history.location.pathname,
+        props: {
+            dialogic: {
+                component: _EditProfileDialog__WEBPACK_IMPORTED_MODULE_3__["EditProfileDialog"],
+                className: 'dialog',
+            },
+            title: 'Update your e-mail',
+            email: 'allan@company.com',
+            onSave: (email) => {
+                console.log('onSave:', email);
+                history.push(dialogReturnPath);
+                dialogic_react__WEBPACK_IMPORTED_MODULE_4__["notification"].show(_SaveConfirmation__WEBPACK_IMPORTED_MODULE_5__["saveConfirmationProps"]);
+            },
+            onCancel: () => {
+                console.log('onCancel');
+                history.push(dialogReturnPath);
+            },
+        },
+    });
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null,
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", { className: "title" }, "Profile"),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CurrentPathBadge__WEBPACK_IMPORTED_MODULE_1__["CurrentPathBadge"], null),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "buttons" },
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { className: "button", to: "/" }, "Go to home"),
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { className: "button is-link", to: dialogUrl }, "Edit profile")),
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], { path: dialogUrl },
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(dialogic_react__WEBPACK_IMPORTED_MODULE_4__["MakeAppearDialog"], { appearPath: dialogUrl, dialogic: {
-                    component: _EditProfileDialog__WEBPACK_IMPORTED_MODULE_3__["EditProfileDialog"],
-                    className: 'dialog',
-                }, title: "Update your e-mail", email: "allan@company.com", onSave: email => {
-                    console.log('onSave:', email);
-                    history.push(dialogReturnUrl);
-                    dialogic_react__WEBPACK_IMPORTED_MODULE_4__["notification"].show(_SaveConfirmation__WEBPACK_IMPORTED_MODULE_5__["saveConfirmationProps"]);
-                }, onCancel: () => {
-                    console.log('onCancel');
-                    history.push(dialogReturnUrl);
-                } }))));
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { className: "button is-link", to: dialogPath }, "Edit profile"))));
 };
 
 

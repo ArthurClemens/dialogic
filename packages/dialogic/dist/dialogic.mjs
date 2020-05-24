@@ -13,8 +13,8 @@ const getStyleValue = ({ domElement, prop, }) => {
 };
 
 const MODE = {
-    SHOW: "show",
-    HIDE: "hide"
+    SHOW: 'show',
+    HIDE: 'hide',
 };
 const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(...transitionClassNames.showStart, ...transitionClassNames.showEnd, ...transitionClassNames.hideStart, ...transitionClassNames.hideEnd);
 const applyTransitionStyles = (domElement, step, styles) => {
@@ -27,66 +27,68 @@ const applyTransitionStyles = (domElement, step, styles) => {
         // }
     });
 };
-const applyNoDurationTransitionStyle = (domElement) => domElement.style.transitionDuration = "0ms";
-const getTransitionStyles = (domElement, styles) => (typeof styles === "function"
-    ? styles(domElement)
-    : styles) || {};
+const applyNoDurationTransitionStyle = (domElement) => (domElement.style.transitionDuration = '0ms');
+const getTransitionStyles = (domElement, styles) => (typeof styles === 'function' ? styles(domElement) : styles) || {};
 const createClassList = (className, step) => className.split(/ /).map((n) => `${n}-${step}`);
 const applyStylesForState = (domElement, props, step, isEnterStep) => {
     if (props.styles) {
         const styles = getTransitionStyles(domElement, props.styles);
-        applyTransitionStyles(domElement, "default", styles);
+        applyTransitionStyles(domElement, 'default', styles);
         isEnterStep && applyNoDurationTransitionStyle(domElement);
         applyTransitionStyles(domElement, step, styles);
     }
     if (props.className) {
         const transitionClassNames = {
-            showStart: createClassList(props.className, "show-start"),
-            showEnd: createClassList(props.className, "show-end"),
-            hideStart: createClassList(props.className, "hide-start"),
-            hideEnd: createClassList(props.className, "hide-end"),
+            showStart: createClassList(props.className, 'show-start'),
+            showEnd: createClassList(props.className, 'show-end'),
+            hideStart: createClassList(props.className, 'hide-start'),
+            hideEnd: createClassList(props.className, 'hide-end'),
         };
         removeTransitionClassNames(domElement, transitionClassNames);
-        transitionClassNames && domElement.classList.add(...transitionClassNames[step]);
+        transitionClassNames &&
+            domElement.classList.add(...transitionClassNames[step]);
     }
     // reflow
     domElement.scrollTop;
 };
 const getDuration = (domElement) => {
-    const durationStyleValue = getStyleValue({ domElement, prop: "transition-duration" });
+    const durationStyleValue = getStyleValue({
+        domElement,
+        prop: 'transition-duration',
+    });
     const durationValue = durationStyleValue !== undefined
         ? styleDurationToMs(durationStyleValue)
         : 0;
-    const delayStyleValue = getStyleValue({ domElement, prop: "transition-delay" });
-    const delayValue = delayStyleValue !== undefined
-        ? styleDurationToMs(delayStyleValue)
-        : 0;
+    const delayStyleValue = getStyleValue({
+        domElement,
+        prop: 'transition-delay',
+    });
+    const delayValue = delayStyleValue !== undefined ? styleDurationToMs(delayStyleValue) : 0;
     return durationValue + delayValue;
 };
 const steps = {
     showStart: {
-        nextStep: "showEnd"
+        nextStep: 'showEnd',
     },
     showEnd: {
-        nextStep: undefined
+        nextStep: undefined,
     },
     hideStart: {
-        nextStep: "hideEnd"
+        nextStep: 'hideEnd',
     },
     hideEnd: {
-        nextStep: undefined
+        nextStep: undefined,
     },
 };
 const transition = (props, mode) => {
     const domElement = props.domElement;
     if (!domElement) {
-        return Promise.resolve("no domElement");
+        return Promise.resolve('no domElement');
     }
-    let currentStep = mode === MODE.SHOW
-        ? "showStart"
-        : "hideStart";
+    clearTimeout(props.__transitionTimeoutId__);
+    let currentStep = mode === MODE.SHOW ? 'showStart' : 'hideStart';
     return new Promise(resolve => {
-        applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
+        applyStylesForState(domElement, props, currentStep, currentStep === 'showStart');
         setTimeout(() => {
             const nextStep = steps[currentStep].nextStep;
             if (nextStep) {
@@ -95,16 +97,14 @@ const transition = (props, mode) => {
                 // addEventListener sometimes hangs this function because it never finishes
                 // Using setTimeout instead of addEventListener gives more consistent results
                 const duration = getDuration(domElement);
-                setTimeout(resolve, duration);
+                props.__transitionTimeoutId__ = setTimeout(resolve, duration);
             }
         }, 0);
     });
 };
 const styleDurationToMs = (durationStr) => {
-    const parsed = parseFloat(durationStr) * (durationStr.indexOf("ms") === -1 ? 1000 : 1);
-    return isNaN(parsed)
-        ? 0
-        : parsed;
+    const parsed = parseFloat(durationStr) * (durationStr.indexOf('ms') === -1 ? 1000 : 1);
+    return isNaN(parsed) ? 0 : parsed;
 };
 
 const findItem = (id, items) => {
@@ -121,7 +121,7 @@ const removeItem = (id, items) => {
     }
     return items;
 };
-const createId = (identityOptions, ns) => [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join("-");
+const createId = (identityOptions, ns) => [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join('-');
 const store = {
     initialState: {
         store: {},
@@ -207,19 +207,13 @@ const store = {
                 const items = state.store[ns] || [];
                 const id = createId(identityOptions, ns);
                 const item = items.find((item) => item.id === id);
-                return item
-                    ? { just: item }
-                    : { nothing: undefined };
+                return item ? { just: item } : { nothing: undefined };
             },
             getAll: (ns, identityOptions) => {
                 const state = states();
                 const items = state.store[ns] || [];
-                const spawn = identityOptions !== undefined
-                    ? identityOptions.spawn
-                    : undefined;
-                const id = identityOptions !== undefined
-                    ? identityOptions.id
-                    : undefined;
+                const spawn = identityOptions !== undefined ? identityOptions.spawn : undefined;
+                const id = identityOptions !== undefined ? identityOptions.id : undefined;
                 const itemsBySpawn = spawn !== undefined
                     ? items.filter(item => item.identityOptions.spawn === spawn)
                     : items;
@@ -243,7 +237,7 @@ const actions = {
 const selectors = {
     ...store.selectors(states),
 };
-// states.map(state => 
+// states.map(state =>
 //   console.log(JSON.stringify(state, null, 2))
 // );
 
@@ -469,6 +463,7 @@ const handleOptions = (defaultDialogicOptions, options = {}) => {
     const dialogicOptions = {
         ...defaultDialogicOptions,
         ...options.dialogic,
+        __transitionTimeoutId__: 0,
     };
     const passThroughOptions = getPassThroughOptions(options);
     return {
@@ -685,7 +680,7 @@ const setDomElement = (domElement, item) => {
     item.dialogicOptions.domElement = domElement;
 };
 
-const dialogical = ({ ns, queued, timeout }) => {
+const dialogical = ({ ns, queued, timeout, }) => {
     const defaultId = `default_${ns}`;
     const defaultSpawn = `default_${ns}`;
     const defaultDialogicOptions = {

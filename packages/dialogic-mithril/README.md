@@ -68,16 +68,13 @@ const DialogView = {
 /* index.css */
 .dialog {
   transition: opacity 300ms ease-in-out;
-}
-.dialog-show-start {
   opacity: 0;
 }
+.dialog-show-start {}
 .dialog-show-end {
   opacity: 1;
 }
-.dialog-hide-start {
-  opacity: 1;
-}
+.dialog-hide-start {}
 .dialog-hide-end {
   opacity: 0;
 }
@@ -136,16 +133,13 @@ const NotificationView = {
 /* index.css */
 .notification {
   transition: opacity 300ms;
-}
-.notification-show-start {
   opacity: 0;
 }
+.notification-show-start {}
 .notification-show-end {
   opacity: 1;
 }
-.notification-hide-start {
-  opacity: 1;
-}
+.notification-hide-start {}
 .notification-hide-end {
   opacity: 0;
 }
@@ -153,4 +147,4 @@ const NotificationView = {
 
 ## Size
 
- 3.06 KB with all dependencies, minified and gzipped
+ 3.52 KB with all dependencies, minified and gzipped

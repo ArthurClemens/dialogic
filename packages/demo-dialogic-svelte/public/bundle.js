@@ -732,8 +732,8 @@ var app = (function () {
     };
 
     const MODE = {
-        SHOW: "show",
-        HIDE: "hide"
+        SHOW: 'show',
+        HIDE: 'hide',
     };
     const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(...transitionClassNames.showStart, ...transitionClassNames.showEnd, ...transitionClassNames.hideStart, ...transitionClassNames.hideEnd);
     const applyTransitionStyles = (domElement, step, styles) => {
@@ -746,66 +746,68 @@ var app = (function () {
             // }
         });
     };
-    const applyNoDurationTransitionStyle = (domElement) => domElement.style.transitionDuration = "0ms";
-    const getTransitionStyles = (domElement, styles) => (typeof styles === "function"
-        ? styles(domElement)
-        : styles) || {};
+    const applyNoDurationTransitionStyle = (domElement) => (domElement.style.transitionDuration = '0ms');
+    const getTransitionStyles = (domElement, styles) => (typeof styles === 'function' ? styles(domElement) : styles) || {};
     const createClassList = (className, step) => className.split(/ /).map((n) => `${n}-${step}`);
     const applyStylesForState = (domElement, props, step, isEnterStep) => {
         if (props.styles) {
             const styles = getTransitionStyles(domElement, props.styles);
-            applyTransitionStyles(domElement, "default", styles);
+            applyTransitionStyles(domElement, 'default', styles);
             isEnterStep && applyNoDurationTransitionStyle(domElement);
             applyTransitionStyles(domElement, step, styles);
         }
         if (props.className) {
             const transitionClassNames = {
-                showStart: createClassList(props.className, "show-start"),
-                showEnd: createClassList(props.className, "show-end"),
-                hideStart: createClassList(props.className, "hide-start"),
-                hideEnd: createClassList(props.className, "hide-end"),
+                showStart: createClassList(props.className, 'show-start'),
+                showEnd: createClassList(props.className, 'show-end'),
+                hideStart: createClassList(props.className, 'hide-start'),
+                hideEnd: createClassList(props.className, 'hide-end'),
             };
             removeTransitionClassNames(domElement, transitionClassNames);
-            transitionClassNames && domElement.classList.add(...transitionClassNames[step]);
+            transitionClassNames &&
+                domElement.classList.add(...transitionClassNames[step]);
         }
         // reflow
         domElement.scrollTop;
     };
     const getDuration = (domElement) => {
-        const durationStyleValue = getStyleValue({ domElement, prop: "transition-duration" });
+        const durationStyleValue = getStyleValue({
+            domElement,
+            prop: 'transition-duration',
+        });
         const durationValue = durationStyleValue !== undefined
             ? styleDurationToMs(durationStyleValue)
             : 0;
-        const delayStyleValue = getStyleValue({ domElement, prop: "transition-delay" });
-        const delayValue = delayStyleValue !== undefined
-            ? styleDurationToMs(delayStyleValue)
-            : 0;
+        const delayStyleValue = getStyleValue({
+            domElement,
+            prop: 'transition-delay',
+        });
+        const delayValue = delayStyleValue !== undefined ? styleDurationToMs(delayStyleValue) : 0;
         return durationValue + delayValue;
     };
     const steps = {
         showStart: {
-            nextStep: "showEnd"
+            nextStep: 'showEnd',
         },
         showEnd: {
-            nextStep: undefined
+            nextStep: undefined,
         },
         hideStart: {
-            nextStep: "hideEnd"
+            nextStep: 'hideEnd',
         },
         hideEnd: {
-            nextStep: undefined
+            nextStep: undefined,
         },
     };
     const transition = (props, mode) => {
         const domElement = props.domElement;
         if (!domElement) {
-            return Promise.resolve("no domElement");
+            return Promise.resolve('no domElement');
         }
-        let currentStep = mode === MODE.SHOW
-            ? "showStart"
-            : "hideStart";
+        clearTimeout(props.__transitionTimeoutId__);
+        let currentStep = mode === MODE.SHOW ? 'showStart' : 'hideStart';
         return new Promise(resolve => {
-            applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
+            applyStylesForState(domElement, props, currentStep, currentStep === 'showStart');
             setTimeout(() => {
                 const nextStep = steps[currentStep].nextStep;
                 if (nextStep) {
@@ -814,16 +816,14 @@ var app = (function () {
                     // addEventListener sometimes hangs this function because it never finishes
                     // Using setTimeout instead of addEventListener gives more consistent results
                     const duration = getDuration(domElement);
-                    setTimeout(resolve, duration);
+                    props.__transitionTimeoutId__ = setTimeout(resolve, duration);
                 }
             }, 0);
         });
     };
     const styleDurationToMs = (durationStr) => {
-        const parsed = parseFloat(durationStr) * (durationStr.indexOf("ms") === -1 ? 1000 : 1);
-        return isNaN(parsed)
-            ? 0
-            : parsed;
+        const parsed = parseFloat(durationStr) * (durationStr.indexOf('ms') === -1 ? 1000 : 1);
+        return isNaN(parsed) ? 0 : parsed;
     };
 
     const findItem = (id, items) => {
@@ -840,7 +840,7 @@ var app = (function () {
         }
         return items;
     };
-    const createId = (identityOptions, ns) => [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join("-");
+    const createId = (identityOptions, ns) => [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join('-');
     const store = {
         initialState: {
             store: {},
@@ -926,19 +926,13 @@ var app = (function () {
                     const items = state.store[ns] || [];
                     const id = createId(identityOptions, ns);
                     const item = items.find((item) => item.id === id);
-                    return item
-                        ? { just: item }
-                        : { nothing: undefined };
+                    return item ? { just: item } : { nothing: undefined };
                 },
                 getAll: (ns, identityOptions) => {
                     const state = states();
                     const items = state.store[ns] || [];
-                    const spawn = identityOptions !== undefined
-                        ? identityOptions.spawn
-                        : undefined;
-                    const id = identityOptions !== undefined
-                        ? identityOptions.id
-                        : undefined;
+                    const spawn = identityOptions !== undefined ? identityOptions.spawn : undefined;
+                    const id = identityOptions !== undefined ? identityOptions.id : undefined;
                     const itemsBySpawn = spawn !== undefined
                         ? items.filter(item => item.identityOptions.spawn === spawn)
                         : items;
@@ -962,7 +956,7 @@ var app = (function () {
     const selectors = {
         ...store.selectors(states),
     };
-    // states.map(state => 
+    // states.map(state =>
     //   console.log(JSON.stringify(state, null, 2))
     // );
 
@@ -1134,9 +1128,7 @@ var app = (function () {
     };
 
     let uid = 0;
-    const getUid = () => uid === Number.MAX_SAFE_INTEGER
-        ? 0
-        : uid++;
+    const getUid = () => (uid === Number.MAX_VALUE ? 0 : uid++);
     const transitionStates = {
         default: 0,
         displaying: 1,
@@ -1144,10 +1136,10 @@ var app = (function () {
     };
     const getMaybeItem = (ns) => (defaultDialogicOptions) => (identityOptions) => selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
     const filterBySpawn = (identityOptions) => (items) => identityOptions.spawn !== undefined
-        ? items.filter(item => (item.identityOptions.spawn === identityOptions.spawn))
+        ? items.filter(item => item.identityOptions.spawn === identityOptions.spawn)
         : items;
     const filterById = (identityOptions) => (items) => identityOptions.id !== undefined
-        ? items.filter(item => (item.identityOptions.id === identityOptions.id))
+        ? items.filter(item => item.identityOptions.id === identityOptions.id)
         : items;
     /**
      * Gets a list of all non-queued items.
@@ -1158,9 +1150,7 @@ var app = (function () {
         return nsItems
             .map(item => ({
             item,
-            queueCount: item.dialogicOptions.queued
-                ? queuedCount++
-                : 0
+            queueCount: item.dialogicOptions.queued ? queuedCount++ : 0,
         }))
             .filter(({ queueCount }) => queueCount === 0)
             .map(({ item }) => item);
@@ -1186,12 +1176,13 @@ var app = (function () {
     const handleOptions = (defaultDialogicOptions, options = {}) => {
         const identityOptions = {
             id: options.dialogic ? options.dialogic.id : undefined,
-            spawn: options.dialogic ? options.dialogic.spawn : undefined
+            spawn: options.dialogic ? options.dialogic.spawn : undefined,
         };
         const mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions || {}, identityOptions);
         const dialogicOptions = {
             ...defaultDialogicOptions,
-            ...options.dialogic
+            ...options.dialogic,
+            __transitionTimeoutId__: 0,
         };
         const passThroughOptions = getPassThroughOptions(options);
         return {
@@ -1201,7 +1192,7 @@ var app = (function () {
         };
     };
     const createInstance = (ns) => (defaultDialogicOptions) => (options = {}) => {
-        const { identityOptions, dialogicOptions, passThroughOptions } = handleOptions(defaultDialogicOptions, options);
+        const { identityOptions, dialogicOptions, passThroughOptions, } = handleOptions(defaultDialogicOptions, options);
         return new Promise(resolve => {
             const callbacks = {
                 didShow: (item) => {
@@ -1215,7 +1206,7 @@ var app = (function () {
                         dialogicOptions.didHide(item);
                     }
                     return resolve(item);
-                }
+                },
             };
             const item = {
                 ns,
@@ -1224,9 +1215,7 @@ var app = (function () {
                 callbacks,
                 passThroughOptions,
                 id: createId(identityOptions, ns),
-                timer: dialogicOptions.timeout
-                    ? Timer()
-                    : undefined,
+                timer: dialogicOptions.timeout ? Timer() : undefined,
                 key: getUid().toString(),
                 transitionState: transitionStates.default,
             };
@@ -1242,7 +1231,7 @@ var app = (function () {
                 const replacingItem = {
                     ...item,
                     transitionState: existingItem.transitionState,
-                    dialogicOptions
+                    dialogicOptions,
                 };
                 actions.replace(ns, existingItem.id, replacingItem);
             }
@@ -1256,7 +1245,7 @@ var app = (function () {
     };
     const show = createInstance;
     const hide = (ns) => (defaultDialogicOptions) => (options) => {
-        const { identityOptions, dialogicOptions, passThroughOptions } = handleOptions(defaultDialogicOptions, options);
+        const { identityOptions, dialogicOptions, passThroughOptions, } = handleOptions(defaultDialogicOptions, options);
         const maybeExistingItem = selectors.find(ns, identityOptions);
         if (maybeExistingItem.just) {
             const existingItem = maybeExistingItem.just;
@@ -1268,8 +1257,8 @@ var app = (function () {
                 },
                 passThroughOptions: {
                     ...existingItem.passThroughOptions,
-                    passThroughOptions
-                }
+                    passThroughOptions,
+                },
             };
             actions.replace(ns, existingItem.id, item);
             if (item.transitionState !== transitionStates.hiding) {
@@ -1282,8 +1271,7 @@ var app = (function () {
         return Promise.resolve();
     };
     const pause = (ns) => (defaultDialogicOptions) => (identityOptions) => {
-        const items = getValidItems(ns, identityOptions)
-            .filter(item => !!item.timer);
+        const items = getValidItems(ns, identityOptions).filter(item => !!item.timer);
         items.forEach((item) => item.timer && item.timer.actions.pause());
         return Promise.all(items);
     };
@@ -1291,10 +1279,9 @@ var app = (function () {
         const options = commandOptions || {};
         const identityOptions = {
             id: options.id,
-            spawn: options.spawn
+            spawn: options.spawn,
         };
-        const items = getValidItems(ns, identityOptions)
-            .filter(item => !!item.timer);
+        const items = getValidItems(ns, identityOptions).filter(item => !!item.timer);
         items.forEach((item) => item.timer && item.timer.actions.resume(options.minimumDuration));
         return Promise.all(items);
     };
@@ -1312,8 +1299,8 @@ var app = (function () {
             return defaultValue;
         }
     };
-    const isPaused = getTimerProperty("isPaused", false);
-    const getRemaining$1 = getTimerProperty("getRemaining", undefined);
+    const isPaused = getTimerProperty('isPaused', false);
+    const getRemaining$1 = getTimerProperty('getRemaining', undefined);
     const exists = (ns) => (defaultDialogicOptions) => (identityOptions) => !!getValidItems(ns, identityOptions).length;
     const getValidItems = (ns, identityOptions) => {
         const allItems = selectors.getAll(ns);
@@ -1348,8 +1335,8 @@ var app = (function () {
             ...item,
             dialogicOptions: {
                 ...item.dialogicOptions,
-                ...dialogicOptions
-            }
+                ...dialogicOptions,
+            },
         };
     };
     /**
@@ -1361,7 +1348,7 @@ var app = (function () {
         const options = dialogicOptions || {};
         const identityOptions = {
             id: options.id,
-            spawn: options.spawn
+            spawn: options.spawn,
         };
         const validItems = getValidItems(ns, identityOptions);
         const regularItems = validItems.filter((item) => !options.queued && !item.dialogicOptions.queued);
@@ -1369,7 +1356,7 @@ var app = (function () {
         const items = [];
         regularItems.forEach((item) => items.push(hideItem(getOverridingTransitionOptions(item, options))));
         if (queuedItems.length > 0) {
-            const [current,] = queuedItems;
+            const [current] = queuedItems;
             // Make sure that any remaining items don't suddenly appear
             actions.store(ns, [current]);
             // Transition the current item
@@ -1380,17 +1367,17 @@ var app = (function () {
     const getCount = (ns) => (identityOptions) => selectors.getCount(ns, identityOptions);
     const transitionItem = (item, mode) => transition(item.dialogicOptions, mode);
     const deferredHideItem = async function (item, timer, timeout) {
-        timer.actions.start(() => (hideItem(item)), timeout);
-        return getTimerProperty("getResultPromise", undefined);
+        timer.actions.start(() => hideItem(item), timeout);
+        return getTimerProperty('getResultPromise', undefined);
     };
     const showItem = async function (item) {
         if (item.transitionState !== transitionStates.displaying) {
             item.transitionState = transitionStates.displaying;
-            await (transitionItem(item, MODE.SHOW));
+            await transitionItem(item, MODE.SHOW);
         }
-        item.callbacks.didShow && await (item.callbacks.didShow(item));
+        item.callbacks.didShow && (await item.callbacks.didShow(item));
         if (item.dialogicOptions.timeout && item.timer) {
-            await (deferredHideItem(item, item.timer, item.dialogicOptions.timeout));
+            await deferredHideItem(item, item.timer, item.dialogicOptions.timeout);
         }
         return Promise.resolve(item);
     };
@@ -1400,10 +1387,10 @@ var app = (function () {
         if (item.timer) {
             item.timer.actions.stop();
         }
-        await (transitionItem(item, MODE.HIDE));
-        item.callbacks.didHide && await (item.callbacks.didHide(item));
+        await transitionItem(item, MODE.HIDE);
+        item.callbacks.didHide && (await item.callbacks.didHide(item));
         const copy = {
-            ...item
+            ...item,
         };
         actions.remove(item.ns, item.id);
         return Promise.resolve(copy);
@@ -1412,7 +1399,7 @@ var app = (function () {
         item.dialogicOptions.domElement = domElement;
     };
 
-    const dialogical = ({ ns, queued, timeout }) => {
+    const dialogical = ({ ns, queued, timeout, }) => {
         const defaultId = `default_${ns}`;
         const defaultSpawn = `default_${ns}`;
         const defaultDialogicOptions = {

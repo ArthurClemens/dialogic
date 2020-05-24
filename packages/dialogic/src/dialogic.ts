@@ -101,6 +101,7 @@ const handleOptions = (
   const dialogicOptions: Dialogic.DialogicOptions = {
     ...defaultDialogicOptions,
     ...options.dialogic,
+    __transitionTimeoutId__: 0,
   };
 
   const passThroughOptions = getPassThroughOptions(options);

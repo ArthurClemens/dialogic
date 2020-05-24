@@ -6,6 +6,16 @@
 - [Usage](#usage)
   - [Dialog](#dialog)
   - [Notification](#notification)
+  - [Dialog routes](#dialog-routes)
+    - [useMakeAppearDialog](#usemakeappeardialog)
+      - [Options](#options)
+      - [All hooks](#all-hooks)
+      - [Example](#example)
+      - [With TypeScript](#with-typescript)
+    - [MakeAppearDialog component](#makeappeardialog-component)
+      - [All appear components](#all-appear-components)
+      - [Example](#example-1)
+      - [With TypeScript](#with-typescript-1)
 - [Size](#size)
 
 ## API
@@ -60,16 +70,13 @@ const DialogView = props => (
 /* index.css */
 .dialog {
   transition: opacity 300ms ease-in-out;
-}
-.dialog-show-start {
   opacity: 0;
 }
+.dialog-show-start {}
 .dialog-show-end {
   opacity: 1;
 }
-.dialog-hide-start {
-  opacity: 1;
-}
+.dialog-hide-start {}
 .dialog-hide-end {
   opacity: 0;
 }
@@ -130,22 +137,191 @@ const NotificationView = props => {
 /* index.css */
 .notification {
   transition: opacity 300ms;
-}
-.notification-show-start {
   opacity: 0;
 }
+.notification-show-start {}
 .notification-show-end {
   opacity: 1;
 }
-.notification-hide-start {
-  opacity: 1;
-}
+.notification-hide-start {}
 .notification-hide-end {
   opacity: 0;
 }
 ```
 
+### Dialog routes
+
+It's often desired to let a dialog have its own URL so that page refresh will still show the dialog, and using the browser back button will hide the dialog.
+
+A common pattern is to create a Route that contains the dialog component:
+
+```tsx
+import { Route, useRouteMatch } from 'react-router-dom';
+
+const match = useRouteMatch();
+const dialogPath = `${match.url}/edit`;
+
+<Route path={dialogPath}>
+  // Dialog should appear here
+</Route>
+```
+
+
+#### useMakeAppearDialog
+
+This is a Hook to automatically show a dialog on URL location match. The dialog will hide when the URL location no longer matches.
+
+##### Options
+
+| **Name**           | **Type**             | **Required** | **Description**                                                                                                                                                                                            | **Default value**          |
+| ------------------ | -------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| `pathname`         | `string`             | Yes          | Show the dialog when pathname is equal to the window.location.pathname, hide when they are no longer equal. When `predicate` is used, both conditions must be true.                                        | None                       |
+| `locationPathname` | string               | No           | The current location. Pass a custom value when using a hash router. For example with React Router, pass: `history.location.pathname` (see example "MakeAppearDialog component" below).                     | `window.location.pathname` |
+| `predicate`        | () => boolean        | No           | Only show the instance when the predicate is met. Predicate function that returns true when the instance should appear. Can be omitted when all content is static, so no re-rendering takes place.         | None                       |
+| `deps`             | React.DependencyList | No           | Update the hook with these deps. Use this when the instance should appear conditionally, for instance only when content exists. Can be omitted when all content is static, so no re-rendering takes place. | `[]`                       |
+| `props`            | Object               | Yes          | Props to pass to the dialog.                                                                                                                                                                               | None                       |
+
+
+##### All hooks
+
+* `useMakeAppear` - generic hook that accepts `instance` of type `Dialogic.DialogicInstance`.
+* `useMakeAppearDialog` - `useMakeAppear` with `instance` preset to `dialog`.
+* `useMakeAppearNotification` - `useMakeAppear` with `instance` preset to `notification`.
+
+
+##### Example
+
+```ts
+import { useMakeAppearDialog } from 'dialogic-react';
+import { LoginDialog } from './LoginDialog';
+
+const returnPath = '/';
+const dialogPath = '/login';
+const content = 'Some async loaded content';
+
+useMakeAppearDialog({
+  pathname: dialogPath,
+  predicate: () => !!content,
+  deps: [content],
+  props: {
+    dialogic: {
+      component: LoginDialog,
+      className: 'dialog',
+    },
+    // Example props that will be passed to the LoginDialog component
+    returnPath,
+    content,
+  }
+})
+```
+
+##### With TypeScript
+
+```ts
+import { LoginDialog, TLoginDialogProps } from './LoginDialog';
+
+useMakeAppearDialog<TLoginDialogProps>({
+  pathname: dialogPath,
+  predicate: () => !!content,
+  deps: [content],
+  props: {
+    dialogic: {
+      component: LoginDialog,
+      className: 'dialog',
+    },
+    // Example props that will be passed to the LoginDialog component
+    // These props match type TLoginDialogProps
+    returnPath,
+    content,
+  }
+})
+```
+
+
+#### MakeAppearDialog component
+
+Helper component that wraps `useMakeAppearDialog` to use in JSX syntax, for example together with React Router.
+
+It accepts the same props as `useMakeAppearDialog`.
+
+##### All appear components
+
+* `MakeAppear` - generic component that accepts `instance` of type `Dialogic.DialogicInstance`.
+* `MakeAppearDialog` - `MakeAppear` with `instance` preset to `dialog`.
+* `MakeAppearNotification` - `MakeAppear` with `instance` preset to `notification`.
+
+
+##### Example
+
+```jsx
+import { Route, useHistory } from 'react-router-dom';
+import { MakeAppearDialog } from 'dialogic-react';
+import { LoginDialog } from './LoginDialog';
+
+export const LoginDialogRoute = () => {
+  const history = useHistory();
+  const dialogPath = '/login';
+  const returnPath = '/';
+  const content = 'Some async loaded content';
+
+  return (
+    <Route path={dialogPath}>
+      <MakeAppearDialog
+        pathname={dialogPath}
+        locationPathname={history.location.pathname}
+        predicate={() => !!content}
+        deps={[content]}
+        props={{
+          dialogic: {
+            component: LoginDialog,
+            className: 'dialog',
+          },
+          // Example props that will be passed to the LoginDialog component
+          returnPath,
+          content,
+        }}
+      />
+    </Route>
+  )
+};
+```
+
+##### With TypeScript
+
+```tsx
+import { Route, useHistory } from 'react-router-dom';
+import { MakeAppearDialog } from 'dialogic-react';
+import { LoginDialog, TLoginDialogProps } from './LoginDialog';
+
+export const LoginDialogRoute = () => {
+  const history = useHistory();
+  const dialogPath = '/login';
+  const returnPath = '/';
+  const content = 'Some async loaded content';
+
+  return (
+    <Route path={dialogPath}>
+      <MakeAppearDialog<TLoginDialogProps>
+        pathname={dialogPath}
+        locationPathname={history.location.pathname}
+        predicate={() => !!content}
+        deps={[content]}
+        props={{
+          dialogic: {
+            component: LoginDialog,
+            className: 'dialog',
+          },
+          // Example props that will be passed to the LoginDialog component
+          // These props match type TLoginDialogProps
+          returnPath,
+          content,
+        }}
+      />
+    </Route>
+  )
+};
+```
 
 ## Size
 
-7.24 KB with all dependencies, minified and gzipped
+5.13 KB with all dependencies, minified and gzipped

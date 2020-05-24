@@ -21,12 +21,11 @@
   ],
   "dependencies": {
     "dialogic": "^0.4.10",
-    "react": "^16.12.0",
     "use-stream": "^0.3.6"
   },
   "peerDependencies": {
-    "react-dom": "^16.12.0",
-    "react-router-dom": "^5.1.2"
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.4.5",

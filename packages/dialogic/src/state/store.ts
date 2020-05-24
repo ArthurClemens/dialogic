@@ -1,5 +1,5 @@
-import Stream from "mithril/stream";
-import { Dialogic } from "../..";
+import Stream from 'mithril/stream';
+import { Dialogic } from '../..';
 
 type PatchFn = (state: Dialogic.State) => Dialogic.State;
 
@@ -20,19 +20,18 @@ const removeItem = (id: string, items: any[]) => {
   return items;
 };
 
-export const createId = (identityOptions: Dialogic.IdentityOptions, ns: string) =>
-  [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join("-");
+export const createId = (
+  identityOptions: Dialogic.IdentityOptions,
+  ns: string,
+) => [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join('-');
 
 const store = {
-
   initialState: {
     store: {},
   },
 
   actions: (update: Stream<PatchFn>) => {
-
     return {
-
       /**
        * Add an item to the end of the list.
        */
@@ -42,7 +41,7 @@ const store = {
           state.store[ns] = [...items, item];
           if (item.timer) {
             // When the timer state updates, refresh the store so that UI can pick up the change
-            item.timer.states.map(() => store.actions(update).refresh())
+            item.timer.states.map(() => store.actions(update).refresh());
           }
           return state;
         });
@@ -101,16 +100,14 @@ const store = {
         update((state: Dialogic.State) => {
           return {
             ...state,
-          }
-        })
+          };
+        });
       },
-
     };
   },
 
   selectors: (states: Stream<Dialogic.State>) => {
     const fns = {
-
       getStore: () => {
         const state = states();
         return state.store;
@@ -121,32 +118,29 @@ const store = {
         const items = state.store[ns] || [];
         const id = createId(identityOptions, ns);
         const item = items.find((item: Dialogic.Item) => item.id === id);
-        return item
-          ? { just: item }
-          : { nothing: undefined }
+        return item ? { just: item } : { nothing: undefined };
       },
 
       getAll: (ns: string, identityOptions?: Dialogic.IdentityOptions) => {
         const state = states();
         const items = state.store[ns] || [];
-        const spawn = identityOptions !== undefined
-          ? identityOptions.spawn
-          : undefined;
-        const id = identityOptions !== undefined
-          ? identityOptions.id
-          : undefined;
-        const itemsBySpawn = spawn !== undefined
-          ? items.filter(item => item.identityOptions.spawn === spawn)
-          : items;
-        const itemsById = id !== undefined
-          ? itemsBySpawn.filter(item => item.identityOptions.id === id)
-          : itemsBySpawn;
+        const spawn =
+          identityOptions !== undefined ? identityOptions.spawn : undefined;
+        const id =
+          identityOptions !== undefined ? identityOptions.id : undefined;
+        const itemsBySpawn =
+          spawn !== undefined
+            ? items.filter(item => item.identityOptions.spawn === spawn)
+            : items;
+        const itemsById =
+          id !== undefined
+            ? itemsBySpawn.filter(item => item.identityOptions.id === id)
+            : itemsBySpawn;
         return itemsById;
       },
 
       getCount: (ns: string, identityOptions?: Dialogic.IdentityOptions) =>
         fns.getAll(ns, identityOptions).length,
-
     };
 
     return fns;
@@ -160,7 +154,7 @@ export const states: Dialogic.States = Stream.scan(
   {
     ...store.initialState,
   },
-  update
+  update,
 );
 
 export const actions = {
@@ -171,6 +165,6 @@ export const selectors: Dialogic.StateSelectors = {
   ...store.selectors(states),
 };
 
-// states.map(state => 
+// states.map(state =>
 //   console.log(JSON.stringify(state, null, 2))
 // );

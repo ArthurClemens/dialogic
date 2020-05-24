@@ -1,32 +1,31 @@
-import React, { PropsWithChildren, useEffect } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { dialog, notification } from 'dialogic';
 import { MakeAppearProps, MakeAppearInstanceProps } from '../index.d';
+import { useMakeAppear } from './useMakeAppear';
 
+/**
+ * Helper component that wraps `useMakeAppear` to use in JSX syntax.
+ */
 export const MakeAppear = <T,>(
-  allProps: PropsWithChildren<MakeAppearProps<T>>,
+  allProps: PropsWithChildren<MakeAppearInstanceProps<T>>,
 ) => {
-  const { instance, appearPath, ...props } = allProps;
-  useEffect(() => {
-    instance.show(props);
+  const { instance, pathname, predicate, deps, props } = allProps;
 
-    return () => {
-      if (appearPath !== undefined) {
-        if (window.location.pathname !== appearPath) {
-          instance.hide(props);
-        }
-      } else {
-        instance.hide(props);
-      }
-    };
-  }, [props, window.location]);
+  useMakeAppear({
+    instance,
+    props,
+    predicate,
+    pathname,
+    deps,
+  });
 
   return null;
 };
 
 export const MakeAppearDialog = <T,>(
-  props: PropsWithChildren<MakeAppearInstanceProps<T>>,
+  props: PropsWithChildren<MakeAppearProps<T>>,
 ) => <MakeAppear {...props} instance={dialog} />;
 
 export const MakeAppearNotification = <T,>(
-  props: PropsWithChildren<MakeAppearInstanceProps<T>>,
+  props: PropsWithChildren<MakeAppearProps<T>>,
 ) => <MakeAppear {...props} instance={notification} />;

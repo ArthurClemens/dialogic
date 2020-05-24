@@ -23,11 +23,13 @@
     "dialogic": "^0.4.10"
   },
   "peerDependencies": {
+    "@types/mithril": "2.0.2",
     "mithril": "^2.0.4"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.4.5",
     "@types/mithril": "2.0.2",
+    "mithril": "^2.0.4",
     "size-limit": "^4.4.5"
   },
   "files": [

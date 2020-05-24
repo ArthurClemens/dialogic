@@ -1,7 +1,26 @@
-import { show, hide, hideAll, resetAll, getCount, pause, resume, isPaused, getRemaining, exists } from "./dialogic";
-import { Dialogic } from "../index";
+import {
+  show,
+  hide,
+  hideAll,
+  resetAll,
+  getCount,
+  pause,
+  resume,
+  isPaused,
+  getRemaining,
+  exists,
+} from './dialogic';
+import { Dialogic } from '../index';
 
-export const dialogical = ({ ns, queued, timeout } : { ns: string, queued?: boolean, timeout?: number }) => {
+export const dialogical = ({
+  ns,
+  queued,
+  timeout,
+}: {
+  ns: string;
+  queued?: boolean;
+  timeout?: number;
+}) => {
   const defaultId = `default_${ns}`;
   const defaultSpawn = `default_${ns}`;
   const defaultDialogicOptions: Dialogic.DefaultDialogicOptions = {
@@ -32,5 +51,5 @@ export const dialogical = ({ ns, queued, timeout } : { ns: string, queued?: bool
     // Timer state
     isPaused: isPaused(ns)(defaultDialogicOptions),
     getRemaining: getRemaining(ns)(defaultDialogicOptions),
-  }
+  };
 };

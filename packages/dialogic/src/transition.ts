@@ -1,152 +1,173 @@
-
-import { getStyleValue } from "./utils";
-import { Dialogic } from "../index";
+import { getStyleValue } from './utils';
+import { Dialogic } from '../index';
 
 export const MODE = {
-	SHOW: "show",
-	HIDE: "hide"
+  SHOW: 'show',
+  HIDE: 'hide',
 };
 
 type TransitionProps = {
-	domElement?: HTMLElement;
-	className?: string;
-	styles?: Dialogic.TransitionStyles | Dialogic.TransitionStylesFn;
-}
+  domElement?: HTMLElement;
+  className?: string;
+  styles?: Dialogic.TransitionStyles | Dialogic.TransitionStylesFn;
+  __transitionTimeoutId__?: number;
+};
 
 type TransitionClassNames = {
-	[key:string]: string[];
-	showStart: string[];
-	showEnd: string[];
-	hideStart: string[];
-	hideEnd: string[];
-}
+  [key: string]: string[];
+  showStart: string[];
+  showEnd: string[];
+  hideStart: string[];
+  hideEnd: string[];
+};
 
-type TransitionStep = "showStart" | "showEnd" | "hideStart" | "hideEnd";
-type TransitionStyleState = "default" | TransitionStep;
+type TransitionStep = 'showStart' | 'showEnd' | 'hideStart' | 'hideEnd';
+type TransitionStyleState = 'default' | TransitionStep;
 
-const removeTransitionClassNames = (domElement: HTMLElement, transitionClassNames: TransitionClassNames) => 
-	domElement.classList.remove(
-		...transitionClassNames.showStart,
-		...transitionClassNames.showEnd,
-		...transitionClassNames.hideStart,
-		...transitionClassNames.hideEnd,
-	);
+const removeTransitionClassNames = (
+  domElement: HTMLElement,
+  transitionClassNames: TransitionClassNames,
+) =>
+  domElement.classList.remove(
+    ...transitionClassNames.showStart,
+    ...transitionClassNames.showEnd,
+    ...transitionClassNames.hideStart,
+    ...transitionClassNames.hideEnd,
+  );
 
-const applyTransitionStyles = (domElement: HTMLElement, step: TransitionStyleState, styles: Dialogic.TransitionStyles) => {
-	const transitionStyle = styles[step] as CSSStyleDeclaration || {};
-	Object.keys(transitionStyle).forEach((key: any) => {
-		const value = transitionStyle[key].toString();
-		domElement.style[key] = value;
-		// if (domElement.style[key] !== value) {
-		// 	console.warn(`Invalid style: ${key}: ${value} (${domElement.style[key]})`);
-		// }
-	});
+const applyTransitionStyles = (
+  domElement: HTMLElement,
+  step: TransitionStyleState,
+  styles: Dialogic.TransitionStyles,
+) => {
+  const transitionStyle = (styles[step] as CSSStyleDeclaration) || {};
+  Object.keys(transitionStyle).forEach((key: any) => {
+    const value = transitionStyle[key].toString();
+    domElement.style[key] = value;
+    // if (domElement.style[key] !== value) {
+    // 	console.warn(`Invalid style: ${key}: ${value} (${domElement.style[key]})`);
+    // }
+  });
 };
 
 const applyNoDurationTransitionStyle = (domElement: HTMLElement) =>
-	domElement.style.transitionDuration = "0ms";
+  (domElement.style.transitionDuration = '0ms');
 
-const getTransitionStyles = (domElement: HTMLElement, styles: Dialogic.TransitionStyles | Dialogic.TransitionStylesFn) =>
-	(typeof styles === "function"
-		? styles(domElement)
-		: styles
-	) || {};
+const getTransitionStyles = (
+  domElement: HTMLElement,
+  styles: Dialogic.TransitionStyles | Dialogic.TransitionStylesFn,
+) => (typeof styles === 'function' ? styles(domElement) : styles) || {};
 
-const createClassList = (className: string, step: string) => 
-	className.split(/ /).map((n: string) => `${n}-${step}`);
+const createClassList = (className: string, step: string) =>
+  className.split(/ /).map((n: string) => `${n}-${step}`);
 
-const applyStylesForState = (domElement: HTMLElement, props: TransitionProps, step: TransitionStep, isEnterStep?: boolean) => {
-	if (props.styles) {
-		const styles = getTransitionStyles(domElement, props.styles);
-		applyTransitionStyles(domElement, "default", styles);
-		isEnterStep && applyNoDurationTransitionStyle(domElement);
-		applyTransitionStyles(domElement, step, styles);
-	}
+const applyStylesForState = (
+  domElement: HTMLElement,
+  props: TransitionProps,
+  step: TransitionStep,
+  isEnterStep?: boolean,
+) => {
+  if (props.styles) {
+    const styles = getTransitionStyles(domElement, props.styles);
+    applyTransitionStyles(domElement, 'default', styles);
+    isEnterStep && applyNoDurationTransitionStyle(domElement);
+    applyTransitionStyles(domElement, step, styles);
+  }
 
-	if (props.className) {
-		const transitionClassNames: TransitionClassNames = {
-			showStart: createClassList(props.className, "show-start"),
-			showEnd: createClassList(props.className, "show-end"),
-			hideStart: createClassList(props.className, "hide-start"),
-			hideEnd: createClassList(props.className, "hide-end"),
-		};
-		removeTransitionClassNames(domElement, transitionClassNames);
-		transitionClassNames && domElement.classList.add(...transitionClassNames[step]);
-	}
+  if (props.className) {
+    const transitionClassNames: TransitionClassNames = {
+      showStart: createClassList(props.className, 'show-start'),
+      showEnd: createClassList(props.className, 'show-end'),
+      hideStart: createClassList(props.className, 'hide-start'),
+      hideEnd: createClassList(props.className, 'hide-end'),
+    };
+    removeTransitionClassNames(domElement, transitionClassNames);
+    transitionClassNames &&
+      domElement.classList.add(...transitionClassNames[step]);
+  }
 
-	// reflow
-	domElement.scrollTop;
+  // reflow
+  domElement.scrollTop;
 };
 
 const getDuration = (domElement: HTMLElement) => {
-	const durationStyleValue = getStyleValue({ domElement, prop: "transition-duration" });
-	const durationValue = durationStyleValue !== undefined
-		? styleDurationToMs(durationStyleValue)
-		: 0;
-	const delayStyleValue = getStyleValue({ domElement, prop: "transition-delay" });
-	const delayValue = delayStyleValue !== undefined
-		? styleDurationToMs(delayStyleValue)
-		: 0;
-	return durationValue + delayValue;
+  const durationStyleValue = getStyleValue({
+    domElement,
+    prop: 'transition-duration',
+  });
+  const durationValue =
+    durationStyleValue !== undefined
+      ? styleDurationToMs(durationStyleValue)
+      : 0;
+  const delayStyleValue = getStyleValue({
+    domElement,
+    prop: 'transition-delay',
+  });
+  const delayValue =
+    delayStyleValue !== undefined ? styleDurationToMs(delayStyleValue) : 0;
+  return durationValue + delayValue;
 };
 
 type Step = {
-	nextStep?: TransitionStep;
-}
+  nextStep?: TransitionStep;
+};
 
 type Steps = {
-	showStart: Step;
-	showEnd: Step;
-	hideStart: Step;
-	hideEnd: Step;
-}
+  showStart: Step;
+  showEnd: Step;
+  hideStart: Step;
+  hideEnd: Step;
+};
 
 const steps: Steps = {
-	showStart: {
-		nextStep: "showEnd"
-	},
-	showEnd: {
-		nextStep: undefined
-	},
-	hideStart: {
-		nextStep: "hideEnd"
-	},
-	hideEnd: {
-		nextStep: undefined
-	},
+  showStart: {
+    nextStep: 'showEnd',
+  },
+  showEnd: {
+    nextStep: undefined,
+  },
+  hideStart: {
+    nextStep: 'hideEnd',
+  },
+  hideEnd: {
+    nextStep: undefined,
+  },
 };
 
 export const transition = (props: TransitionProps, mode?: string) => {
-	const domElement = props.domElement;
-	if (!domElement) {
-		return Promise.resolve("no domElement");
-	}
+  const domElement = props.domElement;
+  if (!domElement) {
+    return Promise.resolve('no domElement');
+  }
+  clearTimeout(props.__transitionTimeoutId__);
 
-	let currentStep: TransitionStep = mode === MODE.SHOW
-		? "showStart"
-		: "hideStart";
+  let currentStep: TransitionStep =
+    mode === MODE.SHOW ? 'showStart' : 'hideStart';
 
-	return new Promise(resolve => {
+  return new Promise(resolve => {
+    applyStylesForState(
+      domElement,
+      props,
+      currentStep,
+      currentStep === 'showStart',
+    );
 
-		applyStylesForState(domElement, props, currentStep, currentStep === "showStart");
-
-		setTimeout(() => {
-			const nextStep = steps[currentStep].nextStep;
-			if (nextStep) {
-				currentStep = nextStep;
-				applyStylesForState(domElement, props, currentStep);
-				// addEventListener sometimes hangs this function because it never finishes
-				// Using setTimeout instead of addEventListener gives more consistent results
-				const duration = getDuration(domElement);
-				setTimeout(resolve, duration);
-			}
-		}, 0);
-	});
+    setTimeout(() => {
+      const nextStep = steps[currentStep].nextStep;
+      if (nextStep) {
+        currentStep = nextStep;
+        applyStylesForState(domElement, props, currentStep);
+        // addEventListener sometimes hangs this function because it never finishes
+        // Using setTimeout instead of addEventListener gives more consistent results
+        const duration = getDuration(domElement);
+        props.__transitionTimeoutId__ = setTimeout(resolve, duration);
+      }
+    }, 0);
+  });
 };
 
 const styleDurationToMs = (durationStr: string) => {
-	const parsed = parseFloat(durationStr) * (durationStr.indexOf("ms") === -1 ? 1000 : 1);
-	return isNaN(parsed)
-		? 0
-		: parsed;
+  const parsed =
+    parseFloat(durationStr) * (durationStr.indexOf('ms') === -1 ? 1000 : 1);
+  return isNaN(parsed) ? 0 : parsed;
 };
