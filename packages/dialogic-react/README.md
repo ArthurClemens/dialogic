@@ -26,8 +26,8 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 ## Demo
 
 * [Demo page](https://arthurclemens.github.io/dialogic/)
-* [Live example using React Router](https://codesandbox.io/s/dialogic-for-react-route-example-kgq22)
-* [Live example with dialog routes using React Router](https://codesandbox.io/s/dialogic-for-react-route-example-kgq22)
+* [Route example with useMakeAppearDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-usemakeappeardialog-cutrx)
+* [Route example with MakeAppearDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-makeappeardialog-kgq22)
 
 ## Usage
 
@@ -191,6 +191,8 @@ This is a Hook to automatically show a dialog on URL location match. The dialog 
 
 ##### Example
 
+See also CodeSandbox demo: [Route example with useMakeAppearDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-usemakeappeardialog-cutrx)
+
 ```ts
 import { useMakeAppearDialog } from 'dialogic-react';
 import { LoginDialog } from './LoginDialog';
@@ -252,6 +254,8 @@ It accepts the same props as `useMakeAppearDialog`.
 
 
 ##### Example
+
+See also CodeSandbox demo: [Route example with MakeAppearDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-makeappeardialog-kgq22)
 
 ```jsx
 import { Route, useHistory } from 'react-router-dom';
