@@ -23,5 +23,8 @@
   ],
   "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
   "homepage": "https://github.com/ArthurClemens/dialogic",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "tslib": "^2.0.0"
+  }
 }
