@@ -36,6 +36,7 @@ export const useMakeAppear = <T>(allProps: MakeAppearInstanceProps<T>) => {
     instance,
     predicate = () => true,
     deps = [],
+    beforeHide = () => null,
     props,
   } = allProps;
   const [isHiding, setIsHiding] = useState(false);
@@ -48,6 +49,7 @@ export const useMakeAppear = <T>(allProps: MakeAppearInstanceProps<T>) => {
   const hideInstance = ({ force }: { force?: boolean } = {}) => {
     if (force || !isHiding) {
       setIsHiding(true);
+      beforeHide();
       instance.hide(props);
     }
   };

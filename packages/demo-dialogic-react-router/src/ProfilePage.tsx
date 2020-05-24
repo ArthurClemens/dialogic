@@ -58,6 +58,7 @@ export const ProfilePage = () => {
         <MakeAppearDialog<EditProfileDialogProps>
           pathname={dialogPath}
           locationPathname={history.location.pathname}
+          beforeHide={() => console.log('before hide')}
           props={{
             dialogic: {
               component: EditProfileDialog,

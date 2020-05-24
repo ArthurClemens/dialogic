@@ -114,7 +114,7 @@ const Dialogical = type => props => {
  })
  */
 const useMakeAppear = (allProps) => {
-    const { pathname, locationPathname = window.location.pathname, instance, predicate = () => true, deps = [], props, } = allProps;
+    const { pathname, locationPathname = window.location.pathname, instance, predicate = () => true, deps = [], beforeHide = () => null, props, } = allProps;
     const [isHiding, setIsHiding] = useState(false);
     const showInstance = () => {
         setIsHiding(false);
@@ -123,6 +123,7 @@ const useMakeAppear = (allProps) => {
     const hideInstance = ({ force } = {}) => {
         if (force || !isHiding) {
             setIsHiding(true);
+            beforeHide();
             instance.hide(props);
         }
     };
@@ -175,16 +176,8 @@ const useMakeAppearNotification = (props) => useMakeAppear({ ...props, instance:
 /**
  * Helper component that wraps `useMakeAppear` to use in JSX syntax.
  */
-const MakeAppear = (allProps) => {
-    const { instance, pathname, locationPathname, predicate, deps, props, } = allProps;
-    useMakeAppear({
-        instance,
-        props,
-        predicate,
-        pathname,
-        locationPathname,
-        deps,
-    });
+const MakeAppear = (props) => {
+    useMakeAppear(props);
     return null;
 };
 const MakeAppearDialog = (props) => React.createElement(MakeAppear, Object.assign({}, props, { instance: dialog }));

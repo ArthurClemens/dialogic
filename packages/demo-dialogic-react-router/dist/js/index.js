@@ -1396,6 +1396,10 @@ var useMakeAppear = function useMakeAppear(allProps) {
   } : _allProps$predicate,
       _allProps$deps = allProps.deps,
       deps = _allProps$deps === void 0 ? [] : _allProps$deps,
+      _allProps$beforeHide = allProps.beforeHide,
+      beforeHide = _allProps$beforeHide === void 0 ? function () {
+    return null;
+  } : _allProps$beforeHide,
       props = allProps.props;
 
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_5__["useState"])(false),
@@ -1414,6 +1418,7 @@ var useMakeAppear = function useMakeAppear(allProps) {
 
     if (force || !isHiding) {
       setIsHiding(true);
+      beforeHide();
       instance.hide(props);
     }
   };
@@ -1481,21 +1486,8 @@ var useMakeAppearNotification = function useMakeAppearNotification(props) {
  */
 
 
-var MakeAppear = function MakeAppear(allProps) {
-  var instance = allProps.instance,
-      pathname = allProps.pathname,
-      locationPathname = allProps.locationPathname,
-      predicate = allProps.predicate,
-      deps = allProps.deps,
-      props = allProps.props;
-  useMakeAppear({
-    instance: instance,
-    props: props,
-    predicate: predicate,
-    pathname: pathname,
-    locationPathname: locationPathname,
-    deps: deps
-  });
+var MakeAppear = function MakeAppear(props) {
+  useMakeAppear(props);
   return null;
 };
 

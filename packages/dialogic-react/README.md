@@ -180,6 +180,7 @@ This is a Hook to automatically show a dialog on URL location match. The dialog 
 | `predicate`        | () => boolean        | No           | Only show the instance when the predicate is met. Predicate function that returns true when the instance should appear. Can be omitted when all content is static, so no re-rendering takes place.         | None                       |
 | `deps`             | React.DependencyList | No           | Update the hook with these deps. Use this when the instance should appear conditionally, for instance only when content exists. Can be omitted when all content is static, so no re-rendering takes place. | `[]`                       |
 | `props`            | Object               | Yes          | Props to pass to the dialog.                                                                                                                                                                               | None                       |
+| `beforeHide`       | () => void           | No           | Function called just before the instance is hidden.                                                                                                                                                        | None                       |
 
 
 ##### All hooks
@@ -328,4 +329,4 @@ export const LoginDialogRoute = () => {
 
 ## Size
 
-5.14 KB with all dependencies, minified and gzipped
+5.16 KB with all dependencies, minified and gzipped

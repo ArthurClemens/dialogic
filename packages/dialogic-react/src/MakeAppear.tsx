@@ -1,32 +1,15 @@
 import React, { PropsWithChildren } from 'react';
 import { dialog, notification } from 'dialogic';
-import { MakeAppearProps, MakeAppearInstanceProps } from '../index.d';
+import { MakeAppearProps, MakeAppearInstanceProps } from '..';
 import { useMakeAppear } from './useMakeAppear';
 
 /**
  * Helper component that wraps `useMakeAppear` to use in JSX syntax.
  */
 export const MakeAppear = <T,>(
-  allProps: PropsWithChildren<MakeAppearInstanceProps<T>>,
+  props: PropsWithChildren<MakeAppearInstanceProps<T>>,
 ) => {
-  const {
-    instance,
-    pathname,
-    locationPathname,
-    predicate,
-    deps,
-    props,
-  } = allProps;
-
-  useMakeAppear({
-    instance,
-    props,
-    predicate,
-    pathname,
-    locationPathname,
-    deps,
-  });
-
+  useMakeAppear(props);
   return null;
 };
 

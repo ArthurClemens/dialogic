@@ -66,6 +66,11 @@ export type MakeAppearProps<T> = {
    * content exists.
    */
   deps?: React.DependencyList;
+
+  /**
+   * Function called just before the instance is hidden.
+   */
+  beforeHide?: () => void;
 };
 
 export type MakeAppearInstanceProps<T> = MakeAppearProps<T> & {
