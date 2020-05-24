@@ -68,7 +68,12 @@ export type MakeAppearProps<T> = {
   deps?: React.DependencyList;
 
   /**
-   * Function called just before the instance is hidden.
+   * Function called just before instance.show() is called. This moment could be used to store the current scroll position.
+   */
+  beforeShow?: () => void;
+
+  /**
+   * Function called just before instance.hide() is called. This moment could be used to resstore the scroll position.
    */
   beforeHide?: () => void;
 };

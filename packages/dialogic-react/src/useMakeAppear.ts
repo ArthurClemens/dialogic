@@ -36,6 +36,7 @@ export const useMakeAppear = <T>(allProps: MakeAppearInstanceProps<T>) => {
     instance,
     predicate = () => true,
     deps = [],
+    beforeShow = () => null,
     beforeHide = () => null,
     props,
   } = allProps;
@@ -43,6 +44,7 @@ export const useMakeAppear = <T>(allProps: MakeAppearInstanceProps<T>) => {
 
   const showInstance = () => {
     setIsHiding(false);
+    beforeShow();
     instance.show(props);
   };
 

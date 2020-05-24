@@ -114,10 +114,11 @@ const Dialogical = type => props => {
  })
  */
 const useMakeAppear = (allProps) => {
-    const { pathname, locationPathname = window.location.pathname, instance, predicate = () => true, deps = [], beforeHide = () => null, props, } = allProps;
+    const { pathname, locationPathname = window.location.pathname, instance, predicate = () => true, deps = [], beforeShow = () => null, beforeHide = () => null, props, } = allProps;
     const [isHiding, setIsHiding] = useState(false);
     const showInstance = () => {
         setIsHiding(false);
+        beforeShow();
         instance.show(props);
     };
     const hideInstance = ({ force } = {}) => {
