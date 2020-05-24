@@ -1,8 +1,17 @@
 import React from 'react';
 import { CurrentPathBadge } from './CurrentPathBadge';
-import { Link, useRouteMatch, useHistory } from 'react-router-dom';
+import {
+  // Route,
+  Link,
+  useRouteMatch,
+  useHistory,
+} from 'react-router-dom';
 import { EditProfileDialog, EditProfileDialogProps } from './EditProfileDialog';
-import { notification, useMakeAppearDialog } from 'dialogic-react';
+import {
+  notification,
+  // MakeAppearDialog,
+  useMakeAppearDialog,
+} from 'dialogic-react';
 import { saveConfirmationProps } from './SaveConfirmation';
 
 export const ProfilePage = () => {
@@ -45,25 +54,26 @@ export const ProfilePage = () => {
           Edit profile
         </Link>
       </div>
-      {/* <Route path={dialogUrl}>
+      {/* <Route path={dialogPath}>
         <MakeAppearDialog<EditProfileDialogProps>
-          pathname={dialogUrl}
-          currentPathname={history.location.pathname}
-          props
-          dialogic={{
-            component: EditProfileDialog,
-            className: 'dialog',
-          }}
-          title="Update your e-mail"
-          email="allan@company.com"
-          onSave={email => {
-            console.log('onSave:', email);
-            history.push(dialogReturnUrl);
-            notification.show(saveConfirmationProps);
-          }}
-          onCancel={() => {
-            console.log('onCancel');
-            history.push(dialogReturnUrl);
+          pathname={dialogPath}
+          locationPathname={history.location.pathname}
+          props={{
+            dialogic: {
+              component: EditProfileDialog,
+              className: 'dialog',
+            },
+            title: 'Update your e-mail',
+            email: 'allan@company.com',
+            onSave: (email: string) => {
+              console.log('onSave:', email);
+              history.push(dialogReturnPath);
+              notification.show(saveConfirmationProps);
+            },
+            onCancel: () => {
+              console.log('onCancel');
+              history.push(dialogReturnPath);
+            },
           }}
         />
       </Route> */}

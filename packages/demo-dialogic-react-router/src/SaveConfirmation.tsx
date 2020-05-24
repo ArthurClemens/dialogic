@@ -13,7 +13,7 @@ export const saveConfirmationProps = {
 
       return {
         default: {
-          transition: 'all 300ms ease-in-out',
+          transition: 'all 350ms ease-in-out',
         },
         showStart: {
           transform: `translate3d(0, ${height}px, 0)`,

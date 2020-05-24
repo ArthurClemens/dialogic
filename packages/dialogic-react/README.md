@@ -69,7 +69,7 @@ const DialogView = props => (
 ```css
 /* index.css */
 .dialog {
-  transition: opacity 300ms ease-in-out;
+  transition: opacity 350ms ease-in-out;
   opacity: 0;
 }
 .dialog-show-start {}
@@ -136,7 +136,7 @@ const NotificationView = props => {
 ```css
 /* index.css */
 .notification {
-  transition: opacity 300ms;
+  transition: opacity 350ms;
   opacity: 0;
 }
 .notification-show-start {}
@@ -324,4 +324,4 @@ export const LoginDialogRoute = () => {
 
 ## Size
 
-5.13 KB with all dependencies, minified and gzipped
+5.14 KB with all dependencies, minified and gzipped

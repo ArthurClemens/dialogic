@@ -98,7 +98,7 @@
 
 
 .dialog {
-  transition: opacity 300ms ease-in-out;
+  transition: opacity 350ms ease-in-out;
 }
 .dialog-show-start {
   opacity: 0;
@@ -144,7 +144,7 @@
 }
 
 .notification {
-  transition: opacity 300ms;
+  transition: opacity 350ms;
 }
 .notification-show-start {
   opacity: 0;
@@ -195,6 +195,3 @@
 .svg-inline--fa.fa-w-20 {
   width: 1.25em;
 }
-
-
-/*# sourceMappingURL=app.css.map*/

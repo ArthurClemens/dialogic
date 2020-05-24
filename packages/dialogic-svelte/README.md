@@ -46,7 +46,7 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 
 <style>
   :global(.dialog) {
-    transition: opacity 300ms ease-in-out;
+    transition: opacity 350ms ease-in-out;
   }
   :global(.dialog-show-start) {
     opacity: 0;
@@ -103,7 +103,7 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 
 <style>
   :global(.notification) {
-    transition: opacity 300ms ease-in-out;
+    transition: opacity 350ms ease-in-out;
   }
   :global(.notification-show-start) {
     opacity: 0;

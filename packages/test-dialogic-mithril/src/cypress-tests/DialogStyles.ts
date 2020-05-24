@@ -14,7 +14,7 @@ export default () => {
       const height = domElement.getBoundingClientRect().height;
       return {
         default: {
-          transition: "all 300ms ease-in-out",
+          transition: "all 350ms ease-in-out",
         },
         showStart: {
           opacity: "0",

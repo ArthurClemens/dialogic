@@ -67,7 +67,7 @@ const DialogView = {
 ```css
 /* index.css */
 .dialog {
-  transition: opacity 300ms ease-in-out;
+  transition: opacity 350ms ease-in-out;
   opacity: 0;
 }
 .dialog-show-start {}
@@ -132,7 +132,7 @@ const NotificationView = {
 ```css
 /* index.css */
 .notification {
-  transition: opacity 300ms;
+  transition: opacity 350ms;
   opacity: 0;
 }
 .notification-show-start {}

@@ -9,13 +9,21 @@ import { useMakeAppear } from './useMakeAppear';
 export const MakeAppear = <T,>(
   allProps: PropsWithChildren<MakeAppearInstanceProps<T>>,
 ) => {
-  const { instance, pathname, predicate, deps, props } = allProps;
+  const {
+    instance,
+    pathname,
+    locationPathname,
+    predicate,
+    deps,
+    props,
+  } = allProps;
 
   useMakeAppear({
     instance,
     props,
     predicate,
     pathname,
+    locationPathname,
     deps,
   });
 

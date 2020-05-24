@@ -176,12 +176,13 @@ const useMakeAppearNotification = (props) => useMakeAppear({ ...props, instance:
  * Helper component that wraps `useMakeAppear` to use in JSX syntax.
  */
 const MakeAppear = (allProps) => {
-    const { instance, pathname, predicate, deps, props } = allProps;
+    const { instance, pathname, locationPathname, predicate, deps, props, } = allProps;
     useMakeAppear({
         instance,
         props,
         predicate,
         pathname,
+        locationPathname,
         deps,
     });
     return null;

@@ -1484,6 +1484,7 @@ var useMakeAppearNotification = function useMakeAppearNotification(props) {
 var MakeAppear = function MakeAppear(allProps) {
   var instance = allProps.instance,
       pathname = allProps.pathname,
+      locationPathname = allProps.locationPathname,
       predicate = allProps.predicate,
       deps = allProps.deps,
       props = allProps.props;
@@ -1492,6 +1493,7 @@ var MakeAppear = function MakeAppear(allProps) {
     props: props,
     predicate: predicate,
     pathname: pathname,
+    locationPathname: locationPathname,
     deps: deps
   });
   return null;
@@ -35664,7 +35666,7 @@ const saveConfirmationProps = {
             const height = domElement.getBoundingClientRect().height;
             return {
                 default: {
-                    transition: 'all 300ms ease-in-out',
+                    transition: 'all 350ms ease-in-out',
                 },
                 showStart: {
                     transform: `translate3d(0, ${height}px, 0)`,

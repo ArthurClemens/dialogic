@@ -1,9 +1,11 @@
-.page { 
+.page {
   display: flex;
   flex-direction: column;
 }
 
-body, #root, .page {
+body,
+#root,
+.page {
   height: 100%;
 }
 
@@ -18,9 +20,8 @@ footer {
   padding: 20px;
 }
 
-
 .dialog {
-  transition: opacity 300ms;
+  transition: opacity 350ms;
 }
 .dialog-show-start {
   opacity: 0;
@@ -36,7 +37,7 @@ footer {
 }
 
 .notification {
-  transition: opacity 300ms;
+  transition: opacity 350ms;
 }
 .notification-show-start {
   opacity: 0;
