@@ -13,7 +13,7 @@
     "build:umd": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=0 MODULE_NAME=dialogic ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js"
   },
   "dependencies": {
-    "@types/mithril": "2.0.2",
+    "@types/mithril": "2.0.3",
     "mithril": "^2.0.4"
   },
   "files": [

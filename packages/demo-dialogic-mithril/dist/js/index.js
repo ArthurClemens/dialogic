@@ -355,7 +355,7 @@ function _unsupportedIterableToArray(o, minLen) {
   if (typeof o === "string") return arrayLikeToArray(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(n);
+  if (n === "Map" || n === "Set") return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
 }
 
@@ -1626,7 +1626,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Dialog", function() { return Dialog; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Dialogical", function() { return Dialogical; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Notification", function() { return Notification; });
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../dialogic-mithril/node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../../node_modules/@babel/runtime/helpers/defineProperty.js");
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mithril */ "../../dialogic-mithril/node_modules/mithril/index.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_1__);
@@ -1715,7 +1715,7 @@ var Instance = function Instance(_ref) {
       var attrs = _ref2.attrs;
       return mithril__WEBPACK_IMPORTED_MODULE_1___default()("div", {
         className: attrs.dialogicOptions.className
-      }, mithril__WEBPACK_IMPORTED_MODULE_1___default()(attrs.dialogicOptions.component, _objectSpread({}, attrs.passThroughOptions, {
+      }, mithril__WEBPACK_IMPORTED_MODULE_1___default()(attrs.dialogicOptions.component, _objectSpread(_objectSpread({}, attrs.passThroughOptions), {}, {
         show: show,
         hide: hide
       })));
@@ -1775,32 +1775,6 @@ dialogic__WEBPACK_IMPORTED_MODULE_2__["states"].map(function (state) {
   ;
 });
 
-
-/***/ }),
-
-/***/ "../../dialogic-mithril/node_modules/@babel/runtime/helpers/defineProperty.js":
-/*!******************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-mithril/node_modules/@babel/runtime/helpers/defineProperty.js ***!
-  \******************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-module.exports = _defineProperty;
 
 /***/ }),
 
@@ -4546,7 +4520,7 @@ var appendStopTimer = function appendStopTimer(state) {
 };
 
 var appendPauseTimer = function appendPauseTimer(state) {
-  return _objectSpread({}, appendStopTimeout(state), {
+  return _objectSpread(_objectSpread({}, appendStopTimeout(state)), {}, {
     isPaused: true,
     remaining: _getRemaining(state)
   });
@@ -4574,30 +4548,30 @@ var Timer = function Timer() {
       return {
         start: function start(callback, duration) {
           update(function (state) {
-            return _objectSpread({}, state, {}, appendStopTimeout(state), {}, appendStartTimer(state, callback, duration, function () {
+            return _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, state), appendStopTimeout(state)), appendStartTimer(state, callback, duration, function () {
               return timer.actions(update).done();
-            }), {}, state.isPaused && appendPauseTimer(state));
+            })), state.isPaused && appendPauseTimer(state));
           });
         },
         stop: function stop() {
           update(function (state) {
-            return _objectSpread({}, state, {}, appendStopTimer(state), {}, initialState);
+            return _objectSpread(_objectSpread(_objectSpread({}, state), appendStopTimer(state)), initialState);
           });
         },
         pause: function pause() {
           update(function (state) {
-            return _objectSpread({}, state, {}, !state.isPaused && appendPauseTimer(state));
+            return _objectSpread(_objectSpread({}, state), !state.isPaused && appendPauseTimer(state));
           });
         },
         resume: function resume(minimumDuration) {
           update(function (state) {
-            return _objectSpread({}, state, {}, state.isPaused && appendResumeTimer(state, minimumDuration));
+            return _objectSpread(_objectSpread({}, state), state.isPaused && appendResumeTimer(state, minimumDuration));
           });
         },
         abort: function abort() {
           update(function (state) {
             state.onAbort();
-            return _objectSpread({}, state, {}, appendStopTimeout(state));
+            return _objectSpread(_objectSpread({}, state), appendStopTimeout(state));
           });
         },
         done: function done() {
@@ -4738,7 +4712,7 @@ var handleOptions = function handleOptions(defaultDialogicOptions) {
   };
   var mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions || {}, identityOptions);
 
-  var dialogicOptions = _objectSpread({}, defaultDialogicOptions, {}, options.dialogic, {
+  var dialogicOptions = _objectSpread(_objectSpread(_objectSpread({}, defaultDialogicOptions), options.dialogic), {}, {
     __transitionTimeoutId__: 0
   });
 
@@ -4800,7 +4774,7 @@ var createInstance = function createInstance(ns) {
 
           var _dialogicOptions = existingItem.dialogicOptions;
 
-          var replacingItem = _objectSpread({}, item, {
+          var replacingItem = _objectSpread(_objectSpread({}, item), {}, {
             transitionState: existingItem.transitionState,
             dialogicOptions: _dialogicOptions
           });
@@ -4832,9 +4806,9 @@ var hide = function hide(ns) {
       if (maybeExistingItem.just) {
         var existingItem = maybeExistingItem.just;
 
-        var item = _objectSpread({}, existingItem, {
-          dialogicOptions: _objectSpread({}, existingItem.dialogicOptions, {}, dialogicOptions),
-          passThroughOptions: _objectSpread({}, existingItem.passThroughOptions, {
+        var item = _objectSpread(_objectSpread({}, existingItem), {}, {
+          dialogicOptions: _objectSpread(_objectSpread({}, existingItem.dialogicOptions), dialogicOptions),
+          passThroughOptions: _objectSpread(_objectSpread({}, existingItem.passThroughOptions), {}, {
             passThroughOptions: passThroughOptions
           })
         });
@@ -4954,8 +4928,8 @@ var resetAll = function resetAll(ns) {
 };
 
 var getOverridingTransitionOptions = function getOverridingTransitionOptions(item, dialogicOptions) {
-  return _objectSpread({}, item, {
-    dialogicOptions: _objectSpread({}, item.dialogicOptions, {}, dialogicOptions)
+  return _objectSpread(_objectSpread({}, item), {}, {
+    dialogicOptions: _objectSpread(_objectSpread({}, item.dialogicOptions), dialogicOptions)
   });
 };
 /**
@@ -5141,12 +5115,12 @@ var dialogical = function dialogical(_ref7) {
   var defaultId = "default_".concat(ns);
   var defaultSpawn = "default_".concat(ns);
 
-  var defaultDialogicOptions = _objectSpread({
+  var defaultDialogicOptions = _objectSpread(_objectSpread({
     id: defaultId,
     spawn: defaultSpawn
   }, queued && {
     queued: queued
-  }, {}, timeout !== undefined && {
+  }), timeout !== undefined && {
     timeout: timeout
   });
 

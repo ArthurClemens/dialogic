@@ -212,6 +212,35 @@ module.exports = _defineProperty;
 
 /***/ }),
 
+/***/ "../../../node_modules/@babel/runtime/helpers/extends.js":
+/*!*********************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/extends.js ***!
+  \*********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _extends() {
+  module.exports = _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+module.exports = _extends;
+
+/***/ }),
+
 /***/ "../../../node_modules/@babel/runtime/helpers/iterableToArray.js":
 /*!*****************************************************************************************************************!*\
   !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/iterableToArray.js ***!
@@ -355,7 +384,7 @@ function _unsupportedIterableToArray(o, minLen) {
   if (typeof o === "string") return arrayLikeToArray(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(n);
+  if (n === "Map" || n === "Set") return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
 }
 
@@ -1135,13 +1164,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useMakeAppearDialog", function() { return useMakeAppearDialog; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useMakeAppearNotification", function() { return useMakeAppearNotification; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useRemaining", function() { return useRemaining; });
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../dialogic-react/node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../../node_modules/@babel/runtime/helpers/defineProperty.js");
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../dialogic-react/node_modules/@babel/runtime/helpers/toConsumableArray.js");
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../../node_modules/@babel/runtime/helpers/toConsumableArray.js");
 /* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../dialogic-react/node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../../node_modules/@babel/runtime/helpers/slicedToArray.js");
 /* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "../../dialogic-react/node_modules/@babel/runtime/helpers/extends.js");
+/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "../../../node_modules/@babel/runtime/helpers/extends.js");
 /* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var dialogic__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic */ "../../dialogic/dist/dialogic.mjs");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "dialog", function() { return dialogic__WEBPACK_IMPORTED_MODULE_4__["dialog"]; });
@@ -1327,6 +1356,8 @@ var Dialogical = function Dialogical(type) {
 
 var useMakeAppear = function useMakeAppear(allProps) {
   var pathname = allProps.pathname,
+      _allProps$locationPat = allProps.locationPathname,
+      locationPathname = _allProps$locationPat === void 0 ? window.location.pathname : _allProps$locationPat,
       instance = allProps.instance,
       _allProps$predicate = allProps.predicate,
       predicate = _allProps$predicate === void 0 ? function () {
@@ -1347,14 +1378,17 @@ var useMakeAppear = function useMakeAppear(allProps) {
   };
 
   var hideInstance = function hideInstance() {
-    if (!isHiding) {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        force = _ref.force;
+
+    if (force || !isHiding) {
       setIsHiding(true);
       instance.hide(props);
     }
   };
 
   Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
-    if (window.location.pathname === pathname) {
+    if (locationPathname === pathname) {
       if (predicate()) {
         setIsHiding(false);
         showInstance();
@@ -1364,9 +1398,11 @@ var useMakeAppear = function useMakeAppear(allProps) {
     }
 
     return function () {
-      hideInstance();
+      hideInstance({
+        force: true
+      });
     }; // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(deps), [window.location.pathname]));
+  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(deps), [locationPathname]));
 };
 /**
  * `useMakeAppear` with `instance` preset to `dialog`.
@@ -1395,7 +1431,7 @@ var useMakeAppear = function useMakeAppear(allProps) {
 
 
 var useMakeAppearDialog = function useMakeAppearDialog(props) {
-  return useMakeAppear(_objectSpread({}, props, {
+  return useMakeAppear(_objectSpread(_objectSpread({}, props), {}, {
     instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["dialog"]
   }));
 };
@@ -1405,7 +1441,7 @@ var useMakeAppearDialog = function useMakeAppearDialog(props) {
 
 
 var useMakeAppearNotification = function useMakeAppearNotification(props) {
-  return useMakeAppear(_objectSpread({}, props, {
+  return useMakeAppear(_objectSpread(_objectSpread({}, props), {}, {
     instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["notification"]
   }));
 };
@@ -1469,265 +1505,6 @@ var useRemaining = function useRemaining(props) {
 var Dialog = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_4__["dialog"]);
 var Notification = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_4__["notification"]);
 
-
-/***/ }),
-
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/arrayLikeToArray.js":
-/*!******************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/arrayLikeToArray.js ***!
-  \******************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-
-  return arr2;
-}
-
-module.exports = _arrayLikeToArray;
-
-/***/ }),
-
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/arrayWithHoles.js":
-/*!****************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/arrayWithHoles.js ***!
-  \****************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-
-module.exports = _arrayWithHoles;
-
-/***/ }),
-
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/arrayWithoutHoles.js":
-/*!*******************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/arrayWithoutHoles.js ***!
-  \*******************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray */ "../../dialogic-react/node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
-
-function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) return arrayLikeToArray(arr);
-}
-
-module.exports = _arrayWithoutHoles;
-
-/***/ }),
-
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/defineProperty.js":
-/*!****************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/defineProperty.js ***!
-  \****************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-module.exports = _defineProperty;
-
-/***/ }),
-
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/extends.js":
-/*!*********************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/extends.js ***!
-  \*********************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function _extends() {
-  module.exports = _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
-}
-
-module.exports = _extends;
-
-/***/ }),
-
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/iterableToArray.js":
-/*!*****************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/iterableToArray.js ***!
-  \*****************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function _iterableToArray(iter) {
-  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
-}
-
-module.exports = _iterableToArray;
-
-/***/ }),
-
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/iterableToArrayLimit.js":
-/*!**********************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/iterableToArrayLimit.js ***!
-  \**********************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function _iterableToArrayLimit(arr, i) {
-  if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-  var _e = undefined;
-
-  try {
-    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-
-  return _arr;
-}
-
-module.exports = _iterableToArrayLimit;
-
-/***/ }),
-
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/nonIterableRest.js":
-/*!*****************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/nonIterableRest.js ***!
-  \*****************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-module.exports = _nonIterableRest;
-
-/***/ }),
-
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/nonIterableSpread.js":
-/*!*******************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/nonIterableSpread.js ***!
-  \*******************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-module.exports = _nonIterableSpread;
-
-/***/ }),
-
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/slicedToArray.js":
-/*!***************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/slicedToArray.js ***!
-  \***************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var arrayWithHoles = __webpack_require__(/*! ./arrayWithHoles */ "../../dialogic-react/node_modules/@babel/runtime/helpers/arrayWithHoles.js");
-
-var iterableToArrayLimit = __webpack_require__(/*! ./iterableToArrayLimit */ "../../dialogic-react/node_modules/@babel/runtime/helpers/iterableToArrayLimit.js");
-
-var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray */ "../../dialogic-react/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js");
-
-var nonIterableRest = __webpack_require__(/*! ./nonIterableRest */ "../../dialogic-react/node_modules/@babel/runtime/helpers/nonIterableRest.js");
-
-function _slicedToArray(arr, i) {
-  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
-}
-
-module.exports = _slicedToArray;
-
-/***/ }),
-
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/toConsumableArray.js":
-/*!*******************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/toConsumableArray.js ***!
-  \*******************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var arrayWithoutHoles = __webpack_require__(/*! ./arrayWithoutHoles */ "../../dialogic-react/node_modules/@babel/runtime/helpers/arrayWithoutHoles.js");
-
-var iterableToArray = __webpack_require__(/*! ./iterableToArray */ "../../dialogic-react/node_modules/@babel/runtime/helpers/iterableToArray.js");
-
-var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray */ "../../dialogic-react/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js");
-
-var nonIterableSpread = __webpack_require__(/*! ./nonIterableSpread */ "../../dialogic-react/node_modules/@babel/runtime/helpers/nonIterableSpread.js");
-
-function _toConsumableArray(arr) {
-  return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
-}
-
-module.exports = _toConsumableArray;
-
-/***/ }),
-
-/***/ "../../dialogic-react/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js":
-/*!****************************************************************************************************************************************************!*\
-  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js ***!
-  \****************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray */ "../../dialogic-react/node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
-
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(n);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
-}
-
-module.exports = _unsupportedIterableToArray;
 
 /***/ }),
 
@@ -2254,7 +2031,7 @@ var appendStopTimer = function appendStopTimer(state) {
 };
 
 var appendPauseTimer = function appendPauseTimer(state) {
-  return _objectSpread({}, appendStopTimeout(state), {
+  return _objectSpread(_objectSpread({}, appendStopTimeout(state)), {}, {
     isPaused: true,
     remaining: _getRemaining(state)
   });
@@ -2282,30 +2059,30 @@ var Timer = function Timer() {
       return {
         start: function start(callback, duration) {
           update(function (state) {
-            return _objectSpread({}, state, {}, appendStopTimeout(state), {}, appendStartTimer(state, callback, duration, function () {
+            return _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, state), appendStopTimeout(state)), appendStartTimer(state, callback, duration, function () {
               return timer.actions(update).done();
-            }), {}, state.isPaused && appendPauseTimer(state));
+            })), state.isPaused && appendPauseTimer(state));
           });
         },
         stop: function stop() {
           update(function (state) {
-            return _objectSpread({}, state, {}, appendStopTimer(state), {}, initialState);
+            return _objectSpread(_objectSpread(_objectSpread({}, state), appendStopTimer(state)), initialState);
           });
         },
         pause: function pause() {
           update(function (state) {
-            return _objectSpread({}, state, {}, !state.isPaused && appendPauseTimer(state));
+            return _objectSpread(_objectSpread({}, state), !state.isPaused && appendPauseTimer(state));
           });
         },
         resume: function resume(minimumDuration) {
           update(function (state) {
-            return _objectSpread({}, state, {}, state.isPaused && appendResumeTimer(state, minimumDuration));
+            return _objectSpread(_objectSpread({}, state), state.isPaused && appendResumeTimer(state, minimumDuration));
           });
         },
         abort: function abort() {
           update(function (state) {
             state.onAbort();
-            return _objectSpread({}, state, {}, appendStopTimeout(state));
+            return _objectSpread(_objectSpread({}, state), appendStopTimeout(state));
           });
         },
         done: function done() {
@@ -2446,7 +2223,7 @@ var handleOptions = function handleOptions(defaultDialogicOptions) {
   };
   var mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions || {}, identityOptions);
 
-  var dialogicOptions = _objectSpread({}, defaultDialogicOptions, {}, options.dialogic, {
+  var dialogicOptions = _objectSpread(_objectSpread(_objectSpread({}, defaultDialogicOptions), options.dialogic), {}, {
     __transitionTimeoutId__: 0
   });
 
@@ -2508,7 +2285,7 @@ var createInstance = function createInstance(ns) {
 
           var _dialogicOptions = existingItem.dialogicOptions;
 
-          var replacingItem = _objectSpread({}, item, {
+          var replacingItem = _objectSpread(_objectSpread({}, item), {}, {
             transitionState: existingItem.transitionState,
             dialogicOptions: _dialogicOptions
           });
@@ -2540,9 +2317,9 @@ var hide = function hide(ns) {
       if (maybeExistingItem.just) {
         var existingItem = maybeExistingItem.just;
 
-        var item = _objectSpread({}, existingItem, {
-          dialogicOptions: _objectSpread({}, existingItem.dialogicOptions, {}, dialogicOptions),
-          passThroughOptions: _objectSpread({}, existingItem.passThroughOptions, {
+        var item = _objectSpread(_objectSpread({}, existingItem), {}, {
+          dialogicOptions: _objectSpread(_objectSpread({}, existingItem.dialogicOptions), dialogicOptions),
+          passThroughOptions: _objectSpread(_objectSpread({}, existingItem.passThroughOptions), {}, {
             passThroughOptions: passThroughOptions
           })
         });
@@ -2662,8 +2439,8 @@ var resetAll = function resetAll(ns) {
 };
 
 var getOverridingTransitionOptions = function getOverridingTransitionOptions(item, dialogicOptions) {
-  return _objectSpread({}, item, {
-    dialogicOptions: _objectSpread({}, item.dialogicOptions, {}, dialogicOptions)
+  return _objectSpread(_objectSpread({}, item), {}, {
+    dialogicOptions: _objectSpread(_objectSpread({}, item.dialogicOptions), dialogicOptions)
   });
 };
 /**
@@ -2849,12 +2626,12 @@ var dialogical = function dialogical(_ref7) {
   var defaultId = "default_".concat(ns);
   var defaultSpawn = "default_".concat(ns);
 
-  var defaultDialogicOptions = _objectSpread({
+  var defaultDialogicOptions = _objectSpread(_objectSpread({
     id: defaultId,
     spawn: defaultSpawn
   }, queued && {
     queued: queued
-  }, {}, timeout !== undefined && {
+  }), timeout !== undefined && {
     timeout: timeout
   });
 
