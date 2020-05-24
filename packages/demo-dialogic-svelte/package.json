@@ -2,7 +2,7 @@
   "name": "demo-dialogic-svelte",
   "private": true,
   "description": "Dialogic for Svelte demo",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
@@ -15,7 +15,7 @@
     "github": "npm run build && node scripts/github.js"
   },
   "dependencies": {
-    "dialogic-svelte": "^0.5.1",
+    "dialogic-svelte": "^0.5.2",
     "svelte": "^3.22.3"
   },
   "devDependencies": {
