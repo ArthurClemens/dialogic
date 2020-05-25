@@ -22,11 +22,10 @@ export const ProfilePage = () => {
 
   // console.log('useRouteMatch(dialogPath)', useRouteMatch(dialogPath));
 
+  const matchDialogPath = useRouteMatch(dialogPath);
+
   useMakeAppearDialog<EditProfileDialogProps>({
-    on: () => {
-      const match = useRouteMatch(dialogPath);
-      return match ? match.isExact : false;
-    },
+    show: matchDialogPath ? matchDialogPath.isExact : false,
     props: {
       dialogic: {
         component: EditProfileDialog,

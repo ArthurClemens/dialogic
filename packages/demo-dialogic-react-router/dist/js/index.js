@@ -1364,7 +1364,7 @@ var Dialogical = function Dialogical(type) {
 
 
 var useMakeAppear = function useMakeAppear(allProps) {
-  var on = allProps.on,
+  var show = allProps.show,
       instance = allProps.instance,
       _allProps$deps = allProps.deps,
       deps = _allProps$deps === void 0 ? [] : _allProps$deps,
@@ -1378,7 +1378,6 @@ var useMakeAppear = function useMakeAppear(allProps) {
   } : _allProps$beforeHide,
       _allProps$props = allProps.props,
       props = _allProps$props === void 0 ? {} : _allProps$props;
-  var isMatch = typeof on === 'function' ? on() : on;
 
   var showInstance = function showInstance() {
     beforeShow();
@@ -1391,7 +1390,7 @@ var useMakeAppear = function useMakeAppear(allProps) {
   };
 
   Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
-    if (isMatch) {
+    if (show) {
       showInstance();
     } else {
       hideInstance();
@@ -1400,7 +1399,7 @@ var useMakeAppear = function useMakeAppear(allProps) {
     return function () {
       hideInstance();
     }; // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [isMatch]));
+  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [show]));
 };
 /**
  * `useMakeAppear` with `instance` preset to `dialog`.
@@ -35545,11 +35544,9 @@ const ProfilePage = () => {
     const dialogPath = `${match.url}/edit`;
     const dialogReturnPath = match.url;
     // console.log('useRouteMatch(dialogPath)', useRouteMatch(dialogPath));
+    const matchDialogPath = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useRouteMatch"])(dialogPath);
     Object(dialogic_react__WEBPACK_IMPORTED_MODULE_4__["useMakeAppearDialog"])({
-        on: () => {
-            const match = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useRouteMatch"])(dialogPath);
-            return match ? match.isExact : false;
-        },
+        show: matchDialogPath ? matchDialogPath.isExact : false,
         props: {
             dialogic: {
                 component: _EditProfileDialog__WEBPACK_IMPORTED_MODULE_3__["EditProfileDialog"],

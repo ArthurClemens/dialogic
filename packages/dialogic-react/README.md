@@ -174,13 +174,13 @@ This is a Hook to automatically show a dialog on URL location match. The dialog 
 
 ##### Options
 
-| **Name**     | **Type**                  | **Required** | **Description**                                                                                                                                                                                            | **Default value** |
-| ------------ | ------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `on`         | `boolean | () => boolean` | Yes          | Pass an expression that binds to a boolean when the location is valid.                                                                                                                                     | None              |
-| `deps`       | `React.DependencyList`    | No           | Update the hook with these deps. Use this when the instance should appear conditionally, for instance only when content exists. Can be omitted when all content is static, so no re-rendering takes place. | `[]`              |
-| `props`      | `object`                  | No           | Props to pass to the dialog.                                                                                                                                                                               | None              |
-| `beforeShow` | `() => void`              | No           | Function called just before instance.show() is called. This moment could be used to store the current scroll position.                                                                                     | None              |
-| `beforeHide` | `() => void`              | No           | Function called just before instance.hide() is called. This moment could be used to resstore the scroll position.                                                                                          | None              |
+| **Name**     | **Type**               | **Required** | **Description**                                                                                                                                                                                            | **Default value** |
+| ------------ | ---------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `show`       | `boolean`              | Yes          | Pass an expression that binds to a boolean when the location is valid.                                                                                                                                     | None              |
+| `deps`       | `React.DependencyList` | No           | Update the hook with these deps. Use this when the instance should appear conditionally, for instance only when content exists. Can be omitted when all content is static, so no re-rendering takes place. | `[]`              |
+| `props`      | `object`               | No           | Props to pass to the dialog.                                                                                                                                                                               | None              |
+| `beforeShow` | `() => void`           | No           | Function called just before instance.show() is called. This moment could be used to store the current scroll position.                                                                                     | None              |
+| `beforeHide` | `() => void`           | No           | Function called just before instance.hide() is called. This moment could be used to resstore the scroll position.                                                                                          | None              |
 
 
 ##### All hooks
@@ -208,7 +208,7 @@ const dialogPath = '/login';
 const content = 'Some async loaded content';
 
 useMakeAppearDialog({
-  on: window.location.pathname === dialogPath && !!content,
+  show: window.location.pathname === dialogPath && !!content,
   deps: [content],
   props: {
     dialogic: {
@@ -223,20 +223,31 @@ useMakeAppearDialog({
 })
 ```
 
-`on` accepts a function which comes in handy for working with intermediate values:
+Use `react-router` matching for more flexibility on matching routes. This can also be used to match on parametrized routes:
+
 
 ```js
-
 import { useRouteMatch } from 'react-router-dom';
 
+const dialogPath = '/profile/:name';
+const matchDialogPath = useRouteMatch(dialogPath);
+
 useMakeAppearDialog({
-  on: () => {
-    const match = useRouteMatch(dialogPath);
-    return match ? match.isExact : false;
-  },
+  show: !!matchDialogPath,
   ...
 });
 ```
+
+To only show the dialog on exact matches:
+
+```js
+useMakeAppearDialog({
+  show: matchDialogPath ? matchDialogPath.isExact : false,
+  ...
+});
+```
+
+
 
 ##### With TypeScript
 
@@ -248,7 +259,7 @@ const dialogPath = '/login';
 const content = 'Some async loaded content';
 
 useMakeAppearDialog<TLoginDialogProps>({
-  on: window.location.pathname === dialogPath && !!content,
+  show: window.location.pathname === dialogPath && !!content,
   deps: [content],
   props: {
     dialogic: {
@@ -296,7 +307,7 @@ export const LoginDialogRoute = () => {
   return (
     <Route path={dialogPath}>
       <MakeAppearDialog
-        on={history.location.pathname === dialogPath && !!content}
+        show={history.location.pathname === dialogPath && !!content}
         deps={[content]}
         props={{
           dialogic: {
@@ -330,7 +341,7 @@ export const LoginDialogRoute = () => {
   return (
     <Route path={dialogPath}>
       <MakeAppearDialog<TLoginDialogProps>
-        on={history.location.pathname === dialogPath && !!content}
+        show={history.location.pathname === dialogPath && !!content}
         deps={[content]}
         props={{
           dialogic: {

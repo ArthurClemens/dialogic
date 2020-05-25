@@ -8,14 +8,13 @@ import { MakeAppearInstanceProps } from '..';
  */
 export const useMakeAppear = <T>(allProps: MakeAppearInstanceProps<T>) => {
   const {
-    on,
+    show,
     instance,
     deps = [],
     beforeShow = () => null,
     beforeHide = () => null,
     props = {} as T & Dialogic.Options,
   } = allProps;
-  const isMatch = typeof on === 'function' ? on() : on;
 
   const showInstance = () => {
     beforeShow();
@@ -28,7 +27,7 @@ export const useMakeAppear = <T>(allProps: MakeAppearInstanceProps<T>) => {
   };
 
   useEffect(() => {
-    if (isMatch) {
+    if (show) {
       showInstance();
     } else {
       hideInstance();
@@ -38,7 +37,7 @@ export const useMakeAppear = <T>(allProps: MakeAppearInstanceProps<T>) => {
       hideInstance();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...deps, isMatch]);
+  }, [...deps, show]);
 };
 
 /**

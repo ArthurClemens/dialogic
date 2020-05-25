@@ -40,7 +40,7 @@ export type MakeAppearProps<T> = {
   /**
    * Pass an expression that binds to a boolean when the location is valid.
    */
-  on: boolean | (() => boolean);
+  show: boolean;
 
   /**
    * Props to pass to the instance.

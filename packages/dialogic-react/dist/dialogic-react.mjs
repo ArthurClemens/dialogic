@@ -92,8 +92,7 @@ const Dialogical = type => props => {
  * Hook to automatically show an instance on URL location match.
  */
 const useMakeAppear = (allProps) => {
-    const { on, instance, deps = [], beforeShow = () => null, beforeHide = () => null, props = {}, } = allProps;
-    const isMatch = typeof on === 'function' ? on() : on;
+    const { show, instance, deps = [], beforeShow = () => null, beforeHide = () => null, props = {}, } = allProps;
     const showInstance = () => {
         beforeShow();
         instance.show(props);
@@ -103,7 +102,7 @@ const useMakeAppear = (allProps) => {
         instance.hide(props);
     };
     useEffect(() => {
-        if (isMatch) {
+        if (show) {
             showInstance();
         }
         else {
@@ -113,7 +112,7 @@ const useMakeAppear = (allProps) => {
             hideInstance();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [...deps, isMatch]);
+    }, [...deps, show]);
 };
 /**
  * `useMakeAppear` with `instance` preset to `dialog`.
