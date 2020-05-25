@@ -10,6 +10,7 @@
     - [useMakeAppearDialog](#usemakeappeardialog)
       - [Options](#options)
       - [All hooks](#all-hooks)
+      - [Good to know](#good-to-know)
       - [Example](#example)
       - [With TypeScript](#with-typescript)
     - [MakeAppearDialog component](#makeappeardialog-component)
@@ -173,15 +174,13 @@ This is a Hook to automatically show a dialog on URL location match. The dialog 
 
 ##### Options
 
-| **Name**           | **Type**               | **Required** | **Description**                                                                                                                                                                                                                                                                       | **Default value**          |
-| ------------------ | ---------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| `pathname`         | `string`               | Yes          | Show the dialog when pathname is equal to the window.location.pathname, hide when they are no longer equal. When `predicate` is used, both conditions must be true.                                                                                                                   | None                       |
-| `props`            | `object`               | Yes          | Props to pass to the dialog.                                                                                                                                                                                                                                                          | None                       |
-| `locationPathname` | `string`               | No           | Optionally pass the current location. This would be needed when the route does not conform to a regular pathname, for instance when a hash router is used. When using React Router, the value could be: `history.location.pathname` (see example "MakeAppearDialog component" below). | `window.location.pathname` |
-| `predicate`        | `() => boolean`        | No           | Only show the instance when the predicate is met. Predicate function that returns true when the instance should appear. Can be omitted when all content is static, so no re-rendering takes place.                                                                                    | None                       |
-| `deps`             | `React.DependencyList` | No           | Update the hook with these deps. Use this when the instance should appear conditionally, for instance only when content exists. Can be omitted when all content is static, so no re-rendering takes place.                                                                            | `[]`                       |
-| `beforeShow`       | `() => void`           | No           | Function called just before instance.show() is called. This moment could be used to store the current scroll position.                                                                                                                                                                | None                       |
-| `beforeHide`       | `() => void`           | No           | Function called just before instance.hide() is called. This moment could be used to resstore the scroll position.                                                                                                                                                                     | None                       |
+| **Name**     | **Type**                  | **Required** | **Description**                                                                                                                                                                                            | **Default value** |
+| ------------ | ------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `on`         | `boolean | () => boolean` | Yes          | Pass an expression that binds to a boolean when the location is valid.                                                                                                                                     | None              |
+| `deps`       | `React.DependencyList`    | No           | Update the hook with these deps. Use this when the instance should appear conditionally, for instance only when content exists. Can be omitted when all content is static, so no re-rendering takes place. | `[]`              |
+| `props`      | `object`                  | No           | Props to pass to the dialog.                                                                                                                                                                               | None              |
+| `beforeShow` | `() => void`              | No           | Function called just before instance.show() is called. This moment could be used to store the current scroll position.                                                                                     | None              |
+| `beforeHide` | `() => void`              | No           | Function called just before instance.hide() is called. This moment could be used to resstore the scroll position.                                                                                          | None              |
 
 
 ##### All hooks
@@ -189,6 +188,11 @@ This is a Hook to automatically show a dialog on URL location match. The dialog 
 * `useMakeAppear` - generic hook that accepts `instance` of type `Dialogic.DialogicInstance`.
 * `useMakeAppearDialog` - `useMakeAppear` with `instance` preset to `dialog`.
 * `useMakeAppearNotification` - `useMakeAppear` with `instance` preset to `notification`.
+
+
+##### Good to know
+
+To improve stability when quickly toggling showing/hiding (which can happen with frantically navigating back and forth in the browser), set dialogic option `queued` to `true`.
 
 
 ##### Example
@@ -204,13 +208,13 @@ const dialogPath = '/login';
 const content = 'Some async loaded content';
 
 useMakeAppearDialog({
-  pathname: dialogPath,
-  predicate: () => !!content,
+  on: window.location.pathname === dialogPath && !!content,
   deps: [content],
   props: {
     dialogic: {
       component: LoginDialog,
       className: 'dialog',
+      queued: true,
     },
     // Example props that will be passed to the LoginDialog component
     returnPath,
@@ -219,19 +223,38 @@ useMakeAppearDialog({
 })
 ```
 
+`on` accepts a function which comes in handy for working with intermediate values:
+
+```js
+
+import { useRouteMatch } from 'react-router-dom';
+
+useMakeAppearDialog({
+  on: () => {
+    const match = useRouteMatch(dialogPath);
+    return match ? match.isExact : false;
+  },
+  ...
+});
+```
+
 ##### With TypeScript
 
 ```ts
 import { LoginDialog, TLoginDialogProps } from './LoginDialog';
 
+const returnPath = '/';
+const dialogPath = '/login';
+const content = 'Some async loaded content';
+
 useMakeAppearDialog<TLoginDialogProps>({
-  pathname: dialogPath,
-  predicate: () => !!content,
+  on: window.location.pathname === dialogPath && !!content,
   deps: [content],
   props: {
     dialogic: {
       component: LoginDialog,
       className: 'dialog',
+      queued: true,
     },
     // Example props that will be passed to the LoginDialog component
     // These props match type TLoginDialogProps
@@ -273,14 +296,13 @@ export const LoginDialogRoute = () => {
   return (
     <Route path={dialogPath}>
       <MakeAppearDialog
-        pathname={dialogPath}
-        locationPathname={history.location.pathname}
-        predicate={() => !!content}
+        on={history.location.pathname === dialogPath && !!content}
         deps={[content]}
         props={{
           dialogic: {
             component: LoginDialog,
             className: 'dialog',
+            queued: true,
           },
           // Example props that will be passed to the LoginDialog component
           returnPath,
@@ -308,14 +330,13 @@ export const LoginDialogRoute = () => {
   return (
     <Route path={dialogPath}>
       <MakeAppearDialog<TLoginDialogProps>
-        pathname={dialogPath}
-        locationPathname={history.location.pathname}
-        predicate={() => !!content}
+        on={history.location.pathname === dialogPath && !!content}
         deps={[content]}
         props={{
           dialogic: {
             component: LoginDialog,
             className: 'dialog',
+            queued: true,
           },
           // Example props that will be passed to the LoginDialog component
           // These props match type TLoginDialogProps
@@ -330,4 +351,4 @@ export const LoginDialogRoute = () => {
 
 ## Size
 
-5.14 KB with all dependencies, minified and gzipped
+5.06 KB with all dependencies, minified and gzipped

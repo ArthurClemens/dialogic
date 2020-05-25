@@ -38,28 +38,14 @@ export type UseRemaining = ({
 
 export type MakeAppearProps<T> = {
   /**
-   * Show the instance when pathname is equal to the window.location.pathname, hide when they are no longer equal.
-   * When `predicate` is used, both conditions must be true.
+   * Pass an expression that binds to a boolean when the location is valid.
    */
-  pathname: string;
-
-  /**
-   * The current path name. Pass a custom value when using a hash router.
-   * For example with React Router, pass: `history.location.pathname`.
-   * Default: `window.location.pathname`.
-   */
-  locationPathname?: string;
+  on: boolean | (() => boolean);
 
   /**
    * Props to pass to the instance.
    */
-  props: T & Dialogic.Options;
-
-  /**
-   * Only show the instance when the predicate is met.
-   * Predicate function that returns true when the instance should appear.
-   */
-  predicate?: () => boolean;
+  props?: T & Dialogic.Options;
 
   /**
    * Update the hook with these deps. Use this when the instance should appear conditionally, for instance only when

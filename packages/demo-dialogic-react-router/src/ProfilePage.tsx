@@ -20,13 +20,18 @@ export const ProfilePage = () => {
   const dialogPath = `${match.url}/edit`;
   const dialogReturnPath = match.url;
 
+  // console.log('useRouteMatch(dialogPath)', useRouteMatch(dialogPath));
+
   useMakeAppearDialog<EditProfileDialogProps>({
-    pathname: dialogPath,
-    locationPathname: history.location.pathname, // required when using hash router
+    on: () => {
+      const match = useRouteMatch(dialogPath);
+      return match ? match.isExact : false;
+    },
     props: {
       dialogic: {
         component: EditProfileDialog,
         className: 'dialog',
+        queued: true,
       },
       title: 'Update your e-mail',
       email: 'allan@company.com',
@@ -56,8 +61,10 @@ export const ProfilePage = () => {
       </div>
       {/* <Route path={dialogPath}>
         <MakeAppearDialog<EditProfileDialogProps>
-          pathname={dialogPath}
-          locationPathname={history.location.pathname}
+          on={() => {
+            const match = useRouteMatch(dialogPath);
+            return match ? match.isExact : false;
+          }}
           beforeHide={() => console.log('before hide')}
           props={{
             dialogic: {
