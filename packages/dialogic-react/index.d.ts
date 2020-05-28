@@ -1,13 +1,13 @@
-import { FunctionComponent, PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { dialog, notification, Dialogic } from 'dialogic';
 
 export { dialog, notification };
 
 interface Dialog extends Dialogic.ComponentOptions {}
-export const Dialog: FunctionComponent<Dialogic.ComponentOptions>;
+export const Dialog: (props: Dialogic.ComponentOptions) => JSX.Element;
 
 interface Notification extends Dialogic.ComponentOptions {}
-export const Notification: FunctionComponent<Dialogic.ComponentOptions>;
+export const Notification: (props: Dialogic.ComponentOptions) => JSX.Element;
 
 export const useDialogicState: UseDialogicState;
 export const useRemaining: UseRemaining;
