@@ -6,7 +6,6 @@ const Notification = Dialogical(notification);
 
 export { Dialogical, dialog, Dialog, notification, Notification };
 
-export * from './MakeAppear';
-export * from './useMakeAppear';
+export * from './useDialogic';
 export * from './useRemaining';
 export * from './useDialogicState';

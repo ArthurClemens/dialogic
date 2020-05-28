@@ -1179,21 +1179,21 @@ module.exports = g;
 /*!**********************************************************************************************************!*\
   !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/dist/dialogic-react.mjs ***!
   \**********************************************************************************************************/
-/*! exports provided: dialog, notification, Dialog, Dialogical, MakeAppear, MakeAppearDialog, MakeAppearNotification, Notification, useDialogicState, useMakeAppear, useMakeAppearDialog, useMakeAppearNotification, useRemaining */
+/*! exports provided: dialog, notification, Dialog, Dialogical, Notification, UseDialog, UseDialogic, UseNotification, useDialog, useDialogic, useDialogicState, useNotification, useRemaining */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Dialog", function() { return Dialog; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Dialogical", function() { return Dialogical; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MakeAppear", function() { return MakeAppear; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MakeAppearDialog", function() { return MakeAppearDialog; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MakeAppearNotification", function() { return MakeAppearNotification; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Notification", function() { return Notification; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UseDialog", function() { return UseDialog; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UseDialogic", function() { return UseDialogic; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UseNotification", function() { return UseNotification; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useDialog", function() { return useDialog; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useDialogic", function() { return useDialogic; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useDialogicState", function() { return useDialogicState; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useMakeAppear", function() { return useMakeAppear; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useMakeAppearDialog", function() { return useMakeAppearDialog; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useMakeAppearNotification", function() { return useMakeAppearNotification; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useNotification", function() { return useNotification; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useRemaining", function() { return useRemaining; });
 /* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../../node_modules/@babel/runtime/helpers/slicedToArray.js");
 /* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
@@ -1358,13 +1358,10 @@ var Dialogical = function Dialogical(type) {
     });
   };
 };
-/**
- * Hook to automatically show an instance on URL location match.
- */
 
-
-var useMakeAppear = function useMakeAppear(allProps) {
+var useDialogic = function useDialogic(allProps) {
   var show = allProps.show,
+      hide = allProps.hide,
       instance = allProps.instance,
       _allProps$deps = allProps.deps,
       deps = _allProps$deps === void 0 ? [] : _allProps$deps,
@@ -1390,55 +1387,71 @@ var useMakeAppear = function useMakeAppear(allProps) {
   };
 
   Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
-    if (show) {
-      showInstance();
-    } else {
-      hideInstance();
-    }
-
     return function () {
       hideInstance();
     }; // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
+    if (show !== undefined) {
+      if (show) {
+        showInstance();
+      } else {
+        hideInstance();
+      }
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [show]));
+  Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
+    if (hide !== undefined) {
+      if (hide) {
+        hideInstance();
+      }
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [hide]));
+  return {
+    show: showInstance,
+    hide: hideInstance
+  };
 };
 /**
- * `useMakeAppear` with `instance` preset to `dialog`.
+ * `useDialogic` with `instance` preset to `dialog`.
  */
 
 
-var useMakeAppearDialog = function useMakeAppearDialog(props) {
-  return useMakeAppear(_objectSpread(_objectSpread({}, props), {}, {
+var useDialog = function useDialog(props) {
+  return useDialogic(_objectSpread(_objectSpread({}, props), {}, {
     instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["dialog"]
   }));
 };
 /**
- * `useMakeAppear` with `instance` preset to `notification`.
+ * `useDialogic` with `instance` preset to `notification`.
  */
 
 
-var useMakeAppearNotification = function useMakeAppearNotification(props) {
-  return useMakeAppear(_objectSpread(_objectSpread({}, props), {}, {
+var useNotification = function useNotification(props) {
+  return useDialogic(_objectSpread(_objectSpread({}, props), {}, {
     instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["notification"]
   }));
 };
 /**
- * Helper component that wraps `useMakeAppear` to use in JSX syntax.
+ * Helper component that wraps `useDialogic` to use in JSX syntax.
  */
 
 
-var MakeAppear = function MakeAppear(props) {
-  useMakeAppear(props);
+var UseDialogic = function UseDialogic(props) {
+  useDialogic(props);
   return null;
 };
 
-var MakeAppearDialog = function MakeAppearDialog(props) {
-  return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(MakeAppear, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default()({}, props, {
+var UseDialog = function UseDialog(props) {
+  return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(UseDialogic, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default()({}, props, {
     instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["dialog"]
   }));
 };
 
-var MakeAppearNotification = function MakeAppearNotification(props) {
-  return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(MakeAppear, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default()({}, props, {
+var UseNotification = function UseNotification(props) {
+  return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(UseDialogic, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default()({}, props, {
     instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["notification"]
   }));
 };
@@ -35545,7 +35558,7 @@ const ProfilePage = () => {
     const dialogReturnPath = match.url;
     // console.log('useRouteMatch(dialogPath)', useRouteMatch(dialogPath));
     const matchDialogPath = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useRouteMatch"])(dialogPath);
-    Object(dialogic_react__WEBPACK_IMPORTED_MODULE_4__["useMakeAppearDialog"])({
+    Object(dialogic_react__WEBPACK_IMPORTED_MODULE_4__["useDialog"])({
         show: matchDialogPath ? matchDialogPath.isExact : false,
         props: {
             dialogic: {

@@ -9,8 +9,8 @@ import {
 import { EditProfileDialog, EditProfileDialogProps } from './EditProfileDialog';
 import {
   notification,
-  // MakeAppearDialog,
-  useMakeAppearDialog,
+  // UseDialog,
+  useDialog,
 } from 'dialogic-react';
 import { saveConfirmationProps } from './SaveConfirmation';
 
@@ -24,7 +24,7 @@ export const ProfilePage = () => {
 
   const matchDialogPath = useRouteMatch(dialogPath);
 
-  useMakeAppearDialog<EditProfileDialogProps>({
+  useDialog<EditProfileDialogProps>({
     show: matchDialogPath ? matchDialogPath.isExact : false,
     props: {
       dialogic: {
@@ -59,11 +59,8 @@ export const ProfilePage = () => {
         </Link>
       </div>
       {/* <Route path={dialogPath}>
-        <MakeAppearDialog<EditProfileDialogProps>
-          on={() => {
-            const match = useRouteMatch(dialogPath);
-            return match ? match.isExact : false;
-          }}
+        <UseDialog<EditProfileDialogProps>
+          show={matchDialogPath ? matchDialogPath.isExact : false}
           beforeHide={() => console.log('before hide')}
           props={{
             dialogic: {

@@ -88,11 +88,8 @@ const Dialogical = type => props => {
     return React.createElement(Wrapper, { identityOptions: identityOptions, ns: type.ns });
 };
 
-/**
- * Hook to automatically show an instance on URL location match.
- */
-const useMakeAppear = (allProps) => {
-    const { show, instance, deps = [], beforeShow = () => null, beforeHide = () => null, props = {}, } = allProps;
+const useDialogic = (allProps) => {
+    const { show, hide, instance, deps = [], beforeShow = () => null, beforeHide = () => null, props = {}, } = allProps;
     const showInstance = () => {
         beforeShow();
         instance.show(props);
@@ -102,36 +99,52 @@ const useMakeAppear = (allProps) => {
         instance.hide(props);
     };
     useEffect(() => {
-        if (show) {
-            showInstance();
-        }
-        else {
-            hideInstance();
-        }
         return () => {
             hideInstance();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    useEffect(() => {
+        if (show !== undefined) {
+            if (show) {
+                showInstance();
+            }
+            else {
+                hideInstance();
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [...deps, show]);
+    useEffect(() => {
+        if (hide !== undefined) {
+            if (hide) {
+                hideInstance();
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [...deps, hide]);
+    return {
+        show: showInstance,
+        hide: hideInstance,
+    };
 };
 /**
- * `useMakeAppear` with `instance` preset to `dialog`.
+ * `useDialogic` with `instance` preset to `dialog`.
  */
-const useMakeAppearDialog = (props) => useMakeAppear({ ...props, instance: dialog });
+const useDialog = (props) => useDialogic({ ...props, instance: dialog });
 /**
- * `useMakeAppear` with `instance` preset to `notification`.
+ * `useDialogic` with `instance` preset to `notification`.
  */
-const useMakeAppearNotification = (props) => useMakeAppear({ ...props, instance: notification });
-
+const useNotification = (props) => useDialogic({ ...props, instance: notification });
 /**
- * Helper component that wraps `useMakeAppear` to use in JSX syntax.
+ * Helper component that wraps `useDialogic` to use in JSX syntax.
  */
-const MakeAppear = (props) => {
-    useMakeAppear(props);
+const UseDialogic = (props) => {
+    useDialogic(props);
     return null;
 };
-const MakeAppearDialog = (props) => React.createElement(MakeAppear, Object.assign({}, props, { instance: dialog }));
-const MakeAppearNotification = (props) => React.createElement(MakeAppear, Object.assign({}, props, { instance: notification }));
+const UseDialog = (props) => React.createElement(UseDialogic, Object.assign({}, props, { instance: dialog }));
+const UseNotification = (props) => React.createElement(UseDialogic, Object.assign({}, props, { instance: notification }));
 
 const useRemaining = props => {
     const [value, setValue] = useState(undefined);
@@ -156,4 +169,4 @@ const useRemaining = props => {
 const Dialog = Dialogical(dialog);
 const Notification = Dialogical(notification);
 
-export { Dialog, Dialogical, MakeAppear, MakeAppearDialog, MakeAppearNotification, Notification, useDialogicState, useMakeAppear, useMakeAppearDialog, useMakeAppearNotification, useRemaining };
+export { Dialog, Dialogical, Notification, UseDialog, UseDialogic, UseNotification, useDialog, useDialogic, useDialogicState, useNotification, useRemaining };
