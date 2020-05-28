@@ -27,8 +27,8 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 ## Demo
 
 * [Demo page](https://arthurclemens.github.io/dialogic/)
-* [Route example with useDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-usemakeappeardialog-cutrx)
-* [Route example with UseDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-makeappeardialog-kgq22)
+* [Route example with useDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-cutrx)
+* [Route example with UseDialog component](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-component-kgq22)
 
 ## Usage
 
@@ -261,8 +261,8 @@ import { MyDialog } from './MyDialog';
 
 const MyComponent = () => {
   const { show, hide } = useDialog({
-    hide: true,                   // hide ...
-    deps: [window.location.href], // ... as soon this value changes
+    deps: [window.location.href], // as soon this value changes ...
+    hide: true,                   // ... hide
     props: {
       dialogic: {
         component: MyDialog,
@@ -301,7 +301,7 @@ All options listed above, plus:
 
 Use `react-router` matching for more flexibility on matching routes. This can also be used to match on parametrized routes.
 
-See also CodeSandbox demo: [Route example with useDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-usemakeappeardialog-cutrx).
+See also CodeSandbox demo: [Route example with useDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-cutrx).
 
 
 ```js
@@ -344,7 +344,7 @@ It accepts the same props as `useDialog`.
 
 ##### Example
 
-See also CodeSandbox demo: [Route example with UseDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-makeappeardialog-kgq22)
+See also CodeSandbox demo: [Route example with UseDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-component-kgq22)
 
 ```jsx
 import { Route, useHistory } from 'react-router-dom';
