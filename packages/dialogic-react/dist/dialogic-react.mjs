@@ -99,12 +99,6 @@ const useDialogic = (allProps) => {
         instance.hide(props);
     };
     useEffect(() => {
-        return () => {
-            hideInstance();
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    useEffect(() => {
         if (show !== undefined) {
             if (show) {
                 showInstance();
@@ -113,6 +107,9 @@ const useDialogic = (allProps) => {
                 hideInstance();
             }
         }
+        return () => {
+            hideInstance();
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [...deps, show]);
     useEffect(() => {
@@ -121,6 +118,9 @@ const useDialogic = (allProps) => {
                 hideInstance();
             }
         }
+        return () => {
+            hideInstance();
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [...deps, hide]);
     return {
