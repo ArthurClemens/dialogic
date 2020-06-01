@@ -24,8 +24,8 @@ const Instance = ({ attrs: componentAttrs }) => {
         dispatchFn({
             detail: {
                 identityOptions: componentAttrs.identityOptions,
-                domElement
-            }
+                domElement,
+            },
         });
     };
     const onMount = () => {
@@ -42,11 +42,14 @@ const Instance = ({ attrs: componentAttrs }) => {
             domElement = vnode.dom;
             onMount();
         },
-        view: ({ attrs }) => (m("div", { className: attrs.dialogicOptions.className }, m(attrs.dialogicOptions.component, {
-            ...attrs.passThroughOptions,
-            show,
-            hide,
-        })))
+        view: ({ attrs }) => {
+            const component = attrs.dialogicOptions.component;
+            return m('div', { className: attrs.dialogicOptions.className }, m(component, {
+                ...attrs.passThroughOptions,
+                show,
+                hide,
+            }));
+        },
     };
 };
 
@@ -66,7 +69,7 @@ const Wrapper = {
             onShow: nsOnShowInstance,
             onHide: nsOnHideInstance,
         }));
-    }
+    },
 };
 
 const Dialogical = type => ({

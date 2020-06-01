@@ -2,39 +2,35 @@
  * This example uses Material IO
  */
 
-import React, { FunctionComponent } from "react";
-import { dialog } from "dialogic-react";
+import React from 'react';
+import { dialog } from 'dialogic-react';
 
 type DialogContentProps = {
   title: string;
   body: string;
   onAccept: () => void;
   onReject: () => void;
-}
+};
 
-export const DialogComponent: FunctionComponent<DialogContentProps> = props => (
+export const DialogComponent = (props: DialogContentProps) => (
   <div
     className="mdc-dialog mdc-dialog--open"
     role="alertdialog"
     aria-modal="true"
     aria-labelledby="my-dialog-title"
     aria-describedby="my-dialog-content"
-    >
-      <DialogContent {...props} />
-      <div className="mdc-dialog__scrim"/> {/* modal, onclick is not used */}
+  >
+    <DialogContent {...props} />
+    <div className="mdc-dialog__scrim" /> {/* modal, onclick is not used */}
   </div>
 );
 
-const DialogContent: FunctionComponent<DialogContentProps> = props => (
+const DialogContent = (props: DialogContentProps) => (
   <div className="mdc-dialog__container">
     <div className="mdc-dialog__surface">
       <>
-        <h2 className="h2 mdc-dialog__title">
-          {props.title}
-        </h2>
-        <div className="mdc-dialog__content">
-          {props.body}
-        </div>
+        <h2 className="h2 mdc-dialog__title">{props.title}</h2>
+        <div className="mdc-dialog__content">{props.body}</div>
         <footer className="mdc-dialog__actions">
           <>
             <button

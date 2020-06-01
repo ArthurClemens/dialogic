@@ -1,24 +1,24 @@
 import Stream from 'mithril/stream';
 
-export const showItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
-export const hideItem: (item: Dialogic.Item) => Promise<Dialogic.Item>;
-export const setDomElement: (
+export const showItem: <T>(item: Dialogic.Item<T>) => Promise<Dialogic.Item<T>>;
+export const hideItem: <T>(item: Dialogic.Item<T>) => Promise<Dialogic.Item<T>>;
+export const setDomElement: <T>(
   domElement: HTMLElement,
-  item: Dialogic.Item,
+  item: Dialogic.Item<T>,
 ) => void;
-export const filterCandidates: (
+export const filterCandidates: <T>(
   ns: string,
   items: Dialogic.NamespaceStore,
   identityOptions: Dialogic.IdentityOptions,
-) => Dialogic.Item[];
+) => Dialogic.Item<unknown>[];
 export const states: Dialogic.States;
 export const selectors: Dialogic.StateSelectors;
 export const actions: {
-  add: (ns: string, item: Dialogic.Item) => void;
+  add: (ns: string, item: Dialogic.Item<unknown>) => void;
   remove: (ns: string, id: string) => void;
-  replace: (ns: string, id: string, newItem: Dialogic.Item) => void;
+  replace: (ns: string, id: string, newItem: Dialogic.Item<unknown>) => void;
   removeAll: (ns: string) => void;
-  store: (ns: string, newItems: Dialogic.Item[]) => void;
+  store: (ns: string, newItems: Dialogic.Item<unknown>[]) => void;
   refresh: () => void;
 };
 export const remaining: (props: Dialogic.RemainingProps) => void;
@@ -26,8 +26,8 @@ export const remaining: (props: Dialogic.RemainingProps) => void;
 export const dialog: Dialogic.DialogicInstance;
 export const notification: Dialogic.DialogicInstance;
 
-type ConfirmFn = {
-  (item: Dialogic.Item): void;
+type ConfirmFn<T> = {
+  (item: Dialogic.Item<T>): void;
 };
 
 export { Stream };
@@ -41,19 +41,15 @@ export namespace Dialogic {
     // Configuration
     defaultDialogicOptions: DefaultDialogicOptions;
     // Commands
-    show: (
-      options: Options,
-      componentOptions?: PassThroughOptions,
-    ) => Promise<Item>;
-    hide: (
-      options?: Options,
-      componentOptions?: PassThroughOptions,
-    ) => Promise<Item>;
-    hideAll: (dialogicOptions?: DialogicOptions) => Promise<Item[]>;
-    resetAll: (identityOptions?: IdentityOptions) => Promise<Item[]>;
+    show: <T>(options: Options<T>, componentOptions?: T) => Promise<Item<T>>;
+    hide: <T>(options?: Options<T>, componentOptions?: T) => Promise<Item<T>>;
+    hideAll: (
+      dialogicOptions?: DialogicOptions<unknown>,
+    ) => Promise<Item<unknown>[]>;
+    resetAll: (identityOptions?: IdentityOptions) => Promise<Item<unknown>[]>;
     // Timer commands
-    pause: (identityOptions?: IdentityOptions) => Promise<Item[]>;
-    resume: (commandOptions?: CommandOptions) => Promise<Item[]>;
+    pause: (identityOptions?: IdentityOptions) => Promise<Item<unknown>[]>;
+    resume: (commandOptions?: CommandOptions) => Promise<Item<unknown>[]>;
     // State
     exists: (identityOptions?: IdentityOptions) => boolean;
     getCount: (identityOptions?: IdentityOptions) => number;
@@ -75,7 +71,7 @@ export namespace Dialogic {
   };
 
   type ComponentOptions = {
-    onMount?: (args?: any) => any;
+    onMount?: (args?: unknown) => unknown;
   } & IdentityOptions;
 
   type CommandOptions = IdentityOptions & TimerResumeOptions;
@@ -89,22 +85,22 @@ export namespace Dialogic {
 
   type DialogicalInstanceDispatchFn = (event: InstanceEvent) => void;
 
-  type DialogicalInstanceOptions = {
+  type PassThroughOptions = {
+    [key: string]: unknown;
+  };
+
+  type DialogicalInstanceOptions<T extends PassThroughOptions> = {
     identityOptions: IdentityOptions;
-    dialogicOptions: DialogicOptions;
-    passThroughOptions: PassThroughOptions;
+    dialogicOptions: DialogicOptions<T>;
+    passThroughOptions: T;
     onMount: DialogicalInstanceDispatchFn;
     onShow: DialogicalInstanceDispatchFn;
     onHide: DialogicalInstanceDispatchFn;
   };
 
-  type PassThroughOptions = {
-    [key: string]: any;
-  };
-
   // TransitionFns
 
-  type TransitionFn = (domElement?: HTMLElement) => any;
+  type TransitionFn = (domElement?: HTMLElement) => unknown;
 
   type TransitionFns = {
     show?: TransitionFn;
@@ -121,11 +117,11 @@ export namespace Dialogic {
 
   type TransitionStylesFn = (domElement: HTMLElement) => TransitionStyles;
 
-  type DialogicOptions = {
+  type DialogicOptions<T> = {
     className?: string;
-    component?: any;
-    didHide?: ConfirmFn;
-    didShow?: ConfirmFn;
+    component?: unknown;
+    didHide?: ConfirmFn<T>;
+    didShow?: ConfirmFn<T>;
     domElement?: HTMLElement;
     queued?: boolean;
     styles?: TransitionStyles | TransitionStylesFn;
@@ -135,43 +131,43 @@ export namespace Dialogic {
       __transitionTimeoutId__?: number;
     };
 
-  type Options = {
-    dialogic?: DialogicOptions;
-  } & PassThroughOptions;
+  type Options<T> = {
+    dialogic?: DialogicOptions<T>;
+  } & T;
 
-  type MaybeItem = {
-    just?: Item;
+  type MaybeItem<T> = {
+    just?: Item<T>;
     nothing?: undefined;
   };
 
-  type Callbacks = {
-    didHide: ConfirmFn;
-    didShow: ConfirmFn;
+  type Callbacks<T> = {
+    didHide: ConfirmFn<T>;
+    didShow: ConfirmFn<T>;
   };
 
-  type Item = {
+  type Item<T> = {
     ns: string;
     id: string;
-    passThroughOptions: PassThroughOptions;
+    passThroughOptions: T;
     key: string;
     identityOptions: IdentityOptions;
     timer?: Timer;
-    dialogicOptions: DialogicOptions;
+    dialogicOptions: DialogicOptions<T>;
     transitionState: number;
-    callbacks: Callbacks;
+    callbacks: Callbacks<T>;
   };
 
   type NamespaceStore = {
-    [key: string]: Item[];
+    [key: string]: Item<unknown>[];
   };
 
   type State = {
     store: NamespaceStore;
   };
 
-  type InitiateItemTransitionFn = (item: Item) => Promise<Item>;
+  type InitiateItemTransitionFn = <T>(item: Item<T>) => Promise<Item<T>>;
 
-  type TimerCallback = () => any;
+  type TimerCallback = () => unknown;
   type TOnFinishFn = () => void;
 
   type TimerStates = Stream<TimerState>;
@@ -185,7 +181,7 @@ export namespace Dialogic {
     /**
      * The promise that is handled when the timer is done or canceled.
      */
-    getResultPromise: () => Promise<any> | undefined;
+    getResultPromise: () => Promise<unknown> | undefined;
 
     /**
      * Returns the remaining duration in milliseconds.
@@ -200,7 +196,7 @@ export namespace Dialogic {
     isPaused: boolean;
     callback: TimerCallback;
     timeoutFn: () => void;
-    promise?: Promise<any>;
+    promise?: Promise<unknown>;
     onDone: TOnFinishFn;
     onAbort: TOnFinishFn;
   };
@@ -254,8 +250,8 @@ export namespace Dialogic {
 
   type StateSelectors = {
     getStore: () => NamespaceStore;
-    find: (ns: string, identityOptions: IdentityOptions) => MaybeItem;
-    getAll: (ns: string, identityOptions?: IdentityOptions) => Item[];
+    find: <T>(ns: string, identityOptions: IdentityOptions) => MaybeItem<T>;
+    getAll: (ns: string, identityOptions?: IdentityOptions) => Item<unknown>[];
     getCount: (ns: string, identityOptions?: IdentityOptions) => number;
   };
 
@@ -266,10 +262,10 @@ export namespace Dialogic {
     };
   };
 
-  type ContentComponentOptions = {
+  type ContentComponentOptions<T> = {
     show: () => Promise<string>;
     hide: () => Promise<string>;
-  } & PassThroughOptions;
+  } & T;
 
   type RemainingProps = {
     /**
@@ -285,6 +281,6 @@ export namespace Dialogic {
     /**
      * Returns the remaining time as milliseconds. Returns `undefined` when the timer is not running (before and after the timer runs).
      */
-    callback: (displayValue: number | undefined) => any;
+    callback: (displayValue: number | undefined) => unknown;
   };
 }

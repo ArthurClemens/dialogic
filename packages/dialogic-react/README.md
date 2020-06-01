@@ -6,18 +6,21 @@
 - [Usage](#usage)
   - [Dialog](#dialog)
   - [Notification](#notification)
-  - [useDialog](#usedialog)
+  - [`useRemaining`](#useremaining)
+  - [`useDialogicState`](#usedialogicstate)
+  - [`useDialog`](#usedialog)
     - [Dialog routes](#dialog-routes)
-    - [useDialog hook](#usedialog-hook)
+    - [`useDialog` hook](#usedialog-hook)
       - [Options](#options)
       - [Good to know](#good-to-know)
       - [Calling show and hide directly](#calling-show-and-hide-directly)
       - [All hooks](#all-hooks)
       - [With React Router](#with-react-router)
-    - [UseDialog component](#usedialog-component)
+    - [`UseDialog` component](#usedialog-component)
       - [All helper components](#all-helper-components)
       - [Example](#example)
 - [Size](#size)
+
 
 ## API
 
@@ -150,7 +153,36 @@ const NotificationView = props => {
 }
 ```
 
-### useDialog
+### `useRemaining`
+
+Hook to fetch the current remaining time.
+
+```tsx
+import { notification, useRemaining } from "dialogic-react";
+
+const MyComponent = props => {
+  const [remainingSeconds] = useRemaining({ instance: notification, roundToSeconds: true });
+  // ...
+}
+```
+
+### `useDialogicState`
+
+To retrieve the current state, hook `useDialogicState` should be called:
+
+```tsx
+import { dialog, useDialogicState } from "dialogic-react";
+
+const MyComponent = props => {
+  useDialogicState();
+
+  return (
+    <div>{dialog.getCount()}</div>
+  )
+}
+```
+
+### `useDialog`
 
 #### Dialog routes
 
@@ -172,7 +204,7 @@ const dialogPath = `${match.url}/edit`;
 The `useDialog` hook facilitates showing and hiding based on a condition such as the current route.
 
 
-#### useDialog hook
+#### `useDialog` hook
 
 This is a Hook to automatically show a dialog when a condition is met, for instance on URL location match. The dialog will hide when the condition is no longer met.
 
@@ -329,7 +361,7 @@ useDialog({
 
 
 
-#### UseDialog component
+#### `UseDialog` component
 
 Helper component that wraps `useDialog` to use in JSX syntax, for example together with React Router.
 

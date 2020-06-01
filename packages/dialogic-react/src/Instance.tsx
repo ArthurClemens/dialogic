@@ -1,13 +1,17 @@
+import React, { FunctionComponent, useCallback, useRef } from 'react';
+import { Dialogic } from 'dialogic';
 
-import React, { FunctionComponent, useCallback, useRef } from "react";
-import { Dialogic } from "dialogic";
+interface Instance
+  extends Dialogic.DialogicalInstanceOptions<Dialogic.PassThroughOptions> {}
 
-interface Instance extends Dialogic.DialogicalInstanceOptions{}
-
-export const Instance: FunctionComponent<Dialogic.DialogicalInstanceOptions> = props => {
+export const Instance: FunctionComponent<Dialogic.DialogicalInstanceOptions<
+  Dialogic.PassThroughOptions
+>> = props => {
   const domElementRef = useRef();
   const className = props.dialogicOptions.className;
-  const Component = props.dialogicOptions.component;
+  const Component = props.dialogicOptions.component as FunctionComponent<
+    Dialogic.PassThroughOptions
+  >;
 
   const domElementCb = useCallback(node => {
     if (node !== null) {
@@ -16,7 +20,9 @@ export const Instance: FunctionComponent<Dialogic.DialogicalInstanceOptions> = p
     }
   }, []);
 
-  const dispatchTransition = (dispatchFn: Dialogic.DialogicalInstanceDispatchFn) => {    
+  const dispatchTransition = (
+    dispatchFn: Dialogic.DialogicalInstanceDispatchFn,
+  ) => {
     const domElement = domElementRef.current;
     if (domElement === undefined) {
       return;
@@ -24,8 +30,8 @@ export const Instance: FunctionComponent<Dialogic.DialogicalInstanceOptions> = p
     dispatchFn({
       detail: {
         identityOptions: props.identityOptions,
-        domElement
-      }
+        domElement,
+      },
     });
   };
 
@@ -42,15 +48,8 @@ export const Instance: FunctionComponent<Dialogic.DialogicalInstanceOptions> = p
   };
 
   return (
-    <div
-      ref={domElementCb}
-      className={className}
-    >
-      <Component
-        {...props.passThroughOptions}
-        show={show}
-        hide={hide}
-      />
+    <div ref={domElementCb} className={className}>
+      <Component {...props.passThroughOptions} show={show} hide={hide} />
     </div>
   );
 };

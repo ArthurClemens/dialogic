@@ -1,7 +1,10 @@
 import React from 'react';
 
-export const SaveConfirmation = () => (
-  <div className="notification-content">E-mail address saved</div>
+export type TSaveConfirmation = {
+  content: string;
+};
+export const SaveConfirmation = (props: TSaveConfirmation) => (
+  <div className="notification-content">{props.content}</div>
 );
 
 export const saveConfirmationProps = {
@@ -29,4 +32,5 @@ export const saveConfirmationProps = {
       };
     },
   },
+  content: 'E-mail address saved',
 };

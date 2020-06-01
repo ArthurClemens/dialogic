@@ -1,16 +1,21 @@
-import React, { FunctionComponent } from "react";
-import { DialogicTests } from "../..";
+import React from 'react';
+import { DialogicTests } from '../..';
 
-type ButtonsProps = {
-  showFn: DialogicTests.showFn;
-  hideFn: DialogicTests.hideFn;
+type ButtonsProps<T> = {
+  showFn: DialogicTests.showFn<T>;
+  hideFn: DialogicTests.hideFn<T>;
   name?: string;
   id?: string;
   spawn?: string;
-}
+};
 
-export const Buttons: FunctionComponent<ButtonsProps> = props => {
-  const genName = props.name || `${props.id ? `id${props.id}` : ''}${props.spawn ? `spawn${props.spawn}` : ''}` || "default";
+export const Buttons = <T,>(props: ButtonsProps<T>) => {
+  const genName =
+    props.name ||
+    `${props.id ? `id${props.id}` : ''}${
+      props.spawn ? `spawn${props.spawn}` : ''
+    }` ||
+    'default';
   return (
     <div className="buttons">
       {props.showFn && (

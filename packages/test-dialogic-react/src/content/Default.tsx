@@ -1,12 +1,18 @@
-import React, { FunctionComponent } from "react"
-import { Dialogic } from "dialogic";
+import React from 'react';
 
-type Default = FunctionComponent<Dialogic.ContentComponentOptions>;
+type TDefault = {
+  contentId: string;
+  title: string;
+  className: string;
+  hide: () => void;
+};
 
-export const Default: FunctionComponent<Dialogic.ContentComponentOptions> = props => (
+export const Default = (props: TDefault) => (
   <div
     className={props.className}
-    data-test-id={`content-default${props.contentId ? `-${props.contentId}` : ''}`}
+    data-test-id={`content-default${
+      props.contentId ? `-${props.contentId}` : ''
+    }`}
   >
     <h2>{props.title}</h2>
     <button

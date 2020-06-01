@@ -11,17 +11,17 @@ export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
     deps = [],
     beforeShow = () => null,
     beforeHide = () => null,
-    props = {} as T & Dialogic.Options,
+    props = {} as T & Dialogic.Options<T>,
   } = allProps;
 
   const showInstance = () => {
     beforeShow();
-    instance.show(props);
+    instance.show<T>(props);
   };
 
   const hideInstance = () => {
     beforeHide();
-    instance.hide(props);
+    instance.hide<T>(props);
   };
 
   useEffect(() => {
@@ -60,13 +60,13 @@ export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
  * `useDialogic` with `instance` preset to `dialog`.
  */
 export const useDialog = <T,>(props: UseDialogicInstanceProps<T>) =>
-  useDialogic({ ...props, instance: dialog });
+  useDialogic<T>({ ...props, instance: dialog });
 
 /**
  * `useDialogic` with `instance` preset to `notification`.
  */
 export const useNotification = <T,>(props: UseDialogicInstanceProps<T>) =>
-  useDialogic({ ...props, instance: notification });
+  useDialogic<T>({ ...props, instance: notification });
 
 /**
  * Helper component that wraps `useDialogic` to use in JSX syntax.
@@ -74,7 +74,7 @@ export const useNotification = <T,>(props: UseDialogicInstanceProps<T>) =>
 export const UseDialogic = <T,>(
   props: PropsWithChildren<UseDialogicInstanceProps<T>>,
 ) => {
-  useDialogic(props);
+  useDialogic<T>(props);
   return null;
 };
 

@@ -1,20 +1,19 @@
+import m, { Component, ClosureComponent } from 'mithril';
+import { Dialogic } from 'dialogic';
 
-import m, { Component } from "mithril";
-import { Dialogic } from "dialogic";
-
-interface Instance extends Dialogic.DialogicalInstanceOptions{}
-
-type InstanceFn = ({ attrs } : { attrs: Dialogic.DialogicalInstanceOptions }) => Component<Dialogic.DialogicalInstanceOptions>;
-
-export const Instance: InstanceFn = ({ attrs: componentAttrs }) => {
+export const Instance: ClosureComponent<Dialogic.DialogicalInstanceOptions<
+  Dialogic.PassThroughOptions
+>> = ({ attrs: componentAttrs }) => {
   let domElement: HTMLElement;
 
-  const dispatchTransition = (dispatchFn: Dialogic.DialogicalInstanceDispatchFn) => {
+  const dispatchTransition = (
+    dispatchFn: Dialogic.DialogicalInstanceDispatchFn,
+  ) => {
     dispatchFn({
       detail: {
         identityOptions: componentAttrs.identityOptions,
-        domElement
-      }
+        domElement,
+      },
     });
   };
 
@@ -35,17 +34,19 @@ export const Instance: InstanceFn = ({ attrs: componentAttrs }) => {
       domElement = vnode.dom as HTMLElement;
       onMount();
     },
-    view: ({ attrs }) => (
-      m("div",
+    view: ({ attrs }) => {
+      const component = attrs.dialogicOptions.component as Component<
+        Dialogic.PassThroughOptions
+      >;
+      return m(
+        'div',
         { className: attrs.dialogicOptions.className },
-        m(attrs.dialogicOptions.component,
-          {
-            ...attrs.passThroughOptions,
-            show,
-            hide,
-          }
-        )
-      )
-    )
+        m(component, {
+          ...attrs.passThroughOptions,
+          show,
+          hide,
+        }),
+      );
+    },
   };
 };

@@ -37,8 +37,8 @@ const Instance = props => {
         dispatchFn({
             detail: {
                 identityOptions: props.identityOptions,
-                domElement
-            }
+                domElement,
+            },
         });
     };
     const onMount = () => {
@@ -60,7 +60,7 @@ const Wrapper = props => {
     const nsOnHideInstance = onHideInstance(props.ns);
     const identityOptions = props.identityOptions || {};
     const filtered = filterCandidates(props.ns, selectors.getStore(), identityOptions);
-    return (React.createElement(React.Fragment, null, filtered.map(item => React.createElement(Instance, { key: item.key, identityOptions: item.identityOptions, dialogicOptions: item.dialogicOptions, passThroughOptions: item.passThroughOptions, onMount: nsOnInstanceMounted, onShow: nsOnShowInstance, onHide: nsOnHideInstance }))));
+    return (React.createElement(React.Fragment, null, filtered.map(item => (React.createElement(Instance, { key: item.key, identityOptions: item.identityOptions, dialogicOptions: item.dialogicOptions, passThroughOptions: item.passThroughOptions, onMount: nsOnInstanceMounted, onShow: nsOnShowInstance, onHide: nsOnHideInstance })))));
 };
 
 const useDialogicState = () => {

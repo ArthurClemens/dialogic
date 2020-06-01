@@ -151,15 +151,11 @@ When `queued` is `true` (which is the default for notifications), any further ca
 **Signature**
 
 ```typescript
-type Options = {
-  dialogic?: DialogicOptions; // see below
-} & PassThroughOptions;
+show: <T>(options: Options<T>, componentOptions?: T) => Promise<Item<T>>;
 
-type PassThroughOptions = {
-  [key:string]: any;
-}
-
-show: (options: Options, componentOptions?: PassThroughOptions) => Promise<Item>;
+type Dialogic.Options<T> = {
+  dialogic?: DialogicOptions<T>;
+} & T;
 ```
 
 
@@ -184,17 +180,12 @@ dialog.hide({
 **Signature**
 
 ```typescript
-type Options = {
-  dialogic?: DialogicOptions; // see below
-}
+hide: <T>(options?: Options<T>, componentOptions?: T) => Promise<Item<T>>;
 
-type PassThroughOptions = {
-  [key:string]: any;
-}
-
-hide: (options?: Options, componentOptions?: PassThroughOptions) => Promise<Item>;
+type Dialogic.Options<T> = {
+  dialogic?: DialogicOptions<T>;
+} & T;
 ```
-
 
 
 ### `dialogic` options
@@ -224,17 +215,19 @@ type IdentityOptions = {
   spawn?: string;
 }
 
-type DialogicOptions = {
+type DialogicOptions<T> = {
   className?: string;
   component?: any;
-  didHide?: ConfirmFn;
-  didShow?: ConfirmFn;
+  didHide?: ConfirmFn<T>;
+  didShow?: ConfirmFn<T>;
   domElement?: HTMLElement;
   queued?: boolean;
   styles?: TransitionStyles | TransitionStylesFn;
   timeout?: number;
   toggle?: boolean;
 } & IdentityOptions;
+
+type ConfirmFn<T> = (item: Item<T>) => void;
 ```
 
 For more type information, see [index.d.ts](https://github.com/ArthurClemens/dialogic/blob/development/packages/dialogic/index.d.ts).
@@ -467,7 +460,7 @@ dialog.hideAll({
 **Signature**
 
 ```typescript
-hideAll: (dialogicOptions?: DialogicOptions) => Promise<Item[]>;
+hideAll: (dialogicOptions?: DialogicOptions<unknown>) => Promise<Item<unknown>[]>;
 ```
 
 
@@ -490,7 +483,7 @@ dialog.resetAll({
 **Signature**
 
 ```typescript
-resetAll: (identityOptions?: IdentityOptions) => Promise<Item[]>;
+resetAll: (identityOptions?: IdentityOptions) => Promise<Item<unknown>[]>;
 ```
 
 
@@ -598,7 +591,7 @@ const exists = dialog.exists({
 **Signature**
 
 ```typescript
-exists: (identityOptions?: IdentityOptions) => boolean;
+exists: (identityOptions?: IdentityOptions) => boolean
 ```
 
 React: requires `useDialogicState`.
@@ -652,7 +645,7 @@ notification.pause({
 **Signature**
 
 ```typescript
-pause: (identityOptions?: IdentityOptions) => Promise<Item[]>;
+pause: (identityOptions?: IdentityOptions) => Promise<Item<unknown>[]>;
 ```
 
 
@@ -686,12 +679,13 @@ notification.resume({
 **Signature**
 
 ```typescript
+resume: (commandOptions?: CommandOptions) => Promise<Item<unknown>[]>;
+
+type CommandOptions = IdentityOptions & TimerResumeOptions;
+
 type TimerResumeOptions = {
   minimumDuration?: number;
 }
-type CommandOptions = IdentityOptions & TimerResumeOptions;
-
-resume: (commandOptions?: CommandOptions) => Promise<Item[]>;
 ```
 
 
@@ -715,7 +709,7 @@ notification.isPaused({
 **Signature**
 
 ```typescript
-isPaused: (identityOptions?: IdentityOptions) => boolean;
+isPaused: (identityOptions?: IdentityOptionsg) => boolean;
 ```
 
 React: requires `useDialogicState`.
@@ -743,7 +737,7 @@ const remaining = notification.getRemaining({
 getRemaining: (identityOptions?: IdentityOptions) => number | undefined;
 ```
 
-React: requires `useDialogicState`.
+React: requires [useDialogicState](./packages/dialogic-react/README.md#usedialogicstate).
 
 
 #### Getting updates on the remaining time
@@ -752,41 +746,18 @@ The `dialogic` module contains a helper function `remaining` that continuously r
 
 See the demos for an example.
 
-When using React, you can use the hook `useRemaining` (see below).
+When using React, you can use the hook [useRemaining](./packages/dialogic-react/README.md#useremaining).
 
 
 #### `useRemaining` 
 
-For React only.
+For React only. See: [useRemaining](./packages/dialogic-react/README.md#useremaining)
 
-Hook to fetch the current remaining time.
-
-```tsx
-import { notification, useRemaining } from "dialogic-react";
-
-const MyComponent = props => {
-  const [remainingSeconds] = useRemaining({ instance: notification, roundToSeconds: true });
-  // ...
-}
-```
 
 ### `useDialogicState` 
 
-For React only.
+For React only. See: [useDialogicState](./packages/dialogic-react/README.md#usedialogicstate)
 
-To retrieve the current state, hook `useDialogicState` should be called:
-
-```tsx
-import { dialog, useDialogicState } from "dialogic-react";
-
-const MyComponent = props => {
-  useDialogicState();
-
-  return (
-    <div>{dialog.getCount()}</div>
-  )
-}
-```
 
 ### React and dialog routes
 

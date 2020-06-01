@@ -7,7 +7,10 @@ import {
   useDialogicState,
 } from 'dialogic-react';
 import { RemainingLabel } from './RemainingLabel';
-import { NotificationComponent } from './NotificationComponent';
+import {
+  NotificationComponent,
+  TNotificationComponentProps,
+} from './NotificationComponent';
 
 import './styles.css';
 
@@ -27,7 +30,7 @@ const App = () => {
             <button
               className="ui button primary"
               onClick={() => {
-                notification.show({
+                notification.show<TNotificationComponentProps>({
                   dialogic: {
                     component: NotificationComponent,
                     className: 'notification',

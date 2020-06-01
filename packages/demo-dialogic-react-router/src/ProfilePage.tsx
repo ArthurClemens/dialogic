@@ -12,7 +12,7 @@ import {
   // UseDialog,
   useDialog,
 } from 'dialogic-react';
-import { saveConfirmationProps } from './SaveConfirmation';
+import { saveConfirmationProps, TSaveConfirmation } from './SaveConfirmation';
 
 export const ProfilePage = () => {
   const match = useRouteMatch();
@@ -37,7 +37,7 @@ export const ProfilePage = () => {
       onSave: (email: string) => {
         console.log('onSave:', email);
         history.push(dialogReturnPath);
-        notification.show(saveConfirmationProps);
+        notification.show<TSaveConfirmation>(saveConfirmationProps);
       },
       onCancel: () => {
         console.log('onCancel');
@@ -72,7 +72,7 @@ export const ProfilePage = () => {
             onSave: (email: string) => {
               console.log('onSave:', email);
               history.push(dialogReturnPath);
-              notification.show(saveConfirmationProps);
+              notification.show<TSaveConfirmation>(saveConfirmationProps);
             },
             onCancel: () => {
               console.log('onCancel');

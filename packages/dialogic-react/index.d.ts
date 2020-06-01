@@ -66,7 +66,7 @@ export type UseDialogicProps<T> = {
   /**
    * Props to pass to the instance.
    */
-  props?: T & Dialogic.Options;
+  props?: T & Dialogic.Options<T>;
 
   /**
    * Reevaluates condition whenever one of the passed values changes.

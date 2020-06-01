@@ -35,10 +35,10 @@ const store = {
       /**
        * Add an item to the end of the list.
        */
-      add: (ns: string, item: Dialogic.Item) => {
+      add: (ns: string, item: Dialogic.Item<unknown>) => {
         update((state: Dialogic.State) => {
           const items = state.store[ns] || [];
-          state.store[ns] = [...items, item];
+          state.store[ns] = [...items, item as Dialogic.Item<unknown>];
           if (item.timer) {
             // When the timer state updates, refresh the store so that UI can pick up the change
             item.timer.states.map(() => store.actions(update).refresh());
@@ -62,7 +62,7 @@ const store = {
       /**
        * Replaces the first item with a match on `id` with a newItem.
        */
-      replace: (ns: string, id: string, newItem: Dialogic.Item) => {
+      replace: (ns: string, id: string, newItem: Dialogic.Item<unknown>) => {
         update((state: Dialogic.State) => {
           const items = state.store[ns] || [];
           if (items) {
@@ -89,7 +89,7 @@ const store = {
       /**
        * Replaces all items within a namespace.
        */
-      store: (ns: string, newItems: Dialogic.Item[]) => {
+      store: (ns: string, newItems: Dialogic.Item<unknown>[]) => {
         update((state: Dialogic.State) => {
           state.store[ns] = [...newItems];
           return state;
@@ -113,11 +113,13 @@ const store = {
         return state.store;
       },
 
-      find: (ns: string, identityOptions: Dialogic.IdentityOptions) => {
+      find: <T>(ns: string, identityOptions: Dialogic.IdentityOptions) => {
         const state = states();
         const items = state.store[ns] || [];
         const id = createId(identityOptions, ns);
-        const item = items.find((item: Dialogic.Item) => item.id === id);
+        const item = items.find(
+          (item: Dialogic.Item<unknown>) => item.id === id,
+        ) as Dialogic.Item<T>;
         return item ? { just: item } : { nothing: undefined };
       },
 

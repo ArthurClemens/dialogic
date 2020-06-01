@@ -1,25 +1,33 @@
-import m, { Component } from "mithril"
-import { Dialogic } from "dialogic";
+import m, { Component } from 'mithril';
 
-type Default = Component<Dialogic.ContentComponentOptions>;
+type TDefault = {
+  contentId: string;
+  title: string;
+  className: string;
+  hide: () => void;
+};
 
-export const Default: Default = {
+export const Default: Component<TDefault> = {
   view: ({ attrs }) =>
-    m("div",
+    m(
+      'div',
       {
         className: attrs.className,
-        "data-test-id": `content-default${attrs.contentId ? `-${attrs.contentId}` : ''}`
+        'data-test-id': `content-default${
+          attrs.contentId ? `-${attrs.contentId}` : ''
+        }`,
       },
       [
-        m("h2", attrs.title),
-        m("button",
+        m('h2', attrs.title),
+        m(
+          'button',
           {
-            className: "button",
+            className: 'button',
             onclick: () => attrs.hide(),
-            "data-test-id": "button-hide-content",
+            'data-test-id': 'button-hide-content',
           },
-          "Hide from component"
-        )
-      ]
-    )
+          'Hide from component',
+        ),
+      ],
+    ),
 };
