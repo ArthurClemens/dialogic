@@ -2,7 +2,7 @@
   "name": "demo-dialogic-react-router",
   "private": true,
   "description": "Dialogic for React demo with React Router",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
@@ -16,7 +16,7 @@
     "github": "npm run build && node scripts/github.js"
   },
   "dependencies": {
-    "dialogic-react": "^0.7.1",
+    "dialogic-react": "^0.8.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0"
@@ -25,7 +25,7 @@
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
-    "dialogic": "^0.7.1",
+    "dialogic": "^0.8.0",
     "http-server": "^0.12.3",
     "npm-run-all": "^4.1.5",
     "start-server-and-test": "^1.11.0"
