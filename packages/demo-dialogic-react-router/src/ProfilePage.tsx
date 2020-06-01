@@ -25,7 +25,7 @@ export const ProfilePage = () => {
   const matchDialogPath = useRouteMatch(dialogPath);
 
   useDialog<EditProfileDialogProps>({
-    show: matchDialogPath ? matchDialogPath.isExact : false,
+    isShow: matchDialogPath ? matchDialogPath.isExact : false,
     props: {
       dialogic: {
         component: EditProfileDialog,
@@ -60,7 +60,7 @@ export const ProfilePage = () => {
       </div>
       {/* <Route path={dialogPath}>
         <UseDialog<EditProfileDialogProps>
-          show={matchDialogPath ? matchDialogPath.isExact : false}
+          isShow={matchDialogPath ? matchDialogPath.isExact : false}
           beforeHide={() => console.log('before hide')}
           props={{
             dialogic: {

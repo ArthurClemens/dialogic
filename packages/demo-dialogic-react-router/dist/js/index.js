@@ -1265,6 +1265,11 @@ var Instance = function Instance(props) {
   var domElementRef = Object(react__WEBPACK_IMPORTED_MODULE_5__["useRef"])();
   var className = props.dialogicOptions.className;
   var Component = props.dialogicOptions.component;
+
+  if (!Component) {
+    throw 'Component missing in dialogic options.';
+  }
+
   var domElementCb = Object(react__WEBPACK_IMPORTED_MODULE_5__["useCallback"])(function (node) {
     if (node !== null) {
       domElementRef.current = node;
@@ -1360,8 +1365,8 @@ var Dialogical = function Dialogical(type) {
 };
 
 var useDialogic = function useDialogic(allProps) {
-  var show = allProps.show,
-      hide = allProps.hide,
+  var isShow = allProps.isShow,
+      isHide = allProps.isHide,
       instance = allProps.instance,
       _allProps$deps = allProps.deps,
       deps = _allProps$deps === void 0 ? [] : _allProps$deps,
@@ -1387,28 +1392,29 @@ var useDialogic = function useDialogic(allProps) {
   };
 
   Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
-    return function () {
-      hideInstance();
-    }; // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
-    if (show !== undefined) {
-      if (show) {
+    if (isShow !== undefined) {
+      if (isShow) {
         showInstance();
       } else {
         hideInstance();
       }
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
 
-  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [show]));
+    return function () {
+      hideInstance();
+    }; // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [isShow]));
   Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
-    if (hide !== undefined) {
-      if (hide) {
+    if (isHide !== undefined) {
+      if (isHide) {
         hideInstance();
       }
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
 
-  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [hide]));
+    return function () {
+      hideInstance();
+    }; // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [isHide]));
   return {
     show: showInstance,
     hide: hideInstance
@@ -35559,7 +35565,7 @@ const ProfilePage = () => {
     // console.log('useRouteMatch(dialogPath)', useRouteMatch(dialogPath));
     const matchDialogPath = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useRouteMatch"])(dialogPath);
     Object(dialogic_react__WEBPACK_IMPORTED_MODULE_4__["useDialog"])({
-        show: matchDialogPath ? matchDialogPath.isExact : false,
+        isShow: matchDialogPath ? matchDialogPath.isExact : false,
         props: {
             dialogic: {
                 component: _EditProfileDialog__WEBPACK_IMPORTED_MODULE_3__["EditProfileDialog"],
@@ -35604,7 +35610,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
-const SaveConfirmation = () => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "notification-content" }, "E-mail address saved"));
+const SaveConfirmation = (props) => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "notification-content" }, props.content));
 const saveConfirmationProps = {
     dialogic: {
         component: SaveConfirmation,
@@ -35629,6 +35635,7 @@ const saveConfirmationProps = {
             };
         },
     },
+    content: 'E-mail address saved',
 };
 
 
