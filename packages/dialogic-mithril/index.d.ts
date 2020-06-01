@@ -1,7 +1,7 @@
 import { Component } from 'mithril';
 import { dialog, notification, Dialogic } from 'dialogic';
 
-export { dialog, notification };
+export { dialog, notification, Dialogic };
 
 interface Dialog extends Dialogic.ComponentOptions {}
 export const Dialog: Component<Dialogic.ComponentOptions>;

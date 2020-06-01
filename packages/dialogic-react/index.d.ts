@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { dialog, notification, Dialogic } from 'dialogic';
 
-export { dialog, notification };
+export { dialog, notification, Dialogic };
 
 interface Dialog extends Dialogic.ComponentOptions {}
 export const Dialog: (props: Dialogic.ComponentOptions) => JSX.Element;
