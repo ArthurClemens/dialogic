@@ -219,7 +219,7 @@ const MyComponent = () => {
   const dialogPath = '/some-path';
 
   useDialog({
-    show: window.location.pathname === dialogPath,
+    isShow: window.location.pathname === dialogPath,
     props: {
       dialogic: {
         component: MyDialog,
@@ -245,7 +245,7 @@ const dialogPath = '/some-path';
 const content = 'Some async loaded content';
 
 useDialog<TDialogProps>({
-  show: window.location.pathname === dialogPath && !!content,
+  isShow: window.location.pathname === dialogPath && !!content,
   deps: [content],
   props: {
     dialogic: {
@@ -265,7 +265,7 @@ useDialog<TDialogProps>({
 
 | **Name**     | **Type**               | **Required** | **Description**                                                                                                                                                                                            | **Default value** |
 | ------------ | ---------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `show`       | `boolean`              | Yes          | A boolean value when to show the dialog.                                                                                                                                                                   | None              |
+| `isShow`     | `boolean`              | Yes          | A boolean value when to show the dialog.                                                                                                                                                                   | None              |
 | `deps`       | `React.DependencyList` | No           | Update the hook with these deps. Use this when the instance should appear conditionally, for instance only when content exists. Can be omitted when all content is static, so no re-rendering takes place. | `[]`              |
 | `props`      | `object`               | No           | Props to pass to the dialog.                                                                                                                                                                               | None              |
 | `beforeShow` | `() => void`           | No           | Function called just before instance.show() is called. This moment could be used to store the current scroll position.                                                                                     | None              |
@@ -319,7 +319,7 @@ All options listed above, plus:
 
 | **Name** | **Type**  | **Required** | **Description**                                                                                   | **Default value** |
 | -------- | --------- | ------------ | ------------------------------------------------------------------------------------------------- | ----------------- |
-| `hide`   | `boolean` | No           | Only for directed use. A boolean value when to hide the dialog. Can be used together with `deps`. | None              |
+| `isHide` | `boolean` | No           | Only for directed use. A boolean value when to hide the dialog. Can be used together with `deps`. | None              |
 
 
 ##### All hooks
@@ -343,7 +343,7 @@ const dialogPath = '/profile/:name';
 const matchDialogPath = useRouteMatch(dialogPath);
 
 useDialog({
-  show: !!matchDialogPath,
+  isShow: !!matchDialogPath,
   ...
 });
 ```
@@ -352,7 +352,7 @@ To only show the dialog on exact matches:
 
 ```js
 useDialog({
-  show: matchDialogPath ? matchDialogPath.isExact : false,
+  isShow: matchDialogPath ? matchDialogPath.isExact : false,
   ...
 });
 ```

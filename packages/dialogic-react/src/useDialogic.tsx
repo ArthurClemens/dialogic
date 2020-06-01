@@ -5,8 +5,8 @@ import { UseDialogicProps, UseDialogicInstanceProps } from '..';
 
 export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
   const {
-    show,
-    hide,
+    isShow,
+    isHide,
     instance,
     deps = [],
     beforeShow = () => null,
@@ -25,8 +25,8 @@ export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
   };
 
   useEffect(() => {
-    if (show !== undefined) {
-      if (show) {
+    if (isShow !== undefined) {
+      if (isShow) {
         showInstance();
       } else {
         hideInstance();
@@ -36,11 +36,11 @@ export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
       hideInstance();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...deps, show]);
+  }, [...deps, isShow]);
 
   useEffect(() => {
-    if (hide !== undefined) {
-      if (hide) {
+    if (isHide !== undefined) {
+      if (isHide) {
         hideInstance();
       }
     }
@@ -48,7 +48,7 @@ export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
       hideInstance();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...deps, hide]);
+  }, [...deps, isHide]);
 
   return {
     show: showInstance,

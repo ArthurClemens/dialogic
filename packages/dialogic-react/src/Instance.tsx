@@ -12,6 +12,9 @@ export const Instance: FunctionComponent<Dialogic.DialogicalInstanceOptions<
   const Component = props.dialogicOptions.component as FunctionComponent<
     Dialogic.PassThroughOptions
   >;
+  if (!Component) {
+    throw 'Component missing in dialogic options.';
+  }
 
   const domElementCb = useCallback(node => {
     if (node !== null) {

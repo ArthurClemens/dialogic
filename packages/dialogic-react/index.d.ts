@@ -56,17 +56,17 @@ export type UseDialogicProps<T> = {
   /**
    * Condition when the instance should be shown.
    */
-  show?: boolean;
+  isShow?: boolean;
 
   /**
    * For directed use only. Condition when the instance should be hidden.
    */
-  hide?: boolean;
+  isHide?: boolean;
 
   /**
    * Props to pass to the instance.
    */
-  props?: T & Dialogic.Options<T>;
+  props?: Dialogic.Options<T>;
 
   /**
    * Reevaluates condition whenever one of the passed values changes.

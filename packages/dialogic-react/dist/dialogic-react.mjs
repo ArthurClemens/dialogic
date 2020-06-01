@@ -23,6 +23,9 @@ const Instance = props => {
     const domElementRef = useRef();
     const className = props.dialogicOptions.className;
     const Component = props.dialogicOptions.component;
+    if (!Component) {
+        throw 'Component missing in dialogic options.';
+    }
     const domElementCb = useCallback(node => {
         if (node !== null) {
             domElementRef.current = node;
@@ -89,7 +92,7 @@ const Dialogical = type => props => {
 };
 
 const useDialogic = (allProps) => {
-    const { show, hide, instance, deps = [], beforeShow = () => null, beforeHide = () => null, props = {}, } = allProps;
+    const { isShow, isHide, instance, deps = [], beforeShow = () => null, beforeHide = () => null, props = {}, } = allProps;
     const showInstance = () => {
         beforeShow();
         instance.show(props);
@@ -99,8 +102,8 @@ const useDialogic = (allProps) => {
         instance.hide(props);
     };
     useEffect(() => {
-        if (show !== undefined) {
-            if (show) {
+        if (isShow !== undefined) {
+            if (isShow) {
                 showInstance();
             }
             else {
@@ -111,10 +114,10 @@ const useDialogic = (allProps) => {
             hideInstance();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [...deps, show]);
+    }, [...deps, isShow]);
     useEffect(() => {
-        if (hide !== undefined) {
-            if (hide) {
+        if (isHide !== undefined) {
+            if (isHide) {
                 hideInstance();
             }
         }
@@ -122,7 +125,7 @@ const useDialogic = (allProps) => {
             hideInstance();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [...deps, hide]);
+    }, [...deps, isHide]);
     return {
         show: showInstance,
         hide: hideInstance,

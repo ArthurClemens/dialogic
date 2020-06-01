@@ -38,6 +38,9 @@ export const Instance: ClosureComponent<Dialogic.DialogicalInstanceOptions<
       const component = attrs.dialogicOptions.component as Component<
         Dialogic.PassThroughOptions
       >;
+      if (!component) {
+        throw 'Component missing in dialogic options.';
+      }
       return m(
         'div',
         { className: attrs.dialogicOptions.className },
