@@ -91,15 +91,33 @@ const Dialogical = type => props => {
     return React.createElement(Wrapper, { identityOptions: identityOptions, ns: type.ns });
 };
 
+let useDialogicCounter = 0;
 const useDialogic = (allProps) => {
     const { isShow, isHide, instance, deps = [], beforeShow = () => null, beforeHide = () => null, props = {}, } = allProps;
+    // Use dialogic id if not set
+    const [id] = useState(useDialogicCounter++);
+    const augProps = {
+        ...props,
+        ...(props.dialogic
+            ? {
+                dialogic: {
+                    ...props.dialogic,
+                    id: props.dialogic.id || id,
+                },
+            }
+            : {
+                dialogic: {
+                    id,
+                },
+            }),
+    };
     const showInstance = () => {
         beforeShow();
-        instance.show(props);
+        instance.show(augProps);
     };
     const hideInstance = () => {
         beforeHide();
-        instance.hide(props);
+        instance.hide(augProps);
     };
     useEffect(() => {
         if (isShow !== undefined) {
