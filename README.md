@@ -145,7 +145,8 @@ dialog.show({
 })
 ```
 
-When `queued` is `true` (which is the default for notifications), any further call to `show` will queue the item and it will be displayed when the current item has transitioned to hidden.
+* When `queued` is `true` (which is the default for notifications), any further call to `show` will queue the item and it will be displayed when the current item has transitioned to hidden.
+* When an instance already exists, `show` replaces the content.
 
 
 **Signature**

@@ -20,8 +20,6 @@ export const ProfilePage = () => {
   const dialogPath = `${match.url}/edit`;
   const dialogReturnPath = match.url;
 
-  // console.log('useRouteMatch(dialogPath)', useRouteMatch(dialogPath));
-
   const matchDialogPath = useRouteMatch(dialogPath);
 
   useDialog<EditProfileDialogProps>({
@@ -52,10 +50,10 @@ export const ProfilePage = () => {
       <CurrentPathBadge />
       <div className="buttons">
         <Link className="button" to="/">
-          Go to home
+          Go to Home
         </Link>
         <Link className="button is-link" to={dialogPath}>
-          Edit profile
+          Edit Profile
         </Link>
       </div>
       {/* <Route path={dialogPath}>
