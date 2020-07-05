@@ -1,10 +1,14 @@
-import m, { Component } from "mithril";
+import m, { Component } from 'mithril';
 
 type RemainingProps = {
   getRemaining: () => number | undefined;
-}
+};
 
-type RemainingFn = ({ attrs } : { attrs: RemainingProps }) => Component<RemainingProps>;
+type RemainingFn = ({
+  attrs,
+}: {
+  attrs: RemainingProps;
+}) => Component<RemainingProps>;
 
 export const Remaining: RemainingFn = ({ attrs }) => {
   let displayValue: number | undefined = 0;
@@ -23,17 +27,17 @@ export const Remaining: RemainingFn = ({ attrs }) => {
     }
     reqId = window.requestAnimationFrame(update);
   };
-  
+
   return {
-    oncreate: () => reqId = window.requestAnimationFrame(update),
+    oncreate: () => (reqId = window.requestAnimationFrame(update)),
     onremove: () => window.cancelAnimationFrame(reqId),
-    view: () => 
-      m("div",
-        { "data-test-id": "remaining" },
-        [
-          m("span", "Remaining: "),
-          m("span[data-test-id=remaining-value]", displayValue === undefined ? "undefined" : displayValue.toString()),
-        ]
-      )
-  }
+    view: () =>
+      m('div', { 'data-test-id': 'remaining' }, [
+        m('span', 'Remaining: '),
+        m(
+          'span[data-test-id=remaining-value]',
+          displayValue === undefined ? 'undefined' : displayValue.toString(),
+        ),
+      ]),
+  };
 };

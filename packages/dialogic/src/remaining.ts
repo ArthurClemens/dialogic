@@ -3,7 +3,7 @@
  * (which is utilized when setting `timeout`).
  */
 
-import { Dialogic } from "../index";
+import { Dialogic } from '../index';
 
 export const remaining = (props: Dialogic.RemainingProps) => {
   let displayValue: number | undefined = undefined;
@@ -13,9 +13,10 @@ export const remaining = (props: Dialogic.RemainingProps) => {
   const update = () => {
     const remaining = props.instance.getRemaining();
     if (displayValue !== remaining) {
-      displayValue = remaining === undefined
-        ? remaining
-        : props.roundToSeconds
+      displayValue =
+        remaining === undefined
+          ? remaining
+          : props.roundToSeconds
           ? Math.round(Math.max(remaining, 0) / 1000)
           : Math.max(remaining, 0);
     }

@@ -11,7 +11,8 @@
     "build": "npm run clean && npm run build:svelte && npm run size",
     "build:svelte": "MODULE=1 MODULE_NAME=dialogicSvelte ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.svelte.js",
     "size": "size-limit",
-    "size:why": "size-limit --why"
+    "size:why": "size-limit --why",
+    "prettier": "prettier --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\""
   },
   "size-limit": [
     {

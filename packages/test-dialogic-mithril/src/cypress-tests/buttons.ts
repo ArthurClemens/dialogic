@@ -1,5 +1,5 @@
-import m from "mithril";
-import { DialogicTests } from "../..";
+import m from 'mithril';
+import { DialogicTests } from '../..';
 
 type ButtonsProps = {
   showFn: DialogicTests.showFn;
@@ -7,29 +7,33 @@ type ButtonsProps = {
   name?: string;
   id?: string;
   spawn?: string;
-}
+};
 
 export const buttons = ({ showFn, hideFn, id, spawn, name }: ButtonsProps) => {
-  const genName = name || `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}` || "default";
-  return m("div",
-    { className: "buttons" },
-    [
-      showFn && m("button", 
+  const genName =
+    name ||
+    `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}` ||
+    'default';
+  return m('div', { className: 'buttons' }, [
+    showFn &&
+      m(
+        'button',
         {
-          className: "button primary",
+          className: 'button primary',
           onclick: showFn,
-          "data-test-id": `button-show-${genName}`
+          'data-test-id': `button-show-${genName}`,
         },
-        `Show ${genName}`
+        `Show ${genName}`,
       ),
-      hideFn && m("button", 
+    hideFn &&
+      m(
+        'button',
         {
-          className: "button",
+          className: 'button',
           onclick: hideFn,
-          "data-test-id": `button-hide-${genName}`
+          'data-test-id': `button-hide-${genName}`,
         },
-        `Hide ${genName}`
+        `Hide ${genName}`,
       ),
-    ]
-  );
+  ]);
 };

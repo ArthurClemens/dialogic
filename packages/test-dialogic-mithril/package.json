@@ -17,7 +17,8 @@
     "test:cypress": "npm run build && start-server-and-test serve 8080 cypress:run",
     "test:cypress:i": "npm run build && npm-run-all --parallel serve cypress:open",
     "cypress:run": "../../node_modules/cypress/bin/cypress run",
-    "cypress:open": "../../node_modules/cypress/bin/cypress open"
+    "cypress:open": "../../node_modules/cypress/bin/cypress open",
+    "prettier": "prettier --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\""
   },
   "dependencies": {
     "dialogic": "^0.8.1",
@@ -25,8 +26,8 @@
     "mithril": "^2.0.4"
   },
   "devDependencies": {
-    "@types/mithril": "^2.0.2",
-    "http-server": "^0.12.1",
+    "@types/mithril": "^2.0.3",
+    "http-server": "^0.12.3",
     "npm-run-all": "^4.1.5",
     "start-server-and-test": "^1.11.0"
   }

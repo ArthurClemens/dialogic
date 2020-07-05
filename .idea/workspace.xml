@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="da6279d9-b77e-4675-9419-3fed3e085911" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/dist/css/app.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/dist/css/app.css.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/dist/css/app.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/dist/css/app.css.map.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/dist/js/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/dist/js/index.js.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/dist/js/index.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/dist/js/index.js.map.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-react/dist/css/app.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-react/dist/css/app.css.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-react/dist/css/app.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-react/dist/css/app.css.map.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-react/dist/js/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-react/dist/js/index.js.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-react/dist/js/index.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-react/dist/js/index.js.map.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-svelte/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic-svelte/public/public/imported.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic/ava.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/test-dialogic/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-mithril/dist/css/app.css.gz" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-mithril/dist/css/app.css.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-mithril/dist/css/app.css.map.gz" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-mithril/dist/css/app.css.map.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-mithril/dist/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-mithril/dist/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-mithril/dist/js/index.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-mithril/dist/js/index.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-mithril/dist/js/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-mithril/dist/js/index.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-mithril/dist/js/index.js.map.gz" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-mithril/dist/js/index.js.map.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/css/app.css.gz" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/css/app.css.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/css/app.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/css/app.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/css/app.css.map.gz" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/css/app.css.map.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/js/index.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/js/index.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/js/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/js/index.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/js/index.js.map.gz" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-react-router/dist/js/index.js.map.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-react/dist/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-react/dist/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-react/dist/js/index.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-react/dist/js/index.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-react/dist/js/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-react/dist/js/index.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-react/dist/js/index.js.map.gz" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-react/dist/js/index.js.map.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-svelte/public/bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-svelte/public/bundle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-svelte/public/bundle.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-svelte/public/bundle.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/demo-dialogic-svelte/rollup.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/demo-dialogic-svelte/rollup.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-mithril/dist/dialogic-mithril.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-mithril/dist/dialogic-mithril.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-mithril/dist/dialogic-mithril.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-mithril/dist/dialogic-mithril.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-mithril/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-mithril/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-mithril/src/Dialogical.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-mithril/src/Dialogical.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-mithril/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-mithril/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-react/dist/dialogic-react.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-react/dist/dialogic-react.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-react/dist/dialogic-react.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-react/dist/dialogic-react.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-react/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-svelte/dist/dialogic-svelte.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-svelte/dist/dialogic-svelte.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-svelte/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-svelte/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-svelte/src/dialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-svelte/src/dialog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-svelte/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-svelte/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-svelte/src/instanceEvents.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-svelte/src/instanceEvents.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-svelte/src/notification.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-svelte/src/notification.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic-svelte/src/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic-svelte/src/store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic/dist/dialogic.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic/dist/dialogic.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic/dist/dialogic.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic/dist/dialogic.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic/src/dialog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic/src/dialog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic/src/notification.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic/src/notification.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic/src/remaining.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic/src/remaining.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/dialogic/src/state/timer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/dialogic/src/state/timer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogClassName.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogClassName.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogClassNameDelay.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogClassNameDelay.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogCount.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogCount.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogExists.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogExists.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogHideAll.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogHideAll.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogIds.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogIds.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogQueued.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogQueued.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogResetAll.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogResetAll.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogStyles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogStyles.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogTimeout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/DialogTimeout.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/LibBulmaDialog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/LibBulmaDialog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/LibMaterialIODialog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/LibMaterialIODialog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/NotificationCount.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/NotificationCount.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/NotificationPause.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/NotificationPause.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/NotificationTimeout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/NotificationTimeout.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/Remaining.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/Remaining.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/buttons.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/buttons.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/createFns.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/createFns.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/cypress-tests/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-mithril/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogClassName.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogClassName.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogClassNameDelay.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogClassNameDelay.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogCount.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogCount.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogExists.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogExists.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogHideAll.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogHideAll.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogIds.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogIds.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogQueued.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogQueued.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogResetAll.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogResetAll.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogTimeout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/DialogTimeout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/LibBulmaDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/LibBulmaDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/LibMaterialIODialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/LibMaterialIODialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/NotificationCount.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/NotificationCount.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/NotificationPause.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/NotificationPause.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/NotificationTimeout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/NotificationTimeout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/useAnimationFrame.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/useAnimationFrame.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/cypress-tests/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-react/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-react/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-svelte/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-svelte/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-svelte/public/bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-svelte/public/bundle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-svelte/public/bundle.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-svelte/public/bundle.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-svelte/rollup.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-svelte/rollup.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-svelte/src/cypress-tests/createFns.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-svelte/src/cypress-tests/createFns.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-svelte/src/cypress-tests/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-svelte/src/cypress-tests/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-svelte/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-svelte/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic-svelte/src/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic-svelte/src/routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic/test/_setup-browser-env.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic/test/_setup-browser-env.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic/test/dialog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic/test/dialog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic/test/generic.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic/test/generic.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic/test/notification.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic/test/notification.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/test-dialogic/test/timer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/test-dialogic/test/timer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/rollup.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/rollup.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/webpack.config.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" path="/usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="1eHXSoUCXyOPw4uxno24yYL1vJZ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="103" y="48" key="MergeDialog" timestamp="1593979578910">
+      <screen x="0" y="23" width="1680" height="985" />
+    </state>
+    <state x="103" y="48" key="MergeDialog/0.23.1680.985@0.23.1680.985" timestamp="1593979578910" />
+    <state x="147" y="173" width="1256" height="559" key="MultipleFileMergeDialog" timestamp="1593979585514">
+      <screen x="0" y="23" width="1680" height="985" />
+    </state>
+    <state x="147" y="173" width="1256" height="559" key="MultipleFileMergeDialog/0.23.1680.985@0.23.1680.985" timestamp="1593979585514" />
+  </component>
+</project>

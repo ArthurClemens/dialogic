@@ -1,55 +1,71 @@
-import m from "mithril";
-import { createFns } from "./createFns";
-import { Default } from "../content/Default";
-import { buttons } from "./buttons";
-import { dialog, Dialog } from "dialogic-mithril";
-import { Remaining } from "./Remaining";
+import m from 'mithril';
+import { createFns } from './createFns';
+import { Default } from '../content/Default';
+import { buttons } from './buttons';
+import { dialog, Dialog } from 'dialogic-mithril';
+import { Remaining } from './Remaining';
 
 export default () => {
   dialog.resetAll();
-  const fns1 = createFns({ instance: dialog, component: Default, className: "dialog", title: "Default", timeout: 2000 });
+  const fns1 = createFns({
+    instance: dialog,
+    component: Default,
+    className: 'dialog',
+    title: 'Default',
+    timeout: 2000,
+  });
 
   return {
     view: () => {
-      return m(".test", { key: new Date().getTime() }, [
-        m(".control",
-          { "data-test-id": "reset-all" }, 
-          m(".buttons", [
-            m("button", 
+      return m('.test', { key: new Date().getTime() }, [
+        m(
+          '.control',
+          { 'data-test-id': 'reset-all' },
+          m('.buttons', [
+            m(
+              'button',
               {
-                className: "button",
+                className: 'button',
                 onclick: () => dialog.pause(),
-                "data-test-id": "button-pause"
+                'data-test-id': 'button-pause',
               },
-              "Pause"
+              'Pause',
             ),
-            m("button", 
+            m(
+              'button',
               {
-                className: "button",
+                className: 'button',
                 onclick: () => dialog.resume(),
-                "data-test-id": "button-resume"
+                'data-test-id': 'button-resume',
               },
-              "Resume"
+              'Resume',
             ),
-            m("button", 
+            m(
+              'button',
               {
-                className: "button",
+                className: 'button',
                 onclick: () => dialog.resetAll(),
-                "data-test-id": "button-reset"
+                'data-test-id': 'button-reset',
               },
-              "Reset"
+              'Reset',
             ),
-          ])
+          ]),
         ),
-        m(".control", { "data-test-id": "is-paused" }, `Is paused: ${dialog.isPaused()}`),
-        m(".control", m(Remaining, { key: "DialogTimeout", getRemaining: dialog.getRemaining })),
-        m(".content", [
-          buttons({ ...fns1 }),
-        ]),
-        m(".spawn.default-spawn", 
-          m(Dialog)
+        m(
+          '.control',
+          { 'data-test-id': 'is-paused' },
+          `Is paused: ${dialog.isPaused()}`,
         ),
-      ])
-    }
-  }; 
+        m(
+          '.control',
+          m(Remaining, {
+            key: 'DialogTimeout',
+            getRemaining: dialog.getRemaining,
+          }),
+        ),
+        m('.content', [buttons({ ...fns1 })]),
+        m('.spawn.default-spawn', m(Dialog)),
+      ]);
+    },
+  };
 };
