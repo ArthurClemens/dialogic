@@ -27,6 +27,7 @@ export default {
       typescript({
         target,
       }),
+
     !isModule && terser(),
     cleanup({
       comments: 'none',
