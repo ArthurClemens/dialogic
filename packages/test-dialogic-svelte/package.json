@@ -2,7 +2,7 @@
   "name": "tests-dialogic-svelte",
   "private": true,
   "description": "Test Dialogic with Svelte",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
@@ -20,8 +20,8 @@
     "prettier": "prettier --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\""
   },
   "dependencies": {
-    "dialogic": "^0.8.1",
-    "dialogic-svelte": "^0.8.1",
+    "dialogic": "^0.8.2",
+    "dialogic-svelte": "^0.8.2",
     "svelte": "^3.21.0",
     "svelte-spa-router": "^2.1.0"
   },
