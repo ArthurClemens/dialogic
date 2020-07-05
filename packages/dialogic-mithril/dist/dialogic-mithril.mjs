@@ -44,6 +44,9 @@ const Instance = ({ attrs: componentAttrs }) => {
         },
         view: ({ attrs }) => {
             const component = attrs.dialogicOptions.component;
+            if (!component) {
+                throw 'Component missing in dialogic options.';
+            }
             return m('div', { className: attrs.dialogicOptions.className }, m(component, {
                 ...attrs.passThroughOptions,
                 show,
