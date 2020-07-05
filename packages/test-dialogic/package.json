@@ -8,20 +8,11 @@
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
     "test": "ava"
   },
-  "ava": {
-    "compileEnhancements": false,
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register",
-      "./test/_setup-browser-env.ts"
-    ]
-  },
   "dependencies": {
-    "ava": "^3.7.1",
+    "@ava/babel": "^1.0.1",
+    "ava": "^3.9.0",
     "browser-env": "^3.3.0",
     "dialogic": "^0.8.1",
-    "ts-node": "^8.9.0"
+    "ts-node": "^8.10.2"
   }
 }
