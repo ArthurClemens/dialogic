@@ -1,15 +1,15 @@
-import svelte from "rollup-plugin-svelte";
-import resolve from "rollup-plugin-node-resolve";
-import commonjs from "rollup-plugin-commonjs";
-import { terser } from "rollup-plugin-terser";
-import typescript from "rollup-plugin-typescript2";
-import postcss from "rollup-plugin-postcss";
+import svelte from 'rollup-plugin-svelte';
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import { terser } from 'rollup-plugin-terser';
+import typescript from '@rollup/plugin-typescript';
+import postcss from 'rollup-plugin-postcss';
 
 import {
   preprocess,
   createEnv,
-  readConfigFile
-} from "@pyoner/svelte-ts-preprocess";
+  readConfigFile,
+} from '@pyoner/svelte-ts-preprocess';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -19,37 +19,37 @@ const opts = {
   env,
   compilerOptions: {
     ...compilerOptions,
-    allowNonTsExtensions: true
-  }
+    allowNonTsExtensions: true,
+  },
 };
 
 // https://github.com/sveltejs/svelte/issues/3165
-const dedupe = importee => importee === "svelte" || importee.startsWith("svelte/");
+const dedupe = importee =>
+  importee === 'svelte' || importee.startsWith('svelte/');
 
 export default {
-  input: "src/main.ts",
+  input: 'src/main.ts',
   output: {
     sourcemap: true,
-    format: "iife",
-    name: "app",
-    file: "public/bundle.js"
+    format: 'iife',
+    name: 'app',
+    file: 'public/bundle.js',
   },
   plugins: [
-
     postcss({
-			plugins: [],
-			extract: "public/imported.css"
+      plugins: [],
+      extract: 'public/imported.css',
     }),
-    
+
     svelte({
       // enable run-time checks when not in production
       dev: !production,
       // we"ll extract any component CSS out into
       // a separate file — better for performance
       css: css => {
-        css.write("public/bundle.css");
+        css.write('public/bundle.css');
       },
-      preprocess: preprocess(opts)
+      preprocess: preprocess(opts),
     }),
 
     // If you have external dependencies installed from
@@ -59,15 +59,13 @@ export default {
     // https://github.com/rollup/rollup-plugin-commonjs
     resolve({
       browser: true,
-      dedupe
+      dedupe,
     }),
     commonjs(),
-    typescript({
-      abortOnError: false,
-    }),
+    typescript(),
 
     // If we"re building for production (npm run build
     // instead of npm run dev), minify
-    production && terser()
-  ]
+    production && terser(),
+  ],
 };

@@ -1,11 +1,16 @@
-import React from "react";
-import { createFns } from "./createFns";
-import { Default } from "../content/Default";
-import { Buttons } from "./Buttons";
-import { dialog, Dialog } from "dialogic-react";
+import React from 'react';
+import { createFns } from './createFns';
+import { Default } from '../content/Default';
+import { Buttons } from './Buttons';
+import { dialog, Dialog } from 'dialogic-react';
 
 export default () => {
-  const fns = createFns({ instance: dialog, component: Default, className: "dialog-delay", title: "DialogClassDelay" });
+  const fns = createFns({
+    instance: dialog,
+    component: Default,
+    className: 'dialog-delay',
+    title: 'DialogClassDelay',
+  });
 
   return (
     <div className="test">
@@ -13,6 +18,6 @@ export default () => {
       <div className="spawn default-spawn">
         <Dialog />
       </div>
-    </div> 
+    </div>
   );
 };

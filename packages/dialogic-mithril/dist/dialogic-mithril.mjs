@@ -77,7 +77,7 @@ const Wrapper = {
 
 const Dialogical = type => ({
     oncreate: ({ attrs }) => {
-        if (typeof attrs.onMount === "function") {
+        if (typeof attrs.onMount === 'function') {
             attrs.onMount();
         }
     },
@@ -90,13 +90,11 @@ const Dialogical = type => ({
             identityOptions,
             ns: type.ns,
         });
-    }
+    },
 });
 
 const Dialog = Dialogical(dialog);
 const Notification = Dialogical(notification);
-states.map(state => (m.redraw()
-// , console.log(state)
-));
+states.map(state => m.redraw());
 
 export { Dialog, Dialogical, Notification };

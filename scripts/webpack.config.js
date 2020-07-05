@@ -21,7 +21,7 @@ module.exports = {
   resolve: {
     // Make sure that libs are included only once
     alias: {
-      mithril$: path.resolve(baseDir, 'node_modules/mithril/mithril.js'),
+      mithril$: path.resolve(baseDir, 'node_modules/mithril/mithril.js'), // Note the exact match
       react: path.resolve(baseDir, 'node_modules/react'),
       'react-dom': path.resolve(baseDir, 'node_modules/react-dom'),
       'react-router-dom': path.resolve(

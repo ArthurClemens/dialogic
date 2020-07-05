@@ -1,10 +1,12 @@
-import React from "react";
-import { dialog, Dialog } from "dialogic-react";
+import React from 'react';
+import { dialog, Dialog } from 'dialogic-react';
 
 const DemoContent = () => (
   <div className="mdc-dialog__container">
     <div className="mdc-dialog__surface">
-      <h2 className="mdc-dialog__title" id="my-dialog-title">Dialog Title</h2>
+      <h2 className="mdc-dialog__title" id="my-dialog-title">
+        Dialog Title
+      </h2>
       <div className="mdc-dialog__content" id="my-dialog-content">
         Dialog body text goes here.
       </div>
@@ -29,20 +31,24 @@ const DemoContent = () => (
     </div>
   </div>
 );
-    
-const MaterialIODialogComponent = ({ isModal = false } : { isModal?: boolean }) => (
+
+const MaterialIODialogComponent = ({
+  isModal = false,
+}: {
+  isModal?: boolean;
+}) => (
   <div
     className="mdc-dialog mdc-dialog--open"
     role="alertdialog"
     aria-modal="true"
     aria-labelledby="my-dialog-title"
     aria-describedby="my-dialog-content"
-    >
-      <DemoContent />
-      <div
-        className="mdc-dialog__scrim"
-        onClick={() => !isModal && dialog.hide()}
-      />
+  >
+    <DemoContent />
+    <div
+      className="mdc-dialog__scrim"
+      onClick={() => !isModal && dialog.hide()}
+    />
   </div>
 );
 
@@ -52,23 +58,27 @@ export default () => (
       <div className="buttons">
         <button
           className="button"
-          onClick={() => dialog.show({
-            dialogic: {
-              component: () => <MaterialIODialogComponent />,
-              className: "dialog",
-            }
-          })}
+          onClick={() =>
+            dialog.show({
+              dialogic: {
+                component: () => <MaterialIODialogComponent />,
+                className: 'dialog',
+              },
+            })
+          }
         >
           Show dialog
         </button>
         <button
           className="button"
-          onClick={() => dialog.show({
-            dialogic: {
-              component: () => <MaterialIODialogComponent isModal />,
-              className: "dialog",
-            }
-          })}
+          onClick={() =>
+            dialog.show({
+              dialogic: {
+                component: () => <MaterialIODialogComponent isModal />,
+                className: 'dialog',
+              },
+            })
+          }
         >
           Show modal dialog
         </button>
@@ -77,5 +87,5 @@ export default () => (
     <div className="materialIO">
       <Dialog />
     </div>
-  </div> 
+  </div>
 );

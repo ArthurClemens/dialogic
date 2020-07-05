@@ -1,4 +1,4 @@
-import typescript from '@rollup/plugin-typescript';
+import typescript from 'rollup-plugin-typescript2';
 import fs from 'fs';
 import cleanup from 'rollup-plugin-cleanup';
 import { terser } from 'rollup-plugin-terser';
@@ -27,6 +27,7 @@ export default {
       typescript({
         target,
       }),
+
     !isModule && terser(),
     cleanup({
       comments: 'none',

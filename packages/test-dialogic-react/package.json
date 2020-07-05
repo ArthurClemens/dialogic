@@ -17,20 +17,21 @@
     "test:cypress": "npm run build && start-server-and-test serve 8080 cypress:run",
     "test:cypress:i": "npm run build && npm-run-all --parallel serve cypress:open",
     "cypress:run": "../../node_modules/cypress/bin/cypress run",
-    "cypress:open": "../../node_modules/cypress/bin/cypress open"
+    "cypress:open": "../../node_modules/cypress/bin/cypress open",
+    "prettier": "prettier --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\""
   },
   "dependencies": {
     "dialogic": "^0.8.1",
     "dialogic-react": "^0.8.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-router-dom": "5.1.2"
+    "react-router-dom": "5.2.0"
   },
   "devDependencies": {
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.6",
-    "@types/react-router-dom": "^5.1.4",
-    "http-server": "^0.12.1",
+    "@types/react": "^16.9.41",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5",
+    "http-server": "^0.12.3",
     "npm-run-all": "^4.1.5",
     "start-server-and-test": "^1.11.0"
   }
