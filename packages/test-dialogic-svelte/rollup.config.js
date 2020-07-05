@@ -62,9 +62,7 @@ export default {
       dedupe,
     }),
     commonjs(),
-    typescript({
-      abortOnError: false,
-    }),
+    typescript(),
 
     // If we"re building for production (npm run build
     // instead of npm run dev), minify

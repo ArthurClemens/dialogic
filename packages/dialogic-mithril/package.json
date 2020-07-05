@@ -12,7 +12,8 @@
     "build:module": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=1 MODULE_NAME=dialogicMithril ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js",
     "build:umd": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=0 MODULE_NAME=dialogicMithril ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js",
     "size": "size-limit",
-    "size:why": "size-limit --why"
+    "size:why": "size-limit --why",
+    "prettier": "prettier --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\""
   },
   "size-limit": [
     {

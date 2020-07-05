@@ -2,7 +2,9 @@
   "name": "dialogic-repo",
   "private": true,
   "scripts": {
-    "postinstall": "lerna bootstrap"
+    "postinstall": "lerna bootstrap",
+    "prettier": "lerna run prettier --stream --no-bail",
+    "build": "lerna run build --stream"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",

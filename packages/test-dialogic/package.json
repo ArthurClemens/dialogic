@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
-    "test": "ava"
+    "test": "ava",
+    "prettier": "prettier --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\""
   },
   "dependencies": {
     "@ava/babel": "^1.0.1",

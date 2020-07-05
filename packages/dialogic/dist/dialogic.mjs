@@ -270,13 +270,13 @@ const appendStartTimer = (state, callback, duration, updateState) => {
                 startTime: new Date().getTime(),
                 timerId: window.setTimeout(timeoutFn, duration),
                 remaining: duration,
-            })
+            }),
     };
 };
 const appendStopTimeout = (state) => {
     window.clearTimeout(state.timerId);
     return {
-        timerId: initialState.timerId
+        timerId: initialState.timerId,
     };
 };
 const appendStopTimer = (state) => {
@@ -288,7 +288,7 @@ const appendPauseTimer = (state) => {
     return {
         ...appendStopTimeout(state),
         isPaused: true,
-        remaining: getRemaining(state)
+        remaining: getRemaining(state),
     };
 };
 const appendResumeTimer = (state, minimumDuration) => {
@@ -303,7 +303,7 @@ const appendResumeTimer = (state, minimumDuration) => {
         timerId: window.setTimeout(state.timeoutFn, remaining),
     };
 };
-const getRemaining = (state) => (state.remaining === 0 || state.remaining === undefined)
+const getRemaining = (state) => state.remaining === 0 || state.remaining === undefined
     ? state.remaining
     : state.remaining - (new Date().getTime() - (state.startTime || 0));
 const Timer = () => {
@@ -326,7 +326,7 @@ const Timer = () => {
                         return {
                             ...state,
                             ...appendStopTimer(state),
-                            ...initialState
+                            ...initialState,
                         };
                     });
                 },
@@ -342,7 +342,7 @@ const Timer = () => {
                     update((state) => {
                         return {
                             ...state,
-                            ...(state.isPaused && appendResumeTimer(state, minimumDuration))
+                            ...(state.isPaused && appendResumeTimer(state, minimumDuration)),
                         };
                     });
                 },
@@ -377,9 +377,7 @@ const Timer = () => {
                 },
                 getRemaining: () => {
                     const state = states();
-                    return state.isPaused
-                        ? state.remaining
-                        : getRemaining(state);
+                    return state.isPaused ? state.remaining : getRemaining(state);
                 },
                 getResultPromise: () => {
                     const state = states();
@@ -398,7 +396,7 @@ const Timer = () => {
     const selectors = {
         ...timer.selectors(states),
     };
-    // states.map(state => 
+    // states.map(state =>
     //   console.log(JSON.stringify(state, null, 2))
     // );
     return {
@@ -713,9 +711,13 @@ const dialogical = ({ ns, queued, timeout, }) => {
     };
 };
 
-const dialog = dialogical({ ns: "dialog" });
+const dialog = dialogical({ ns: 'dialog' });
 
-const notification = dialogical({ ns: "notification", queued: true, timeout: 3000 });
+const notification = dialogical({
+    ns: 'notification',
+    queued: true,
+    timeout: 3000,
+});
 
 /**
  * Utility script that uses an animation frame to pass the current remaining value
@@ -728,11 +730,12 @@ const remaining = (props) => {
     const update = () => {
         const remaining = props.instance.getRemaining();
         if (displayValue !== remaining) {
-            displayValue = remaining === undefined
-                ? remaining
-                : props.roundToSeconds
-                    ? Math.round(Math.max(remaining, 0) / 1000)
-                    : Math.max(remaining, 0);
+            displayValue =
+                remaining === undefined
+                    ? remaining
+                    : props.roundToSeconds
+                        ? Math.round(Math.max(remaining, 0) / 1000)
+                        : Math.max(remaining, 0);
         }
         props.callback(displayValue);
         if (!props.instance.exists()) {

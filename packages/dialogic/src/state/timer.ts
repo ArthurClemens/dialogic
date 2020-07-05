@@ -1,5 +1,5 @@
-import Stream from "mithril/stream";
-import { Dialogic } from "../..";
+import Stream from 'mithril/stream';
+import { Dialogic } from '../..';
 
 type PatchFn = (state: Dialogic.TimerState) => Dialogic.TimerState;
 
@@ -15,7 +15,12 @@ const initialState = {
   timerId: undefined,
 };
 
-const appendStartTimer = (state: Dialogic.TimerState, callback: Dialogic.TimerCallback, duration: number, updateState: () => any) => {
+const appendStartTimer = (
+  state: Dialogic.TimerState,
+  callback: Dialogic.TimerCallback,
+  duration: number,
+  updateState: () => any,
+) => {
   const timeoutFn = () => {
     callback();
     state.onDone();
@@ -30,17 +35,17 @@ const appendStartTimer = (state: Dialogic.TimerState, callback: Dialogic.TimerCa
     ...(state.isPaused
       ? {}
       : {
-        startTime: new Date().getTime(),
-        timerId: window.setTimeout(timeoutFn, duration),
-        remaining: duration,
-      })
+          startTime: new Date().getTime(),
+          timerId: window.setTimeout(timeoutFn, duration),
+          remaining: duration,
+        }),
   };
 };
 
 const appendStopTimeout = (state: Dialogic.TimerState) => {
   window.clearTimeout(state.timerId);
   return {
-    timerId: initialState.timerId
+    timerId: initialState.timerId,
   };
 };
 
@@ -54,11 +59,14 @@ const appendPauseTimer = (state: Dialogic.TimerState) => {
   return {
     ...appendStopTimeout(state),
     isPaused: true,
-    remaining: getRemaining(state)
+    remaining: getRemaining(state),
   };
 };
 
-const appendResumeTimer = (state: Dialogic.TimerState, minimumDuration?: number) => {
+const appendResumeTimer = (
+  state: Dialogic.TimerState,
+  minimumDuration?: number,
+) => {
   window.clearTimeout(state.timerId);
   const remaining = minimumDuration
     ? Math.max(state.remaining || 0, minimumDuration)
@@ -71,8 +79,8 @@ const appendResumeTimer = (state: Dialogic.TimerState, minimumDuration?: number)
   };
 };
 
-const getRemaining = (state: Dialogic.TimerState) => 
-  (state.remaining === 0 || state.remaining === undefined)
+const getRemaining = (state: Dialogic.TimerState) =>
+  state.remaining === 0 || state.remaining === undefined
     ? state.remaining
     : state.remaining - (new Date().getTime() - (state.startTime || 0));
 
@@ -81,13 +89,14 @@ export const Timer = () => {
     initialState,
     actions: (update: Stream<PatchFn>) => {
       return {
-
         start: (callback: Dialogic.TimerCallback, duration: number) => {
           update((state: Dialogic.TimerState) => {
             return {
               ...state,
               ...appendStopTimeout(state),
-              ...appendStartTimer(state, callback, duration, () => timer.actions(update).done()),
+              ...appendStartTimer(state, callback, duration, () =>
+                timer.actions(update).done(),
+              ),
               ...(state.isPaused && appendPauseTimer(state)),
             };
           });
@@ -98,9 +107,9 @@ export const Timer = () => {
             return {
               ...state,
               ...appendStopTimer(state),
-              ...initialState
+              ...initialState,
             };
-          })
+          });
         },
 
         pause: () => {
@@ -108,17 +117,17 @@ export const Timer = () => {
             return {
               ...state,
               ...(!state.isPaused && appendPauseTimer(state)),
-            }
-          })
+            };
+          });
         },
 
         resume: (minimumDuration?: number) => {
           update((state: Dialogic.TimerState) => {
             return {
               ...state,
-              ...(state.isPaused && appendResumeTimer(state, minimumDuration))
-            }
-          })
+              ...(state.isPaused && appendResumeTimer(state, minimumDuration)),
+            };
+          });
         },
 
         abort: () => {
@@ -127,31 +136,28 @@ export const Timer = () => {
             return {
               ...state,
               ...appendStopTimeout(state),
-            }
-          })
+            };
+          });
         },
 
         done: () => {
           update((state: Dialogic.TimerState) => {
             return initialState;
-          })
+          });
         },
 
         refresh: () => {
           update((state: Dialogic.TimerState) => {
             return {
               ...state,
-            }
-          })
+            };
+          });
         },
-
       };
-
     },
 
     selectors: (states: Stream<Dialogic.TimerState>) => {
       return {
-
         isPaused: () => {
           const state = states();
           return state.isPaused;
@@ -159,18 +165,14 @@ export const Timer = () => {
 
         getRemaining: () => {
           const state = states();
-          return state.isPaused
-            ? state.remaining
-            : getRemaining(state);
+          return state.isPaused ? state.remaining : getRemaining(state);
         },
 
         getResultPromise: () => {
           const state = states();
           return state.promise;
         },
-
       };
-
     },
   };
 
@@ -181,7 +183,7 @@ export const Timer = () => {
     {
       ...timer.initialState,
     },
-    update
+    update,
   );
 
   const actions = {
@@ -192,7 +194,7 @@ export const Timer = () => {
     ...timer.selectors(states),
   };
 
-  // states.map(state => 
+  // states.map(state =>
   //   console.log(JSON.stringify(state, null, 2))
   // );
 
@@ -200,5 +202,5 @@ export const Timer = () => {
     states,
     actions,
     selectors,
-  }
+  };
 };
