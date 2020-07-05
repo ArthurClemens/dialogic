@@ -1,5 +1,4 @@
 import Stream from 'mithril/stream';
-export { default as Stream } from 'mithril/stream';
 
 const pipe = (...fns) => (x) => fns.filter(Boolean).reduce((y, f) => f(y), x);
 const getStyleValue = ({ domElement, prop, }) => {

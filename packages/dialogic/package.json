@@ -13,8 +13,11 @@
     "build:umd": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=0 MODULE_NAME=dialogic ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js"
   },
   "dependencies": {
-    "@types/mithril": "2.0.3",
     "mithril": "^2.0.4"
+  },
+  "devDependencies": {
+    "@types/mithril": "2.0.3",
+    "tslib": "^2.0.0"
   },
   "files": [
     "dist",
@@ -23,8 +26,5 @@
   ],
   "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
   "homepage": "https://github.com/ArthurClemens/dialogic",
-  "license": "MIT",
-  "devDependencies": {
-    "tslib": "^2.0.0"
-  }
+  "license": "MIT"
 }
