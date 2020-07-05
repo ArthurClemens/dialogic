@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "postinstall": "lerna bootstrap",
-    "prettier": "lerna run prettier --stream --no-bail",
+    "format": "lerna run prettier --stream --no-bail",
     "build": "lerna run build --stream"
   },
   "devDependencies": {
@@ -52,6 +52,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-svelte": "^5.2.3",
     "rollup-plugin-terser": "^6.1.0",
+    "rollup-plugin-typescript2": "^0.27.1",
     "shelljs": "^0.8.4",
     "style-loader": "^1.2.1",
     "svelte": "^3.23.2",
