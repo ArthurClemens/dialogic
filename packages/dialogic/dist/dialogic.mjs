@@ -508,6 +508,7 @@ const createInstance = (ns) => (defaultDialogicOptions) => (options = {}) => {
             const dialogicOptions = existingItem.dialogicOptions;
             const replacingItem = {
                 ...item,
+                key: existingItem.key,
                 transitionState: existingItem.transitionState,
                 dialogicOptions,
             };

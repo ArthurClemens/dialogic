@@ -164,6 +164,7 @@ const createInstance = <T>(ns: string) => (
       const dialogicOptions = existingItem.dialogicOptions;
       const replacingItem = {
         ...item,
+        key: existingItem.key,
         transitionState: existingItem.transitionState,
         dialogicOptions,
       };
