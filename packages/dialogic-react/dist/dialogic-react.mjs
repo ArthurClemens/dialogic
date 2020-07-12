@@ -128,7 +128,6 @@ const useDialogic = (allProps) => {
                 hideInstance();
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [...deps, isShow]);
     useEffect(() => {
         if (isHide !== undefined) {
@@ -136,8 +135,12 @@ const useDialogic = (allProps) => {
                 hideInstance();
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [...deps, isHide]);
+    useEffect(() => {
+        return () => {
+            hideInstance();
+        };
+    }, []);
     return {
         show: showInstance,
         hide: hideInstance,

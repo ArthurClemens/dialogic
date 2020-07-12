@@ -12,7 +12,6 @@
     - [Dialog routes](#dialog-routes)
     - [`useDialog` hook](#usedialog-hook)
       - [Options](#options)
-      - [Good to know](#good-to-know)
       - [Calling show and hide directly](#calling-show-and-hide-directly)
       - [All hooks](#all-hooks)
       - [With React Router](#with-react-router)
@@ -224,7 +223,6 @@ const MyComponent = () => {
       dialogic: {
         component: MyDialog,
         className: 'dialog',
-        queued: true,
       },
       // Props that will be passed to the MyDialog component
       returnPath,
@@ -251,7 +249,6 @@ useDialog<TDialogProps>({
     dialogic: {
       component: MyDialog,
       className: 'dialog',
-      queued: true,
     },
     // Props that will be passed to the MyDialog component
     // These props match type TDialogProps
@@ -270,11 +267,6 @@ useDialog<TDialogProps>({
 | `props`      | `object`               | No           | Props to pass to the dialog.                                                                                                                                                                               | None              |
 | `beforeShow` | `() => void`           | No           | Function called just before instance.show() is called. This moment could be used to store the current scroll position.                                                                                     | None              |
 | `beforeHide` | `() => void`           | No           | Function called just before instance.hide() is called. This moment could be used to resstore the scroll position.                                                                                          | None              |
-
-
-##### Good to know
-
-To improve stability when quickly toggling showing/hiding (which can happen with frantically navigating back and forth in the browser), set dialogic option `queued` to `true`.
 
 
 ##### Calling show and hide directly
@@ -299,7 +291,6 @@ const MyComponent = () => {
       dialogic: {
         component: MyDialog,
         className: 'dialog',
-        queued: true,
       },
       // Props that will be passed to the MyDialog component
       returnPath,
@@ -398,7 +389,6 @@ export const MyDialogRoute = () => {
           dialogic: {
             component: MyDialog,
             className: 'dialog',
-            queued: true,
           },
           // Props that will be passed to the MyDialog component
           returnPath,
@@ -432,7 +422,6 @@ export const MyDialogRoute = () => {
           dialogic: {
             component: MyDialog,
             className: 'dialog',
-            queued: true,
           },
           // Props that will be passed to the MyDialog component
           // These props match type TDialogProps
