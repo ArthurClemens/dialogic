@@ -8,12 +8,15 @@ const pkg = JSON.parse(fs.readFileSync('./package.json'));
 
 const isModule = !!parseInt(env.MODULE, 10);
 const format = isModule ? 'es' : 'umd';
-const target = isModule ? 'ESNEXT' : undefined;
+const target = isModule ? 'ESNext' : 'es5';
+const module = isModule ? 'ESNext' : 'ES2015';
 const file = isModule
   ? `${process.env.DEST || pkg.module}`
   : `${process.env.DEST || pkg.main}.js`;
 const isTypeScript = !!parseInt(env.TYPESCRIPT, 10);
 const input = env.ENTRY || 'src/index.js';
+
+const override = { compilerOptions: { target, module } };
 
 export default {
   input,
@@ -25,7 +28,7 @@ export default {
   plugins: [
     isTypeScript &&
       typescript({
-        target,
+        tsconfigOverride: override,
       }),
 
     !isModule && terser(),
