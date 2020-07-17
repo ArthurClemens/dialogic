@@ -122,6 +122,18 @@ const createInstance = <T>(ns: string) => (
 
   return new Promise(resolve => {
     const callbacks: Dialogic.Callbacks<T> = {
+      willShow: (item: Dialogic.Item<T>) => {
+        if (dialogicOptions.willShow) {
+          dialogicOptions.willShow(item);
+        }
+        return resolve(item);
+      },
+      willHide: (item: Dialogic.Item<T>) => {
+        if (dialogicOptions.willHide) {
+          dialogicOptions.willHide(item);
+        }
+        return resolve(item);
+      },
       didShow: (item: Dialogic.Item<T>) => {
         if (dialogicOptions.didShow) {
           dialogicOptions.didShow(item);
@@ -387,11 +399,16 @@ const deferredHideItem = async function <T>(
 export const showItem: Dialogic.InitiateItemTransitionFn = async function (
   item,
 ) {
+  if (item.callbacks.willShow) {
+    item.callbacks.willShow(item);
+  }
   if (item.transitionState !== transitionStates.displaying) {
     item.transitionState = transitionStates.displaying;
     await transitionItem(item, MODE.SHOW);
   }
-  item.callbacks.didShow && (await item.callbacks.didShow(item));
+  if (item.callbacks.didShow) {
+    item.callbacks.didShow(item);
+  }
   if (item.dialogicOptions.timeout && item.timer) {
     await deferredHideItem(item, item.timer, item.dialogicOptions.timeout);
   }
@@ -406,8 +423,13 @@ export const hideItem: Dialogic.InitiateItemTransitionFn = async function (
   if (item.timer) {
     item.timer.actions.stop();
   }
+  if (item.callbacks.willHide) {
+    item.callbacks.willHide(item);
+  }
   await transitionItem(item, MODE.HIDE);
-  item.callbacks.didHide && (await item.callbacks.didHide(item));
+  if (item.callbacks.didHide) {
+    item.callbacks.didHide(item);
+  }
   const copy = {
     ...item,
   };
