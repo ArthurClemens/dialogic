@@ -260,13 +260,11 @@ useDialog<TDialogProps>({
 
 ##### Options
 
-| **Name**     | **Type**               | **Required** | **Description**                                                                                                                                                                                            | **Default value** |
-| ------------ | ---------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `isShow`     | `boolean`              | Yes          | A boolean value when to show the dialog.                                                                                                                                                                   | None              |
-| `deps`       | `React.DependencyList` | No           | Update the hook with these deps. Use this when the instance should appear conditionally, for instance only when content exists. Can be omitted when all content is static, so no re-rendering takes place. | `[]`              |
-| `props`      | `object`               | No           | Props to pass to the dialog.                                                                                                                                                                               | None              |
-| `beforeShow` | `() => void`           | No           | Function called just before instance.show() is called. This moment could be used to store the current scroll position.                                                                                     | None              |
-| `beforeHide` | `() => void`           | No           | Function called just before instance.hide() is called. This moment could be used to resstore the scroll position.                                                                                          | None              |
+| **Name** | **Type**               | **Required** | **Description**                                                                                                                                                                                            | **Default value** |
+| -------- | ---------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `isShow` | `boolean`              | Yes          | A boolean value when to show the dialog.                                                                                                                                                                   | None              |
+| `deps`   | `React.DependencyList` | No           | Update the hook with these deps. Use this when the instance should appear conditionally, for instance only when content exists. Can be omitted when all content is static, so no re-rendering takes place. | `[]`              |
+| `props`  | `object`               | No           | Props to pass to the dialog.                                                                                                                                                                               | None              |
 
 
 ##### Calling show and hide directly
