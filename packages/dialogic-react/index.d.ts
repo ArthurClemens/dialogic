@@ -72,16 +72,6 @@ export type UseDialogicProps<T> = {
    * Reevaluates condition whenever one of the passed values changes.
    */
   deps?: React.DependencyList;
-
-  /**
-   * Function called just before instance.show() is called. This moment could be used to store the current scroll position.
-   */
-  beforeShow?: () => void;
-
-  /**
-   * Function called just before instance.hide() is called. This moment could be used to restore the scroll position.
-   */
-  beforeHide?: () => void;
 };
 
 export type UseDialogicInstanceProps<T> = UseDialogicProps<T> & {

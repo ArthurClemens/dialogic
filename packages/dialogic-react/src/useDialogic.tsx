@@ -11,8 +11,6 @@ export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
     isHide,
     instance,
     deps = [],
-    beforeShow = () => null,
-    beforeHide = () => null,
     props = {} as T & Dialogic.Options<T>,
   } = allProps;
 
@@ -35,12 +33,10 @@ export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
   };
 
   const showInstance = () => {
-    beforeShow();
     instance.show<T>(augProps);
   };
 
   const hideInstance = () => {
-    beforeHide();
     instance.hide<T>(augProps);
   };
 
