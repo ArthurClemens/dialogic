@@ -52,10 +52,6 @@ export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
         hideInstance();
       }
     }
-    return () => {
-      hideInstance();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...deps, isShow]);
 
   useEffect(() => {
@@ -64,11 +60,13 @@ export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
         hideInstance();
       }
     }
+  }, [...deps, isHide]);
+
+  useEffect(() => {
     return () => {
       hideInstance();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...deps, isHide]);
+  }, []);
 
   return {
     show: showInstance,

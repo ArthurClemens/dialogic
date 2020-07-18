@@ -120,7 +120,9 @@ export namespace Dialogic {
   type DialogicOptions<T> = {
     className?: string;
     component?: unknown;
+    willHide?: ConfirmFn<T>;
     didHide?: ConfirmFn<T>;
+    willShow?: ConfirmFn<T>;
     didShow?: ConfirmFn<T>;
     domElement?: HTMLElement;
     queued?: boolean;
@@ -141,6 +143,8 @@ export namespace Dialogic {
   };
 
   type Callbacks<T> = {
+    willHide: ConfirmFn<T>;
+    willShow: ConfirmFn<T>;
     didHide: ConfirmFn<T>;
     didShow: ConfirmFn<T>;
   };

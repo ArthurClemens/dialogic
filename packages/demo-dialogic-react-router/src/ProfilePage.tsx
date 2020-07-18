@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CurrentPathBadge } from './CurrentPathBadge';
 import {
   // Route,
@@ -15,6 +15,7 @@ import {
 import { saveConfirmationProps, TSaveConfirmation } from './SaveConfirmation';
 
 export const ProfilePage = () => {
+  const [count, setCount] = useState(0);
   const match = useRouteMatch();
   const history = useHistory();
   const dialogPath = `${match.url}/edit`;
@@ -24,13 +25,13 @@ export const ProfilePage = () => {
 
   useDialog<EditProfileDialogProps>({
     isShow: matchDialogPath ? matchDialogPath.isExact : false,
+    deps: [count],
     props: {
       dialogic: {
         component: EditProfileDialog,
         className: 'dialog',
-        queued: true,
       },
-      title: 'Update your e-mail',
+      title: `Update your e-mail ${count}`,
       email: 'allan@company.com',
       onSave: (email: string) => {
         console.log('onSave:', email);
@@ -41,6 +42,7 @@ export const ProfilePage = () => {
         console.log('onCancel');
         history.push(dialogReturnPath);
       },
+      setCount,
     },
   });
 

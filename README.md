@@ -16,7 +16,9 @@
     - [`timeout`](#timeout)
     - [`queued`](#queued)
     - [`toggle`](#toggle)
+    - [`willShow`](#willshow)
     - [`didShow`](#didshow)
+    - [`willHide`](#willhide)
     - [`didHide`](#didhide)
     - [Component options](#component-options)
   - [`hideAll`](#hideall)
@@ -201,7 +203,9 @@ Options passed to `show`, `hide` and `hideAll`. The options are further explaine
 | `timeout`             | `number` (ms)                                                                | No           | Creates a timer. When the dialog is completely shown the timer is started automatically. After timeout the dialog is hidden. Use `0` to prevent the timer from running. | For notifications `3000`                   |
 | `queued`              | `boolean`                                                                    | No           | Set to `true` to manage multiple dialogs in time (more useful for notifications).                                                                                       | `false`; for notifications `true`          |
 | `toggle`              | `boolean`                                                                    | No           | Set to `true` to make `show()` switch between shown and hidden state.                                                                                                   | `false`                                    |
+| `willShow`            | `(item: Dialogic.Item) => void`                                              | No           | Function called just before the item will be shown (before transitioning).                                                                                              |                                            |
 | `didShow`             | `(item: Dialogic.Item) => void`                                              | No           | Function called when the item is completely shown (after transitioning).                                                                                                |                                            |
+| `willHide`            | `(item: Dialogic.Item) => void`                                              | No           | Function called just before the item will be hidden (before transitioning).                                                                                             |                                            |
 | `didHide`             | `(item: Dialogic.Item) => void`                                              | No           | Function called when the item is completely hidden (after transitioning).                                                                                               |                                            |
 | `id`                  | `string`                                                                     | No           | Dialog identifier, useful when using multiple (stacked) items. See [Handling multiple items with identity options](#handling-multiple-items-with-identity-options)      | "default_dialog" or "default_notification" |
 | `spawn`               | `string`                                                                     | No           | Spawn identifier, useful when using multiple spawn locations. See [Handling multiple items with identity options](#handling-multiple-items-with-identity-options)       | "default_spawn"                            |
@@ -219,8 +223,10 @@ type IdentityOptions = {
 type DialogicOptions<T> = {
   className?: string;
   component?: any;
-  didHide?: ConfirmFn<T>;
+  willShow?: ConfirmFn<T>;
   didShow?: ConfirmFn<T>;
+  willHide?: ConfirmFn<T>;
+  didHide?: ConfirmFn<T>;
   domElement?: HTMLElement;
   queued?: boolean;
   styles?: TransitionStyles | TransitionStylesFn;
@@ -377,6 +383,20 @@ dialog.show({
 ```
 
 
+#### `willShow`
+
+Function called just before the item will be shown (before transitioning).
+
+```javascript
+dialog.show({
+  dialogic: {
+    willShow: (item) => {
+      // before the item will be shown
+    }
+  },
+})
+```
+
 #### `didShow`
 
 Function called when the item is completely shown (after transitioning).
@@ -386,6 +406,20 @@ dialog.show({
   dialogic: {
     didShow: (item) => {
       // item is shown
+    }
+  },
+})
+```
+
+#### `willHide`
+
+Function called just before the item will be hidden (before transitioning).
+
+```javascript
+dialog.show({
+  dialogic: {
+    didHide: (item) => {
+      // before the item will be hidden
     }
   },
 })

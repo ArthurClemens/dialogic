@@ -1,16 +1,15 @@
-import React, { FunctionComponent, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { FunctionComponent, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export type EditProfileDialogProps = {
   email: string;
   title: string;
   onCancel: () => void;
   onSave: (email: string) => void;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export const EditProfileDialog: FunctionComponent<
-  EditProfileDialogProps
-> = props => {
+export const EditProfileDialog: FunctionComponent<EditProfileDialogProps> = props => {
   const [email, setEmail] = useState(props.email);
   return (
     <div className="modal is-active">
@@ -53,6 +52,12 @@ export const EditProfileDialog: FunctionComponent<
           <Link className="button" to="/">
             Go to home
           </Link>
+          <button
+            className="button"
+            onClick={() => props.setCount(current => current + 1)}
+          >
+            Add count
+          </button>
         </footer>
       </div>
     </div>

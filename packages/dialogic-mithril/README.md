@@ -147,4 +147,4 @@ const NotificationView = {
 
 ## Size
 
- 3.53 KB with all dependencies, minified and gzipped
+ 3.55 KB with all dependencies, minified and gzipped
