@@ -8,7 +8,7 @@
 }
 
 .dialog {
-  transition: opacity 1350ms;
+  transition: opacity 350ms;
   opacity: 0;
 }
 .dialog-show-start {
@@ -17,7 +17,7 @@
   opacity: 1;
 }
 .dialog-hide-start {
-  transition-duration: 1350ms;
+  transition-duration: 350ms;
 }
 .dialog-hide-end {
   opacity: 0;

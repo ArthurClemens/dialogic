@@ -1,13 +1,13 @@
 import m from 'mithril';
 
-export type EditProfileDialogProps = {
+export type TEditProfileDialogProps = {
   email: string;
   title: string;
   onCancel: () => void;
   onSave: (email: string) => void;
 };
 
-export const EditProfileDialog: m.ClosureComponent<EditProfileDialogProps> = () => {
+export const EditProfileDialog: m.ClosureComponent<TEditProfileDialogProps> = () => {
   const localState = {
     email: '',
   };
@@ -16,7 +16,6 @@ export const EditProfileDialog: m.ClosureComponent<EditProfileDialogProps> = () 
   };
   return {
     view: ({ attrs }) => {
-      console.log('localState.email', localState.email);
       return m('div', { className: 'modal is-active' }, [
         m('div', { className: 'modal-background' }),
         m('div', { className: 'modal-card' }, [
@@ -39,7 +38,6 @@ export const EditProfileDialog: m.ClosureComponent<EditProfileDialogProps> = () 
                   type: 'email',
                   defaultvalue: attrs.email,
                   oninput: (e: InputEvent) => {
-                    console.log('oninput', e);
                     if (e.target) {
                       setEmail((e.target as HTMLInputElement).value);
                     }

@@ -5,27 +5,36 @@ import { HomePage } from './HomePage';
 
 import './styles.css';
 
+type TApp = {
+  Component: m.Component;
+};
+
 const App = {
-  view: (vnode: m.Vnode) => {
+  view: ({ attrs }: { attrs: TApp }) => {
+    const { Component } = attrs;
+
     return m('div', { className: 'app' }, [
-      vnode.children,
+      Component && m(Component),
       m(Dialog),
       // m(Notification),
     ]);
   },
 };
 
-const appLayout = (Component: m.Component | m.ClosureComponent) => ({
-  view: () => m(App, m(Component)),
+const resolve = (Component: m.Component) => ({
+  onmatch: function () {
+    return App;
+  },
+  render: function () {
+    return m(App, { Component });
+  },
 });
-
-const AppWithProfilePage = appLayout(ProfilePage);
 
 const rootElement: HTMLElement | null = document.getElementById('root');
 if (rootElement) {
   m.route(rootElement, '/', {
-    '/': appLayout(HomePage),
-    '/profile': AppWithProfilePage,
-    '/profile/:cmd': AppWithProfilePage,
+    '/': resolve(HomePage),
+    '/profile': resolve(ProfilePage),
+    '/profile/:cmd': resolve(ProfilePage),
   });
 }

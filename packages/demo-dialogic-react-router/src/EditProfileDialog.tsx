@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export type EditProfileDialogProps = {
+export type TEditProfileDialogProps = {
   email: string;
   title: string;
   onCancel: () => void;
@@ -9,7 +9,7 @@ export type EditProfileDialogProps = {
   setCount: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export const EditProfileDialog: FunctionComponent<EditProfileDialogProps> = props => {
+export const EditProfileDialog: FunctionComponent<TEditProfileDialogProps> = props => {
   const [email, setEmail] = useState(props.email);
   return (
     <div className="modal is-active">

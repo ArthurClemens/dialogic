@@ -6,7 +6,10 @@ import {
   useRouteMatch,
   useHistory,
 } from 'react-router-dom';
-import { EditProfileDialog, EditProfileDialogProps } from './EditProfileDialog';
+import {
+  EditProfileDialog,
+  TEditProfileDialogProps,
+} from './EditProfileDialog';
 import {
   notification,
   // UseDialog,
@@ -23,7 +26,7 @@ export const ProfilePage = () => {
 
   const matchDialogPath = useRouteMatch(dialogPath);
 
-  useDialog<EditProfileDialogProps>({
+  useDialog<TEditProfileDialogProps>({
     isShow: matchDialogPath ? matchDialogPath.isExact : false,
     deps: [count],
     props: {
@@ -59,7 +62,7 @@ export const ProfilePage = () => {
         </Link>
       </div>
       {/* <Route path={dialogPath}>
-        <UseDialog<EditProfileDialogProps>
+        <UseDialog<TEditProfileDialogProps>
           isShow={matchDialogPath ? matchDialogPath.isExact : false}
           beforeHide={() => console.log('before hide')}
           props={{
