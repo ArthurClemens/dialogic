@@ -1195,12 +1195,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useDialogicState", function() { return useDialogicState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useNotification", function() { return useNotification; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useRemaining", function() { return useRemaining; });
-/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../../node_modules/@babel/runtime/helpers/toConsumableArray.js");
-/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../../node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../../node_modules/@babel/runtime/helpers/defineProperty.js");
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../../node_modules/@babel/runtime/helpers/slicedToArray.js");
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../../node_modules/@babel/runtime/helpers/toConsumableArray.js");
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "../../../node_modules/@babel/runtime/helpers/extends.js");
 /* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var dialogic__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic */ "../../dialogic/dist/dialogic.mjs");
@@ -1364,48 +1364,23 @@ var Dialogical = function Dialogical(type) {
   };
 };
 
-var useDialogicCounter = 0;
-
 var useDialogic = function useDialogic(allProps) {
   var isShow = allProps.isShow,
       isHide = allProps.isHide,
       instance = allProps.instance,
       _allProps$deps = allProps.deps,
       deps = _allProps$deps === void 0 ? [] : _allProps$deps,
-      _allProps$beforeShow = allProps.beforeShow,
-      beforeShow = _allProps$beforeShow === void 0 ? function () {
-    return null;
-  } : _allProps$beforeShow,
-      _allProps$beforeHide = allProps.beforeHide,
-      beforeHide = _allProps$beforeHide === void 0 ? function () {
-    return null;
-  } : _allProps$beforeHide,
       _allProps$props = allProps.props,
-      props = _allProps$props === void 0 ? {} : _allProps$props; // Use dialogic id if not set
-
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_5__["useState"])(useDialogicCounter++),
-      _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default()(_useState, 1),
-      id = _useState2[0];
-
-  var augProps = _objectSpread(_objectSpread({}, props), props.dialogic ? {
-    dialogic: _objectSpread(_objectSpread({}, props.dialogic), {}, {
-      id: props.dialogic.id || id
-    })
-  } : {
-    dialogic: {
-      id: id
-    }
-  });
+      props = _allProps$props === void 0 ? {} : _allProps$props;
 
   var showInstance = function showInstance() {
-    beforeShow();
-    instance.show(augProps);
+    instance.show(props);
   };
 
   var hideInstance = function hideInstance() {
-    beforeHide();
-    instance.hide(augProps);
-  };
+    instance.hide(props);
+  }; // maybe show
+
 
   Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
     if (isShow !== undefined) {
@@ -1415,14 +1390,16 @@ var useDialogic = function useDialogic(allProps) {
         hideInstance();
       }
     }
-  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()(deps), [isShow]));
+  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [isShow])); // maybe hide
+
   Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
     if (isHide !== undefined) {
       if (isHide) {
         hideInstance();
       }
     }
-  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()(deps), [isHide]));
+  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [isHide])); // unmount
+
   Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
     return function () {
       hideInstance();
@@ -1476,10 +1453,10 @@ var UseNotification = function UseNotification(props) {
 };
 
 var useRemaining = function useRemaining(props) {
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_5__["useState"])(undefined),
-      _useState4 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default()(_useState3, 2),
-      value = _useState4[0],
-      setValue = _useState4[1];
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_5__["useState"])(undefined),
+      _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState, 2),
+      value = _useState2[0],
+      setValue = _useState2[1];
 
   var didCancelRef = Object(react__WEBPACK_IMPORTED_MODULE_5__["useRef"])(false);
   Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
@@ -2242,6 +2219,20 @@ var createInstance = function createInstance(ns) {
 
       return new Promise(function (resolve) {
         var callbacks = {
+          willShow: function willShow(item) {
+            if (dialogicOptions.willShow) {
+              dialogicOptions.willShow(item);
+            }
+
+            return resolve(item);
+          },
+          willHide: function willHide(item) {
+            if (dialogicOptions.willHide) {
+              dialogicOptions.willHide(item);
+            }
+
+            return resolve(item);
+          },
           didShow: function didShow(item) {
             if (dialogicOptions.didShow) {
               dialogicOptions.didShow(item);
@@ -2521,39 +2512,36 @@ var showItem = /*#__PURE__*/function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
+            if (item.callbacks.willShow) {
+              item.callbacks.willShow(item);
+            }
+
             if (!(item.transitionState !== transitionStates.displaying)) {
-              _context2.next = 4;
+              _context2.next = 5;
               break;
             }
 
             item.transitionState = transitionStates.displaying;
-            _context2.next = 4;
+            _context2.next = 5;
             return transitionItem(item, MODE.SHOW);
 
-          case 4:
-            _context2.t0 = item.callbacks.didShow;
-
-            if (!_context2.t0) {
-              _context2.next = 8;
-              break;
+          case 5:
+            if (item.callbacks.didShow) {
+              item.callbacks.didShow(item);
             }
 
-            _context2.next = 8;
-            return item.callbacks.didShow(item);
-
-          case 8:
             if (!(item.dialogicOptions.timeout && item.timer)) {
-              _context2.next = 11;
+              _context2.next = 9;
               break;
             }
 
-            _context2.next = 11;
+            _context2.next = 9;
             return deferredHideItem(item, item.timer, item.dialogicOptions.timeout);
 
-          case 11:
+          case 9:
             return _context2.abrupt("return", Promise.resolve(item));
 
-          case 12:
+          case 10:
           case "end":
             return _context2.stop();
         }
@@ -2579,26 +2567,23 @@ var hideItem = /*#__PURE__*/function () {
               item.timer.actions.stop();
             }
 
-            _context3.next = 4;
-            return transitionItem(item, MODE.HIDE);
-
-          case 4:
-            _context3.t0 = item.callbacks.didHide;
-
-            if (!_context3.t0) {
-              _context3.next = 8;
-              break;
+            if (item.callbacks.willHide) {
+              item.callbacks.willHide(item);
             }
 
-            _context3.next = 8;
-            return item.callbacks.didHide(item);
+            _context3.next = 5;
+            return transitionItem(item, MODE.HIDE);
 
-          case 8:
+          case 5:
+            if (item.callbacks.didHide) {
+              item.callbacks.didHide(item);
+            }
+
             copy = _objectSpread({}, item);
             actions.remove(item.ns, item.id);
             return _context3.abrupt("return", Promise.resolve(copy));
 
-          case 11:
+          case 9:
           case "end":
             return _context3.stop();
         }

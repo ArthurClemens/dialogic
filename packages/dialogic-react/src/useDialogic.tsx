@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { dialog, notification, Dialogic } from 'dialogic';
 import React, { PropsWithChildren } from 'react';
 import { UseDialogicProps, UseDialogicInstanceProps } from '..';
-
-let useDialogicCounter = 0;
 
 export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
   const {
@@ -14,32 +12,15 @@ export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
     props = {} as T & Dialogic.Options<T>,
   } = allProps;
 
-  // Use dialogic id if not set
-  const [id] = useState(useDialogicCounter++);
-  const augProps = {
-    ...props,
-    ...(props.dialogic
-      ? {
-          dialogic: {
-            ...props.dialogic,
-            id: props.dialogic.id || id,
-          },
-        }
-      : {
-          dialogic: {
-            id,
-          },
-        }),
-  };
-
   const showInstance = () => {
-    instance.show<T>(augProps);
+    instance.show<T>(props);
   };
 
   const hideInstance = () => {
-    instance.hide<T>(augProps);
+    instance.hide<T>(props);
   };
 
+  // maybe show
   useEffect(() => {
     if (isShow !== undefined) {
       if (isShow) {
@@ -50,6 +31,7 @@ export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
     }
   }, [...deps, isShow]);
 
+  // maybe hide
   useEffect(() => {
     if (isHide !== undefined) {
       if (isHide) {
@@ -58,6 +40,7 @@ export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
     }
   }, [...deps, isHide]);
 
+  // unmount
   useEffect(() => {
     return () => {
       hideInstance();
