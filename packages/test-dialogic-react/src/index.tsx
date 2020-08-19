@@ -17,14 +17,24 @@ import NotificationPause from './cypress-tests/NotificationPause';
 import NotificationTimeout from './cypress-tests/NotificationTimeout';
 import LibBulmaDialog from './cypress-tests/LibBulmaDialog';
 import LibMaterialIODialog from './cypress-tests/LibMaterialIODialog';
+import UseDialogTest from './cypress-tests/UseDialogTest';
 
 import './app-styles.css';
 import './test-styles.css';
 
+type TRoute = {
+  path: string;
+  component: FunctionComponent;
+  isExact: boolean;
+};
+type TRoutes = TRoute[];
+
+let routes: TRoutes;
+
 const Home = () => (
   <div className="menu">
     <ul>
-      {Object.keys(routes).map(path => (
+      {routes.map(({ path }) => (
         <li key={path}>
           <Link to={path}>{path.substr(1)}</Link>
         </li>
@@ -36,35 +46,46 @@ const Home = () => (
 const App = () => (
   <Router>
     <Switch>
-      {Object.keys(routes).map(path => (
-        <Route key={path} path={path} exact component={routes[path]} />
-      ))}
+      {routes.map(({ path, component, isExact }) => {
+        return (
+          <Route key={path} path={path} exact={isExact} component={component} />
+        );
+      })}
     </Switch>
   </Router>
 );
 
-type TRoutes = {
-  [key: string]: FunctionComponent;
-};
-
-const routes: TRoutes = {
-  '/': Home,
-  '/DialogClassName': DialogClassName,
-  '/DialogClassNameDelay': DialogClassNameDelay,
-  '/DialogStyles': DialogStyles,
-  '/DialogIds': DialogIds,
-  '/DialogExists': DialogExists,
-  '/DialogCount': DialogCount,
-  '/DialogHideAll': DialogHideAll,
-  '/DialogResetAll': DialogResetAll,
-  '/DialogTimeout': DialogTimeout,
-  '/DialogQueued': DialogQueued,
-  '/NotificationCount': NotificationCount,
-  '/NotificationPause': NotificationPause,
-  '/NotificationTimeout': NotificationTimeout,
-  '/LibBulmaDialog': LibBulmaDialog,
-  '/LibMaterialIODialog': LibMaterialIODialog,
-};
+routes = [
+  { path: '/', component: Home, isExact: true },
+  { path: '/DialogClassName', component: DialogClassName, isExact: true },
+  {
+    path: '/DialogClassNameDelay',
+    component: DialogClassNameDelay,
+    isExact: true,
+  },
+  { path: '/DialogStyles', component: DialogStyles, isExact: true },
+  { path: '/DialogIds', component: DialogIds, isExact: true },
+  { path: '/DialogExists', component: DialogExists, isExact: true },
+  { path: '/DialogCount', component: DialogCount, isExact: true },
+  { path: '/DialogHideAll', component: DialogHideAll, isExact: true },
+  { path: '/DialogResetAll', component: DialogResetAll, isExact: true },
+  { path: '/DialogTimeout', component: DialogTimeout, isExact: true },
+  { path: '/DialogQueued', component: DialogQueued, isExact: true },
+  { path: '/NotificationCount', component: NotificationCount, isExact: true },
+  { path: '/NotificationPause', component: NotificationPause, isExact: true },
+  {
+    path: '/NotificationTimeout',
+    component: NotificationTimeout,
+    isExact: true,
+  },
+  { path: '/LibBulmaDialog', component: LibBulmaDialog, isExact: true },
+  {
+    path: '/LibMaterialIODialog',
+    component: LibMaterialIODialog,
+    isExact: true,
+  },
+  { path: '/UseDialogTest', component: UseDialogTest, isExact: false },
+];
 
 const mountNode = document.querySelector('#root');
 ReactDOM.render(<App />, mountNode);

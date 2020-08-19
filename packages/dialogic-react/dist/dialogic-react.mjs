@@ -91,34 +91,15 @@ const Dialogical = type => props => {
     return React.createElement(Wrapper, { identityOptions: identityOptions, ns: type.ns });
 };
 
-let useDialogicCounter = 0;
 const useDialogic = (allProps) => {
-    const { isShow, isHide, instance, deps = [], beforeShow = () => null, beforeHide = () => null, props = {}, } = allProps;
-    // Use dialogic id if not set
-    const [id] = useState(useDialogicCounter++);
-    const augProps = {
-        ...props,
-        ...(props.dialogic
-            ? {
-                dialogic: {
-                    ...props.dialogic,
-                    id: props.dialogic.id || id,
-                },
-            }
-            : {
-                dialogic: {
-                    id,
-                },
-            }),
-    };
+    const { isShow, isHide, instance, deps = [], props = {}, } = allProps;
     const showInstance = () => {
-        beforeShow();
-        instance.show(augProps);
+        instance.show(props);
     };
     const hideInstance = () => {
-        beforeHide();
-        instance.hide(augProps);
+        instance.hide(props);
     };
+    // maybe show
     useEffect(() => {
         if (isShow !== undefined) {
             if (isShow) {
@@ -129,6 +110,7 @@ const useDialogic = (allProps) => {
             }
         }
     }, [...deps, isShow]);
+    // maybe hide
     useEffect(() => {
         if (isHide !== undefined) {
             if (isHide) {
@@ -136,6 +118,7 @@ const useDialogic = (allProps) => {
             }
         }
     }, [...deps, isHide]);
+    // unmount
     useEffect(() => {
         return () => {
             hideInstance();

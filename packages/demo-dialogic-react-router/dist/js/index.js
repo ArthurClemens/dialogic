@@ -1195,12 +1195,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useDialogicState", function() { return useDialogicState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useNotification", function() { return useNotification; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useRemaining", function() { return useRemaining; });
-/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../../node_modules/@babel/runtime/helpers/toConsumableArray.js");
-/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../../node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../../node_modules/@babel/runtime/helpers/defineProperty.js");
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../../node_modules/@babel/runtime/helpers/slicedToArray.js");
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../../node_modules/@babel/runtime/helpers/toConsumableArray.js");
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "../../../node_modules/@babel/runtime/helpers/extends.js");
 /* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var dialogic__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic */ "../../dialogic/dist/dialogic.mjs");
@@ -1364,48 +1364,23 @@ var Dialogical = function Dialogical(type) {
   };
 };
 
-var useDialogicCounter = 0;
-
 var useDialogic = function useDialogic(allProps) {
   var isShow = allProps.isShow,
       isHide = allProps.isHide,
       instance = allProps.instance,
       _allProps$deps = allProps.deps,
       deps = _allProps$deps === void 0 ? [] : _allProps$deps,
-      _allProps$beforeShow = allProps.beforeShow,
-      beforeShow = _allProps$beforeShow === void 0 ? function () {
-    return null;
-  } : _allProps$beforeShow,
-      _allProps$beforeHide = allProps.beforeHide,
-      beforeHide = _allProps$beforeHide === void 0 ? function () {
-    return null;
-  } : _allProps$beforeHide,
       _allProps$props = allProps.props,
-      props = _allProps$props === void 0 ? {} : _allProps$props; // Use dialogic id if not set
-
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_5__["useState"])(useDialogicCounter++),
-      _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default()(_useState, 1),
-      id = _useState2[0];
-
-  var augProps = _objectSpread(_objectSpread({}, props), props.dialogic ? {
-    dialogic: _objectSpread(_objectSpread({}, props.dialogic), {}, {
-      id: props.dialogic.id || id
-    })
-  } : {
-    dialogic: {
-      id: id
-    }
-  });
+      props = _allProps$props === void 0 ? {} : _allProps$props;
 
   var showInstance = function showInstance() {
-    beforeShow();
-    instance.show(augProps);
+    instance.show(props);
   };
 
   var hideInstance = function hideInstance() {
-    beforeHide();
-    instance.hide(augProps);
-  };
+    instance.hide(props);
+  }; // maybe show
+
 
   Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
     if (isShow !== undefined) {
@@ -1415,14 +1390,16 @@ var useDialogic = function useDialogic(allProps) {
         hideInstance();
       }
     }
-  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()(deps), [isShow]));
+  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [isShow])); // maybe hide
+
   Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
     if (isHide !== undefined) {
       if (isHide) {
         hideInstance();
       }
     }
-  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()(deps), [isHide]));
+  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [isHide])); // unmount
+
   Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
     return function () {
       hideInstance();
@@ -1476,10 +1453,10 @@ var UseNotification = function UseNotification(props) {
 };
 
 var useRemaining = function useRemaining(props) {
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_5__["useState"])(undefined),
-      _useState4 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default()(_useState3, 2),
-      value = _useState4[0],
-      setValue = _useState4[1];
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_5__["useState"])(undefined),
+      _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState, 2),
+      value = _useState2[0],
+      setValue = _useState2[1];
 
   var didCancelRef = Object(react__WEBPACK_IMPORTED_MODULE_5__["useRef"])(false);
   Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
@@ -1519,29 +1496,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
 
-// eslint-disable-next-line import/no-unresolved
-const useStream = ({ model, onMount, onDestroy, onUpdate, deps = [], defer, debug, }) => {
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+var useStream = function (_a) {
+    var model = _a.model, onMount = _a.onMount, onDestroy = _a.onDestroy, onUpdate = _a.onUpdate, _b = _a.deps, deps = _b === void 0 ? [] : _b, defer = _a.defer, debug = _a.debug;
     // Local storage that connects stream updates to React renders:
-    const [streamValues, setStreamValues] = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState({});
+    var _c = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState({}), streamValues = _c[0], setStreamValues = _c[1];
     // Distinguish update from mount:
-    const isInitedRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef(false);
-    const subsRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef([]);
-    const subscribe = (memo) => {
+    var isInitedRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef(false);
+    var subsRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef([]);
+    var subscribe = function (memo) {
         if (debug) {
             debug('Subscribe');
         }
         subsRef.current = Object.keys(memo)
-            .map((key) => {
-            const stream = memo[key];
+            .map(function (key) {
+            var stream = memo[key];
             if (stream.map && typeof stream.map === 'function') {
-                return stream.map((value) => {
+                return stream.map(function (value) {
+                    var _a;
                     if (debug) {
                         debug('Will update %s', key);
                     }
-                    setStreamValues({
-                        ...streamValues,
-                        [key]: value,
-                    });
+                    setStreamValues(__assign(__assign({}, streamValues), (_a = {}, _a[key] = value, _a)));
                     return null;
                 });
             }
@@ -1549,30 +1535,30 @@ const useStream = ({ model, onMount, onDestroy, onUpdate, deps = [], defer, debu
         })
             .filter(Boolean);
     };
-    const unsubscribe = () => {
+    var unsubscribe = function () {
         if (subsRef.current.length) {
             if (debug) {
                 debug('Unsubscribe');
             }
-            subsRef.current.forEach((s) => s.end(true));
+            subsRef.current.forEach(function (s) { return s.end(true); });
             subsRef.current = [];
         }
     };
-    const createMemo = () => {
+    var createMemo = function () {
         if (debug) {
             debug('createMemo');
         }
         unsubscribe();
-        const modelFn = typeof model === 'function'
+        var modelFn = typeof model === 'function'
             ? model
-            : (() => model);
-        const memo = modelFn();
+            : (function () { return model; });
+        var memo = modelFn();
         subscribe(memo);
         return memo;
     };
-    const [memo, setMemo] = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(defer ? null : createMemo);
+    var _d = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(defer ? null : createMemo), memo = _d[0], setMemo = _d[1];
     // Update
-    react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(() => {
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(function () {
         if (!isInitedRef.current) {
             return;
         }
@@ -1580,17 +1566,17 @@ const useStream = ({ model, onMount, onDestroy, onUpdate, deps = [], defer, debu
             debug('Updating');
         }
         if (onUpdate) {
-            const localMemo = createMemo();
+            var localMemo = createMemo();
             setMemo(localMemo);
             onUpdate(localMemo);
         }
     }, deps); // eslint-disable-line react-hooks/exhaustive-deps
     // Mount and unmount
-    react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(() => {
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(function () {
         if (debug) {
             debug('Mounting');
         }
-        let localMemo = memo;
+        var localMemo = memo;
         if (defer) {
             localMemo = createMemo();
             setMemo(localMemo);
@@ -1599,12 +1585,12 @@ const useStream = ({ model, onMount, onDestroy, onUpdate, deps = [], defer, debu
             onMount(localMemo);
         }
         isInitedRef.current = true;
-        return () => {
+        return function () {
             if (debug) {
                 debug('Unmounting');
             }
             unsubscribe();
-            if (memo !== null && onDestroy) {
+            if (onDestroy) {
                 onDestroy(memo);
             }
         };
@@ -2242,6 +2228,20 @@ var createInstance = function createInstance(ns) {
 
       return new Promise(function (resolve) {
         var callbacks = {
+          willShow: function willShow(item) {
+            if (dialogicOptions.willShow) {
+              dialogicOptions.willShow(item);
+            }
+
+            return resolve(item);
+          },
+          willHide: function willHide(item) {
+            if (dialogicOptions.willHide) {
+              dialogicOptions.willHide(item);
+            }
+
+            return resolve(item);
+          },
           didShow: function didShow(item) {
             if (dialogicOptions.didShow) {
               dialogicOptions.didShow(item);
@@ -2521,39 +2521,36 @@ var showItem = /*#__PURE__*/function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
+            if (item.callbacks.willShow) {
+              item.callbacks.willShow(item);
+            }
+
             if (!(item.transitionState !== transitionStates.displaying)) {
-              _context2.next = 4;
+              _context2.next = 5;
               break;
             }
 
             item.transitionState = transitionStates.displaying;
-            _context2.next = 4;
+            _context2.next = 5;
             return transitionItem(item, MODE.SHOW);
 
-          case 4:
-            _context2.t0 = item.callbacks.didShow;
-
-            if (!_context2.t0) {
-              _context2.next = 8;
-              break;
+          case 5:
+            if (item.callbacks.didShow) {
+              item.callbacks.didShow(item);
             }
 
-            _context2.next = 8;
-            return item.callbacks.didShow(item);
-
-          case 8:
             if (!(item.dialogicOptions.timeout && item.timer)) {
-              _context2.next = 11;
+              _context2.next = 9;
               break;
             }
 
-            _context2.next = 11;
+            _context2.next = 9;
             return deferredHideItem(item, item.timer, item.dialogicOptions.timeout);
 
-          case 11:
+          case 9:
             return _context2.abrupt("return", Promise.resolve(item));
 
-          case 12:
+          case 10:
           case "end":
             return _context2.stop();
         }
@@ -2579,26 +2576,23 @@ var hideItem = /*#__PURE__*/function () {
               item.timer.actions.stop();
             }
 
-            _context3.next = 4;
-            return transitionItem(item, MODE.HIDE);
-
-          case 4:
-            _context3.t0 = item.callbacks.didHide;
-
-            if (!_context3.t0) {
-              _context3.next = 8;
-              break;
+            if (item.callbacks.willHide) {
+              item.callbacks.willHide(item);
             }
 
-            _context3.next = 8;
-            return item.callbacks.didHide(item);
+            _context3.next = 5;
+            return transitionItem(item, MODE.HIDE);
 
-          case 8:
+          case 5:
+            if (item.callbacks.didHide) {
+              item.callbacks.didHide(item);
+            }
+
             copy = _objectSpread({}, item);
             actions.remove(item.ns, item.id);
             return _context3.abrupt("return", Promise.resolve(copy));
 
-          case 11:
+          case 9:
           case "end":
             return _context3.stop();
         }
@@ -35476,7 +35470,7 @@ __webpack_require__.r(__webpack_exports__);
 const CurrentPathBadge = () => {
     const location = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useLocation"])();
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", { className: "tag" }, location.pathname)));
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", { className: "tag", "data-test-id": "current-path" }, location.pathname)));
 };
 
 
@@ -35499,23 +35493,23 @@ __webpack_require__.r(__webpack_exports__);
 
 const EditProfileDialog = props => {
     const [email, setEmail] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.email);
-    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal is-active" },
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal is-active", "data-test-id": "edit-profile-dialog" },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal-background" }),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal-card" },
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", { className: "modal-card-head" },
-                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", { className: "modal-card-title" }, props.title),
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", { className: "modal-card-title", "data-test-id": "title" }, props.title),
                 react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "delete", onClick: () => {
                         props.onCancel();
-                    } })),
+                    }, "data-test-id": "btn-close" })),
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", { className: "modal-card-body" },
                 react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "field" },
                     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "control" },
-                        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", { className: "input", type: "email", defaultValue: email, onChange: e => setEmail(e.target.value) })))),
+                        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", { className: "input", type: "email", defaultValue: email, onChange: e => setEmail(e.target.value), "data-test-id": "input-email" })))),
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", { className: "modal-card-foot" },
-                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button is-link", onClick: () => props.onSave(email) }, "Save changes"),
-                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button is-danger is-light", onClick: () => props.onCancel() }, "Cancel"),
-                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], { className: "button", to: "/" }, "Go to home"),
-                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button", onClick: () => props.setCount(current => current + 1) }, "Add count")))));
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button is-link", onClick: () => props.onSave(email), "data-test-id": "btn-save" }, "Save changes"),
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button is-danger is-light", onClick: () => props.onCancel(), "data-test-id": "btn-cancel" }, "Cancel"),
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], { className: "button", to: props.pathPrefix || '/', "data-test-id": "btn-home" }, "Go to home"),
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button", onClick: () => props.setCount(current => current + 1), "data-test-id": "btn-add-count" }, "Add count")))));
 };
 
 
@@ -35538,11 +35532,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const HomePage = () => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null,
+const HomePage = ({ pathPrefix = '' }) => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { "data-test-id": "home-page" },
     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", { className: "title" }, "Home"),
     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CurrentPathBadge__WEBPACK_IMPORTED_MODULE_2__["CurrentPathBadge"], null),
     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "buttons" },
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], { className: "button is-link", to: "/profile" }, "Go to Profile"))));
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], { className: "button is-link", to: `${pathPrefix}/profile`, "data-test-id": "btn-profile" }, "Go to Profile"))));
 
 
 /***/ }),
@@ -35570,7 +35564,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const ProfilePage = () => {
+const ProfilePage = ({ pathPrefix = '' }) => {
     const [count, setCount] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0);
     const match = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useRouteMatch"])();
     const history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useHistory"])();
@@ -35585,6 +35579,7 @@ const ProfilePage = () => {
                 component: _EditProfileDialog__WEBPACK_IMPORTED_MODULE_3__["EditProfileDialog"],
                 className: 'dialog',
             },
+            pathPrefix,
             title: `Update your e-mail ${count}`,
             email: 'allan@company.com',
             onSave: (email) => {
@@ -35599,12 +35594,12 @@ const ProfilePage = () => {
             setCount,
         },
     });
-    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null,
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { "data-test-id": "profile-page" },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", { className: "title" }, "Profile"),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CurrentPathBadge__WEBPACK_IMPORTED_MODULE_1__["CurrentPathBadge"], null),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "buttons" },
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { className: "button", to: "/" }, "Go to Home"),
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { className: "button is-link", to: dialogPath }, "Edit Profile"))));
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { className: "button", to: pathPrefix || '/', "data-test-id": "btn-home" }, "Go to Home"),
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { className: "button is-link", to: dialogPath, "data-test-id": "btn-profile" }, "Edit Profile"))));
 };
 
 
@@ -35624,7 +35619,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
-const SaveConfirmation = (props) => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "notification-content" }, props.content));
+const SaveConfirmation = (props) => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "notification-content", "data-test-id": "notification" }, props.content));
 const saveConfirmationProps = {
     dialogic: {
         component: SaveConfirmation,

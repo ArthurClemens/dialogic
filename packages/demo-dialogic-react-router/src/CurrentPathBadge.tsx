@@ -1,11 +1,13 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 export const CurrentPathBadge = () => {
   const location = useLocation();
   return (
     <div>
-      <span className="tag">{location.pathname}</span>
+      <span className="tag" data-test-id="current-path">
+        {location.pathname}
+      </span>
     </div>
   );
 };
