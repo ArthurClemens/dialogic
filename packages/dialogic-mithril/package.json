@@ -6,7 +6,7 @@
   "module": "dist/dialogic-mithril.mjs",
   "type": "module",
   "scripts": {
-    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu -u",
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu.js -u",
     "clean": "rm -rf dist/*",
     "build": "npm run clean && npm run build:module && npm run build:umd && npm run size",
     "build:module": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=1 MODULE_NAME=dialogicMithril ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js",
@@ -28,10 +28,10 @@
     "mithril": "^2.0.4"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^4.5.0",
+    "@size-limit/preset-small-lib": "^4.5.6",
     "@types/mithril": "2.0.3",
     "mithril": "^2.0.4",
-    "size-limit": "^4.5.0"
+    "size-limit": "^4.5.6"
   },
   "files": [
     "dist",
