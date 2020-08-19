@@ -14,13 +14,16 @@ import {
 } from 'dialogic-react';
 import { saveConfirmationProps, TSaveConfirmation } from './SaveConfirmation';
 
-export const ProfilePage = () => {
+type TProps = {
+  pathPrefix?: string;
+};
+
+export const ProfilePage = ({ pathPrefix = '' }: TProps) => {
   const [count, setCount] = useState(0);
   const match = useRouteMatch();
   const history = useHistory();
   const dialogPath = `${match.url}/edit`;
   const dialogReturnPath = match.url;
-
   const matchDialogPath = useRouteMatch(dialogPath);
 
   useDialog<EditProfileDialogProps>({
@@ -31,6 +34,7 @@ export const ProfilePage = () => {
         component: EditProfileDialog,
         className: 'dialog',
       },
+      pathPrefix,
       title: `Update your e-mail ${count}`,
       email: 'allan@company.com',
       onSave: (email: string) => {
@@ -47,14 +51,18 @@ export const ProfilePage = () => {
   });
 
   return (
-    <>
+    <div data-test-id="profile-page">
       <h1 className="title">Profile</h1>
       <CurrentPathBadge />
       <div className="buttons">
-        <Link className="button" to="/">
+        <Link className="button" to={pathPrefix || '/'} data-test-id="btn-home">
           Go to Home
         </Link>
-        <Link className="button is-link" to={dialogPath}>
+        <Link
+          className="button is-link"
+          to={dialogPath}
+          data-test-id="btn-edit-profile"
+        >
           Edit Profile
         </Link>
       </div>
@@ -81,6 +89,6 @@ export const ProfilePage = () => {
           }}
         />
       </Route> */}
-    </>
+    </div>
   );
 };

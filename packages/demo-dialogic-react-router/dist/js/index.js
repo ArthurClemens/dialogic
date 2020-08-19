@@ -1496,29 +1496,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
 
-// eslint-disable-next-line import/no-unresolved
-const useStream = ({ model, onMount, onDestroy, onUpdate, deps = [], defer, debug, }) => {
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+var useStream = function (_a) {
+    var model = _a.model, onMount = _a.onMount, onDestroy = _a.onDestroy, onUpdate = _a.onUpdate, _b = _a.deps, deps = _b === void 0 ? [] : _b, defer = _a.defer, debug = _a.debug;
     // Local storage that connects stream updates to React renders:
-    const [streamValues, setStreamValues] = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState({});
+    var _c = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState({}), streamValues = _c[0], setStreamValues = _c[1];
     // Distinguish update from mount:
-    const isInitedRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef(false);
-    const subsRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef([]);
-    const subscribe = (memo) => {
+    var isInitedRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef(false);
+    var subsRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef([]);
+    var subscribe = function (memo) {
         if (debug) {
             debug('Subscribe');
         }
         subsRef.current = Object.keys(memo)
-            .map((key) => {
-            const stream = memo[key];
+            .map(function (key) {
+            var stream = memo[key];
             if (stream.map && typeof stream.map === 'function') {
-                return stream.map((value) => {
+                return stream.map(function (value) {
+                    var _a;
                     if (debug) {
                         debug('Will update %s', key);
                     }
-                    setStreamValues({
-                        ...streamValues,
-                        [key]: value,
-                    });
+                    setStreamValues(__assign(__assign({}, streamValues), (_a = {}, _a[key] = value, _a)));
                     return null;
                 });
             }
@@ -1526,30 +1535,30 @@ const useStream = ({ model, onMount, onDestroy, onUpdate, deps = [], defer, debu
         })
             .filter(Boolean);
     };
-    const unsubscribe = () => {
+    var unsubscribe = function () {
         if (subsRef.current.length) {
             if (debug) {
                 debug('Unsubscribe');
             }
-            subsRef.current.forEach((s) => s.end(true));
+            subsRef.current.forEach(function (s) { return s.end(true); });
             subsRef.current = [];
         }
     };
-    const createMemo = () => {
+    var createMemo = function () {
         if (debug) {
             debug('createMemo');
         }
         unsubscribe();
-        const modelFn = typeof model === 'function'
+        var modelFn = typeof model === 'function'
             ? model
-            : (() => model);
-        const memo = modelFn();
+            : (function () { return model; });
+        var memo = modelFn();
         subscribe(memo);
         return memo;
     };
-    const [memo, setMemo] = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(defer ? null : createMemo);
+    var _d = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(defer ? null : createMemo), memo = _d[0], setMemo = _d[1];
     // Update
-    react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(() => {
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(function () {
         if (!isInitedRef.current) {
             return;
         }
@@ -1557,17 +1566,17 @@ const useStream = ({ model, onMount, onDestroy, onUpdate, deps = [], defer, debu
             debug('Updating');
         }
         if (onUpdate) {
-            const localMemo = createMemo();
+            var localMemo = createMemo();
             setMemo(localMemo);
             onUpdate(localMemo);
         }
     }, deps); // eslint-disable-line react-hooks/exhaustive-deps
     // Mount and unmount
-    react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(() => {
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(function () {
         if (debug) {
             debug('Mounting');
         }
-        let localMemo = memo;
+        var localMemo = memo;
         if (defer) {
             localMemo = createMemo();
             setMemo(localMemo);
@@ -1576,12 +1585,12 @@ const useStream = ({ model, onMount, onDestroy, onUpdate, deps = [], defer, debu
             onMount(localMemo);
         }
         isInitedRef.current = true;
-        return () => {
+        return function () {
             if (debug) {
                 debug('Unmounting');
             }
             unsubscribe();
-            if (memo !== null && onDestroy) {
+            if (onDestroy) {
                 onDestroy(memo);
             }
         };
@@ -35461,7 +35470,7 @@ __webpack_require__.r(__webpack_exports__);
 const CurrentPathBadge = () => {
     const location = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useLocation"])();
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", { className: "tag" }, location.pathname)));
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", { className: "tag", "data-test-id": "current-path" }, location.pathname)));
 };
 
 
@@ -35484,23 +35493,23 @@ __webpack_require__.r(__webpack_exports__);
 
 const EditProfileDialog = props => {
     const [email, setEmail] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.email);
-    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal is-active" },
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal is-active", "data-test-id": "edit-profile-dialog" },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal-background" }),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal-card" },
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", { className: "modal-card-head" },
-                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", { className: "modal-card-title" }, props.title),
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", { className: "modal-card-title", "data-test-id": "title" }, props.title),
                 react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "delete", onClick: () => {
                         props.onCancel();
-                    } })),
+                    }, "data-test-id": "btn-close" })),
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", { className: "modal-card-body" },
                 react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "field" },
                     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "control" },
-                        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", { className: "input", type: "email", defaultValue: email, onChange: e => setEmail(e.target.value) })))),
+                        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", { className: "input", type: "email", defaultValue: email, onChange: e => setEmail(e.target.value), "data-test-id": "input-email" })))),
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", { className: "modal-card-foot" },
-                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button is-link", onClick: () => props.onSave(email) }, "Save changes"),
-                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button is-danger is-light", onClick: () => props.onCancel() }, "Cancel"),
-                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], { className: "button", to: "/" }, "Go to home"),
-                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button", onClick: () => props.setCount(current => current + 1) }, "Add count")))));
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button is-link", onClick: () => props.onSave(email), "data-test-id": "btn-save" }, "Save changes"),
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button is-danger is-light", onClick: () => props.onCancel(), "data-test-id": "btn-cancel" }, "Cancel"),
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], { className: "button", to: props.pathPrefix || '/', "data-test-id": "btn-home" }, "Go to home"),
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "button", onClick: () => props.setCount(current => current + 1), "data-test-id": "btn-add-count" }, "Add count")))));
 };
 
 
@@ -35523,11 +35532,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const HomePage = () => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null,
+const HomePage = ({ pathPrefix = '' }) => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { "data-test-id": "home-page" },
     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", { className: "title" }, "Home"),
     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CurrentPathBadge__WEBPACK_IMPORTED_MODULE_2__["CurrentPathBadge"], null),
     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "buttons" },
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], { className: "button is-link", to: "/profile" }, "Go to Profile"))));
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], { className: "button is-link", to: `${pathPrefix}/profile`, "data-test-id": "btn-profile" }, "Go to Profile"))));
 
 
 /***/ }),
@@ -35555,7 +35564,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const ProfilePage = () => {
+const ProfilePage = ({ pathPrefix = '' }) => {
     const [count, setCount] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0);
     const match = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useRouteMatch"])();
     const history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useHistory"])();
@@ -35570,6 +35579,7 @@ const ProfilePage = () => {
                 component: _EditProfileDialog__WEBPACK_IMPORTED_MODULE_3__["EditProfileDialog"],
                 className: 'dialog',
             },
+            pathPrefix,
             title: `Update your e-mail ${count}`,
             email: 'allan@company.com',
             onSave: (email) => {
@@ -35584,12 +35594,12 @@ const ProfilePage = () => {
             setCount,
         },
     });
-    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null,
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { "data-test-id": "profile-page" },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", { className: "title" }, "Profile"),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CurrentPathBadge__WEBPACK_IMPORTED_MODULE_1__["CurrentPathBadge"], null),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "buttons" },
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { className: "button", to: "/" }, "Go to Home"),
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { className: "button is-link", to: dialogPath }, "Edit Profile"))));
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { className: "button", to: pathPrefix || '/', "data-test-id": "btn-home" }, "Go to Home"),
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { className: "button is-link", to: dialogPath, "data-test-id": "btn-profile" }, "Edit Profile"))));
 };
 
 
@@ -35609,7 +35619,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
-const SaveConfirmation = (props) => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "notification-content" }, props.content));
+const SaveConfirmation = (props) => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "notification-content", "data-test-id": "notification" }, props.content));
 const saveConfirmationProps = {
     dialogic: {
         component: SaveConfirmation,

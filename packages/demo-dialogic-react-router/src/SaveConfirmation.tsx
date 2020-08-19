@@ -4,7 +4,9 @@ export type TSaveConfirmation = {
   content: string;
 };
 export const SaveConfirmation = (props: TSaveConfirmation) => (
-  <div className="notification-content">{props.content}</div>
+  <div className="notification-content" data-test-id="notification">
+    {props.content}
+  </div>
 );
 
 export const saveConfirmationProps = {
