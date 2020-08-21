@@ -18,6 +18,7 @@ import NotificationTimeout from './cypress-tests/NotificationTimeout';
 import LibBulmaDialog from './cypress-tests/LibBulmaDialog';
 import LibMaterialIODialog from './cypress-tests/LibMaterialIODialog';
 import UseDialogTest from './cypress-tests/UseDialogTest';
+import UseDialogComponentTest from './cypress-tests/UseDialogComponentTest';
 
 import './app-styles.css';
 import './test-styles.css';
@@ -85,6 +86,11 @@ routes = [
     isExact: true,
   },
   { path: '/UseDialogTest', component: UseDialogTest, isExact: false },
+  {
+    path: '/UseDialogComponentTest',
+    component: UseDialogComponentTest,
+    isExact: false,
+  },
 ];
 
 const mountNode = document.querySelector('#root');

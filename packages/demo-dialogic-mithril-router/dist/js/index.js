@@ -86,6 +86,295 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "../../../node_modules/@babel/runtime/helpers/arrayLikeToArray.js":
+/*!******************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/arrayLikeToArray.js ***!
+  \******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+module.exports = _arrayLikeToArray;
+
+/***/ }),
+
+/***/ "../../../node_modules/@babel/runtime/helpers/arrayWithHoles.js":
+/*!****************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/arrayWithHoles.js ***!
+  \****************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+module.exports = _arrayWithHoles;
+
+/***/ }),
+
+/***/ "../../../node_modules/@babel/runtime/helpers/arrayWithoutHoles.js":
+/*!*******************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/arrayWithoutHoles.js ***!
+  \*******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray */ "../../../node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return arrayLikeToArray(arr);
+}
+
+module.exports = _arrayWithoutHoles;
+
+/***/ }),
+
+/***/ "../../../node_modules/@babel/runtime/helpers/asyncToGenerator.js":
+/*!******************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/asyncToGenerator.js ***!
+  \******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
+module.exports = _asyncToGenerator;
+
+/***/ }),
+
+/***/ "../../../node_modules/@babel/runtime/helpers/defineProperty.js":
+/*!****************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/defineProperty.js ***!
+  \****************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+
+/***/ }),
+
+/***/ "../../../node_modules/@babel/runtime/helpers/iterableToArray.js":
+/*!*****************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/iterableToArray.js ***!
+  \*****************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+}
+
+module.exports = _iterableToArray;
+
+/***/ }),
+
+/***/ "../../../node_modules/@babel/runtime/helpers/iterableToArrayLimit.js":
+/*!**********************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/iterableToArrayLimit.js ***!
+  \**********************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _iterableToArrayLimit(arr, i) {
+  if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+
+  try {
+    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+module.exports = _iterableToArrayLimit;
+
+/***/ }),
+
+/***/ "../../../node_modules/@babel/runtime/helpers/nonIterableRest.js":
+/*!*****************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/nonIterableRest.js ***!
+  \*****************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+module.exports = _nonIterableRest;
+
+/***/ }),
+
+/***/ "../../../node_modules/@babel/runtime/helpers/nonIterableSpread.js":
+/*!*******************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/nonIterableSpread.js ***!
+  \*******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+module.exports = _nonIterableSpread;
+
+/***/ }),
+
+/***/ "../../../node_modules/@babel/runtime/helpers/slicedToArray.js":
+/*!***************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/slicedToArray.js ***!
+  \***************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayWithHoles = __webpack_require__(/*! ./arrayWithHoles */ "../../../node_modules/@babel/runtime/helpers/arrayWithHoles.js");
+
+var iterableToArrayLimit = __webpack_require__(/*! ./iterableToArrayLimit */ "../../../node_modules/@babel/runtime/helpers/iterableToArrayLimit.js");
+
+var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray */ "../../../node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js");
+
+var nonIterableRest = __webpack_require__(/*! ./nonIterableRest */ "../../../node_modules/@babel/runtime/helpers/nonIterableRest.js");
+
+function _slicedToArray(arr, i) {
+  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
+}
+
+module.exports = _slicedToArray;
+
+/***/ }),
+
+/***/ "../../../node_modules/@babel/runtime/helpers/toConsumableArray.js":
+/*!*******************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/toConsumableArray.js ***!
+  \*******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayWithoutHoles = __webpack_require__(/*! ./arrayWithoutHoles */ "../../../node_modules/@babel/runtime/helpers/arrayWithoutHoles.js");
+
+var iterableToArray = __webpack_require__(/*! ./iterableToArray */ "../../../node_modules/@babel/runtime/helpers/iterableToArray.js");
+
+var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray */ "../../../node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js");
+
+var nonIterableSpread = __webpack_require__(/*! ./nonIterableSpread */ "../../../node_modules/@babel/runtime/helpers/nonIterableSpread.js");
+
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
+}
+
+module.exports = _toConsumableArray;
+
+/***/ }),
+
+/***/ "../../../node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js":
+/*!****************************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js ***!
+  \****************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray */ "../../../node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
+}
+
+module.exports = _unsupportedIterableToArray;
+
+/***/ }),
+
+/***/ "../../../node_modules/@babel/runtime/regenerator/index.js":
+/*!***********************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/runtime/regenerator/index.js ***!
+  \***********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ "../../../node_modules/regenerator-runtime/runtime.js");
+
+
+/***/ }),
+
 /***/ "../../../node_modules/process/browser.js":
 /*!******************************************************************************************!*\
   !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/process/browser.js ***!
@@ -277,6 +566,746 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 process.umask = function() { return 0; };
+
+
+/***/ }),
+
+/***/ "../../../node_modules/regenerator-runtime/runtime.js":
+/*!******************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/node_modules/regenerator-runtime/runtime.js ***!
+  \******************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var runtime = (function (exports) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  exports.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] =
+    GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      prototype[method] = function(arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  exports.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  exports.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  exports.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator, PromiseImpl) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return PromiseImpl.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return PromiseImpl.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new PromiseImpl(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  exports.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList),
+      PromiseImpl
+    );
+
+    return exports.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  exports.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+   true ? module.exports : undefined
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  Function("r", "regeneratorRuntime = r")(runtime);
+}
 
 
 /***/ }),
@@ -585,11 +1614,120 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "../node_modules/dialogic-mithril/dist/dialogic-mithril.mjs":
-/*!******************************************************************!*\
-  !*** ../node_modules/dialogic-mithril/dist/dialogic-mithril.mjs ***!
-  \******************************************************************/
-/*! exports provided: dialog, notification, Dialog, Dialogical, Notification */
+/***/ "../../dialogic-hooks/dist/dialogic-hooks.mjs":
+/*!**********************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-hooks/dist/dialogic-hooks.mjs ***!
+  \**********************************************************************************************************/
+/*! exports provided: sharedUseDialog, sharedUseDialogic, sharedUseNotification */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sharedUseDialog", function() { return sharedUseDialog; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sharedUseDialogic", function() { return sharedUseDialogic; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sharedUseNotification", function() { return sharedUseNotification; });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../../node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../../node_modules/@babel/runtime/helpers/toConsumableArray.js");
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+var sharedUseDialogic = function sharedUseDialogic(_ref) {
+  var useEffect = _ref.useEffect;
+  return function (allProps) {
+    var isShow = allProps.isShow,
+        isHide = allProps.isHide,
+        instance = allProps.instance,
+        _allProps$deps = allProps.deps,
+        deps = _allProps$deps === void 0 ? [] : _allProps$deps,
+        _allProps$props = allProps.props,
+        props = _allProps$props === void 0 ? {} : _allProps$props;
+
+    var showInstance = function showInstance() {
+      instance.show(props);
+    };
+
+    var hideInstance = function hideInstance() {
+      instance.hide(props);
+    }; // maybe show
+
+
+    useEffect(function () {
+      if (isShow !== undefined) {
+        if (isShow) {
+          showInstance();
+        } else {
+          hideInstance();
+        }
+      }
+    }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(deps), [isShow])); // maybe hide
+
+    useEffect(function () {
+      if (isHide !== undefined) {
+        if (isHide) {
+          hideInstance();
+        }
+      }
+    }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(deps), [isHide])); // unmount
+
+    useEffect(function () {
+      return function () {
+        hideInstance();
+      };
+    }, []);
+    return {
+      show: showInstance,
+      hide: hideInstance
+    };
+  };
+};
+/**
+ * `useDialogic` with `instance` set to `dialog`.
+ */
+
+
+var sharedUseDialog = function sharedUseDialog(_ref2) {
+  var useEffect = _ref2.useEffect,
+      dialog = _ref2.dialog;
+  return function (props) {
+    return sharedUseDialogic({
+      useEffect: useEffect
+    })(_objectSpread(_objectSpread({}, props), {}, {
+      instance: dialog
+    }));
+  };
+};
+/**
+ * `useDialogic` with `instance` set to `notification`.
+ */
+
+
+var sharedUseNotification = function sharedUseNotification(_ref3) {
+  var useEffect = _ref3.useEffect,
+      notification = _ref3.notification;
+  return function (props) {
+    return sharedUseDialogic({
+      useEffect: useEffect
+    })(_objectSpread(_objectSpread({}, props), {}, {
+      instance: notification
+    }));
+  };
+};
+
+
+
+/***/ }),
+
+/***/ "../../dialogic-mithril/dist/dialogic-mithril.mjs":
+/*!**************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-mithril/dist/dialogic-mithril.mjs ***!
+  \**************************************************************************************************************/
+/*! exports provided: dialog, notification, Dialog, Dialogical, Notification, useDialog, useDialogic, useNotification */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -597,121 +1735,185 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Dialog", function() { return Dialog; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Dialogical", function() { return Dialogical; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Notification", function() { return Notification; });
-/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
-/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var dialogic__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dialogic */ "../node_modules/dialogic/dist/dialogic.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "dialog", function() { return dialogic__WEBPACK_IMPORTED_MODULE_1__["dialog"]; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useDialog", function() { return useDialog; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useDialogic", function() { return useDialogic; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useNotification", function() { return useNotification; });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../../node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
+/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var dialogic__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dialogic */ "../../dialogic/dist/dialogic.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "dialog", function() { return dialogic__WEBPACK_IMPORTED_MODULE_2__["dialog"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "notification", function() { return dialogic__WEBPACK_IMPORTED_MODULE_1__["notification"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "notification", function() { return dialogic__WEBPACK_IMPORTED_MODULE_2__["notification"]; });
+
+/* harmony import */ var mithril_hooks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mithril-hooks */ "../node_modules/mithril-hooks/dist/mithril-hooks.mjs");
+/* harmony import */ var dialogic_hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic-hooks */ "../../dialogic-hooks/dist/dialogic-hooks.mjs");
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 
 
 
 
-const handleDispatch = (ns) => (event, fn) => {
+
+
+var handleDispatch = function handleDispatch(ns) {
+  return function (event, fn) {
     // Update dispatching item:
-    const maybeItem = dialogic__WEBPACK_IMPORTED_MODULE_1__["selectors"].find(ns, event.detail.identityOptions);
+    var maybeItem = dialogic__WEBPACK_IMPORTED_MODULE_2__["selectors"].find(ns, event.detail.identityOptions);
+
     if (maybeItem.just) {
-        Object(dialogic__WEBPACK_IMPORTED_MODULE_1__["setDomElement"])(event.detail.domElement, maybeItem.just);
-    }
-    // Find item to transition:
-    const maybeTransitioningItem = dialogic__WEBPACK_IMPORTED_MODULE_1__["selectors"].find(ns, event.detail.identityOptions);
+      Object(dialogic__WEBPACK_IMPORTED_MODULE_2__["setDomElement"])(event.detail.domElement, maybeItem.just);
+    } // Find item to transition:
+
+
+    var maybeTransitioningItem = dialogic__WEBPACK_IMPORTED_MODULE_2__["selectors"].find(ns, event.detail.identityOptions);
+
     if (maybeTransitioningItem.just) {
-        fn(maybeTransitioningItem.just);
+      fn(maybeTransitioningItem.just);
     }
-};
-const onInstanceMounted = (ns) => (event) => handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_1__["showItem"]);
-const onShowInstance = (ns) => (event) => handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_1__["showItem"]);
-const onHideInstance = (ns) => (event) => handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_1__["hideItem"]);
-
-const Instance = ({ attrs: componentAttrs }) => {
-    let domElement;
-    const dispatchTransition = (dispatchFn) => {
-        dispatchFn({
-            detail: {
-                identityOptions: componentAttrs.identityOptions,
-                domElement,
-            },
-        });
-    };
-    const onMount = () => {
-        dispatchTransition(componentAttrs.onMount);
-    };
-    const show = () => {
-        dispatchTransition(componentAttrs.onShow);
-    };
-    const hide = () => {
-        dispatchTransition(componentAttrs.onHide);
-    };
-    return {
-        oncreate: (vnode) => {
-            domElement = vnode.dom;
-            onMount();
-        },
-        view: ({ attrs }) => {
-            const component = attrs.dialogicOptions.component;
-            if (!component) {
-                throw 'Component missing in dialogic options.';
-            }
-            return mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', { className: attrs.dialogicOptions.className }, mithril__WEBPACK_IMPORTED_MODULE_0___default()(component, {
-                ...attrs.passThroughOptions,
-                show,
-                hide,
-            }));
-        },
-    };
+  };
 };
 
-const Wrapper = {
-    view: ({ attrs }) => {
-        const nsOnInstanceMounted = onInstanceMounted(attrs.ns);
-        const nsOnShowInstance = onShowInstance(attrs.ns);
-        const nsOnHideInstance = onHideInstance(attrs.ns);
-        const identityOptions = attrs.identityOptions || {};
-        const filtered = Object(dialogic__WEBPACK_IMPORTED_MODULE_1__["filterCandidates"])(attrs.ns, dialogic__WEBPACK_IMPORTED_MODULE_1__["selectors"].getStore(), identityOptions);
-        return filtered.map(item => mithril__WEBPACK_IMPORTED_MODULE_0___default()(Instance, {
-            key: item.key,
-            identityOptions: item.identityOptions,
-            dialogicOptions: item.dialogicOptions,
-            passThroughOptions: item.passThroughOptions,
-            onMount: nsOnInstanceMounted,
-            onShow: nsOnShowInstance,
-            onHide: nsOnHideInstance,
-        }));
-    },
+var onInstanceMounted = function onInstanceMounted(ns) {
+  return function (event) {
+    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_2__["showItem"]);
+  };
 };
 
-const Dialogical = type => ({
-    oncreate: ({ attrs }) => {
-        if (typeof attrs.onMount === 'function') {
-            attrs.onMount();
-        }
+var onShowInstance = function onShowInstance(ns) {
+  return function (event) {
+    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_2__["showItem"]);
+  };
+};
+
+var onHideInstance = function onHideInstance(ns) {
+  return function (event) {
+    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_2__["hideItem"]);
+  };
+};
+
+var Instance = function Instance(_ref) {
+  var componentAttrs = _ref.attrs;
+  var domElement;
+
+  var dispatchTransition = function dispatchTransition(dispatchFn) {
+    dispatchFn({
+      detail: {
+        identityOptions: componentAttrs.identityOptions,
+        domElement: domElement
+      }
+    });
+  };
+
+  var onMount = function onMount() {
+    dispatchTransition(componentAttrs.onMount);
+  };
+
+  var show = function show() {
+    dispatchTransition(componentAttrs.onShow);
+  };
+
+  var hide = function hide() {
+    dispatchTransition(componentAttrs.onHide);
+  };
+
+  return {
+    oncreate: function oncreate(vnode) {
+      domElement = vnode.dom;
+      onMount();
     },
-    view: ({ attrs }) => {
-        const identityOptions = {
-            id: attrs.id || type.defaultId,
-            spawn: attrs.spawn || type.defaultSpawn,
-        };
-        return mithril__WEBPACK_IMPORTED_MODULE_0___default()(Wrapper, {
-            identityOptions,
-            ns: type.ns,
-        });
+    view: function view(_ref2) {
+      var attrs = _ref2.attrs;
+      var component = attrs.dialogicOptions.component;
+
+      if (!component) {
+        throw 'Component missing in dialogic options.';
+      }
+
+      return mithril__WEBPACK_IMPORTED_MODULE_1___default()('div', {
+        className: attrs.dialogicOptions.className
+      }, mithril__WEBPACK_IMPORTED_MODULE_1___default()(component, _objectSpread(_objectSpread({}, attrs.passThroughOptions), {}, {
+        show: show,
+        hide: hide
+      })));
+    }
+  };
+};
+
+var Wrapper = {
+  view: function view(_ref3) {
+    var attrs = _ref3.attrs;
+    var nsOnInstanceMounted = onInstanceMounted(attrs.ns);
+    var nsOnShowInstance = onShowInstance(attrs.ns);
+    var nsOnHideInstance = onHideInstance(attrs.ns);
+    var identityOptions = attrs.identityOptions || {};
+    var filtered = Object(dialogic__WEBPACK_IMPORTED_MODULE_2__["filterCandidates"])(attrs.ns, dialogic__WEBPACK_IMPORTED_MODULE_2__["selectors"].getStore(), identityOptions);
+    return filtered.map(function (item) {
+      return mithril__WEBPACK_IMPORTED_MODULE_1___default()(Instance, {
+        key: item.key,
+        identityOptions: item.identityOptions,
+        dialogicOptions: item.dialogicOptions,
+        passThroughOptions: item.passThroughOptions,
+        onMount: nsOnInstanceMounted,
+        onShow: nsOnShowInstance,
+        onHide: nsOnHideInstance
+      });
+    });
+  }
+};
+
+var Dialogical = function Dialogical(type) {
+  return {
+    oncreate: function oncreate(_ref4) {
+      var attrs = _ref4.attrs;
+
+      if (typeof attrs.onMount === 'function') {
+        attrs.onMount();
+      }
     },
+    view: function view(_ref5) {
+      var attrs = _ref5.attrs;
+      var identityOptions = {
+        id: attrs.id || type.defaultId,
+        spawn: attrs.spawn || type.defaultSpawn
+      };
+      return mithril__WEBPACK_IMPORTED_MODULE_1___default()(Wrapper, {
+        identityOptions: identityOptions,
+        ns: type.ns
+      });
+    }
+  };
+};
+
+var useDialogic = Object(dialogic_hooks__WEBPACK_IMPORTED_MODULE_4__["sharedUseDialogic"])({
+  useEffect: mithril_hooks__WEBPACK_IMPORTED_MODULE_3__["useEffect"]
 });
-
-const Dialog = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_1__["dialog"]);
-const Notification = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_1__["notification"]);
-dialogic__WEBPACK_IMPORTED_MODULE_1__["states"].map(state => mithril__WEBPACK_IMPORTED_MODULE_0___default.a.redraw());
-
-
+var useDialog = Object(dialogic_hooks__WEBPACK_IMPORTED_MODULE_4__["sharedUseDialog"])({
+  useEffect: mithril_hooks__WEBPACK_IMPORTED_MODULE_3__["useEffect"],
+  dialog: dialogic__WEBPACK_IMPORTED_MODULE_2__["dialog"]
+});
+var useNotification = Object(dialogic_hooks__WEBPACK_IMPORTED_MODULE_4__["sharedUseNotification"])({
+  useEffect: mithril_hooks__WEBPACK_IMPORTED_MODULE_3__["useEffect"],
+  notification: dialogic__WEBPACK_IMPORTED_MODULE_2__["notification"]
+});
+var Dialog = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_2__["dialog"]);
+var Notification = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_2__["notification"]);
+dialogic__WEBPACK_IMPORTED_MODULE_2__["states"].map(function (state) {
+  return mithril__WEBPACK_IMPORTED_MODULE_1___default.a.redraw();
+});
 
 
 /***/ }),
 
-/***/ "../node_modules/dialogic/dist/dialogic.mjs":
-/*!**************************************************!*\
-  !*** ../node_modules/dialogic/dist/dialogic.mjs ***!
-  \**************************************************/
+/***/ "../../dialogic/dist/dialogic.mjs":
+/*!**********************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic/dist/dialogic.mjs ***!
+  \**********************************************************************************************/
 /*! exports provided: actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, remaining, resetAll, resume, selectors, setDomElement, show, showItem, states */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -739,760 +1941,1263 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "show", function() { return show; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showItem", function() { return showItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "states", function() { return states; });
-/* harmony import */ var mithril_stream__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril/stream */ "../node_modules/mithril/stream.js");
-/* harmony import */ var mithril_stream__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril_stream__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "../../../node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../../../node_modules/@babel/runtime/helpers/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../../node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../../node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../../node_modules/@babel/runtime/helpers/toConsumableArray.js");
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var mithril_stream__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mithril/stream */ "../../dialogic/node_modules/mithril/stream.js");
+/* harmony import */ var mithril_stream__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(mithril_stream__WEBPACK_IMPORTED_MODULE_5__);
 
 
-const pipe = (...fns) => (x) => fns.filter(Boolean).reduce((y, f) => f(y), x);
-const getStyleValue = ({ domElement, prop, }) => {
-    const defaultView = document.defaultView;
-    if (defaultView) {
-        const style = defaultView.getComputedStyle(domElement);
-        if (style) {
-            return style.getPropertyValue(prop);
-        }
-    }
+
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+
+
+var pipe = function pipe() {
+  for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
+    fns[_key] = arguments[_key];
+  }
+
+  return function (x) {
+    return fns.filter(Boolean).reduce(function (y, f) {
+      return f(y);
+    }, x);
+  };
 };
 
-const MODE = {
-    SHOW: 'show',
-    HIDE: 'hide',
-};
-const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(...transitionClassNames.showStart, ...transitionClassNames.showEnd, ...transitionClassNames.hideStart, ...transitionClassNames.hideEnd);
-const applyTransitionStyles = (domElement, step, styles) => {
-    const transitionStyle = styles[step] || {};
-    Object.keys(transitionStyle).forEach((key) => {
-        const value = transitionStyle[key].toString();
-        domElement.style[key] = value;
-        // if (domElement.style[key] !== value) {
-        // 	console.warn(`Invalid style: ${key}: ${value} (${domElement.style[key]})`);
-        // }
-    });
-};
-const applyNoDurationTransitionStyle = (domElement) => (domElement.style.transitionDuration = '0ms');
-const getTransitionStyles = (domElement, styles) => (typeof styles === 'function' ? styles(domElement) : styles) || {};
-const createClassList = (className, step) => className.split(/ /).map((n) => `${n}-${step}`);
-const applyStylesForState = (domElement, props, step, isEnterStep) => {
-    if (props.styles) {
-        const styles = getTransitionStyles(domElement, props.styles);
-        applyTransitionStyles(domElement, 'default', styles);
-        isEnterStep && applyNoDurationTransitionStyle(domElement);
-        applyTransitionStyles(domElement, step, styles);
+var getStyleValue = function getStyleValue(_ref) {
+  var domElement = _ref.domElement,
+      prop = _ref.prop;
+  var defaultView = document.defaultView;
+
+  if (defaultView) {
+    var style = defaultView.getComputedStyle(domElement);
+
+    if (style) {
+      return style.getPropertyValue(prop);
     }
-    if (props.className) {
-        const transitionClassNames = {
-            showStart: createClassList(props.className, 'show-start'),
-            showEnd: createClassList(props.className, 'show-end'),
-            hideStart: createClassList(props.className, 'hide-start'),
-            hideEnd: createClassList(props.className, 'hide-end'),
-        };
-        removeTransitionClassNames(domElement, transitionClassNames);
-        transitionClassNames &&
-            domElement.classList.add(...transitionClassNames[step]);
-    }
-    // reflow
-    domElement.scrollTop;
+  }
 };
-const getDuration = (domElement) => {
-    const durationStyleValue = getStyleValue({
-        domElement,
-        prop: 'transition-duration',
-    });
-    const durationValue = durationStyleValue !== undefined
-        ? styleDurationToMs(durationStyleValue)
-        : 0;
-    const delayStyleValue = getStyleValue({
-        domElement,
-        prop: 'transition-delay',
-    });
-    const delayValue = delayStyleValue !== undefined ? styleDurationToMs(delayStyleValue) : 0;
-    return durationValue + delayValue;
+
+var MODE = {
+  SHOW: 'show',
+  HIDE: 'hide'
 };
-const steps = {
-    showStart: {
-        nextStep: 'showEnd',
-    },
-    showEnd: {
-        nextStep: undefined,
-    },
-    hideStart: {
-        nextStep: 'hideEnd',
-    },
-    hideEnd: {
-        nextStep: undefined,
-    },
+
+var removeTransitionClassNames = function removeTransitionClassNames(domElement, transitionClassNames) {
+  var _domElement$classList;
+
+  return (_domElement$classList = domElement.classList).remove.apply(_domElement$classList, _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(transitionClassNames.showStart).concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(transitionClassNames.showEnd), _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(transitionClassNames.hideStart), _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(transitionClassNames.hideEnd)));
 };
-const transition = (props, mode) => {
-    const domElement = props.domElement;
-    if (!domElement) {
-        return Promise.resolve('no domElement');
-    }
-    clearTimeout(props.__transitionTimeoutId__);
-    let currentStep = mode === MODE.SHOW ? 'showStart' : 'hideStart';
-    return new Promise(resolve => {
-        applyStylesForState(domElement, props, currentStep, currentStep === 'showStart');
-        setTimeout(() => {
-            const nextStep = steps[currentStep].nextStep;
-            if (nextStep) {
-                currentStep = nextStep;
-                applyStylesForState(domElement, props, currentStep);
-                // addEventListener sometimes hangs this function because it never finishes
-                // Using setTimeout instead of addEventListener gives more consistent results
-                const duration = getDuration(domElement);
-                props.__transitionTimeoutId__ = setTimeout(resolve, duration);
+
+var applyTransitionStyles = function applyTransitionStyles(domElement, step, styles) {
+  var transitionStyle = styles[step] || {};
+  Object.keys(transitionStyle).forEach(function (key) {
+    var value = transitionStyle[key].toString();
+    domElement.style[key] = value; // if (domElement.style[key] !== value) {
+    // 	console.warn(`Invalid style: ${key}: ${value} (${domElement.style[key]})`);
+    // }
+  });
+};
+
+var applyNoDurationTransitionStyle = function applyNoDurationTransitionStyle(domElement) {
+  return domElement.style.transitionDuration = '0ms';
+};
+
+var getTransitionStyles = function getTransitionStyles(domElement, styles) {
+  return (typeof styles === 'function' ? styles(domElement) : styles) || {};
+};
+
+var createClassList = function createClassList(className, step) {
+  return className.split(/ /).map(function (n) {
+    return "".concat(n, "-").concat(step);
+  });
+};
+
+var applyStylesForState = function applyStylesForState(domElement, props, step, isEnterStep) {
+  if (props.styles) {
+    var styles = getTransitionStyles(domElement, props.styles);
+    applyTransitionStyles(domElement, 'default', styles);
+    isEnterStep && applyNoDurationTransitionStyle(domElement);
+    applyTransitionStyles(domElement, step, styles);
+  }
+
+  if (props.className) {
+    var _domElement$classList2;
+
+    var transitionClassNames = {
+      showStart: createClassList(props.className, 'show-start'),
+      showEnd: createClassList(props.className, 'show-end'),
+      hideStart: createClassList(props.className, 'hide-start'),
+      hideEnd: createClassList(props.className, 'hide-end')
+    };
+    removeTransitionClassNames(domElement, transitionClassNames);
+    transitionClassNames && (_domElement$classList2 = domElement.classList).add.apply(_domElement$classList2, _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(transitionClassNames[step]));
+  } // reflow
+
+
+  domElement.scrollTop;
+};
+
+var getDuration = function getDuration(domElement) {
+  var durationStyleValue = getStyleValue({
+    domElement: domElement,
+    prop: 'transition-duration'
+  });
+  var durationValue = durationStyleValue !== undefined ? styleDurationToMs(durationStyleValue) : 0;
+  var delayStyleValue = getStyleValue({
+    domElement: domElement,
+    prop: 'transition-delay'
+  });
+  var delayValue = delayStyleValue !== undefined ? styleDurationToMs(delayStyleValue) : 0;
+  return durationValue + delayValue;
+};
+
+var steps = {
+  showStart: {
+    nextStep: 'showEnd'
+  },
+  showEnd: {
+    nextStep: undefined
+  },
+  hideStart: {
+    nextStep: 'hideEnd'
+  },
+  hideEnd: {
+    nextStep: undefined
+  }
+};
+
+var transition = function transition(props, mode) {
+  var domElement = props.domElement;
+
+  if (!domElement) {
+    return Promise.resolve('no domElement');
+  }
+
+  clearTimeout(props.__transitionTimeoutId__);
+  var currentStep = mode === MODE.SHOW ? 'showStart' : 'hideStart';
+  return new Promise(function (resolve) {
+    applyStylesForState(domElement, props, currentStep, currentStep === 'showStart');
+    setTimeout(function () {
+      var nextStep = steps[currentStep].nextStep;
+
+      if (nextStep) {
+        currentStep = nextStep;
+        applyStylesForState(domElement, props, currentStep); // addEventListener sometimes hangs this function because it never finishes
+        // Using setTimeout instead of addEventListener gives more consistent results
+
+        var duration = getDuration(domElement);
+        props.__transitionTimeoutId__ = setTimeout(resolve, duration);
+      }
+    }, 0);
+  });
+};
+
+var styleDurationToMs = function styleDurationToMs(durationStr) {
+  var parsed = parseFloat(durationStr) * (durationStr.indexOf('ms') === -1 ? 1000 : 1);
+  return isNaN(parsed) ? 0 : parsed;
+};
+
+var findItem = function findItem(id, items) {
+  return items.find(function (item) {
+    return item.id === id;
+  });
+};
+
+var itemIndex = function itemIndex(id, items) {
+  var item = findItem(id, items);
+  return items.indexOf(item);
+};
+
+var removeItem = function removeItem(id, items) {
+  var index = itemIndex(id, items);
+
+  if (index !== -1) {
+    items.splice(index, 1);
+  }
+
+  return items;
+};
+
+var createId = function createId(identityOptions, ns) {
+  return [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join('-');
+};
+
+var store = {
+  initialState: {
+    store: {}
+  },
+  actions: function actions(update) {
+    return {
+      /**
+       * Add an item to the end of the list.
+       */
+      add: function add(ns, item) {
+        update(function (state) {
+          var items = state.store[ns] || [];
+          state.store[ns] = [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(items), [item]);
+
+          if (item.timer) {
+            // When the timer state updates, refresh the store so that UI can pick up the change
+            item.timer.states.map(function () {
+              return store.actions(update).refresh();
+            });
+          }
+
+          return state;
+        });
+      },
+
+      /**
+       * Removes the first item with a match on `id`.
+       */
+      remove: function remove(ns, id) {
+        update(function (state) {
+          var items = state.store[ns] || [];
+          var remaining = removeItem(id, items);
+          state.store[ns] = remaining;
+          return state;
+        });
+      },
+
+      /**
+       * Replaces the first item with a match on `id` with a newItem.
+       */
+      replace: function replace(ns, id, newItem) {
+        update(function (state) {
+          var items = state.store[ns] || [];
+
+          if (items) {
+            var index = itemIndex(id, items);
+
+            if (index !== -1) {
+              items[index] = newItem;
+              state.store[ns] = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(items);
             }
-        }, 0);
-    });
-};
-const styleDurationToMs = (durationStr) => {
-    const parsed = parseFloat(durationStr) * (durationStr.indexOf('ms') === -1 ? 1000 : 1);
-    return isNaN(parsed) ? 0 : parsed;
-};
+          }
 
-const findItem = (id, items) => {
-    return items.find(item => item.id === id);
-};
-const itemIndex = (id, items) => {
-    const item = findItem(id, items);
-    return items.indexOf(item);
-};
-const removeItem = (id, items) => {
-    const index = itemIndex(id, items);
-    if (index !== -1) {
-        items.splice(index, 1);
-    }
-    return items;
-};
-const createId = (identityOptions, ns) => [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join('-');
-const store = {
-    initialState: {
-        store: {},
-    },
-    actions: (update) => {
-        return {
-            /**
-             * Add an item to the end of the list.
-             */
-            add: (ns, item) => {
-                update((state) => {
-                    const items = state.store[ns] || [];
-                    state.store[ns] = [...items, item];
-                    if (item.timer) {
-                        // When the timer state updates, refresh the store so that UI can pick up the change
-                        item.timer.states.map(() => store.actions(update).refresh());
-                    }
-                    return state;
-                });
-            },
-            /**
-             * Removes the first item with a match on `id`.
-             */
-            remove: (ns, id) => {
-                update((state) => {
-                    const items = state.store[ns] || [];
-                    const remaining = removeItem(id, items);
-                    state.store[ns] = remaining;
-                    return state;
-                });
-            },
-            /**
-             * Replaces the first item with a match on `id` with a newItem.
-             */
-            replace: (ns, id, newItem) => {
-                update((state) => {
-                    const items = state.store[ns] || [];
-                    if (items) {
-                        const index = itemIndex(id, items);
-                        if (index !== -1) {
-                            items[index] = newItem;
-                            state.store[ns] = [...items];
-                        }
-                    }
-                    return state;
-                });
-            },
-            /**
-             * Removes all items within a namespace.
-             */
-            removeAll: (ns) => {
-                update((state) => {
-                    state.store[ns] = [];
-                    return state;
-                });
-            },
-            /**
-             * Replaces all items within a namespace.
-             */
-            store: (ns, newItems) => {
-                update((state) => {
-                    state.store[ns] = [...newItems];
-                    return state;
-                });
-            },
-            refresh: () => {
-                update((state) => {
-                    return {
-                        ...state,
-                    };
-                });
-            },
+          return state;
+        });
+      },
+
+      /**
+       * Removes all items within a namespace.
+       */
+      removeAll: function removeAll(ns) {
+        update(function (state) {
+          state.store[ns] = [];
+          return state;
+        });
+      },
+
+      /**
+       * Replaces all items within a namespace.
+       */
+      store: function store(ns, newItems) {
+        update(function (state) {
+          state.store[ns] = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_4___default()(newItems);
+          return state;
+        });
+      },
+      refresh: function refresh() {
+        update(function (state) {
+          return _objectSpread({}, state);
+        });
+      }
+    };
+  },
+  selectors: function selectors(states) {
+    var fns = {
+      getStore: function getStore() {
+        var state = states();
+        return state.store;
+      },
+      find: function find(ns, identityOptions) {
+        var state = states();
+        var items = state.store[ns] || [];
+        var id = createId(identityOptions, ns);
+        var item = items.find(function (item) {
+          return item.id === id;
+        });
+        return item ? {
+          just: item
+        } : {
+          nothing: undefined
         };
-    },
-    selectors: (states) => {
-        const fns = {
-            getStore: () => {
-                const state = states();
-                return state.store;
-            },
-            find: (ns, identityOptions) => {
-                const state = states();
-                const items = state.store[ns] || [];
-                const id = createId(identityOptions, ns);
-                const item = items.find((item) => item.id === id);
-                return item ? { just: item } : { nothing: undefined };
-            },
-            getAll: (ns, identityOptions) => {
-                const state = states();
-                const items = state.store[ns] || [];
-                const spawn = identityOptions !== undefined ? identityOptions.spawn : undefined;
-                const id = identityOptions !== undefined ? identityOptions.id : undefined;
-                const itemsBySpawn = spawn !== undefined
-                    ? items.filter(item => item.identityOptions.spawn === spawn)
-                    : items;
-                const itemsById = id !== undefined
-                    ? itemsBySpawn.filter(item => item.identityOptions.id === id)
-                    : itemsBySpawn;
-                return itemsById;
-            },
-            getCount: (ns, identityOptions) => fns.getAll(ns, identityOptions).length,
-        };
-        return fns;
-    },
+      },
+      getAll: function getAll(ns, identityOptions) {
+        var state = states();
+        var items = state.store[ns] || [];
+        var spawn = identityOptions !== undefined ? identityOptions.spawn : undefined;
+        var id = identityOptions !== undefined ? identityOptions.id : undefined;
+        var itemsBySpawn = spawn !== undefined ? items.filter(function (item) {
+          return item.identityOptions.spawn === spawn;
+        }) : items;
+        var itemsById = id !== undefined ? itemsBySpawn.filter(function (item) {
+          return item.identityOptions.id === id;
+        }) : itemsBySpawn;
+        return itemsById;
+      },
+      getCount: function getCount(ns, identityOptions) {
+        return fns.getAll(ns, identityOptions).length;
+      }
+    };
+    return fns;
+  }
 };
-const update = mithril_stream__WEBPACK_IMPORTED_MODULE_0___default()();
-const states = mithril_stream__WEBPACK_IMPORTED_MODULE_0___default.a.scan((state, patch) => patch(state), {
-    ...store.initialState,
-}, update);
-const actions = {
-    ...store.actions(update),
-};
-const selectors = {
-    ...store.selectors(states),
-};
-// states.map(state =>
+var update = mithril_stream__WEBPACK_IMPORTED_MODULE_5___default()();
+var states = mithril_stream__WEBPACK_IMPORTED_MODULE_5___default.a.scan(function (state, patch) {
+  return patch(state);
+}, _objectSpread({}, store.initialState), update);
+
+var actions = _objectSpread({}, store.actions(update));
+
+var selectors = _objectSpread({}, store.selectors(states)); // states.map(state =>
 //   console.log(JSON.stringify(state, null, 2))
 // );
 
-const initialState = {
-    callback: () => { },
-    isPaused: false,
-    onAbort: () => { },
-    onDone: () => { },
-    promise: undefined,
-    remaining: undefined,
-    startTime: undefined,
-    timeoutFn: () => { },
-    timerId: undefined,
-};
-const appendStartTimer = (state, callback, duration, updateState) => {
-    const timeoutFn = () => {
-        callback();
-        state.onDone();
-        updateState();
-    };
-    return {
-        timeoutFn,
-        promise: new Promise((resolve, reject) => {
-            state.onDone = () => resolve();
-            state.onAbort = () => resolve();
-        }),
-        ...(state.isPaused
-            ? {}
-            : {
-                startTime: new Date().getTime(),
-                timerId: window.setTimeout(timeoutFn, duration),
-                remaining: duration,
-            }),
-    };
-};
-const appendStopTimeout = (state) => {
-    window.clearTimeout(state.timerId);
-    return {
-        timerId: initialState.timerId,
-    };
-};
-const appendStopTimer = (state) => {
-    return {
-        ...appendStopTimeout(state),
-    };
-};
-const appendPauseTimer = (state) => {
-    return {
-        ...appendStopTimeout(state),
-        isPaused: true,
-        remaining: getRemaining(state),
-    };
-};
-const appendResumeTimer = (state, minimumDuration) => {
-    window.clearTimeout(state.timerId);
-    const remaining = minimumDuration
-        ? Math.max(state.remaining || 0, minimumDuration)
-        : state.remaining;
-    return {
-        startTime: new Date().getTime(),
-        isPaused: false,
-        remaining,
-        timerId: window.setTimeout(state.timeoutFn, remaining),
-    };
-};
-const getRemaining = (state) => state.remaining === 0 || state.remaining === undefined
-    ? state.remaining
-    : state.remaining - (new Date().getTime() - (state.startTime || 0));
-const Timer = () => {
-    const timer = {
-        initialState,
-        actions: (update) => {
-            return {
-                start: (callback, duration) => {
-                    update((state) => {
-                        return {
-                            ...state,
-                            ...appendStopTimeout(state),
-                            ...appendStartTimer(state, callback, duration, () => timer.actions(update).done()),
-                            ...(state.isPaused && appendPauseTimer(state)),
-                        };
-                    });
-                },
-                stop: () => {
-                    update((state) => {
-                        return {
-                            ...state,
-                            ...appendStopTimer(state),
-                            ...initialState,
-                        };
-                    });
-                },
-                pause: () => {
-                    update((state) => {
-                        return {
-                            ...state,
-                            ...(!state.isPaused && appendPauseTimer(state)),
-                        };
-                    });
-                },
-                resume: (minimumDuration) => {
-                    update((state) => {
-                        return {
-                            ...state,
-                            ...(state.isPaused && appendResumeTimer(state, minimumDuration)),
-                        };
-                    });
-                },
-                abort: () => {
-                    update((state) => {
-                        state.onAbort();
-                        return {
-                            ...state,
-                            ...appendStopTimeout(state),
-                        };
-                    });
-                },
-                done: () => {
-                    update((state) => {
-                        return initialState;
-                    });
-                },
-                refresh: () => {
-                    update((state) => {
-                        return {
-                            ...state,
-                        };
-                    });
-                },
-            };
-        },
-        selectors: (states) => {
-            return {
-                isPaused: () => {
-                    const state = states();
-                    return state.isPaused;
-                },
-                getRemaining: () => {
-                    const state = states();
-                    return state.isPaused ? state.remaining : getRemaining(state);
-                },
-                getResultPromise: () => {
-                    const state = states();
-                    return state.promise;
-                },
-            };
-        },
-    };
-    const update = mithril_stream__WEBPACK_IMPORTED_MODULE_0___default()();
-    const states = mithril_stream__WEBPACK_IMPORTED_MODULE_0___default.a.scan((state, patch) => patch(state), {
-        ...timer.initialState,
-    }, update);
-    const actions = {
-        ...timer.actions(update),
-    };
-    const selectors = {
-        ...timer.selectors(states),
-    };
-    // states.map(state =>
-    //   console.log(JSON.stringify(state, null, 2))
-    // );
-    return {
-        states,
-        actions,
-        selectors,
-    };
+
+var initialState = {
+  callback: function callback() {},
+  isPaused: false,
+  onAbort: function onAbort() {},
+  onDone: function onDone() {},
+  promise: undefined,
+  remaining: undefined,
+  startTime: undefined,
+  timeoutFn: function timeoutFn() {},
+  timerId: undefined
 };
 
-let uid = 0;
-const getUid = () => (uid === Number.MAX_VALUE ? 0 : uid++);
-const transitionStates = {
-    default: 0,
-    displaying: 1,
-    hiding: 2,
+var appendStartTimer = function appendStartTimer(state, callback, duration, updateState) {
+  var timeoutFn = function timeoutFn() {
+    callback();
+    state.onDone();
+    updateState();
+  };
+
+  return _objectSpread({
+    timeoutFn: timeoutFn,
+    promise: new Promise(function (resolve, reject) {
+      state.onDone = function () {
+        return resolve();
+      };
+
+      state.onAbort = function () {
+        return resolve();
+      };
+    })
+  }, state.isPaused ? {} : {
+    startTime: new Date().getTime(),
+    timerId: window.setTimeout(timeoutFn, duration),
+    remaining: duration
+  });
 };
-const getMaybeItem = (ns) => (defaultDialogicOptions) => (identityOptions) => selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
-const filterBySpawn = (identityOptions) => (items) => identityOptions.spawn !== undefined
-    ? items.filter(item => item.identityOptions.spawn === identityOptions.spawn)
-    : items;
-const filterById = (identityOptions) => (items) => identityOptions.id !== undefined
-    ? items.filter(item => item.identityOptions.id === identityOptions.id)
-    : items;
+
+var appendStopTimeout = function appendStopTimeout(state) {
+  window.clearTimeout(state.timerId);
+  return {
+    timerId: initialState.timerId
+  };
+};
+
+var appendStopTimer = function appendStopTimer(state) {
+  return _objectSpread({}, appendStopTimeout(state));
+};
+
+var appendPauseTimer = function appendPauseTimer(state) {
+  return _objectSpread(_objectSpread({}, appendStopTimeout(state)), {}, {
+    isPaused: true,
+    remaining: _getRemaining(state)
+  });
+};
+
+var appendResumeTimer = function appendResumeTimer(state, minimumDuration) {
+  window.clearTimeout(state.timerId);
+  var remaining = minimumDuration ? Math.max(state.remaining || 0, minimumDuration) : state.remaining;
+  return {
+    startTime: new Date().getTime(),
+    isPaused: false,
+    remaining: remaining,
+    timerId: window.setTimeout(state.timeoutFn, remaining)
+  };
+};
+
+var _getRemaining = function getRemaining(state) {
+  return state.remaining === 0 || state.remaining === undefined ? state.remaining : state.remaining - (new Date().getTime() - (state.startTime || 0));
+};
+
+var Timer = function Timer() {
+  var timer = {
+    initialState: initialState,
+    actions: function actions(update) {
+      return {
+        start: function start(callback, duration) {
+          update(function (state) {
+            return _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, state), appendStopTimeout(state)), appendStartTimer(state, callback, duration, function () {
+              return timer.actions(update).done();
+            })), state.isPaused && appendPauseTimer(state));
+          });
+        },
+        stop: function stop() {
+          update(function (state) {
+            return _objectSpread(_objectSpread(_objectSpread({}, state), appendStopTimer(state)), initialState);
+          });
+        },
+        pause: function pause() {
+          update(function (state) {
+            return _objectSpread(_objectSpread({}, state), !state.isPaused && appendPauseTimer(state));
+          });
+        },
+        resume: function resume(minimumDuration) {
+          update(function (state) {
+            return _objectSpread(_objectSpread({}, state), state.isPaused && appendResumeTimer(state, minimumDuration));
+          });
+        },
+        abort: function abort() {
+          update(function (state) {
+            state.onAbort();
+            return _objectSpread(_objectSpread({}, state), appendStopTimeout(state));
+          });
+        },
+        done: function done() {
+          update(function (state) {
+            return initialState;
+          });
+        },
+        refresh: function refresh() {
+          update(function (state) {
+            return _objectSpread({}, state);
+          });
+        }
+      };
+    },
+    selectors: function selectors(states) {
+      return {
+        isPaused: function isPaused() {
+          var state = states();
+          return state.isPaused;
+        },
+        getRemaining: function getRemaining() {
+          var state = states();
+          return state.isPaused ? state.remaining : _getRemaining(state);
+        },
+        getResultPromise: function getResultPromise() {
+          var state = states();
+          return state.promise;
+        }
+      };
+    }
+  };
+  var update = mithril_stream__WEBPACK_IMPORTED_MODULE_5___default()();
+  var states = mithril_stream__WEBPACK_IMPORTED_MODULE_5___default.a.scan(function (state, patch) {
+    return patch(state);
+  }, _objectSpread({}, timer.initialState), update);
+
+  var actions = _objectSpread({}, timer.actions(update));
+
+  var selectors = _objectSpread({}, timer.selectors(states)); // states.map(state =>
+  //   console.log(JSON.stringify(state, null, 2))
+  // );
+
+
+  return {
+    states: states,
+    actions: actions,
+    selectors: selectors
+  };
+};
+
+var uid = 0;
+
+var getUid = function getUid() {
+  return uid === Number.MAX_VALUE ? 0 : uid++;
+};
+
+var transitionStates = {
+  "default": 0,
+  displaying: 1,
+  hiding: 2
+};
+
+var getMaybeItem = function getMaybeItem(ns) {
+  return function (defaultDialogicOptions) {
+    return function (identityOptions) {
+      return selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
+    };
+  };
+};
+
+var filterBySpawn = function filterBySpawn(identityOptions) {
+  return function (items) {
+    return identityOptions.spawn !== undefined ? items.filter(function (item) {
+      return item.identityOptions.spawn === identityOptions.spawn;
+    }) : items;
+  };
+};
+
+var filterById = function filterById(identityOptions) {
+  return function (items) {
+    return identityOptions.id !== undefined ? items.filter(function (item) {
+      return item.identityOptions.id === identityOptions.id;
+    }) : items;
+  };
+};
 /**
  * Gets a list of all non-queued items.
  * From the queued items only the first item is listed.
  * */
-const filterFirstInQueue = (nsItems) => {
-    let queuedCount = 0;
-    return nsItems
-        .map(item => ({
-        item,
-        queueCount: item.dialogicOptions.queued ? queuedCount++ : 0,
-    }))
-        .filter(({ queueCount }) => queueCount === 0)
-        .map(({ item }) => item);
-};
-const filterCandidates = (ns, items, identityOptions) => {
-    const nsItems = items[ns] || [];
-    if (nsItems.length == 0) {
-        return [];
-    }
-    return pipe(filterBySpawn(identityOptions), filterFirstInQueue)(nsItems);
-};
-const getPassThroughOptions = options => {
-    const copy = {
-        ...options,
-    };
-    delete copy.dialogic;
-    return copy;
-};
-const getMergedIdentityOptions = (defaultDialogicOptions, identityOptions = {}) => ({
-    id: identityOptions.id || defaultDialogicOptions.id,
-    spawn: identityOptions.spawn || defaultDialogicOptions.spawn,
-});
-const handleOptions = (defaultDialogicOptions, options = {}) => {
-    const identityOptions = {
-        id: options.dialogic ? options.dialogic.id : undefined,
-        spawn: options.dialogic ? options.dialogic.spawn : undefined,
-    };
-    const mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions || {}, identityOptions);
-    const dialogicOptions = {
-        ...defaultDialogicOptions,
-        ...options.dialogic,
-        __transitionTimeoutId__: 0,
-    };
-    const passThroughOptions = getPassThroughOptions(options);
+
+
+var filterFirstInQueue = function filterFirstInQueue(nsItems) {
+  var queuedCount = 0;
+  return nsItems.map(function (item) {
     return {
-        identityOptions: mergedIdentityOptions,
-        dialogicOptions,
-        passThroughOptions,
+      item: item,
+      queueCount: item.dialogicOptions.queued ? queuedCount++ : 0
     };
+  }).filter(function (_ref2) {
+    var queueCount = _ref2.queueCount;
+    return queueCount === 0;
+  }).map(function (_ref3) {
+    var item = _ref3.item;
+    return item;
+  });
 };
-const createInstance = (ns) => (defaultDialogicOptions) => (options = {}) => {
-    const { identityOptions, dialogicOptions, passThroughOptions, } = handleOptions(defaultDialogicOptions, options);
-    return new Promise(resolve => {
-        const callbacks = {
-            didShow: (item) => {
-                if (dialogicOptions.didShow) {
-                    dialogicOptions.didShow(item);
-                }
-                return resolve(item);
-            },
-            didHide: (item) => {
-                if (dialogicOptions.didHide) {
-                    dialogicOptions.didHide(item);
-                }
-                return resolve(item);
-            },
+
+var filterCandidates = function filterCandidates(ns, items, identityOptions) {
+  var nsItems = items[ns] || [];
+
+  if (nsItems.length == 0) {
+    return [];
+  }
+
+  return pipe(filterBySpawn(identityOptions), filterFirstInQueue)(nsItems);
+};
+
+var getPassThroughOptions = function getPassThroughOptions(options) {
+  var copy = _objectSpread({}, options);
+
+  delete copy.dialogic;
+  return copy;
+};
+
+var getMergedIdentityOptions = function getMergedIdentityOptions(defaultDialogicOptions) {
+  var identityOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return {
+    id: identityOptions.id || defaultDialogicOptions.id,
+    spawn: identityOptions.spawn || defaultDialogicOptions.spawn
+  };
+};
+
+var handleOptions = function handleOptions(defaultDialogicOptions) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var identityOptions = {
+    id: options.dialogic ? options.dialogic.id : undefined,
+    spawn: options.dialogic ? options.dialogic.spawn : undefined
+  };
+  var mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions || {}, identityOptions);
+
+  var dialogicOptions = _objectSpread(_objectSpread(_objectSpread({}, defaultDialogicOptions), options.dialogic), {}, {
+    __transitionTimeoutId__: 0
+  });
+
+  var passThroughOptions = getPassThroughOptions(options);
+  return {
+    identityOptions: mergedIdentityOptions,
+    dialogicOptions: dialogicOptions,
+    passThroughOptions: passThroughOptions
+  };
+};
+
+var createInstance = function createInstance(ns) {
+  return function (defaultDialogicOptions) {
+    return function () {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      var _handleOptions = handleOptions(defaultDialogicOptions, options),
+          identityOptions = _handleOptions.identityOptions,
+          dialogicOptions = _handleOptions.dialogicOptions,
+          passThroughOptions = _handleOptions.passThroughOptions;
+
+      return new Promise(function (resolve) {
+        var callbacks = {
+          willShow: function willShow(item) {
+            if (dialogicOptions.willShow) {
+              dialogicOptions.willShow(item);
+            }
+
+            return resolve(item);
+          },
+          willHide: function willHide(item) {
+            if (dialogicOptions.willHide) {
+              dialogicOptions.willHide(item);
+            }
+
+            return resolve(item);
+          },
+          didShow: function didShow(item) {
+            if (dialogicOptions.didShow) {
+              dialogicOptions.didShow(item);
+            }
+
+            return resolve(item);
+          },
+          didHide: function didHide(item) {
+            if (dialogicOptions.didHide) {
+              dialogicOptions.didHide(item);
+            }
+
+            return resolve(item);
+          }
         };
-        const item = {
-            ns,
-            identityOptions,
-            dialogicOptions,
-            callbacks,
-            passThroughOptions,
-            id: createId(identityOptions, ns),
-            timer: dialogicOptions.timeout ? Timer() : undefined,
-            key: getUid().toString(),
-            transitionState: transitionStates.default,
+        var item = {
+          ns: ns,
+          identityOptions: identityOptions,
+          dialogicOptions: dialogicOptions,
+          callbacks: callbacks,
+          passThroughOptions: passThroughOptions,
+          id: createId(identityOptions, ns),
+          timer: dialogicOptions.timeout ? Timer() : undefined,
+          key: getUid().toString(),
+          transitionState: transitionStates["default"]
         };
-        const maybeExistingItem = selectors.find(ns, identityOptions);
+        var maybeExistingItem = selectors.find(ns, identityOptions);
+
         if (maybeExistingItem.just && dialogicOptions.toggle) {
-            const hideResult = hide(ns)(defaultDialogicOptions)(options);
-            return resolve(hideResult);
+          var hideResult = hide(ns)(defaultDialogicOptions)(options);
+          return resolve(hideResult);
         }
+
         if (maybeExistingItem.just && !dialogicOptions.queued) {
-            const existingItem = maybeExistingItem.just;
-            // Preserve dialogicOptions
-            const dialogicOptions = existingItem.dialogicOptions;
-            const replacingItem = {
-                ...item,
-                key: existingItem.key,
-                transitionState: existingItem.transitionState,
-                dialogicOptions,
-            };
-            actions.replace(ns, existingItem.id, replacingItem);
+          var existingItem = maybeExistingItem.just; // Preserve dialogicOptions
+
+          var _dialogicOptions = existingItem.dialogicOptions;
+
+          var replacingItem = _objectSpread(_objectSpread({}, item), {}, {
+            key: existingItem.key,
+            transitionState: existingItem.transitionState,
+            dialogicOptions: _dialogicOptions
+          });
+
+          actions.replace(ns, existingItem.id, replacingItem);
+        } else {
+          actions.add(ns, item); // This will instantiate and draw the instance
+          // The instance will call `showDialog` in `onMount`
         }
-        else {
-            actions.add(ns, item);
-            // This will instantiate and draw the instance
-            // The instance will call `showDialog` in `onMount`
-        }
+
         resolve(item);
-    });
-};
-const show = createInstance;
-const hide = (ns) => (defaultDialogicOptions) => (options) => {
-    const { identityOptions, dialogicOptions, passThroughOptions, } = handleOptions(defaultDialogicOptions, options);
-    const maybeExistingItem = selectors.find(ns, identityOptions);
-    if (maybeExistingItem.just) {
-        const existingItem = maybeExistingItem.just;
-        const item = {
-            ...existingItem,
-            dialogicOptions: {
-                ...existingItem.dialogicOptions,
-                ...dialogicOptions,
-            },
-            passThroughOptions: {
-                ...existingItem.passThroughOptions,
-                passThroughOptions,
-            },
-        };
-        actions.replace(ns, existingItem.id, item);
-        if (item.transitionState !== transitionStates.hiding) {
-            return hideItem(item);
-        }
-        else {
-            return Promise.resolve(item);
-        }
-    }
-    return Promise.resolve();
-};
-const pause = (ns) => (defaultDialogicOptions) => (identityOptions) => {
-    const items = getValidItems(ns, identityOptions).filter(item => !!item.timer);
-    items.forEach((item) => item.timer && item.timer.actions.pause());
-    return Promise.all(items);
-};
-const resume = (ns) => (defaultDialogicOptions) => (commandOptions) => {
-    const options = commandOptions || {};
-    const identityOptions = {
-        id: options.id,
-        spawn: options.spawn,
+      });
     };
-    const items = getValidItems(ns, identityOptions).filter(item => !!item.timer);
-    items.forEach((item) => item.timer && item.timer.actions.resume(options.minimumDuration));
-    return Promise.all(items);
+  };
 };
-const getTimerProperty = (timerProp, defaultValue) => (ns) => (defaultDialogicOptions) => (identityOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
-    if (maybeItem.just) {
-        if (maybeItem.just && maybeItem.just.timer) {
+
+var show = createInstance;
+
+var hide = function hide(ns) {
+  return function (defaultDialogicOptions) {
+    return function (options) {
+      var _handleOptions2 = handleOptions(defaultDialogicOptions, options),
+          identityOptions = _handleOptions2.identityOptions,
+          dialogicOptions = _handleOptions2.dialogicOptions,
+          passThroughOptions = _handleOptions2.passThroughOptions;
+
+      var maybeExistingItem = selectors.find(ns, identityOptions);
+
+      if (maybeExistingItem.just) {
+        var existingItem = maybeExistingItem.just;
+
+        var item = _objectSpread(_objectSpread({}, existingItem), {}, {
+          dialogicOptions: _objectSpread(_objectSpread({}, existingItem.dialogicOptions), dialogicOptions),
+          passThroughOptions: _objectSpread(_objectSpread({}, existingItem.passThroughOptions), {}, {
+            passThroughOptions: passThroughOptions
+          })
+        });
+
+        actions.replace(ns, existingItem.id, item);
+
+        if (item.transitionState !== transitionStates.hiding) {
+          return hideItem(item);
+        } else {
+          return Promise.resolve(item);
+        }
+      }
+
+      return Promise.resolve();
+    };
+  };
+};
+
+var pause = function pause(ns) {
+  return function (defaultDialogicOptions) {
+    return function (identityOptions) {
+      var items = getValidItems(ns, identityOptions).filter(function (item) {
+        return !!item.timer;
+      });
+      items.forEach(function (item) {
+        return item.timer && item.timer.actions.pause();
+      });
+      return Promise.all(items);
+    };
+  };
+};
+
+var resume = function resume(ns) {
+  return function (defaultDialogicOptions) {
+    return function (commandOptions) {
+      var options = commandOptions || {};
+      var identityOptions = {
+        id: options.id,
+        spawn: options.spawn
+      };
+      var items = getValidItems(ns, identityOptions).filter(function (item) {
+        return !!item.timer;
+      });
+      items.forEach(function (item) {
+        return item.timer && item.timer.actions.resume(options.minimumDuration);
+      });
+      return Promise.all(items);
+    };
+  };
+};
+
+var getTimerProperty = function getTimerProperty(timerProp, defaultValue) {
+  return function (ns) {
+    return function (defaultDialogicOptions) {
+      return function (identityOptions) {
+        var maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
+
+        if (maybeItem.just) {
+          if (maybeItem.just && maybeItem.just.timer) {
             return maybeItem.just.timer.selectors[timerProp]();
-        }
-        else {
+          } else {
             return defaultValue;
+          }
+        } else {
+          return defaultValue;
         }
-    }
-    else {
-        return defaultValue;
-    }
+      };
+    };
+  };
 };
-const isPaused = getTimerProperty('isPaused', false);
-const getRemaining$1 = getTimerProperty('getRemaining', undefined);
-const exists = (ns) => (defaultDialogicOptions) => (identityOptions) => !!getValidItems(ns, identityOptions).length;
-const getValidItems = (ns, identityOptions) => {
-    const allItems = selectors.getAll(ns);
-    let validItems;
-    if (identityOptions) {
-        validItems = pipe(filterBySpawn(identityOptions), filterById(identityOptions))(allItems);
-    }
-    else {
-        validItems = allItems;
-    }
-    return validItems;
+
+var isPaused = getTimerProperty('isPaused', false);
+var getRemaining$1 = getTimerProperty('getRemaining', undefined);
+
+var exists = function exists(ns) {
+  return function (defaultDialogicOptions) {
+    return function (identityOptions) {
+      return !!getValidItems(ns, identityOptions).length;
+    };
+  };
 };
-const resetAll = (ns) => (defaultDialogicOptions) => (identityOptions) => {
-    const validItems = getValidItems(ns, identityOptions);
-    const items = [];
-    validItems.forEach((item) => {
+
+var getValidItems = function getValidItems(ns, identityOptions) {
+  var allItems = selectors.getAll(ns);
+  var validItems;
+
+  if (identityOptions) {
+    validItems = pipe(filterBySpawn(identityOptions), filterById(identityOptions))(allItems);
+  } else {
+    validItems = allItems;
+  }
+
+  return validItems;
+};
+
+var resetAll = function resetAll(ns) {
+  return function (defaultDialogicOptions) {
+    return function (identityOptions) {
+      var validItems = getValidItems(ns, identityOptions);
+      var items = [];
+      validItems.forEach(function (item) {
         item.timer && item.timer.actions.abort();
         items.push(item);
-    });
-    if (identityOptions) {
-        items.forEach((item) => {
-            actions.remove(ns, item.id);
+      });
+
+      if (identityOptions) {
+        items.forEach(function (item) {
+          actions.remove(ns, item.id);
         });
-    }
-    else {
+      } else {
         actions.removeAll(ns);
-    }
-    return Promise.resolve(items);
-};
-const getOverridingTransitionOptions = (item, dialogicOptions) => {
-    return {
-        ...item,
-        dialogicOptions: {
-            ...item.dialogicOptions,
-            ...dialogicOptions,
-        },
+      }
+
+      return Promise.resolve(items);
     };
+  };
+};
+
+var getOverridingTransitionOptions = function getOverridingTransitionOptions(item, dialogicOptions) {
+  return _objectSpread(_objectSpread({}, item), {}, {
+    dialogicOptions: _objectSpread(_objectSpread({}, item.dialogicOptions), dialogicOptions)
+  });
 };
 /**
  * Triggers a `hideItem` for each item in the store.
  * Queued items: will trigger `hideItem` only for the first item, then reset the store.
  * Optional `dialogicOptions` may be passed with specific transition options. This comes in handy when all items should hide in the same way.
  */
-const hideAll = (ns) => (defaultDialogicOptions) => (dialogicOptions) => {
-    const options = dialogicOptions || {};
-    const identityOptions = {
+
+
+var hideAll = function hideAll(ns) {
+  return function (defaultDialogicOptions) {
+    return function (dialogicOptions) {
+      var options = dialogicOptions || {};
+      var identityOptions = {
         id: options.id,
-        spawn: options.spawn,
-    };
-    const validItems = getValidItems(ns, identityOptions);
-    const regularItems = validItems.filter((item) => !options.queued && !item.dialogicOptions.queued);
-    const queuedItems = validItems.filter((item) => options.queued || item.dialogicOptions.queued);
-    const items = [];
-    regularItems.forEach((item) => items.push(hideItem(getOverridingTransitionOptions(item, options))));
-    if (queuedItems.length > 0) {
-        const [current] = queuedItems;
-        // Make sure that any remaining items don't suddenly appear
-        actions.store(ns, [current]);
-        // Transition the current item
+        spawn: options.spawn
+      };
+      var validItems = getValidItems(ns, identityOptions);
+      var regularItems = validItems.filter(function (item) {
+        return !options.queued && !item.dialogicOptions.queued;
+      });
+      var queuedItems = validItems.filter(function (item) {
+        return options.queued || item.dialogicOptions.queued;
+      });
+      var items = [];
+      regularItems.forEach(function (item) {
+        return items.push(hideItem(getOverridingTransitionOptions(item, options)));
+      });
+
+      if (queuedItems.length > 0) {
+        var _queuedItems = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2___default()(queuedItems, 1),
+            current = _queuedItems[0]; // Make sure that any remaining items don't suddenly appear
+
+
+        actions.store(ns, [current]); // Transition the current item
+
         items.push(hideItem(getOverridingTransitionOptions(current, options)));
-    }
-    return Promise.all(items);
-};
-const getCount = (ns) => (identityOptions) => selectors.getCount(ns, identityOptions);
-const transitionItem = (item, mode) => transition(item.dialogicOptions, mode);
-const deferredHideItem = async function (item, timer, timeout) {
-    timer.actions.start(() => hideItem(item), timeout);
-    return getTimerProperty('getResultPromise', undefined);
-};
-const showItem = async function (item) {
-    if (item.transitionState !== transitionStates.displaying) {
-        item.transitionState = transitionStates.displaying;
-        await transitionItem(item, MODE.SHOW);
-    }
-    item.callbacks.didShow && (await item.callbacks.didShow(item));
-    if (item.dialogicOptions.timeout && item.timer) {
-        await deferredHideItem(item, item.timer, item.dialogicOptions.timeout);
-    }
-    return Promise.resolve(item);
-};
-const hideItem = async function (item) {
-    item.transitionState = transitionStates.hiding;
-    // Stop any running timer
-    if (item.timer) {
-        item.timer.actions.stop();
-    }
-    await transitionItem(item, MODE.HIDE);
-    item.callbacks.didHide && (await item.callbacks.didHide(item));
-    const copy = {
-        ...item,
+      }
+
+      return Promise.all(items);
     };
-    actions.remove(item.ns, item.id);
-    return Promise.resolve(copy);
-};
-const setDomElement = (domElement, item) => {
-    item.dialogicOptions.domElement = domElement;
+  };
 };
 
-const dialogical = ({ ns, queued, timeout, }) => {
-    const defaultId = `default_${ns}`;
-    const defaultSpawn = `default_${ns}`;
-    const defaultDialogicOptions = {
-        id: defaultId,
-        spawn: defaultSpawn,
-        ...(queued && { queued }),
-        ...(timeout !== undefined && { timeout }),
-    };
-    return {
-        // Identification
-        ns,
-        defaultId,
-        defaultSpawn,
-        // Configuration
-        defaultDialogicOptions,
-        // Commands
-        show: show(ns)(defaultDialogicOptions),
-        hide: hide(ns)(defaultDialogicOptions),
-        hideAll: hideAll(ns)(defaultDialogicOptions),
-        resetAll: resetAll(ns)(defaultDialogicOptions),
-        // Timer commands
-        pause: pause(ns)(defaultDialogicOptions),
-        resume: resume(ns)(defaultDialogicOptions),
-        // State
-        exists: exists(ns)(defaultDialogicOptions),
-        getCount: getCount(ns),
-        // Timer state
-        isPaused: isPaused(ns)(defaultDialogicOptions),
-        getRemaining: getRemaining$1(ns)(defaultDialogicOptions),
-    };
+var getCount = function getCount(ns) {
+  return function (identityOptions) {
+    return selectors.getCount(ns, identityOptions);
+  };
 };
 
-const dialog = dialogical({ ns: 'dialog' });
+var transitionItem = function transitionItem(item, mode) {
+  return transition(item.dialogicOptions, mode);
+};
 
-const notification = dialogical({
-    ns: 'notification',
-    queued: true,
-    timeout: 3000,
+var deferredHideItem = /*#__PURE__*/function () {
+  var _ref4 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(item, timer, timeout) {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            timer.actions.start(function () {
+              return hideItem(item);
+            }, timeout);
+            return _context.abrupt("return", getTimerProperty('getResultPromise', undefined));
+
+          case 2:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function deferredHideItem(_x, _x2, _x3) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+var showItem = /*#__PURE__*/function () {
+  var _ref5 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(item) {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            if (item.callbacks.willShow) {
+              item.callbacks.willShow(item);
+            }
+
+            if (!(item.transitionState !== transitionStates.displaying)) {
+              _context2.next = 5;
+              break;
+            }
+
+            item.transitionState = transitionStates.displaying;
+            _context2.next = 5;
+            return transitionItem(item, MODE.SHOW);
+
+          case 5:
+            if (item.callbacks.didShow) {
+              item.callbacks.didShow(item);
+            }
+
+            if (!(item.dialogicOptions.timeout && item.timer)) {
+              _context2.next = 9;
+              break;
+            }
+
+            _context2.next = 9;
+            return deferredHideItem(item, item.timer, item.dialogicOptions.timeout);
+
+          case 9:
+            return _context2.abrupt("return", Promise.resolve(item));
+
+          case 10:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function showItem(_x4) {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+var hideItem = /*#__PURE__*/function () {
+  var _ref6 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(item) {
+    var copy;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            item.transitionState = transitionStates.hiding; // Stop any running timer
+
+            if (item.timer) {
+              item.timer.actions.stop();
+            }
+
+            if (item.callbacks.willHide) {
+              item.callbacks.willHide(item);
+            }
+
+            _context3.next = 5;
+            return transitionItem(item, MODE.HIDE);
+
+          case 5:
+            if (item.callbacks.didHide) {
+              item.callbacks.didHide(item);
+            }
+
+            copy = _objectSpread({}, item);
+            actions.remove(item.ns, item.id);
+            return _context3.abrupt("return", Promise.resolve(copy));
+
+          case 9:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+
+  return function hideItem(_x5) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
+var setDomElement = function setDomElement(domElement, item) {
+  item.dialogicOptions.domElement = domElement;
+};
+
+var dialogical = function dialogical(_ref7) {
+  var ns = _ref7.ns,
+      queued = _ref7.queued,
+      timeout = _ref7.timeout;
+  var defaultId = "default_".concat(ns);
+  var defaultSpawn = "default_".concat(ns);
+
+  var defaultDialogicOptions = _objectSpread(_objectSpread({
+    id: defaultId,
+    spawn: defaultSpawn
+  }, queued && {
+    queued: queued
+  }), timeout !== undefined && {
+    timeout: timeout
+  });
+
+  return {
+    // Identification
+    ns: ns,
+    defaultId: defaultId,
+    defaultSpawn: defaultSpawn,
+    // Configuration
+    defaultDialogicOptions: defaultDialogicOptions,
+    // Commands
+    show: show(ns)(defaultDialogicOptions),
+    hide: hide(ns)(defaultDialogicOptions),
+    hideAll: hideAll(ns)(defaultDialogicOptions),
+    resetAll: resetAll(ns)(defaultDialogicOptions),
+    // Timer commands
+    pause: pause(ns)(defaultDialogicOptions),
+    resume: resume(ns)(defaultDialogicOptions),
+    // State
+    exists: exists(ns)(defaultDialogicOptions),
+    getCount: getCount(ns),
+    // Timer state
+    isPaused: isPaused(ns)(defaultDialogicOptions),
+    getRemaining: getRemaining$1(ns)(defaultDialogicOptions)
+  };
+};
+
+var dialog = dialogical({
+  ns: 'dialog'
 });
-
+var notification = dialogical({
+  ns: 'notification',
+  queued: true,
+  timeout: 3000
+});
 /**
  * Utility script that uses an animation frame to pass the current remaining value
  * (which is utilized when setting `timeout`).
  */
-const remaining = (props) => {
-    let displayValue = undefined;
-    let reqId;
-    let isCanceled = false;
-    const update = () => {
-        const remaining = props.instance.getRemaining();
-        if (displayValue !== remaining) {
-            displayValue =
-                remaining === undefined
-                    ? remaining
-                    : props.roundToSeconds
-                        ? Math.round(Math.max(remaining, 0) / 1000)
-                        : Math.max(remaining, 0);
-        }
-        props.callback(displayValue);
-        if (!props.instance.exists()) {
-            window.cancelAnimationFrame(reqId);
-            isCanceled = true;
-        }
-        else if (!isCanceled) {
-            reqId = window.requestAnimationFrame(update);
-        }
-    };
-    reqId = window.requestAnimationFrame(update);
+
+var remaining = function remaining(props) {
+  var displayValue = undefined;
+  var reqId;
+  var isCanceled = false;
+
+  var update = function update() {
+    var remaining = props.instance.getRemaining();
+
+    if (displayValue !== remaining) {
+      displayValue = remaining === undefined ? remaining : props.roundToSeconds ? Math.round(Math.max(remaining, 0) / 1000) : Math.max(remaining, 0);
+    }
+
+    props.callback(displayValue);
+
+    if (!props.instance.exists()) {
+      window.cancelAnimationFrame(reqId);
+      isCanceled = true;
+    } else if (!isCanceled) {
+      reqId = window.requestAnimationFrame(update);
+    }
+  };
+
+  reqId = window.requestAnimationFrame(update);
 };
 
 
+
+/***/ }),
+
+/***/ "../../dialogic/node_modules/mithril/stream.js":
+/*!***********************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic/node_modules/mithril/stream.js ***!
+  \***********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__(/*! ./stream/stream */ "../../dialogic/node_modules/mithril/stream/stream.js")
+
+
+/***/ }),
+
+/***/ "../../dialogic/node_modules/mithril/stream/stream.js":
+/*!******************************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic/node_modules/mithril/stream/stream.js ***!
+  \******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* eslint-disable */
+;(function() {
+"use strict"
+/* eslint-enable */
+Stream.SKIP = {}
+Stream.lift = lift
+Stream.scan = scan
+Stream.merge = merge
+Stream.combine = combine
+Stream.scanMerge = scanMerge
+Stream["fantasy-land/of"] = Stream
+
+var warnedHalt = false
+Object.defineProperty(Stream, "HALT", {
+	get: function() {
+		warnedHalt || console.log("HALT is deprecated and has been renamed to SKIP");
+		warnedHalt = true
+		return Stream.SKIP
+	}
+})
+
+function Stream(value) {
+	var dependentStreams = []
+	var dependentFns = []
+
+	function stream(v) {
+		if (arguments.length && v !== Stream.SKIP) {
+			value = v
+			if (open(stream)) {
+				stream._changing()
+				stream._state = "active"
+				dependentStreams.forEach(function(s, i) { s(dependentFns[i](value)) })
+			}
+		}
+
+		return value
+	}
+
+	stream.constructor = Stream
+	stream._state = arguments.length && value !== Stream.SKIP ? "active" : "pending"
+	stream._parents = []
+
+	stream._changing = function() {
+		if (open(stream)) stream._state = "changing"
+		dependentStreams.forEach(function(s) {
+			s._changing()
+		})
+	}
+
+	stream._map = function(fn, ignoreInitial) {
+		var target = ignoreInitial ? Stream() : Stream(fn(value))
+		target._parents.push(stream)
+		dependentStreams.push(target)
+		dependentFns.push(fn)
+		return target
+	}
+
+	stream.map = function(fn) {
+		return stream._map(fn, stream._state !== "active")
+	}
+
+	var end
+	function createEnd() {
+		end = Stream()
+		end.map(function(value) {
+			if (value === true) {
+				stream._parents.forEach(function (p) {p._unregisterChild(stream)})
+				stream._state = "ended"
+				stream._parents.length = dependentStreams.length = dependentFns.length = 0
+			}
+			return value
+		})
+		return end
+	}
+
+	stream.toJSON = function() { return value != null && typeof value.toJSON === "function" ? value.toJSON() : value }
+
+	stream["fantasy-land/map"] = stream.map
+	stream["fantasy-land/ap"] = function(x) { return combine(function(s1, s2) { return s1()(s2()) }, [x, stream]) }
+
+	stream._unregisterChild = function(child) {
+		var childIndex = dependentStreams.indexOf(child)
+		if (childIndex !== -1) {
+			dependentStreams.splice(childIndex, 1)
+			dependentFns.splice(childIndex, 1)
+		}
+	}
+
+	Object.defineProperty(stream, "end", {
+		get: function() { return end || createEnd() }
+	})
+
+	return stream
+}
+
+function combine(fn, streams) {
+	var ready = streams.every(function(s) {
+		if (s.constructor !== Stream)
+			throw new Error("Ensure that each item passed to stream.combine/stream.merge/lift is a stream")
+		return s._state === "active"
+	})
+	var stream = ready
+		? Stream(fn.apply(null, streams.concat([streams])))
+		: Stream()
+
+	var changed = []
+
+	var mappers = streams.map(function(s) {
+		return s._map(function(value) {
+			changed.push(s)
+			if (ready || streams.every(function(s) { return s._state !== "pending" })) {
+				ready = true
+				stream(fn.apply(null, streams.concat([changed])))
+				changed = []
+			}
+			return value
+		}, true)
+	})
+
+	var endStream = stream.end.map(function(value) {
+		if (value === true) {
+			mappers.forEach(function(mapper) { mapper.end(true) })
+			endStream.end(true)
+		}
+		return undefined
+	})
+
+	return stream
+}
+
+function merge(streams) {
+	return combine(function() { return streams.map(function(s) { return s() }) }, streams)
+}
+
+function scan(fn, acc, origin) {
+	var stream = origin.map(function(v) {
+		var next = fn(acc, v)
+		if (next !== Stream.SKIP) acc = next
+		return next
+	})
+	stream(acc)
+	return stream
+}
+
+function scanMerge(tuples, seed) {
+	var streams = tuples.map(function(tuple) { return tuple[0] })
+
+	var stream = combine(function() {
+		var changed = arguments[arguments.length - 1]
+		streams.forEach(function(stream, i) {
+			if (changed.indexOf(stream) > -1)
+				seed = tuples[i][1](seed, stream())
+		})
+
+		return seed
+	}, streams)
+
+	stream(seed)
+
+	return stream
+}
+
+function lift() {
+	var fn = arguments[0]
+	var streams = Array.prototype.slice.call(arguments, 1)
+	return merge(streams).map(function(streams) {
+		return fn.apply(undefined, streams)
+	})
+}
+
+function open(s) {
+	return s._state === "pending" || s._state === "active" || s._state === "changing"
+}
+
+if (true) module["exports"] = Stream
+else {}
+
+}());
 
 
 /***/ }),
@@ -1569,11 +3274,11 @@ const effect = (isAsync = false) => (fn, deps) => {
             : runCallbackFn);
     }
 };
-const updateState = (initialValue, newValueFn) => {
+const updateState = (initialState, newValueFn) => {
     const state = currentState;
     const index = state.statesIndex++;
     if (!state.setup) {
-        state.states[index] = initialValue;
+        state.states[index] = initialState;
     }
     return [
         state.states[index],
@@ -1588,19 +3293,19 @@ const updateState = (initialValue, newValueFn) => {
         index,
     ];
 };
-const useState = (initialValue) => {
+const useState = (initialState) => {
     const state = currentState;
     const newValueFn = (value, index) => typeof value === 'function'
         ? value(state.states[index], index)
         : value;
-    return updateState(initialValue, newValueFn);
+    return updateState(initialState, newValueFn);
 };
 const useEffect = effect(true);
 const useLayoutEffect = effect();
-const useReducer = (reducer, initialValue, initFn) => {
+const useReducer = (reducer, initialState, initFn) => {
     const state = currentState;
     // From the React docs: You can also create the initial state lazily. To do this, you can pass an init function as the third argument. The initial state will be set to init(initialValue).
-    const initValue = !state.setup && initFn ? initFn(initialValue) : initialValue;
+    const initValue = !state.setup && initFn ? initFn(initialState) : initialState;
     const getValueDispatch = () => {
         const [value, setValue, index] = updateState(initValue);
         const dispatch = (action) => {
@@ -1629,7 +3334,7 @@ const useMemo = (fn, deps) => {
     }
     return memoized;
 };
-const useCallback = (fn, deps) => useMemo(() => fn, deps);
+const useCallback = (callback, deps) => useMemo(() => callback, deps);
 const withHooks = (renderFunction, initialAttrs) => {
     const init = (vnode) => {
         Object.assign(vnode.state, {
@@ -3554,210 +5259,6 @@ else {}
 
 /***/ }),
 
-/***/ "../node_modules/mithril/stream.js":
-/*!*****************************************!*\
-  !*** ../node_modules/mithril/stream.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = __webpack_require__(/*! ./stream/stream */ "../node_modules/mithril/stream/stream.js")
-
-
-/***/ }),
-
-/***/ "../node_modules/mithril/stream/stream.js":
-/*!************************************************!*\
-  !*** ../node_modules/mithril/stream/stream.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* eslint-disable */
-;(function() {
-"use strict"
-/* eslint-enable */
-Stream.SKIP = {}
-Stream.lift = lift
-Stream.scan = scan
-Stream.merge = merge
-Stream.combine = combine
-Stream.scanMerge = scanMerge
-Stream["fantasy-land/of"] = Stream
-
-var warnedHalt = false
-Object.defineProperty(Stream, "HALT", {
-	get: function() {
-		warnedHalt || console.log("HALT is deprecated and has been renamed to SKIP");
-		warnedHalt = true
-		return Stream.SKIP
-	}
-})
-
-function Stream(value) {
-	var dependentStreams = []
-	var dependentFns = []
-
-	function stream(v) {
-		if (arguments.length && v !== Stream.SKIP) {
-			value = v
-			if (open(stream)) {
-				stream._changing()
-				stream._state = "active"
-				dependentStreams.forEach(function(s, i) { s(dependentFns[i](value)) })
-			}
-		}
-
-		return value
-	}
-
-	stream.constructor = Stream
-	stream._state = arguments.length && value !== Stream.SKIP ? "active" : "pending"
-	stream._parents = []
-
-	stream._changing = function() {
-		if (open(stream)) stream._state = "changing"
-		dependentStreams.forEach(function(s) {
-			s._changing()
-		})
-	}
-
-	stream._map = function(fn, ignoreInitial) {
-		var target = ignoreInitial ? Stream() : Stream(fn(value))
-		target._parents.push(stream)
-		dependentStreams.push(target)
-		dependentFns.push(fn)
-		return target
-	}
-
-	stream.map = function(fn) {
-		return stream._map(fn, stream._state !== "active")
-	}
-
-	var end
-	function createEnd() {
-		end = Stream()
-		end.map(function(value) {
-			if (value === true) {
-				stream._parents.forEach(function (p) {p._unregisterChild(stream)})
-				stream._state = "ended"
-				stream._parents.length = dependentStreams.length = dependentFns.length = 0
-			}
-			return value
-		})
-		return end
-	}
-
-	stream.toJSON = function() { return value != null && typeof value.toJSON === "function" ? value.toJSON() : value }
-
-	stream["fantasy-land/map"] = stream.map
-	stream["fantasy-land/ap"] = function(x) { return combine(function(s1, s2) { return s1()(s2()) }, [x, stream]) }
-
-	stream._unregisterChild = function(child) {
-		var childIndex = dependentStreams.indexOf(child)
-		if (childIndex !== -1) {
-			dependentStreams.splice(childIndex, 1)
-			dependentFns.splice(childIndex, 1)
-		}
-	}
-
-	Object.defineProperty(stream, "end", {
-		get: function() { return end || createEnd() }
-	})
-
-	return stream
-}
-
-function combine(fn, streams) {
-	var ready = streams.every(function(s) {
-		if (s.constructor !== Stream)
-			throw new Error("Ensure that each item passed to stream.combine/stream.merge/lift is a stream")
-		return s._state === "active"
-	})
-	var stream = ready
-		? Stream(fn.apply(null, streams.concat([streams])))
-		: Stream()
-
-	var changed = []
-
-	var mappers = streams.map(function(s) {
-		return s._map(function(value) {
-			changed.push(s)
-			if (ready || streams.every(function(s) { return s._state !== "pending" })) {
-				ready = true
-				stream(fn.apply(null, streams.concat([changed])))
-				changed = []
-			}
-			return value
-		}, true)
-	})
-
-	var endStream = stream.end.map(function(value) {
-		if (value === true) {
-			mappers.forEach(function(mapper) { mapper.end(true) })
-			endStream.end(true)
-		}
-		return undefined
-	})
-
-	return stream
-}
-
-function merge(streams) {
-	return combine(function() { return streams.map(function(s) { return s() }) }, streams)
-}
-
-function scan(fn, acc, origin) {
-	var stream = origin.map(function(v) {
-		var next = fn(acc, v)
-		if (next !== Stream.SKIP) acc = next
-		return next
-	})
-	stream(acc)
-	return stream
-}
-
-function scanMerge(tuples, seed) {
-	var streams = tuples.map(function(tuple) { return tuple[0] })
-
-	var stream = combine(function() {
-		var changed = arguments[arguments.length - 1]
-		streams.forEach(function(stream, i) {
-			if (changed.indexOf(stream) > -1)
-				seed = tuples[i][1](seed, stream())
-		})
-
-		return seed
-	}, streams)
-
-	stream(seed)
-
-	return stream
-}
-
-function lift() {
-	var fn = arguments[0]
-	var streams = Array.prototype.slice.call(arguments, 1)
-	return merge(streams).map(function(streams) {
-		return fn.apply(undefined, streams)
-	})
-}
-
-function open(s) {
-	return s._state === "pending" || s._state === "active" || s._state === "changing"
-}
-
-if (true) module["exports"] = Stream
-else {}
-
-}());
-
-
-/***/ }),
-
 /***/ "./CurrentPathBadge.ts":
 /*!*****************************!*\
   !*** ./CurrentPathBadge.ts ***!
@@ -3774,7 +5275,7 @@ __webpack_require__.r(__webpack_exports__);
 const CurrentPathBadge = {
     view: () => {
         const route = mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.get() || '/';
-        return mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', mithril__WEBPACK_IMPORTED_MODULE_0___default()('span.tag', route));
+        return mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', mithril__WEBPACK_IMPORTED_MODULE_0___default()('span.tag', { 'data-test-id': 'current-path' }, route));
     },
 };
 
@@ -3794,47 +5295,60 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
 
-const EditProfileDialog = () => {
+const EditProfileDialog = ({ attrs: initialAttrs, }) => {
     const localState = {
-        email: '',
+        email: initialAttrs.email,
     };
     const setEmail = (newEmail) => {
         localState.email = newEmail;
     };
     return {
         view: ({ attrs }) => {
-            return mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', { className: 'modal is-active' }, [
+            return mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', { className: 'modal is-active', 'data-test-id': 'edit-profile-dialog' }, [
                 mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', { className: 'modal-background' }),
                 mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', { className: 'modal-card' }, [
                     mithril__WEBPACK_IMPORTED_MODULE_0___default()('header', { className: 'modal-card-head' }, [
-                        mithril__WEBPACK_IMPORTED_MODULE_0___default()('p', { className: 'modal-card-title' }, attrs.title),
+                        mithril__WEBPACK_IMPORTED_MODULE_0___default()('p', { className: 'modal-card-title', 'data-test-id': 'title' }, attrs.title),
                         mithril__WEBPACK_IMPORTED_MODULE_0___default()('button', {
                             className: 'delete',
                             onclick: () => attrs.onCancel(),
+                            'data-test-id': 'btn-close',
                         }),
                     ]),
                     mithril__WEBPACK_IMPORTED_MODULE_0___default()('section', { className: 'modal-card-body' }, mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', { className: 'field' }, mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', { className: 'control' }, [
                         mithril__WEBPACK_IMPORTED_MODULE_0___default()('input', {
                             className: 'input',
                             type: 'email',
-                            defaultvalue: attrs.email,
+                            value: localState.email,
                             oninput: (e) => {
                                 if (e.target) {
                                     setEmail(e.target.value);
                                 }
                             },
+                            'data-test-id': 'input-email',
                         }),
                     ]))),
                     mithril__WEBPACK_IMPORTED_MODULE_0___default()('footer', { className: 'modal-card-foot' }, [
                         mithril__WEBPACK_IMPORTED_MODULE_0___default()('button', {
                             className: 'button is-link',
                             onclick: () => attrs.onSave(localState.email),
+                            'data-test-id': 'btn-save',
                         }, 'Save changes'),
                         mithril__WEBPACK_IMPORTED_MODULE_0___default()('button', {
                             className: 'button is-danger is-light',
                             onclick: () => attrs.onCancel(),
+                            'data-test-id': 'btn-cancel',
                         }, 'Cancel'),
-                        mithril__WEBPACK_IMPORTED_MODULE_0___default()(mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.Link, { className: 'button', href: '/' }, 'Go to home'),
+                        mithril__WEBPACK_IMPORTED_MODULE_0___default()(mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.Link, {
+                            className: 'button',
+                            href: attrs.pathPrefix || '/',
+                            'data-test-id': 'btn-home',
+                        }, 'Go to home'),
+                        mithril__WEBPACK_IMPORTED_MODULE_0___default()('button', {
+                            className: 'button',
+                            onclick: () => attrs.setCount(current => current + 1),
+                            'data-test-id': 'btn-add-count',
+                        }, 'Increment count'),
                     ]),
                 ]),
             ]);
@@ -3861,12 +5375,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const HomePage = {
-    view: () => {
-        return mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', [
+    view: ({ attrs }) => {
+        return mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', { 'data-test-id': 'home-page' }, [
             mithril__WEBPACK_IMPORTED_MODULE_0___default()('h1.title', 'Home'),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()(_CurrentPathBadge__WEBPACK_IMPORTED_MODULE_1__["CurrentPathBadge"]),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()('.buttons', [
-                mithril__WEBPACK_IMPORTED_MODULE_0___default()(mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.Link, { className: 'button is-link', href: '/profile' }, 'Go to Profile'),
+                mithril__WEBPACK_IMPORTED_MODULE_0___default()(mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.Link, {
+                    className: 'button is-link',
+                    href: `${attrs.pathPrefix || ''}/profile`,
+                    'data-test-id': 'btn-profile',
+                }, 'Go to Profile'),
             ]),
         ]);
     },
@@ -3888,52 +5406,111 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _CurrentPathBadge__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CurrentPathBadge */ "./CurrentPathBadge.ts");
-/* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dialogic-mithril */ "../node_modules/dialogic-mithril/dist/dialogic-mithril.mjs");
+/* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
 /* harmony import */ var _EditProfileDialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./EditProfileDialog */ "./EditProfileDialog.ts");
-/* harmony import */ var _useDialogic__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./useDialogic */ "./useDialogic.ts");
-/* harmony import */ var mithril_hooks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mithril-hooks */ "../node_modules/mithril-hooks/dist/mithril-hooks.mjs");
+/* harmony import */ var mithril_hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! mithril-hooks */ "../node_modules/mithril-hooks/dist/mithril-hooks.mjs");
+/* harmony import */ var _SaveConfirmation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SaveConfirmation */ "./SaveConfirmation.ts");
 
 
 
 
 
 
-const ProfilePageFn = () => {
+const ProfilePageFn = (attrs) => {
+    const { pathPrefix } = attrs || {};
+    // Test injecting a dynamic value into the dialog
+    const [count, setCount] = Object(mithril_hooks__WEBPACK_IMPORTED_MODULE_4__["useState"])(0);
     const dialogPath = '/profile/edit';
     const returnPath = '/profile';
     const isRouteMatch = mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.get() === dialogPath;
-    Object(_useDialogic__WEBPACK_IMPORTED_MODULE_4__["useDialog"])({
+    Object(dialogic_mithril__WEBPACK_IMPORTED_MODULE_2__["useDialog"])({
         isShow: isRouteMatch,
-        instance: dialogic_mithril__WEBPACK_IMPORTED_MODULE_2__["dialog"],
+        deps: [count],
         props: {
             dialogic: {
                 component: _EditProfileDialog__WEBPACK_IMPORTED_MODULE_3__["EditProfileDialog"],
                 className: 'dialog',
             },
-            title: 'Update your e-mail',
+            pathPrefix: pathPrefix,
+            title: `Update your e-mail ${count}`,
             email: 'allan@company.com',
             onSave: (email) => {
                 console.log('onSave:', email);
                 mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.set(returnPath);
-                // notification.show<TSaveConfirmation>(saveConfirmationProps);
+                dialogic_mithril__WEBPACK_IMPORTED_MODULE_2__["notification"].show(_SaveConfirmation__WEBPACK_IMPORTED_MODULE_5__["saveConfirmationProps"]);
             },
             onCancel: () => {
                 console.log('onCancel');
                 mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.set(returnPath);
-                // dialog.hide();
             },
+            setCount,
         },
     });
-    return mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', [
+    return mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', { 'data-test-id': 'profile-page' }, [
         mithril__WEBPACK_IMPORTED_MODULE_0___default()('h1.title', 'Profile'),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()(_CurrentPathBadge__WEBPACK_IMPORTED_MODULE_1__["CurrentPathBadge"]),
         mithril__WEBPACK_IMPORTED_MODULE_0___default()('.buttons', [
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()(mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.Link, { className: 'button', href: '/' }, 'Go to home'),
-            mithril__WEBPACK_IMPORTED_MODULE_0___default()(mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.Link, { className: 'button is-link', href: dialogPath }, 'Edit profile'),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()(mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.Link, {
+                className: 'button',
+                href: pathPrefix || '/',
+                'data-test-id': 'btn-home',
+            }, 'Go to home'),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()(mithril__WEBPACK_IMPORTED_MODULE_0___default.a.route.Link, {
+                className: 'button is-link',
+                href: dialogPath,
+                'data-test-id': 'btn-edit-profile',
+            }, 'Edit profile'),
         ]),
     ]);
 };
-const ProfilePage = Object(mithril_hooks__WEBPACK_IMPORTED_MODULE_5__["withHooks"])(ProfilePageFn);
+const ProfilePage = Object(mithril_hooks__WEBPACK_IMPORTED_MODULE_4__["withHooks"])(ProfilePageFn);
+
+
+/***/ }),
+
+/***/ "./SaveConfirmation.ts":
+/*!*****************************!*\
+  !*** ./SaveConfirmation.ts ***!
+  \*****************************/
+/*! exports provided: SaveConfirmation, saveConfirmationProps */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SaveConfirmation", function() { return SaveConfirmation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveConfirmationProps", function() { return saveConfirmationProps; });
+/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
+/* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
+
+const SaveConfirmation = {
+    view: ({ attrs }) => mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', { className: 'notification-content', 'data-test-id': 'notification' }, attrs.content),
+};
+const saveConfirmationProps = {
+    dialogic: {
+        component: SaveConfirmation,
+        className: 'demo-notification',
+        styles: (domElement) => {
+            const height = domElement.getBoundingClientRect().height;
+            return {
+                default: {
+                    transition: 'all 350ms ease-in-out',
+                },
+                showStart: {
+                    transform: `translate3d(0, ${height}px, 0)`,
+                },
+                showEnd: {
+                    transform: 'translate3d(0, 0px,  0)',
+                    transitionDelay: '500ms',
+                },
+                hideEnd: {
+                    transitionDuration: '450ms',
+                    transform: `translate3d(0, ${height}px, 0)`,
+                },
+            };
+        },
+    },
+    content: 'E-mail address saved',
+};
 
 
 /***/ }),
@@ -3949,7 +5526,7 @@ const ProfilePage = Object(mithril_hooks__WEBPACK_IMPORTED_MODULE_5__["withHooks
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril */ "../node_modules/mithril/mithril.js");
 /* harmony import */ var mithril__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mithril__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dialogic-mithril */ "../node_modules/dialogic-mithril/dist/dialogic-mithril.mjs");
+/* harmony import */ var dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dialogic-mithril */ "../../dialogic-mithril/dist/dialogic-mithril.mjs");
 /* harmony import */ var _ProfilePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ProfilePage */ "./ProfilePage.ts");
 /* harmony import */ var _HomePage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./HomePage */ "./HomePage.ts");
 /* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles.css */ "./styles.css");
@@ -3965,6 +5542,7 @@ const App = {
         return mithril__WEBPACK_IMPORTED_MODULE_0___default()('div', { className: 'app' }, [
             Component && mithril__WEBPACK_IMPORTED_MODULE_0___default()(Component),
             mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Dialog"]),
+            mithril__WEBPACK_IMPORTED_MODULE_0___default()(dialogic_mithril__WEBPACK_IMPORTED_MODULE_1__["Notification"]),
         ]);
     },
 };
@@ -3996,87 +5574,6 @@ if (rootElement) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ "./useDialogic.ts":
-/*!************************!*\
-  !*** ./useDialogic.ts ***!
-  \************************/
-/*! exports provided: useDialogic, useDialog, useNotification */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useDialogic", function() { return useDialogic; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useDialog", function() { return useDialog; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useNotification", function() { return useNotification; });
-/* harmony import */ var mithril_hooks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mithril-hooks */ "../node_modules/mithril-hooks/dist/mithril-hooks.mjs");
-/* harmony import */ var dialogic__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dialogic */ "../node_modules/dialogic/dist/dialogic.mjs");
-
-
-let useDialogicCounter = 0;
-const useDialogic = (allProps) => {
-    const { isShow, isHide, instance, deps = [], props = {}, } = allProps;
-    // Use dialogic id if not set
-    const [id] = Object(mithril_hooks__WEBPACK_IMPORTED_MODULE_0__["useState"])(useDialogicCounter++);
-    const augProps = {
-        ...props,
-        ...(props.dialogic
-            ? {
-                dialogic: {
-                    ...props.dialogic,
-                    id: props.dialogic.id || id,
-                },
-            }
-            : {
-                dialogic: {
-                    id,
-                },
-            }),
-    };
-    const showInstance = () => {
-        instance.show(augProps);
-    };
-    const hideInstance = () => {
-        instance.hide(augProps);
-    };
-    Object(mithril_hooks__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-        if (isShow !== undefined) {
-            if (isShow) {
-                showInstance();
-            }
-            else {
-                hideInstance();
-            }
-        }
-    }, [...deps, isShow]);
-    Object(mithril_hooks__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-        if (isHide !== undefined) {
-            if (isHide) {
-                hideInstance();
-            }
-        }
-    }, [...deps, isHide]);
-    Object(mithril_hooks__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-        return () => {
-            hideInstance();
-        };
-    }, []);
-    return {
-        show: showInstance,
-        hide: hideInstance,
-    };
-};
-/**
- * `useDialogic` with `instance` preset to `dialog`.
- */
-const useDialog = (props) => useDialogic({ ...props, instance: dialogic__WEBPACK_IMPORTED_MODULE_1__["dialog"] });
-/**
- * `useDialogic` with `instance` preset to `notification`.
- */
-const useNotification = (props) => useDialogic({ ...props, instance: dialogic__WEBPACK_IMPORTED_MODULE_1__["notification"] });
-
 
 /***/ })
 

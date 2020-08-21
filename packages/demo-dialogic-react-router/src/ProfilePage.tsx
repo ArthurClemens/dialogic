@@ -1,27 +1,23 @@
 import React, { useState } from 'react';
 import { CurrentPathBadge } from './CurrentPathBadge';
-import {
-  // Route,
-  Link,
-  useRouteMatch,
-  useHistory,
-} from 'react-router-dom';
+import { Route, Link, useRouteMatch, useHistory } from 'react-router-dom';
 import {
   EditProfileDialog,
   TEditProfileDialogProps,
 } from './EditProfileDialog';
-import {
-  notification,
-  // UseDialog,
-  useDialog,
-} from 'dialogic-react';
+import { notification, UseDialog, useDialog } from 'dialogic-react';
 import { saveConfirmationProps, TSaveConfirmation } from './SaveConfirmation';
 
 type TProps = {
   pathPrefix?: string;
+  useDialogComponent?: boolean;
 };
 
-export const ProfilePage = ({ pathPrefix = '' }: TProps) => {
+export const ProfilePage = ({
+  pathPrefix = '',
+  useDialogComponent,
+}: TProps) => {
+  // Test injecting a dynamic value into the dialog
   const [count, setCount] = useState(0);
   const match = useRouteMatch();
   const history = useHistory();
@@ -29,28 +25,29 @@ export const ProfilePage = ({ pathPrefix = '' }: TProps) => {
   const dialogReturnPath = match.url;
   const matchDialogPath = useRouteMatch(dialogPath);
 
+  const useDialogProps = {
+    dialogic: {
+      component: EditProfileDialog,
+      className: 'dialog',
+    },
+    pathPrefix,
+    title: `Update your e-mail ${count}`,
+    email: 'allan@company.com',
+    onSave: (email: string) => {
+      history.push(dialogReturnPath);
+      notification.show<TSaveConfirmation>(saveConfirmationProps);
+    },
+    onCancel: () => {
+      history.push(dialogReturnPath);
+    },
+    setCount,
+  };
+
   useDialog<TEditProfileDialogProps>({
+    isIgnore: useDialogComponent,
     isShow: matchDialogPath ? matchDialogPath.isExact : false,
     deps: [count],
-    props: {
-      dialogic: {
-        component: EditProfileDialog,
-        className: 'dialog',
-      },
-      pathPrefix,
-      title: `Update your e-mail ${count}`,
-      email: 'allan@company.com',
-      onSave: (email: string) => {
-        console.log('onSave:', email);
-        history.push(dialogReturnPath);
-        notification.show<TSaveConfirmation>(saveConfirmationProps);
-      },
-      onCancel: () => {
-        console.log('onCancel');
-        history.push(dialogReturnPath);
-      },
-      setCount,
-    },
+    props: useDialogProps,
   });
 
   return (
@@ -69,29 +66,15 @@ export const ProfilePage = ({ pathPrefix = '' }: TProps) => {
           Edit Profile
         </Link>
       </div>
-      {/* <Route path={dialogPath}>
-        <UseDialog<TEditProfileDialogProps>
-          isShow={matchDialogPath ? matchDialogPath.isExact : false}
-          beforeHide={() => console.log('before hide')}
-          props={{
-            dialogic: {
-              component: EditProfileDialog,
-              className: 'dialog',
-            },
-            title: 'Update your e-mail',
-            email: 'allan@company.com',
-            onSave: (email: string) => {
-              console.log('onSave:', email);
-              history.push(dialogReturnPath);
-              notification.show<TSaveConfirmation>(saveConfirmationProps);
-            },
-            onCancel: () => {
-              console.log('onCancel');
-              history.push(dialogReturnPath);
-            },
-          }}
-        />
-      </Route> */}
+      {useDialogComponent && (
+        <Route path={dialogPath}>
+          <UseDialog<TEditProfileDialogProps>
+            isShow={matchDialogPath ? matchDialogPath.isExact : false}
+            deps={[count]}
+            props={useDialogProps}
+          />
+        </Route>
+      )}
     </div>
   );
 };

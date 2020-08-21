@@ -2,6 +2,7 @@ import { selectors, setDomElement, showItem, hideItem, filterCandidates, states,
 export { dialog, notification } from 'dialogic';
 import React, { useRef, useCallback, useEffect, useState } from 'react';
 import { useStream } from 'use-stream';
+import { sharedUseDialogic, sharedUseDialog, sharedUseNotification } from 'dialogic-hooks';
 
 const handleDispatch = (ns) => (event, fn) => {
     // Update dispatching item:
@@ -91,54 +92,14 @@ const Dialogical = type => props => {
     return React.createElement(Wrapper, { identityOptions: identityOptions, ns: type.ns });
 };
 
-const useDialogic = (allProps) => {
-    const { isShow, isHide, instance, deps = [], props = {}, } = allProps;
-    const showInstance = () => {
-        instance.show(props);
-    };
-    const hideInstance = () => {
-        instance.hide(props);
-    };
-    // maybe show
-    useEffect(() => {
-        if (isShow !== undefined) {
-            if (isShow) {
-                showInstance();
-            }
-            else {
-                hideInstance();
-            }
-        }
-    }, [...deps, isShow]);
-    // maybe hide
-    useEffect(() => {
-        if (isHide !== undefined) {
-            if (isHide) {
-                hideInstance();
-            }
-        }
-    }, [...deps, isHide]);
-    // unmount
-    useEffect(() => {
-        return () => {
-            hideInstance();
-        };
-    }, []);
-    return {
-        show: showInstance,
-        hide: hideInstance,
-    };
-};
+const useDialogic = sharedUseDialogic({ useEffect });
+const useDialog = sharedUseDialog({ useEffect, dialog });
+const useNotification = sharedUseNotification({
+    useEffect,
+    notification,
+});
 /**
- * `useDialogic` with `instance` preset to `dialog`.
- */
-const useDialog = (props) => useDialogic({ ...props, instance: dialog });
-/**
- * `useDialogic` with `instance` preset to `notification`.
- */
-const useNotification = (props) => useDialogic({ ...props, instance: notification });
-/**
- * Helper component that wraps `useDialogic` to use in JSX syntax.
+ * Helper component that wraps `useDialogic` to use with JSX syntax.
  */
 const UseDialogic = (props) => {
     useDialogic(props);

@@ -1,22 +1,15 @@
 /* global cy, describe, before, it */
 
-describe('UseDialogic', () => {
-  before(() => {
-    cy.visit('/UseDialogTest');
-  });
-
+export const useDialogicTests = path => {
   it('Should show the homepage', () => {
     cy.get('[data-test-id=home-page]').should('exist');
-    cy.get('[data-test-id=current-path]').should('contain', '/UseDialogTest');
+    cy.get('[data-test-id=current-path]').should('contain', path);
   });
 
   it('Should show the profile page', () => {
     cy.get('[data-test-id=btn-profile]').should('exist').click();
     cy.get('[data-test-id=profile-page]').should('exist');
-    cy.get('[data-test-id=current-path]').should(
-      'contain',
-      '/UseDialogTest/profile',
-    );
+    cy.get('[data-test-id=current-path]').should('contain', `${path}/profile`);
   });
 
   it('Should open the edit dialog', () => {
@@ -24,7 +17,7 @@ describe('UseDialogic', () => {
     cy.get('[data-test-id=edit-profile-dialog]').should('exist');
     cy.get('[data-test-id=current-path]').should(
       'contain',
-      '/UseDialogTest/profile/edit',
+      `${path}/profile/edit`,
     );
   });
 
@@ -32,10 +25,7 @@ describe('UseDialogic', () => {
     cy.get('[data-test-id=edit-profile-dialog] [data-test-id=btn-close]')
       .should('exist')
       .click();
-    cy.get('[data-test-id=current-path]').should(
-      'contain',
-      '/UseDialogTest/profile',
-    );
+    cy.get('[data-test-id=current-path]').should('contain', `${path}/profile`);
     cy.get('[data-test-id=edit-profile-dialog]').should('not.exist');
     cy.get('[data-test-id=btn-edit-profile]').should('exist').click();
   });
@@ -44,10 +34,7 @@ describe('UseDialogic', () => {
     cy.get('[data-test-id=edit-profile-dialog] [data-test-id=btn-cancel]')
       .should('exist')
       .click();
-    cy.get('[data-test-id=current-path]').should(
-      'contain',
-      '/UseDialogTest/profile',
-    );
+    cy.get('[data-test-id=current-path]').should('contain', `${path}/profile`);
     cy.get('[data-test-id=edit-profile-dialog]').should('not.exist');
     cy.get('[data-test-id=btn-edit-profile]').should('exist').click();
   });
@@ -70,10 +57,7 @@ describe('UseDialogic', () => {
     cy.get('[data-test-id=edit-profile-dialog] [data-test-id=btn-save]')
       .should('exist')
       .click();
-    cy.get('[data-test-id=current-path]').should(
-      'contain',
-      '/UseDialogTest/profile',
-    );
+    cy.get('[data-test-id=current-path]').should('contain', `${path}/profile`);
     cy.get('[data-test-id=edit-profile-dialog]').should('not.exist');
     cy.get('[data-test-id=notification]').should('exist');
     cy.wait(1000);
@@ -88,4 +72,4 @@ describe('UseDialogic', () => {
     cy.go('back');
     cy.get('[data-test-id=edit-profile-dialog]').should('exist');
   });
-});
+};

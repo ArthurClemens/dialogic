@@ -1,53 +1,73 @@
 import m from 'mithril';
 import { CurrentPathBadge } from './CurrentPathBadge';
-import { dialog } from 'dialogic-mithril';
+import { notification, useDialog } from 'dialogic-mithril';
 import {
   TEditProfileDialogProps,
   EditProfileDialog,
 } from './EditProfileDialog';
-import { useDialog } from './useDialogic';
-import { withHooks } from 'mithril-hooks';
+import { withHooks, useState } from 'mithril-hooks';
+import { saveConfirmationProps, TSaveConfirmation } from './SaveConfirmation';
 
-const ProfilePageFn = () => {
-  const dialogPath = '/profile/edit';
-  const returnPath = '/profile';
+type TProps = {
+  pathPrefix?: string;
+};
+
+const ProfilePageFn = (attrs: TProps) => {
+  const pathPrefix = attrs ? attrs.pathPrefix : '';
+  // Test injecting a dynamic value into the dialog
+  const [count, setCount] = useState(0);
+  const dialogPath = `${pathPrefix}/profile/edit`;
+  const returnPath = `${pathPrefix}/profile`;
   const isRouteMatch = m.route.get() === dialogPath;
 
   useDialog<TEditProfileDialogProps>({
     isShow: isRouteMatch,
-    instance: dialog,
+    deps: [count],
     props: {
       dialogic: {
         component: EditProfileDialog,
         className: 'dialog',
       },
-      title: 'Update your e-mail',
+      pathPrefix: pathPrefix,
+      title: `Update your e-mail ${count}`,
       email: 'allan@company.com',
       onSave: (email: string) => {
         console.log('onSave:', email);
         m.route.set(returnPath);
-        // notification.show<TSaveConfirmation>(saveConfirmationProps);
+        notification.show<TSaveConfirmation>(saveConfirmationProps);
       },
       onCancel: () => {
         console.log('onCancel');
         m.route.set(returnPath);
-        // dialog.hide();
       },
+      setCount,
     },
   });
 
-  return m('div', [
+  return m('div', { 'data-test-id': 'profile-page' }, [
     m('h1.title', 'Profile'),
     m(CurrentPathBadge),
     m('.buttons', [
-      m(m.route.Link, { className: 'button', href: '/' }, 'Go to home'),
       m(
         m.route.Link,
-        { className: 'button is-link', href: dialogPath },
+        {
+          className: 'button',
+          href: pathPrefix || '/',
+          'data-test-id': 'btn-home',
+        },
+        'Go to home',
+      ),
+      m(
+        m.route.Link,
+        {
+          className: 'button is-link',
+          href: dialogPath,
+          'data-test-id': 'btn-edit-profile',
+        },
         'Edit profile',
       ),
     ]),
   ]);
 };
 
-export const ProfilePage = withHooks(ProfilePageFn);
+export const ProfilePage: m.Component<TProps> = withHooks(ProfilePageFn);

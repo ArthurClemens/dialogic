@@ -1,0 +1,44 @@
+{
+  "name": "dialogic-hooks",
+  "private": true,
+  "version": "0.9.1",
+  "description": "Dialogic hooks",
+  "main": "dist/dialogic-hooks",
+  "module": "dist/dialogic-hooks.mjs",
+  "type": "module",
+  "scripts": {
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu.js -u",
+    "clean": "rm -rf dist/*",
+    "build": "npm run clean && npm run build:module && npm run build:umd && npm run size",
+    "build:module": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=1 MODULE_NAME=dialogicHooks ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js",
+    "build:umd": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=0 MODULE_NAME=dialogicHooks ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js",
+    "size": "size-limit",
+    "size:why": "size-limit --why",
+    "prettier": "prettier --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\""
+  },
+  "size-limit": [
+    {
+      "path": "dist/dialogic-hooks.js"
+    }
+  ],
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^4.5.6",
+    "@types/react": "^16.9.46",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5",
+    "dialogic": "^0.9.1",
+    "size-limit": "^4.5.6"
+  },
+  "files": [
+    "dist",
+    "index.d.ts",
+    "README.md"
+  ],
+  "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
+  "homepage": "https://github.com/ArthurClemens/dialogic",
+  "license": "MIT"
+}

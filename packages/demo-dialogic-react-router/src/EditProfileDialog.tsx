@@ -68,7 +68,7 @@ export const EditProfileDialog: FunctionComponent<TEditProfileDialogProps> = pro
             onClick={() => props.setCount(current => current + 1)}
             data-test-id="btn-add-count"
           >
-            Add count
+            Increment count
           </button>
         </footer>
       </div>

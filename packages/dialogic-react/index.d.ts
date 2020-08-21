@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { dialog, notification, Dialogic } from 'dialogic';
+export { useDialogic, useDialog, useNotification } from 'dialogic-hooks';
 
 export { dialog, notification, Dialogic };
 
@@ -23,13 +24,6 @@ type UseDialogicReturn = {
    */
   hide: () => void;
 };
-export const useDialogic: <T>(
-  props: UseDialogicInstanceProps<T>,
-) => UseDialogicReturn;
-export const useDialog: <T>(props: UseDialogicProps<T>) => UseDialogicReturn;
-export const useNotification: <T>(
-  props: UseDialogicProps<T>,
-) => UseDialogicReturn;
 
 export const UseDialogic: <T>(
   props: PropsWithChildren<UseDialogicProps<T>>,
@@ -51,32 +45,3 @@ export type UseRemaining = ({
   instance: Dialogic.DialogicInstance;
   roundToSeconds: boolean;
 }) => [number | undefined];
-
-export type UseDialogicProps<T> = {
-  /**
-   * Condition when the instance should be shown.
-   */
-  isShow?: boolean;
-
-  /**
-   * For directed use only. Condition when the instance should be hidden.
-   */
-  isHide?: boolean;
-
-  /**
-   * Props to pass to the instance.
-   */
-  props?: Dialogic.Options<T>;
-
-  /**
-   * Reevaluates condition whenever one of the passed values changes.
-   */
-  deps?: React.DependencyList;
-};
-
-export type UseDialogicInstanceProps<T> = UseDialogicProps<T> & {
-  /**
-   * Instance to show.
-   */
-  instance: Dialogic.DialogicInstance;
-};

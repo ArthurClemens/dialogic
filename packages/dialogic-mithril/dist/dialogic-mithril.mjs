@@ -1,6 +1,8 @@
 import m from 'mithril';
 import { selectors, setDomElement, showItem, hideItem, filterCandidates, dialog, notification, states } from 'dialogic';
 export { dialog, notification } from 'dialogic';
+import { useEffect } from 'mithril-hooks';
+import { sharedUseDialogic, sharedUseDialog, sharedUseNotification } from 'dialogic-hooks';
 
 const handleDispatch = (ns) => (event, fn) => {
     // Update dispatching item:
@@ -93,8 +95,15 @@ const Dialogical = type => ({
     },
 });
 
+const useDialogic = sharedUseDialogic({ useEffect });
+const useDialog = sharedUseDialog({ useEffect, dialog });
+const useNotification = sharedUseNotification({
+    useEffect,
+    notification,
+});
+
 const Dialog = Dialogical(dialog);
 const Notification = Dialogical(notification);
 states.map(state => m.redraw());
 
-export { Dialog, Dialogical, Notification };
+export { Dialog, Dialogical, Notification, useDialog, useDialogic, useNotification };

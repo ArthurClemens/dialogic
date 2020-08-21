@@ -21,7 +21,9 @@
     }
   ],
   "dependencies": {
-    "dialogic": "^0.9.1"
+    "dialogic": "^0.9.1",
+    "dialogic-hooks": "^0.9.1",
+    "mithril-hooks": "^0.6.2"
   },
   "peerDependencies": {
     "@types/mithril": "2.0.3",

@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { Dialog } from 'dialogic-mithril';
+import { Dialog, Notification } from 'dialogic-mithril';
 import { ProfilePage } from './ProfilePage';
 import { HomePage } from './HomePage';
 
@@ -16,7 +16,7 @@ const App = {
     return m('div', { className: 'app' }, [
       Component && m(Component),
       m(Dialog),
-      // m(Notification),
+      m(Notification),
     ]);
   },
 };

@@ -1,72 +1,23 @@
 import { useEffect } from 'react';
-import { dialog, notification, Dialogic } from 'dialogic';
+import { dialog, notification } from 'dialogic';
 import React, { PropsWithChildren } from 'react';
-import { UseDialogicProps, UseDialogicInstanceProps } from '..';
+import {
+  UseDialogicProps,
+  UseDialogicInstanceProps,
+  sharedUseDialogic,
+  sharedUseDialog,
+  sharedUseNotification,
+} from 'dialogic-hooks';
 
-export const useDialogic = <T,>(allProps: UseDialogicInstanceProps<T>) => {
-  const {
-    isShow,
-    isHide,
-    instance,
-    deps = [],
-    props = {} as T & Dialogic.Options<T>,
-  } = allProps;
-
-  const showInstance = () => {
-    instance.show<T>(props);
-  };
-
-  const hideInstance = () => {
-    instance.hide<T>(props);
-  };
-
-  // maybe show
-  useEffect(() => {
-    if (isShow !== undefined) {
-      if (isShow) {
-        showInstance();
-      } else {
-        hideInstance();
-      }
-    }
-  }, [...deps, isShow]);
-
-  // maybe hide
-  useEffect(() => {
-    if (isHide !== undefined) {
-      if (isHide) {
-        hideInstance();
-      }
-    }
-  }, [...deps, isHide]);
-
-  // unmount
-  useEffect(() => {
-    return () => {
-      hideInstance();
-    };
-  }, []);
-
-  return {
-    show: showInstance,
-    hide: hideInstance,
-  };
-};
+export const useDialogic = sharedUseDialogic({ useEffect });
+export const useDialog = sharedUseDialog({ useEffect, dialog });
+export const useNotification = sharedUseNotification({
+  useEffect,
+  notification,
+});
 
 /**
- * `useDialogic` with `instance` preset to `dialog`.
- */
-export const useDialog = <T,>(props: UseDialogicInstanceProps<T>) =>
-  useDialogic<T>({ ...props, instance: dialog });
-
-/**
- * `useDialogic` with `instance` preset to `notification`.
- */
-export const useNotification = <T,>(props: UseDialogicInstanceProps<T>) =>
-  useDialogic<T>({ ...props, instance: notification });
-
-/**
- * Helper component that wraps `useDialogic` to use in JSX syntax.
+ * Helper component that wraps `useDialogic` to use with JSX syntax.
  */
 export const UseDialogic = <T,>(
   props: PropsWithChildren<UseDialogicInstanceProps<T>>,

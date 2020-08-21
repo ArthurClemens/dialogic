@@ -1,3 +1,62 @@
+.app {
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+.dialog {
+  transition: opacity 350ms;
+  opacity: 0;
+}
+.dialog-show-start {
+}
+.dialog-show-end {
+  opacity: 1;
+}
+.dialog-hide-start {
+}
+.dialog-hide-end {
+  opacity: 0;
+}
+
+.notification {
+  transition: opacity 350ms;
+  opacity: 0;
+}
+.notification-show-start {
+}
+.notification-show-end {
+  opacity: 1;
+}
+.notification-hide-start {
+}
+.notification-hide-end {
+  opacity: 0;
+}
+
+.notification-content {
+  padding: 16px 24px;
+  color: #fff;
+  background: #333;
+  min-width: 80vw;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Cannot use `.notification` as it is used by Bulma */
+.demo-notification {
+  position: fixed;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
 
 .menu {
   padding: 15px;

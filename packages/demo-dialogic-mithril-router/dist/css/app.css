@@ -17,7 +17,6 @@
   opacity: 1;
 }
 .dialog-hide-start {
-  transition-duration: 350ms;
 }
 .dialog-hide-end {
   opacity: 0;

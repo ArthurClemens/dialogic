@@ -23,6 +23,7 @@ module.exports = {
     alias: {
       mithril$: path.resolve(baseDir, 'node_modules/mithril/mithril.js'), // Note the exact match
       react: path.resolve(baseDir, 'node_modules/react'),
+      'mithril-hooks': path.resolve(baseDir, 'node_modules/mithril-hooks'),
       'react-dom': path.resolve(baseDir, 'node_modules/react-dom'),
       'react-router-dom': path.resolve(
         baseDir,

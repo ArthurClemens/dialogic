@@ -1,5 +1,6 @@
 import { Component } from 'mithril';
 import { dialog, notification, Dialogic } from 'dialogic';
+export { useDialogic, useDialog, useNotification } from 'dialogic-hooks';
 
 export { dialog, notification, Dialogic };
 
