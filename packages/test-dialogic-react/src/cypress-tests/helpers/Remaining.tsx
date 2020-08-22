@@ -1,5 +1,5 @@
 import React, { useState, FunctionComponent } from 'react';
-import { useAnimationFrame } from './useAnimationFrame';
+import { useAnimationFrame } from '../useAnimationFrame';
 
 type RemainingProps = {
   getRemainingFn: () => number | undefined;

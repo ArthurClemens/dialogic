@@ -17,8 +17,9 @@ import NotificationPause from './cypress-tests/NotificationPause';
 import NotificationTimeout from './cypress-tests/NotificationTimeout';
 import LibBulmaDialog from './cypress-tests/LibBulmaDialog';
 import LibMaterialIODialog from './cypress-tests/LibMaterialIODialog';
-import UseDialogTest from './cypress-tests/UseDialogTest';
-import UseDialogComponentTest from './cypress-tests/UseDialogComponentTest';
+import UseRemaining from './cypress-tests/UseRemaining';
+import UseDialogTest from './cypress-tests/UseDialog';
+import UseDialogComponentTest from './cypress-tests/UseDialogComponent';
 
 import './app-styles.css';
 import './test-styles.css';
@@ -85,6 +86,7 @@ routes = [
     component: LibMaterialIODialog,
     isExact: true,
   },
+  { path: '/UseRemaining', component: UseRemaining, isExact: true },
   { path: '/UseDialogTest', component: UseDialogTest, isExact: false },
   {
     path: '/UseDialogComponentTest',

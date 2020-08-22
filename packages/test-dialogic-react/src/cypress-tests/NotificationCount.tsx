@@ -1,7 +1,7 @@
 import React from 'react';
-import { createFns } from './createFns';
+import { createFns } from './helpers/createFns';
 import { Default } from '../content/Default';
-import { Buttons } from './Buttons';
+import { Buttons } from './helpers/buttons';
 import { notification, Notification, useDialogicState } from 'dialogic-react';
 
 export default () => {

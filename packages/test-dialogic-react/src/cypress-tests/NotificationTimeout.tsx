@@ -1,9 +1,9 @@
 import React from 'react';
-import { createFns } from './createFns';
+import { createFns } from './helpers/createFns';
 import { Default } from '../content/Default';
-import { Buttons } from './Buttons';
+import { Buttons } from './helpers/buttons';
 import { notification, Notification } from 'dialogic-react';
-import { Remaining } from './Remaining';
+import { Remaining } from './helpers/Remaining';
 
 export default () => {
   const fns1 = createFns({

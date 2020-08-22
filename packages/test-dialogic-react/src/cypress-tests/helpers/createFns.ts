@@ -1,5 +1,5 @@
 import { Dialogic } from 'dialogic';
-import { getRandomId } from './utils';
+import { getRandomId } from '../utils';
 
 type CreateFnsProps = {
   instance: Dialogic.DialogicInstance;
@@ -13,7 +13,7 @@ type CreateFnsProps = {
   queued?: boolean;
 };
 
-type TInstance = {
+export type TInstance = {
   title: string;
 };
 

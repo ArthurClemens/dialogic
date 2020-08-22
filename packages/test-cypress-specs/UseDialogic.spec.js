@@ -1,6 +1,6 @@
 /* global cy, describe, before, it */
 
-import { useDialogicTests } from './UseDialogicCommon';
+import { useDialogicTests } from './useDialogicTests';
 
 describe('UseDialogic', () => {
   const path = '/UseDialogTest';

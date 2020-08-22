@@ -1144,6 +1144,121 @@ try {
 
 /***/ }),
 
+/***/ "../../dialogic-hooks/dist/dialogic-hooks.mjs":
+/*!**********************************************************************************************************!*\
+  !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-hooks/dist/dialogic-hooks.mjs ***!
+  \**********************************************************************************************************/
+/*! exports provided: sharedUseDialog, sharedUseDialogic, sharedUseNotification */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sharedUseDialog", function() { return sharedUseDialog; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sharedUseDialogic", function() { return sharedUseDialogic; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sharedUseNotification", function() { return sharedUseNotification; });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../../node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../../node_modules/@babel/runtime/helpers/toConsumableArray.js");
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+var sharedUseDialogic = function sharedUseDialogic(_ref) {
+  var useEffect = _ref.useEffect;
+  return function (allProps) {
+    var isIgnore = allProps.isIgnore,
+        isShow = allProps.isShow,
+        isHide = allProps.isHide,
+        instance = allProps.instance,
+        _allProps$deps = allProps.deps,
+        deps = _allProps$deps === void 0 ? [] : _allProps$deps,
+        _allProps$props = allProps.props,
+        props = _allProps$props === void 0 ? {} : _allProps$props;
+
+    var showInstance = function showInstance() {
+      instance.show(props);
+    };
+
+    var hideInstance = function hideInstance() {
+      instance.hide(props);
+    }; // maybe show
+
+
+    useEffect(function () {
+      if (isIgnore) return;
+
+      if (isShow !== undefined) {
+        if (isShow) {
+          showInstance();
+        } else {
+          hideInstance();
+        }
+      }
+    }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(deps), [isShow])); // maybe hide
+
+    useEffect(function () {
+      if (isIgnore) return;
+
+      if (isHide !== undefined) {
+        if (isHide) {
+          hideInstance();
+        }
+      }
+    }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(deps), [isHide])); // unmount
+
+    useEffect(function () {
+      if (isIgnore) return;
+      return function () {
+        hideInstance();
+      };
+    }, []);
+    return {
+      show: showInstance,
+      hide: hideInstance
+    };
+  };
+};
+/**
+ * `useDialogic` with `instance` set to `dialog`.
+ */
+
+
+var sharedUseDialog = function sharedUseDialog(_ref2) {
+  var useEffect = _ref2.useEffect,
+      dialog = _ref2.dialog;
+  return function (props) {
+    return sharedUseDialogic({
+      useEffect: useEffect
+    })(_objectSpread(_objectSpread({}, props), {}, {
+      instance: dialog
+    }));
+  };
+};
+/**
+ * `useDialogic` with `instance` set to `notification`.
+ */
+
+
+var sharedUseNotification = function sharedUseNotification(_ref3) {
+  var useEffect = _ref3.useEffect,
+      notification = _ref3.notification;
+  return function (props) {
+    return sharedUseDialogic({
+      useEffect: useEffect
+    })(_objectSpread(_objectSpread({}, props), {}, {
+      instance: notification
+    }));
+  };
+};
+
+
+
+/***/ }),
+
 /***/ "../../dialogic-react/dist/dialogic-react.mjs":
 /*!**********************************************************************************************************!*\
   !*** /Users/arthur/code/Github Projects/dialogic/master/packages/dialogic-react/dist/dialogic-react.mjs ***!
@@ -1166,28 +1281,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useRemaining", function() { return useRemaining; });
 /* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../../node_modules/@babel/runtime/helpers/slicedToArray.js");
 /* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../../../node_modules/@babel/runtime/helpers/defineProperty.js");
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../../../node_modules/@babel/runtime/helpers/toConsumableArray.js");
-/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "../../../node_modules/@babel/runtime/helpers/extends.js");
-/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var dialogic__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dialogic */ "../../dialogic/dist/dialogic.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "dialog", function() { return dialogic__WEBPACK_IMPORTED_MODULE_4__["dialog"]; });
+/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "../../../node_modules/@babel/runtime/helpers/extends.js");
+/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var dialogic__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dialogic */ "../../dialogic/dist/dialogic.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "dialog", function() { return dialogic__WEBPACK_IMPORTED_MODULE_2__["dialog"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "notification", function() { return dialogic__WEBPACK_IMPORTED_MODULE_4__["notification"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "notification", function() { return dialogic__WEBPACK_IMPORTED_MODULE_2__["notification"]; });
 
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var use_stream__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! use-stream */ "../../dialogic-react/node_modules/use-stream/dist/use-stream.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var use_stream__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! use-stream */ "../../dialogic-react/node_modules/use-stream/dist/use-stream.mjs");
+/* harmony import */ var dialogic_hooks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! dialogic-hooks */ "../../dialogic-hooks/dist/dialogic-hooks.mjs");
 
 
-
-
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 
 
@@ -1197,14 +1303,14 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 var handleDispatch = function handleDispatch(ns) {
   return function (event, fn) {
     // Update dispatching item:
-    var maybeItem = dialogic__WEBPACK_IMPORTED_MODULE_4__["selectors"].find(ns, event.detail.identityOptions);
+    var maybeItem = dialogic__WEBPACK_IMPORTED_MODULE_2__["selectors"].find(ns, event.detail.identityOptions);
 
     if (maybeItem.just) {
-      Object(dialogic__WEBPACK_IMPORTED_MODULE_4__["setDomElement"])(event.detail.domElement, maybeItem.just);
+      Object(dialogic__WEBPACK_IMPORTED_MODULE_2__["setDomElement"])(event.detail.domElement, maybeItem.just);
     } // Find item to transition:
 
 
-    var maybeTransitioningItem = dialogic__WEBPACK_IMPORTED_MODULE_4__["selectors"].find(ns, event.detail.identityOptions);
+    var maybeTransitioningItem = dialogic__WEBPACK_IMPORTED_MODULE_2__["selectors"].find(ns, event.detail.identityOptions);
 
     if (maybeTransitioningItem.just) {
       fn(maybeTransitioningItem.just);
@@ -1214,24 +1320,24 @@ var handleDispatch = function handleDispatch(ns) {
 
 var onInstanceMounted = function onInstanceMounted(ns) {
   return function (event) {
-    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_4__["showItem"]);
+    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_2__["showItem"]);
   };
 };
 
 var onShowInstance = function onShowInstance(ns) {
   return function (event) {
-    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_4__["showItem"]);
+    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_2__["showItem"]);
   };
 };
 
 var onHideInstance = function onHideInstance(ns) {
   return function (event) {
-    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_4__["hideItem"]);
+    return handleDispatch(ns)(event, dialogic__WEBPACK_IMPORTED_MODULE_2__["hideItem"]);
   };
 };
 
 var Instance = function Instance(props) {
-  var domElementRef = Object(react__WEBPACK_IMPORTED_MODULE_5__["useRef"])();
+  var domElementRef = Object(react__WEBPACK_IMPORTED_MODULE_3__["useRef"])();
   var className = props.dialogicOptions.className;
   var Component = props.dialogicOptions.component;
 
@@ -1239,7 +1345,7 @@ var Instance = function Instance(props) {
     throw 'Component missing in dialogic options.';
   }
 
-  var domElementCb = Object(react__WEBPACK_IMPORTED_MODULE_5__["useCallback"])(function (node) {
+  var domElementCb = Object(react__WEBPACK_IMPORTED_MODULE_3__["useCallback"])(function (node) {
     if (node !== null) {
       domElementRef.current = node;
       onMount();
@@ -1273,10 +1379,10 @@ var Instance = function Instance(props) {
     dispatchTransition(props.onHide);
   };
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
     ref: domElementCb,
     className: className
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(Component, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default()({}, props.passThroughOptions, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(Component, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_1___default()({}, props.passThroughOptions, {
     show: show,
     hide: hide
   })));
@@ -1287,9 +1393,9 @@ var Wrapper = function Wrapper(props) {
   var nsOnShowInstance = onShowInstance(props.ns);
   var nsOnHideInstance = onHideInstance(props.ns);
   var identityOptions = props.identityOptions || {};
-  var filtered = Object(dialogic__WEBPACK_IMPORTED_MODULE_4__["filterCandidates"])(props.ns, dialogic__WEBPACK_IMPORTED_MODULE_4__["selectors"].getStore(), identityOptions);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_5___default.a.Fragment, null, filtered.map(function (item) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(Instance, {
+  var filtered = Object(dialogic__WEBPACK_IMPORTED_MODULE_2__["filterCandidates"])(props.ns, dialogic__WEBPACK_IMPORTED_MODULE_2__["selectors"].getStore(), identityOptions);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_3___default.a.Fragment, null, filtered.map(function (item) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(Instance, {
       key: item.key,
       identityOptions: item.identityOptions,
       dialogicOptions: item.dialogicOptions,
@@ -1303,10 +1409,10 @@ var Wrapper = function Wrapper(props) {
 
 var useDialogicState = function useDialogicState() {
   // Subscribe to changes
-  Object(use_stream__WEBPACK_IMPORTED_MODULE_6__["useStream"])({
+  Object(use_stream__WEBPACK_IMPORTED_MODULE_4__["useStream"])({
     model: function model() {
       return {
-        _: dialogic__WEBPACK_IMPORTED_MODULE_4__["states"]
+        _: dialogic__WEBPACK_IMPORTED_MODULE_2__["states"]
       };
     },
     defer: true
@@ -1321,88 +1427,32 @@ var Dialogical = function Dialogical(type) {
       spawn: props.spawn || type.defaultSpawn
     }; // Mount
 
-    Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
+    Object(react__WEBPACK_IMPORTED_MODULE_3__["useEffect"])(function () {
       if (typeof props.onMount === 'function') {
         props.onMount();
       }
     }, []);
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(Wrapper, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(Wrapper, {
       identityOptions: identityOptions,
       ns: type.ns
     });
   };
 };
 
-var useDialogic = function useDialogic(allProps) {
-  var isShow = allProps.isShow,
-      isHide = allProps.isHide,
-      instance = allProps.instance,
-      _allProps$deps = allProps.deps,
-      deps = _allProps$deps === void 0 ? [] : _allProps$deps,
-      _allProps$props = allProps.props,
-      props = _allProps$props === void 0 ? {} : _allProps$props;
-
-  var showInstance = function showInstance() {
-    instance.show(props);
-  };
-
-  var hideInstance = function hideInstance() {
-    instance.hide(props);
-  }; // maybe show
-
-
-  Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
-    if (isShow !== undefined) {
-      if (isShow) {
-        showInstance();
-      } else {
-        hideInstance();
-      }
-    }
-  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [isShow])); // maybe hide
-
-  Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
-    if (isHide !== undefined) {
-      if (isHide) {
-        hideInstance();
-      }
-    }
-  }, [].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(deps), [isHide])); // unmount
-
-  Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
-    return function () {
-      hideInstance();
-    };
-  }, []);
-  return {
-    show: showInstance,
-    hide: hideInstance
-  };
-};
+var useDialogic = Object(dialogic_hooks__WEBPACK_IMPORTED_MODULE_5__["sharedUseDialogic"])({
+  useEffect: react__WEBPACK_IMPORTED_MODULE_3__["useEffect"]
+});
+var useDialog = Object(dialogic_hooks__WEBPACK_IMPORTED_MODULE_5__["sharedUseDialog"])({
+  useEffect: react__WEBPACK_IMPORTED_MODULE_3__["useEffect"],
+  dialog: dialogic__WEBPACK_IMPORTED_MODULE_2__["dialog"]
+});
+var useNotification = Object(dialogic_hooks__WEBPACK_IMPORTED_MODULE_5__["sharedUseNotification"])({
+  useEffect: react__WEBPACK_IMPORTED_MODULE_3__["useEffect"],
+  notification: dialogic__WEBPACK_IMPORTED_MODULE_2__["notification"]
+});
 /**
- * `useDialogic` with `instance` preset to `dialog`.
+ * Helper component that wraps `useDialogic` to use with JSX syntax.
  */
-
-
-var useDialog = function useDialog(props) {
-  return useDialogic(_objectSpread(_objectSpread({}, props), {}, {
-    instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["dialog"]
-  }));
-};
-/**
- * `useDialogic` with `instance` preset to `notification`.
- */
-
-
-var useNotification = function useNotification(props) {
-  return useDialogic(_objectSpread(_objectSpread({}, props), {}, {
-    instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["notification"]
-  }));
-};
-/**
- * Helper component that wraps `useDialogic` to use in JSX syntax.
- */
-
 
 var UseDialogic = function UseDialogic(props) {
   useDialogic(props);
@@ -1410,43 +1460,40 @@ var UseDialogic = function UseDialogic(props) {
 };
 
 var UseDialog = function UseDialog(props) {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(UseDialogic, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default()({}, props, {
-    instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["dialog"]
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(UseDialogic, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_1___default()({}, props, {
+    instance: dialogic__WEBPACK_IMPORTED_MODULE_2__["dialog"]
   }));
 };
 
 var UseNotification = function UseNotification(props) {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(UseDialogic, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_3___default()({}, props, {
-    instance: dialogic__WEBPACK_IMPORTED_MODULE_4__["notification"]
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(UseDialogic, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_1___default()({}, props, {
+    instance: dialogic__WEBPACK_IMPORTED_MODULE_2__["notification"]
   }));
 };
 
 var useRemaining = function useRemaining(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_5__["useState"])(undefined),
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_3__["useState"])(undefined),
       _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState, 2),
       value = _useState2[0],
       setValue = _useState2[1];
 
-  var didCancelRef = Object(react__WEBPACK_IMPORTED_MODULE_5__["useRef"])(false);
-  Object(react__WEBPACK_IMPORTED_MODULE_5__["useEffect"])(function () {
-    Object(dialogic__WEBPACK_IMPORTED_MODULE_4__["remaining"])({
-      instance: props.instance,
-      roundToSeconds: props.roundToSeconds,
-      callback: function callback(newValue) {
-        if (!didCancelRef.current) {
+  var exists = !!props.instance.exists();
+  Object(react__WEBPACK_IMPORTED_MODULE_3__["useMemo"])(function () {
+    if (exists) {
+      Object(dialogic__WEBPACK_IMPORTED_MODULE_2__["remaining"])({
+        instance: props.instance,
+        roundToSeconds: props.roundToSeconds,
+        callback: function callback(newValue) {
           setValue(newValue);
         }
-      }
-    });
-    return function () {
-      didCancelRef.current = true;
-    };
-  }, []);
+      });
+    }
+  }, [exists]);
   return [value];
 };
 
-var Dialog = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_4__["dialog"]);
-var Notification = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_4__["notification"]);
+var Dialog = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_2__["dialog"]);
+var Notification = Dialogical(dialogic__WEBPACK_IMPORTED_MODULE_2__["notification"]);
 
 
 /***/ }),
@@ -31494,13 +31541,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const RemainingLabel = () => {
-    const [remainingSeconds] = Object(dialogic_react__WEBPACK_IMPORTED_MODULE_1__["useRemaining"])({ instance: dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"], roundToSeconds: false });
+    const [remainingSeconds] = Object(dialogic_react__WEBPACK_IMPORTED_MODULE_1__["useRemaining"])({
+        instance: dialogic_react__WEBPACK_IMPORTED_MODULE_1__["notification"],
+        roundToSeconds: false,
+    });
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", { style: {
-            minWidth: "3em",
-            textAlign: "left"
-        } }, remainingSeconds === undefined
-        ? "0"
-        : remainingSeconds.toString()));
+            minWidth: '3em',
+            textAlign: 'left',
+        } }, remainingSeconds === undefined ? '0' : remainingSeconds.toString()));
 };
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DialogicTests } from '../..';
+import { DialogicTests } from '../../..';
 
 type ButtonsProps<T> = {
   showFn: DialogicTests.showFn<T>;
