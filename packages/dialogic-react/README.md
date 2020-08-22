@@ -6,8 +6,8 @@
 - [Usage](#usage)
   - [Dialog](#dialog)
   - [Notification](#notification)
-  - [`useRemaining`](#useremaining)
   - [`useDialogicState`](#usedialogicstate)
+  - [`useRemaining`](#useremaining)
   - [`useDialog`](#usedialog)
     - [Dialog routes](#dialog-routes)
     - [`useDialog` hook](#usedialog-hook)
@@ -152,18 +152,7 @@ const NotificationView = props => {
 }
 ```
 
-### `useRemaining`
 
-Hook to fetch the current remaining time.
-
-```tsx
-import { notification, useRemaining } from "dialogic-react";
-
-const MyComponent = props => {
-  const [remainingSeconds] = useRemaining({ instance: notification, roundToSeconds: true });
-  // ...
-}
-```
 
 ### `useDialogicState`
 
@@ -178,6 +167,20 @@ const MyComponent = props => {
   return (
     <div>{dialog.getCount()}</div>
   )
+}
+```
+
+### `useRemaining`
+
+Hook to fetch the current remaining time.
+
+```tsx
+import { notification, useDialogicState, useRemaining } from "dialogic-react";
+
+const MyComponent = props => {
+  useDialogicState();
+  const [remainingSeconds] = useRemaining({ instance: notification, roundToSeconds: true });
+  // ...
 }
 ```
 

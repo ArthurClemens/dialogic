@@ -1,6 +1,6 @@
 import { selectors, setDomElement, showItem, hideItem, filterCandidates, states, dialog, notification, remaining } from 'dialogic';
 export { dialog, notification } from 'dialogic';
-import React, { useRef, useCallback, useEffect, useState } from 'react';
+import React, { useRef, useCallback, useEffect, useState, useMemo } from 'react';
 import { useStream } from 'use-stream';
 import { sharedUseDialogic, sharedUseDialog, sharedUseNotification } from 'dialogic-hooks';
 
@@ -110,21 +110,18 @@ const UseNotification = (props) => React.createElement(UseDialogic, Object.assig
 
 const useRemaining = props => {
     const [value, setValue] = useState(undefined);
-    const didCancelRef = useRef(false);
-    useEffect(() => {
-        remaining({
-            instance: props.instance,
-            roundToSeconds: props.roundToSeconds,
-            callback: newValue => {
-                if (!didCancelRef.current) {
+    const exists = !!props.instance.exists();
+    useMemo(() => {
+        if (exists) {
+            remaining({
+                instance: props.instance,
+                roundToSeconds: props.roundToSeconds,
+                callback: newValue => {
                     setValue(newValue);
-                }
-            },
-        });
-        return () => {
-            didCancelRef.current = true;
-        };
-    }, []);
+                },
+            });
+        }
+    }, [exists]);
     return [value];
 };
 

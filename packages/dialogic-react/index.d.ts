@@ -43,5 +43,5 @@ export type UseRemaining = ({
   roundToSeconds,
 }: {
   instance: Dialogic.DialogicInstance;
-  roundToSeconds: boolean;
+  roundToSeconds?: boolean;
 }) => [number | undefined];
