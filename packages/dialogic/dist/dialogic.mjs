@@ -749,8 +749,12 @@ const remaining = (props) => {
     let displayValue = undefined;
     let reqId;
     let isCanceled = false;
+    const identity = {
+        id: props.id,
+        spawn: props.spawn,
+    };
     const update = () => {
-        const remaining = props.instance.getRemaining();
+        const remaining = props.instance.getRemaining(identity);
         if (displayValue !== remaining) {
             displayValue =
                 remaining === undefined
@@ -760,7 +764,7 @@ const remaining = (props) => {
                         : Math.max(remaining, 0);
         }
         props.callback(displayValue);
-        if (!props.instance.exists()) {
+        if (!props.instance.exists(identity)) {
             window.cancelAnimationFrame(reqId);
             isCanceled = true;
         }

@@ -38,10 +38,9 @@ export const UseNotification: <T>(
 ) => null;
 
 export type UseDialogicState = () => void;
-export type UseRemaining = ({
-  instance,
-  roundToSeconds,
-}: {
+export type UseRemaining = (props: {
   instance: Dialogic.DialogicInstance;
+  id?: string;
+  spawn?: string;
   roundToSeconds?: boolean;
 }) => [number | undefined];

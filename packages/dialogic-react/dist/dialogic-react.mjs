@@ -110,10 +110,15 @@ const UseNotification = (props) => React.createElement(UseDialogic, Object.assig
 
 const useRemaining = props => {
     const [value, setValue] = useState(undefined);
-    const exists = !!props.instance.exists();
+    const identity = {
+        id: props.id,
+        spawn: props.spawn,
+    };
+    const exists = !!props.instance.exists(identity);
     useMemo(() => {
         if (exists) {
             remaining({
+                ...identity,
                 instance: props.instance,
                 roundToSeconds: props.roundToSeconds,
                 callback: newValue => {

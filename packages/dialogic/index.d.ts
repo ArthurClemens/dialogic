@@ -277,6 +277,9 @@ export namespace Dialogic {
      */
     instance: DialogicInstance;
 
+    id?: string;
+    spawn?: string;
+
     /**
      * Set to true to return seconds instead of milliseconds.
      */
