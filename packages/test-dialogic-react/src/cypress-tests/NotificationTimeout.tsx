@@ -1,18 +1,25 @@
 import React from 'react';
 import { createFns } from './helpers/createFns';
 import { Default } from '../content/Default';
+import { notification, Notification, useDialogicState } from 'dialogic-react';
+import { RemainingWithAnimationFrame } from './helpers/RemainingWithAnimationFrame';
 import { Buttons } from './helpers/buttons';
-import { notification, Notification } from 'dialogic-react';
-import { Remaining } from './helpers/Remaining';
 
 export default () => {
-  const fns1 = createFns({
+  useDialogicState();
+
+  const commonProps = {
     instance: notification,
     component: Default,
     className: 'notification',
+  };
+
+  const fns1 = createFns({
+    ...commonProps,
     title: 'Default',
     timeout: 2000,
   });
+
   const fns2 = createFns({
     instance: notification,
     component: Default,
@@ -52,7 +59,9 @@ export default () => {
         {`Is paused: ${notification.isPaused()}`}
       </div>
       <div className="control">
-        <Remaining getRemainingFn={notification.getRemaining} />
+        <RemainingWithAnimationFrame
+          getRemainingFn={notification.getRemaining}
+        />
       </div>
       <div className="content">
         <Buttons {...fns1} />
@@ -62,5 +71,25 @@ export default () => {
         <Notification />
       </div>
     </div>
+    // <div className="test">
+    //   <PauseResumeRemaining fns={fns1} instance={notification}>
+    //     <RemainingWithAnimationFrame
+    //       getRemainingFn={() => notification.getRemaining()}
+    //     />
+    //   </PauseResumeRemaining>
+    //   <PauseResumeRemaining
+    //     fns={fns2}
+    //     instance={notification}
+    //     id="1"
+    //     buttonName="zero-timeout"
+    //   >
+    //     <RemainingWithAnimationFrame
+    //       getRemainingFn={() => notification.getRemaining({ id: '1' })}
+    //     />
+    //   </PauseResumeRemaining>
+    //   <div className="section spawn default-spawn">
+    //     <Notification />
+    //   </div>
+    // </div>
   );
 };

@@ -6,23 +6,23 @@ import { dialog, Dialog } from 'dialogic-react';
 
 export default () => {
   dialog.resetAll();
-  const fns1 = createFns({
+  const commonProps = {
     instance: dialog,
     component: Default,
     className: 'dialog',
+  };
+
+  const fns1 = createFns({
+    ...commonProps,
     title: 'DialogIds default',
   });
   const fns2 = createFns({
-    instance: dialog,
-    component: Default,
-    className: 'dialog',
+    ...commonProps,
     id: '1',
     title: 'DialogIds 1',
   });
   const fns3 = createFns({
-    instance: dialog,
-    component: Default,
-    className: 'dialog',
+    ...commonProps,
     id: '2',
     title: 'DialogIds 2',
   });

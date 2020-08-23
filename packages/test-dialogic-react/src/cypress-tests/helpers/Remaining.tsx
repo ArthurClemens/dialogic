@@ -1,20 +1,18 @@
-import React, { useState, FunctionComponent } from 'react';
-import { useAnimationFrame } from '../useAnimationFrame';
+import React from 'react';
+import { useRemaining } from 'dialogic-react';
+import { Dialogic } from 'dialogic';
 
-type RemainingProps = {
-  getRemainingFn: () => number | undefined;
+type TProps = {
+  instance: Dialogic.DialogicInstance;
+  spawn?: string;
+  id?: string;
 };
 
-export const Remaining: FunctionComponent<RemainingProps> = props => {
-  const [displayValue, setDisplayValue] = useState<number>();
-
-  useAnimationFrame(() => {
-    const remaining = props.getRemainingFn();
-    if (remaining !== undefined && displayValue !== remaining) {
-      setDisplayValue(Math.max(remaining, 0));
-    } else {
-      setDisplayValue(undefined);
-    }
+export const Remaining = ({ instance, spawn, id }: TProps) => {
+  const [displayValue] = useRemaining({
+    instance,
+    spawn,
+    id,
   });
 
   return (

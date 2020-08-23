@@ -16,6 +16,7 @@ export const Buttons = <T,>(props: ButtonsProps<T>) => {
       props.spawn ? `spawn${props.spawn}` : ''
     }` ||
     'default';
+
   return (
     <div className="buttons">
       {props.showFn && (
