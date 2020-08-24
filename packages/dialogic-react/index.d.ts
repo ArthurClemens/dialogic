@@ -1,6 +1,11 @@
 import { PropsWithChildren } from 'react';
 import { dialog, notification, Dialogic } from 'dialogic';
-export { useDialogic, useDialog, useNotification } from 'dialogic-hooks';
+export {
+  useDialogic,
+  useDialog,
+  useNotification,
+  UseRemaining,
+} from 'dialogic-hooks';
 
 export { dialog, notification, Dialogic };
 
@@ -38,9 +43,3 @@ export const UseNotification: <T>(
 ) => null;
 
 export type UseDialogicState = () => void;
-export type UseRemaining = (props: {
-  instance: Dialogic.DialogicInstance;
-  id?: string;
-  spawn?: string;
-  roundToSeconds?: boolean;
-}) => [number | undefined];
