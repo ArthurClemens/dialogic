@@ -8,6 +8,7 @@ const Notification = Dialogical(notification);
 
 export { Dialogical, dialog, Dialog, notification, Notification };
 export * from './useDialogic';
+export * from './useRemaining';
 
 states.map(
   state => m.redraw(),

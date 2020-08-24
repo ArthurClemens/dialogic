@@ -1,8 +1,8 @@
-import { selectors, setDomElement, showItem, hideItem, filterCandidates, states, dialog, notification, remaining } from 'dialogic';
+import { selectors, setDomElement, showItem, hideItem, filterCandidates, states, dialog, notification } from 'dialogic';
 export { dialog, notification } from 'dialogic';
 import React, { useRef, useCallback, useEffect, useState, useMemo } from 'react';
 import { useStream } from 'use-stream';
-import { sharedUseDialogic, sharedUseDialog, sharedUseNotification } from 'dialogic-hooks';
+import { sharedUseDialogic, sharedUseDialog, sharedUseNotification, sharedUseRemaining } from 'dialogic-hooks';
 
 const handleDispatch = (ns) => (event, fn) => {
     // Update dispatching item:
@@ -108,27 +108,7 @@ const UseDialogic = (props) => {
 const UseDialog = (props) => React.createElement(UseDialogic, Object.assign({}, props, { instance: dialog }));
 const UseNotification = (props) => React.createElement(UseDialogic, Object.assign({}, props, { instance: notification }));
 
-const useRemaining = props => {
-    const [value, setValue] = useState(undefined);
-    const identity = {
-        id: props.id,
-        spawn: props.spawn,
-    };
-    const exists = !!props.instance.exists(identity);
-    useMemo(() => {
-        if (exists) {
-            remaining({
-                ...identity,
-                instance: props.instance,
-                roundToSeconds: props.roundToSeconds,
-                callback: newValue => {
-                    setValue(newValue);
-                },
-            });
-        }
-    }, [exists]);
-    return [value];
-};
+const useRemaining = sharedUseRemaining({ useState, useMemo });
 
 const Dialog = Dialogical(dialog);
 const Notification = Dialogical(notification);

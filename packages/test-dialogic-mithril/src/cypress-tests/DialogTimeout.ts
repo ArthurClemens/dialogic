@@ -1,9 +1,9 @@
 import m from 'mithril';
-import { createFns } from './createFns';
+import { createFns } from './helpers/createFns';
 import { Default } from '../content/Default';
-import { buttons } from './buttons';
+import { buttons } from './helpers/buttons';
 import { dialog, Dialog } from 'dialogic-mithril';
-import { Remaining } from './Remaining';
+import { RemainingWithAnimationFrame } from './helpers/RemainingWithAnimationFrame';
 
 export default () => {
   dialog.resetAll();
@@ -58,7 +58,7 @@ export default () => {
         ),
         m(
           '.control',
-          m(Remaining, {
+          m(RemainingWithAnimationFrame, {
             key: 'DialogTimeout',
             getRemaining: dialog.getRemaining,
           }),

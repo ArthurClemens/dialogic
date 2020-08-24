@@ -3,7 +3,7 @@ import { createFns } from './helpers/createFns';
 import { Default } from '../content/Default';
 import { buttons } from './helpers/buttons';
 import { notification, Notification } from 'dialogic-mithril';
-import { RemainingWithAnimationFrame } from './helpers/RemainingWithAnimationFrame';
+import { Remaining } from './helpers/Remaining';
 
 export default () => {
   const fns1 = createFns({
@@ -68,9 +68,9 @@ export default () => {
           ),
           m(
             '.control',
-            m(RemainingWithAnimationFrame, {
+            m(Remaining, {
               key: 'NotificationPause',
-              getRemaining: notification.getRemaining,
+              instance: notification,
             }),
           ),
           m('.content', [buttons({ ...fns1 })]),
@@ -118,9 +118,10 @@ export default () => {
           ),
           m(
             '.control',
-            m(RemainingWithAnimationFrame, {
+            m(Remaining, {
               key: 'NotificationPause',
-              getRemaining: () => notification.getRemaining({ spawn: '2' }),
+              instance: notification,
+              spawn: '2'
             }),
           ),
           m('.content', [buttons({ ...fns2, name: 'spawn' })]),

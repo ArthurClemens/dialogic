@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { DialogicTests } from '../..';
+import { DialogicTests } from '../../..';
 
 type ButtonsProps = {
   showFn: DialogicTests.showFn;

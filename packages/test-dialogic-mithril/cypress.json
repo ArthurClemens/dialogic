@@ -2,9 +2,6 @@
   "baseUrl": "http://localhost:8080/#",
   "integrationFolder": "../test-cypress-specs",
   "testFiles": "**/*.spec.js",
-  "ignoreTestFiles": [
-    "**/UseDialogicComponent.spec.js",
-    "**/UseRemaining.spec.js"
-  ],
+  "ignoreTestFiles": ["**/UseDialogicComponent.spec.js"],
   "video": false
 }

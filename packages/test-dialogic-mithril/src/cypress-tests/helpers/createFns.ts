@@ -1,6 +1,6 @@
 import { Dialogic } from 'dialogic';
 import { getRandomId } from './utils';
-import { DialogicTests } from '../..';
+import { DialogicTests } from '../../..';
 
 type CreateFnsFn = (props: {
   instance: Dialogic.DialogicInstance;

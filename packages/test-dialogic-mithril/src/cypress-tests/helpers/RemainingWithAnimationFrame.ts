@@ -10,7 +10,7 @@ type RemainingFn = ({
   attrs: RemainingProps;
 }) => Component<RemainingProps>;
 
-export const Remaining: RemainingFn = ({ attrs }) => {
+export const RemainingWithAnimationFrame: RemainingFn = ({ attrs }) => {
   let displayValue: number | undefined = 0;
   let reqId: number;
 

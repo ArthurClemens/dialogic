@@ -12,9 +12,10 @@ import DialogQueued from './cypress-tests/DialogQueued';
 import NotificationCount from './cypress-tests/NotificationCount';
 import NotificationPause from './cypress-tests/NotificationPause';
 import NotificationTimeout from './cypress-tests/NotificationTimeout';
+import UseRemaining from './cypress-tests/UseRemaining';
 import LibBulmaDialog from './cypress-tests/LibBulmaDialog';
 import LibMaterialIODialog from './cypress-tests/LibMaterialIODialog';
-import { routes as useDialogTestRoutes } from './cypress-tests/UseDialogTest';
+import { routes as useDialogRoutes } from './cypress-tests/UseDialog';
 import { RouteEntry } from './types';
 
 import './app-styles.css';
@@ -72,7 +73,12 @@ const routes: RouteEntry[] = [
     component: LibMaterialIODialog,
     showInMenu: true,
   },
-  ...useDialogTestRoutes,
+  {
+    path: '/UseRemaining',
+    component: UseRemaining,
+    showInMenu: true,
+  },
+  ...useDialogRoutes,
 ];
 
 m.route.prefix = '#';

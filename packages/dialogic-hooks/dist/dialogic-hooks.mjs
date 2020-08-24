@@ -1,3 +1,5 @@
+import { remaining } from 'dialogic';
+
 const sharedUseDialogic = ({ useEffect }) => (allProps) => {
     const { isIgnore, isShow, isHide, instance, deps = [], props = {}, } = allProps;
     const showInstance = () => {
@@ -54,4 +56,26 @@ const sharedUseDialog = ({ useEffect, dialog, }) => (props) => sharedUseDialogic
  */
 const sharedUseNotification = ({ useEffect, notification, }) => (props) => sharedUseDialogic({ useEffect })({ ...props, instance: notification });
 
-export { sharedUseDialog, sharedUseDialogic, sharedUseNotification };
+const sharedUseRemaining = ({ useState, useMemo, }) => (props) => {
+    const [value, setValue] = useState(undefined);
+    const identity = {
+        id: props.id,
+        spawn: props.spawn,
+    };
+    const exists = !!props.instance.exists(identity);
+    useMemo(() => {
+        if (exists) {
+            remaining({
+                ...identity,
+                instance: props.instance,
+                roundToSeconds: props.roundToSeconds,
+                callback: newValue => {
+                    setValue(newValue);
+                },
+            });
+        }
+    }, [exists]);
+    return [value];
+};
+
+export { sharedUseDialog, sharedUseDialogic, sharedUseNotification, sharedUseRemaining };

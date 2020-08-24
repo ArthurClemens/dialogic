@@ -1,9 +1,9 @@
 import m from 'mithril';
-import { createFns } from './createFns';
+import { createFns } from './helpers/createFns';
 import { Default } from '../content/Default';
-import { buttons } from './buttons';
+import { buttons } from './helpers/buttons';
 import { notification, Notification } from 'dialogic-mithril';
-import { Remaining } from './Remaining';
+import { RemainingWithAnimationFrame } from './helpers/RemainingWithAnimationFrame';
 
 export default () => {
   const fns1 = createFns({
@@ -64,7 +64,7 @@ export default () => {
         ),
         m(
           '.control',
-          m(Remaining, {
+          m(RemainingWithAnimationFrame, {
             key: 'NotificationTimeout',
             getRemaining: notification.getRemaining,
           }),

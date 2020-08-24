@@ -152,4 +152,4 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 
 ## Size
 
-7.34 KB with all dependencies, minified and gzipped
+7.41 KB with all dependencies, minified and gzipped

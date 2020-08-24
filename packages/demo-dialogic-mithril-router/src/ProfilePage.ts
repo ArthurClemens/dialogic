@@ -13,7 +13,7 @@ type TProps = {
 };
 
 const ProfilePageFn = (attrs: TProps) => {
-  const pathPrefix = attrs ? attrs.pathPrefix : '';
+  const pathPrefix = attrs.pathPrefix || '';
   // Test injecting a dynamic value into the dialog
   const [count, setCount] = useState(0);
   const dialogPath = `${pathPrefix}/profile/edit`;
@@ -28,7 +28,7 @@ const ProfilePageFn = (attrs: TProps) => {
         component: EditProfileDialog,
         className: 'dialog',
       },
-      pathPrefix: pathPrefix,
+      pathPrefix,
       title: `Update your e-mail ${count}`,
       email: 'allan@company.com',
       onSave: (email: string) => {

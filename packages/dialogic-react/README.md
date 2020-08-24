@@ -437,4 +437,4 @@ export const MyDialogRoute = () => {
 
 ## Size
 
-5.17 KB with all dependencies, minified and gzipped
+5.21 KB with all dependencies, minified and gzipped
