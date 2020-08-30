@@ -4,24 +4,38 @@ Manage dialogs and notifications.
 
 - [API](#api)
 - [Demo](#demo)
-- [Install](#install)
+- [Installation](#installation)
 - [Usage](#usage)
   - [Dialog](#dialog)
   - [Notification](#notification)
+  - [`useDialog`](#usedialog)
+    - [Calling show and hide directly](#calling-show-and-hide-directly)
+  - [`useRemaining`](#useremaining)
 - [Size](#size)
+
 
 ## API
 
 See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/development/README.md)
+
 
 ## Demo
 
 [Demo page](https://arthurclemens.github.io/dialogic/)
 
 
-## Install
+## Installation
 
-`npm install dialogic-mithril`
+```
+npm install dialogic-mithril
+```
+
+For `useDialog` also install `mithril-hooks`:
+
+```
+npm install mithril-hooks
+```
+
 
 
 ## Usage
@@ -30,37 +44,38 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 
 ```javascript
 // index.js
-import m from "mithril";
-import { dialog, Dialog } from "dialogic-mithril";
+import m from 'mithril';
+import { dialog, Dialog } from 'dialogic-mithril';
 
 const App = {
   view: () => [
-    m("button", {
-      onclick: () => {
-        dialog.show({
-          dialogic: {
-            component: DialogView, // any component; see example below
-            className: "dialog",
-          },
-          title: "Dialog Title"
-        })
-      }
-    }, "Show dialog"),
-    m(Dialog) // dialog will be drawn by this component
-  ]
+    m(
+      'button',
+      {
+        onclick: () => {
+          dialog.show({
+            dialogic: {
+              component: DialogView, // any component; see example below
+              className: 'dialog',
+            },
+            title: 'Dialog Title',
+          });
+        },
+      },
+      'Show dialog',
+    ),
+    m(Dialog), // dialog will be drawn by this component
+  ],
 };
 
 const DialogView = {
   view: ({ attrs }) =>
-    m(".dialog", [
-      m(".dialog-background", {
-        onclick: () => dialog.hide()
+    m('.dialog', [
+      m('.dialog-background', {
+        onclick: () => dialog.hide(),
       }),
-      m(".dialog-content", [
-        m("h3", attrs.title),
-        m("div", "Dialog content")
-      ])
-    ])
+      m('.dialog-content', [m('h3', attrs.title), m('div', 'Dialog content')]),
+    ]),
 };
 ```
 
@@ -86,46 +101,49 @@ const DialogView = {
 
 ```javascript
 // index.js
-import m from "mithril";
-import { notification, Notification } from "dialogic-mithril";
+import m from 'mithril';
+import { notification, Notification } from 'dialogic-mithril';
 
 const App = {
   view: () => [
-    m(".button", {
-      onclick: () => {
-        notification.show({
-          dialogic: {
-            component: NotificationView, // any component; see example below
-            className: "notification",
-          },
-          title: "Notification Title"
-        })
-      }
-    }, "Show notification"),
-    m(Notification) // notification will be drawn by this component
-  ]
+    m(
+      '.button',
+      {
+        onclick: () => {
+          notification.show({
+            dialogic: {
+              component: NotificationView, // any component; see example below
+              className: 'notification',
+            },
+            title: 'Notification Title',
+          });
+        },
+      },
+      'Show notification',
+    ),
+    m(Notification), // notification will be drawn by this component
+  ],
 };
 
 const NotificationView = {
   view: ({ attrs }) =>
-    m(".notification", [
-      m("h3", attrs.title),
-      m("div", [
-        m("span", "Message"),
+    m('.notification', [
+      m('h3', attrs.title),
+      m('div', [
+        m('span', 'Message'),
         // Optionally using pause/resume/isPaused:
-        m("button",
+        m(
+          'button',
           {
-            onclick: () => 
+            onclick: () =>
               notification.isPaused()
                 ? notification.resume({ minimumDuration: 2000 })
-                : notification.pause()
+                : notification.pause(),
           },
-          notification.isPaused()
-            ? "Continue"
-            : "Wait"
-        )
-      ])
-    ])
+          notification.isPaused() ? 'Continue' : 'Wait',
+        ),
+      ]),
+    ]),
 };
 ```
 
@@ -142,6 +160,127 @@ const NotificationView = {
 .notification-hide-start {}
 .notification-hide-end {
   opacity: 0;
+}
+```
+
+
+### `useDialog`
+
+See also: `useNotification` and `useDialogic`.
+
+`useDialog` requires `mithril-hooks` to use the React Hook API. The Mithril component is a simple view function without lifecycle hooks.
+
+In the following example the dialog is shown when the current route matches a given path:
+
+```javascript
+import m from 'mithril';
+import { useDialog } from 'dialogic-mithril';
+import { withHooks } from 'mithril-hooks';
+import { MyDialog } from './MyDialog';
+
+const MyComponentFn = () => {
+  const dialogPath = '/profile/edit';
+  const returnPath = '/profile';
+  const isRouteMatch = m.route.get() === dialogPath;
+
+  useDialog({
+    isShow: isRouteMatch,
+    props: {
+      dialogic: {
+        component: MyDialog,
+        className: 'dialog',
+      },
+      // Props that will be passed to the MyDialog component
+      returnPath,
+    },
+  });
+
+  return m('div', '...');
+};
+
+export const MyComponent = withHooks(MyComponentFn);
+```
+
+**With TypeScript**
+
+`useDialog` has a generic type to match the values passed to the component.
+
+```ts
+import m from 'mithril';
+import { useDialog } from 'dialogic-mithril';
+import { withHooks } from 'mithril-hooks';
+import { MyDialog, TDialogProps } from './MyDialog';
+
+type TProps = {
+  // ...
+}
+const MyComponentFn = (attrs: TProps) => {
+  const dialogPath = '/profile/edit';
+  const returnPath = '/profile';
+  const isRouteMatch = m.route.get() === dialogPath;
+
+  useDialog<TDialogProps>({
+    isShow: isRouteMatch,
+    props: {
+      dialogic: {
+        component: MyDialog,
+        className: 'dialog',
+      },
+      // Props that will be passed to the MyDialog component
+      returnPath,
+    },
+  });
+
+  return m('div', '...');
+};
+
+export const MyComponent: m.Component<TProps> = withHooks(MyComponentFn);
+```
+
+#### Calling show and hide directly
+
+In the example below:
+
+* `show` is used to show the dialog
+* Component MyDialog receives props `hideDialog` to explicitly hide the dialog
+* `deps` includes the URL location - whenever it changes the dialog is hidden
+
+```ts
+import m from 'mithril';
+import { useDialog } from 'dialogic-mithril';
+import { MyDialog } from './MyDialog';
+
+const MyComponent = () => {
+  const { show, hide } = useDialog({
+    deps: [window.location.href], // as soon this value changes ...
+    hide: true,                   // ... hide
+    props: {
+      dialogic: {
+        component: MyDialog,
+        className: 'dialog',
+      },
+      // Props that will be passed to the MyDialog component
+      returnPath,
+      hideDialog: () => hide(),
+    }
+  });
+
+  return m('button', {
+    onclick: () => show()
+  }, 'Show dialog');
+};
+```
+
+### `useRemaining`
+
+Hook to fetch the current remaining time. This is an alternative to `getRemaining`
+
+```tsx
+import { notification, useDialogicState, useRemaining } from 'dialogic-mithril';
+
+const MyComponent = (attrs) => {
+  const [remainingSeconds] = useRemaining({ instance: notification, roundToSeconds: true });
+  // ...
 }
 ```
 

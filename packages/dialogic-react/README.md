@@ -2,23 +2,19 @@
 
 
 - [API](#api)
-- [Demo](#demo)
+- [Demos](#demos)
+- [Installation](#installation)
 - [Usage](#usage)
   - [Dialog](#dialog)
   - [Notification](#notification)
-  - [`useDialogicState`](#usedialogicstate)
-  - [`useRemaining`](#useremaining)
   - [`useDialog`](#usedialog)
-    - [Dialog routes](#dialog-routes)
-    - [`useDialog` hook](#usedialog-hook)
-      - [Options](#options)
-      - [Calling show and hide directly](#calling-show-and-hide-directly)
-      - [All hooks](#all-hooks)
-      - [With React Router](#with-react-router)
-    - [`UseDialog` component](#usedialog-component)
-      - [All helper components](#all-helper-components)
-      - [Example](#example)
+    - [Calling show and hide directly](#calling-show-and-hide-directly)
+    - [With React Router](#with-react-router)
+  - [`UseDialog` component](#usedialog-component)
+    - [Example](#example)
+  - [`useRemaining`](#useremaining)
 - [Size](#size)
+
 
 
 ## API
@@ -26,11 +22,17 @@
 See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/development/README.md)
 
 
-## Demo
+## Demos
 
 * [Demo page](https://arthurclemens.github.io/dialogic/)
 * [Route example with useDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-cutrx)
 * [Route example with UseDialog component](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-component-kgq22)
+
+
+## Installation
+
+`npm install dialogic-react`
+
 
 ## Usage
 
@@ -153,62 +155,9 @@ const NotificationView = props => {
 ```
 
 
-
-### `useDialogicState`
-
-To retrieve the current state, hook `useDialogicState` should be called:
-
-```tsx
-import { dialog, useDialogicState } from "dialogic-react";
-
-const MyComponent = props => {
-  useDialogicState();
-
-  return (
-    <div>{dialog.getCount()}</div>
-  )
-}
-```
-
-### `useRemaining`
-
-Hook to fetch the current remaining time.
-
-```tsx
-import { notification, useDialogicState, useRemaining } from "dialogic-react";
-
-const MyComponent = props => {
-  useDialogicState();
-  const [remainingSeconds] = useRemaining({ instance: notification, roundToSeconds: true });
-  // ...
-}
-```
-
 ### `useDialog`
 
-#### Dialog routes
-
-It's often desired to let a dialog have its own URL so that page refresh will still show the dialog, and using the browser back button will hide the dialog.
-
-A common pattern is to create a Route that contains the dialog component:
-
-```tsx
-import { Route, useRouteMatch } from 'react-router-dom';
-
-const match = useRouteMatch();
-const dialogPath = `${match.url}/edit`;
-
-<Route path={dialogPath}>
-  // Dialog should appear here
-</Route>
-```
-
-The `useDialog` hook facilitates showing and hiding based on a condition such as the current route.
-
-
-#### `useDialog` hook
-
-This is a Hook to automatically show a dialog when a condition is met, for instance on URL location match. The dialog will hide when the condition is no longer met.
+See also: `useNotification` and `useDialogic`.
 
 In the following example the dialog is shown when the URL location matches the given path:
 
@@ -219,9 +168,10 @@ import { MyDialog } from './MyDialog';
 const MyComponent = () => {
   const returnPath = '/';
   const dialogPath = '/some-path';
+  const isRouteMatch = window.location.pathname === dialogPath;
 
   useDialog({
-    isShow: window.location.pathname === dialogPath,
+    isShow: isRouteMatch,
     props: {
       dialogic: {
         component: MyDialog,
@@ -244,9 +194,10 @@ import { MyDialog, TDialogProps } from './MyDialog';
 const returnPath = '/';
 const dialogPath = '/some-path';
 const content = 'Some async loaded content';
+const isRouteMatch = window.location.pathname === dialogPath;
 
 useDialog<TDialogProps>({
-  isShow: window.location.pathname === dialogPath && !!content,
+  isShow: isRouteMatch && !!content,
   deps: [content],
   props: {
     dialogic: {
@@ -261,18 +212,8 @@ useDialog<TDialogProps>({
 })
 ```
 
-##### Options
 
-| **Name** | **Type**               | **Required** | **Description**                                                                                                                                                                                            | **Default value** |
-| -------- | ---------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `isShow` | `boolean`              | Yes          | A boolean value when to show the dialog.                                                                                                                                                                   | None              |
-| `deps`   | `React.DependencyList` | No           | Update the hook with these deps. Use this when the instance should appear conditionally, for instance only when content exists. Can be omitted when all content is static, so no re-rendering takes place. | `[]`              |
-| `props`  | `object`               | No           | Props to pass to the dialog.                                                                                                                                                                               | None              |
-
-
-##### Calling show and hide directly
-
-`useDialog` returns methods `show` and `hide`. Using these methods you can invoke dialogs just like `dialog.show` and `dialog.hide`, with the addition that an extra condition can be set when to automatically hide the dialog.
+#### Calling show and hide directly
 
 In the example below:
 
@@ -305,23 +246,7 @@ const MyComponent = () => {
 };
 ```
 
-**Options for directed use**
-
-All options listed above, plus:
-
-| **Name** | **Type**  | **Required** | **Description**                                                                                   | **Default value** |
-| -------- | --------- | ------------ | ------------------------------------------------------------------------------------------------- | ----------------- |
-| `isHide` | `boolean` | No           | Only for directed use. A boolean value when to hide the dialog. Can be used together with `deps`. | None              |
-
-
-##### All hooks
-
-* `useDialogic` - generic hook that accepts `instance` of type `Dialogic.DialogicInstance`.
-* `useDialog` - `useDialogic` with `instance` preset to `dialog`.
-* `useNotification` - `useDialogic` with `instance` preset to `notification`.
-
-
-##### With React Router
+#### With React Router
 
 Use `react-router` matching for more flexibility on matching routes. This can also be used to match on parametrized routes.
 
@@ -350,23 +275,15 @@ useDialog({
 ```
 
 
-
-
-
-#### `UseDialog` component
+### `UseDialog` component
 
 Helper component that wraps `useDialog` to use in JSX syntax, for example together with React Router.
 
 It accepts the same props as `useDialog`.
 
-##### All helper components
-
-* `UseDialogic` - generic component that accepts `instance` of type `Dialogic.DialogicInstance`.
-* `UseDialog` - `UseDialogic` with `instance` preset to `dialog`.
-* `UseNotification` - `UseDialogic` with `instance` preset to `notification`.
 
 
-##### Example
+#### Example
 
 See also CodeSandbox demo: [Route example with UseDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-component-kgq22)
 
@@ -380,11 +297,12 @@ export const MyDialogRoute = () => {
   const dialogPath = '/some-path';
   const returnPath = '/';
   const content = 'Some async loaded content';
+  const isRouteMatch = history.location.pathname === dialogPath;
 
   return (
     <Route path={dialogPath}>
       <UseDialog
-        show={history.location.pathname === dialogPath && !!content}
+        show={isRouteMatch && !!content}
         deps={[content]}
         props={{
           dialogic: {
@@ -413,11 +331,12 @@ export const MyDialogRoute = () => {
   const dialogPath = '/some-path';
   const returnPath = '/';
   const content = 'Some async loaded content';
+  const isRouteMatch = history.location.pathname === dialogPath;
 
   return (
     <Route path={dialogPath}>
       <UseDialog<TDialogProps>
-        show={history.location.pathname === dialogPath && !!content}
+        show={isRouteMatch && !!content}
         deps={[content]}
         props={{
           dialogic: {
@@ -433,6 +352,20 @@ export const MyDialogRoute = () => {
     </Route>
   )
 };
+```
+
+### `useRemaining`
+
+Hook to fetch the current remaining time.
+
+```tsx
+import { notification, useDialogicState, useRemaining } from "dialogic-react";
+
+const MyComponent = props => {
+  useDialogicState();
+  const [remainingSeconds] = useRemaining({ instance: notification, roundToSeconds: true });
+  // ...
+}
 ```
 
 ## Size

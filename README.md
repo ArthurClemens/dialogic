@@ -34,10 +34,12 @@
     - [`resume`](#resume)
     - [`isPaused`](#ispaused)
     - [`getRemaining`](#getremaining)
-    - [Getting updates on the remaining time](#getting-updates-on-the-remaining-time)
     - [`useRemaining`](#useremaining)
-  - [`useDialogicState`](#usedialogicstate)
-  - [React and dialog routes](#react-and-dialog-routes)
+  - [Automatically responding to a variable state, such as a route](#automatically-responding-to-a-variable-state-such-as-a-route)
+  - [`useDialog` (React and Mithril)](#usedialog-react-and-mithril)
+    - [Options](#options-1)
+    - [Calling show and hide directly](#calling-show-and-hide-directly)
+  - [`useDialogicState` (React)](#usedialogicstate-react)
 - [Shout out](#shout-out)
 - [License](#license)
 
@@ -54,7 +56,9 @@ _item: a dialog/modal or a notification_
 
 * Manage multiple items
   * Manage simultaneous (stacked) items
-  * Manage a queue of items to show one after the other
+  * Manage a queue of items to show sequentially
+* Optional automatic mode
+  * Show and hide when matching a condition such as a route
 * Transitions
   * Show and hide an item with specific transition options (or use CSS)
   * Handle separate spawn locations (for example for different types of notifications)
@@ -775,28 +779,184 @@ getRemaining: (identityOptions?: IdentityOptions) => number | undefined;
 React: requires [useDialogicState](./packages/dialogic-react/README.md#usedialogicstate).
 
 
-#### Getting updates on the remaining time
-
-The `dialogic` module contains a helper function `remaining` that continuously returns the current remaining time.
-
-See the demos for an example.
-
-When using React, you can use the hook [useRemaining](./packages/dialogic-react/README.md#useremaining).
-
-
 #### `useRemaining` 
 
-For React only. See: [useRemaining](./packages/dialogic-react/README.md#useremaining)
+Hook that continuously returns the current remaining time.
+
+* Mithril: this is an alternative for [`getRemaining`](#getremaining).
+* React: use this to get the remaining time. See: [useRemaining](./packages/dialogic-react/README.md#useremaining).
 
 
-### `useDialogicState` 
+**Signature**
 
-For React only. See: [useDialogicState](./packages/dialogic-react/README.md#usedialogicstate)
+```typescript
+useRemaining: (props: UseRemainingProps) => (number | undefined)[];
+
+type UseRemainingProps = {
+  instance: Dialogic.DialogicInstance;
+  id?: string;
+  spawn?: string;
+
+  /**
+   * Set to true to return seconds instead of milliseconds.
+   */
+  roundToSeconds?: boolean;
+};
+```
 
 
-### React and dialog routes
+### Automatically responding to a variable state, such as a route
 
-See: [React dialog routes](./packages/dialogic-react/README.md#dialog-routes)
+It is often desired to automatically show a dialog at a given route, so that it can be accessed by URL, and the browser back button will hide the dialog.
+
+A common pattern is to create a Route that contains the dialog component. A React example with React Router:
+
+```tsx
+import { Route, useRouteMatch } from 'react-router-dom';
+
+const match = useRouteMatch();
+const dialogPath = `${match.url}/edit`;
+
+<Route path={dialogPath}>
+  // Dialog should appear here
+</Route>
+```
+
+
+The hooks `useDialogic`, `useDialog` and `useNotification` facilitate showing and hiding based on a condition - such as the current route.
+
+* `useDialogic` - generic hook that accepts `instance` of type `Dialogic.DialogicInstance`.
+* `useDialog` - `useDialogic` with `instance` preset to `dialog`.
+* `useNotification` - `useDialogic` with `instance` preset to `notification`.
+
+
+### `useDialog` (React and Mithril)
+
+This is a hook to automatically show a dialog when a condition is met, for instance on URL location match. The dialog will hide when the condition is no longer met.
+
+In the following example the dialog is shown when the URL location matches the given path. This is an example for React, but the Mithril version is very similar - see the [Mithril documentation](./packages/dialogic-mithril/README.md).
+
+```ts
+import { useDialog } from 'dialogic-react';
+import { MyDialog } from './MyDialog';
+
+const MyComponent = () => {
+  const returnPath = '/';
+  const dialogPath = '/some-path';
+
+  useDialog({
+    isShow: window.location.pathname === dialogPath,
+    props: {
+      dialogic: {
+        component: MyDialog,
+        className: 'dialog',
+      },
+      // Props that will be passed to the MyDialog component
+      returnPath,
+    }
+  });
+};
+```
+
+**With TypeScript**
+
+`useDialog` has a generic type to match the values passed to the component.
+
+```ts
+import { MyDialog, TDialogProps } from './MyDialog';
+
+const returnPath = '/';
+const dialogPath = '/some-path';
+const content = 'Some async loaded content';
+
+useDialog<TDialogProps>({
+  isShow: window.location.pathname === dialogPath && !!content,
+  deps: [content],
+  props: {
+    dialogic: {
+      component: MyDialog,
+      className: 'dialog',
+    },
+    // Props that will be passed to the MyDialog component
+    // These props match type TDialogProps
+    returnPath,
+    content,
+  }
+})
+```
+
+#### Options
+
+| **Name** | **Type**               | **Required** | **Description**                                                                                                                                                                                            | **Default value** |
+| -------- | ---------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `isShow` | `boolean`              | Yes          | A boolean value when to show the dialog.                                                                                                                                                                   | None              |
+| `deps`   | `React.DependencyList` | No           | Update the hook with these deps. Use this when the instance should appear conditionally, for instance only when content exists. Can be omitted when all content is static, so no re-rendering takes place. | `[]`              |
+| `props`  | `object`               | No           | Props to pass to the dialog.                                                                                                                                                                               | None              |
+
+
+#### Calling show and hide directly
+
+`useDialog` returns methods `show` and `hide`. Using these methods you can invoke dialogs just like `dialog.show` and `dialog.hide`, with the addition that an extra condition can be set when to automatically hide the dialog.
+
+In the example below:
+
+* `show` is used to show the dialog
+* Component MyDialog receives props `hideDialog` to explicitly hide the dialog
+* `deps` includes the URL location - whenever it changes the dialog is hidden
+
+_See the [Mithril documentation](./packages/dialogic-mithril/README.md) for a Mithril specific example._
+
+```ts
+import { useDialog } from 'dialogic-react';
+import { MyDialog } from './MyDialog';
+
+const MyComponent = () => {
+  const { show, hide } = useDialog({
+    deps: [window.location.href], // as soon this value changes ...
+    hide: true,                   // ... hide
+    props: {
+      dialogic: {
+        component: MyDialog,
+        className: 'dialog',
+      },
+      // Props that will be passed to the MyDialog component
+      returnPath,
+      hideDialog: () => hide(),
+    }
+  });
+
+  return (
+    <button onClick={() => show()}>Show dialog</button>
+  )
+};
+```
+
+**Options for directed use**
+
+All options listed above, plus:
+
+| **Name** | **Type**  | **Required** | **Description**                                                                                   | **Default value** |
+| -------- | --------- | ------------ | ------------------------------------------------------------------------------------------------- | ----------------- |
+| `isHide` | `boolean` | No           | Only for directed use. A boolean value when to hide the dialog. Can be used together with `deps`. | None              |
+
+
+### `useDialogicState` (React)
+
+React only.
+
+To retrieve the current state in a component, add hook `useDialogicState`:
+
+```tsx
+import { dialog, useDialogicState } from "dialogic-react";
+
+const MyComponent = props => {
+  useDialogicState();
+
+  return (
+    <div>{dialog.getCount()}</div>
+  )
+}
+```
 
 
 ## Shout out

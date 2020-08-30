@@ -4,6 +4,7 @@ Manage dialogs and notifications.
 
 - [API](#api)
 - [Demo](#demo)
+- [Installation](#installation)
 - [Usage](#usage)
   - [Dialog](#dialog)
   - [Notification](#notification)
@@ -14,9 +15,15 @@ Manage dialogs and notifications.
 
 See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/development/README.md)
 
+
 ## Demo
 
 [Demo page](https://arthurclemens.github.io/dialogic/)
+
+
+## Installation
+
+`npm install dialogic-svelte`
 
 
 ## Usage
