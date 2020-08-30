@@ -1,6 +1,5 @@
 {
   "name": "dialogic-hooks",
-  "private": true,
   "version": "0.10.0",
   "description": "Dialogic hooks",
   "main": "dist/dialogic-hooks",
