@@ -11,6 +11,7 @@ import { Dialogic } from 'dialogic';
 
 export type SharedUseDialogicProps = {
   useEffect: typeof useEffect;
+  useState: typeof useState;
 };
 
 export type SharedUseRemainingProps = {

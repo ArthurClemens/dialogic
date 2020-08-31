@@ -92,10 +92,11 @@ const Dialogical = type => props => {
     return React.createElement(Wrapper, { identityOptions: identityOptions, ns: type.ns });
 };
 
-const useDialogic = sharedUseDialogic({ useEffect });
-const useDialog = sharedUseDialog({ useEffect, dialog });
+const useDialogic = sharedUseDialogic({ useEffect, useState });
+const useDialog = sharedUseDialog({ useEffect, useState, dialog });
 const useNotification = sharedUseNotification({
     useEffect,
+    useState,
     notification,
 });
 /**

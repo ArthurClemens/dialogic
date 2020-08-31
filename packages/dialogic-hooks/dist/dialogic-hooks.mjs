@@ -1,12 +1,32 @@
 import { remaining } from 'dialogic';
 
-const sharedUseDialogic = ({ useEffect }) => (allProps) => {
+let useDialogicCounter = 0;
+const sharedUseDialogic = ({ useEffect, useState, }) => (allProps) => {
     const { isIgnore, isShow, isHide, instance, deps = [], props = {}, } = allProps;
+    // Create an id if not set.
+    // This is useful for pages with multiple dialogs, where we can't expect
+    // to have the user set an explicit id for each.
+    const [id] = useState(useDialogicCounter++);
+    const augProps = {
+        ...props,
+        ...(props.dialogic
+            ? {
+                dialogic: {
+                    ...props.dialogic,
+                    id: props.dialogic.id || id,
+                },
+            }
+            : {
+                dialogic: {
+                    id,
+                },
+            }),
+    };
     const showInstance = () => {
-        instance.show(props);
+        instance.show(augProps);
     };
     const hideInstance = () => {
-        instance.hide(props);
+        instance.hide(augProps);
     };
     // maybe show
     useEffect(() => {
@@ -47,14 +67,17 @@ const sharedUseDialogic = ({ useEffect }) => (allProps) => {
 /**
  * `useDialogic` with `instance` set to `dialog`.
  */
-const sharedUseDialog = ({ useEffect, dialog, }) => (props) => sharedUseDialogic({ useEffect })({
+const sharedUseDialog = ({ useEffect, useState, dialog, }) => (props) => sharedUseDialogic({ useEffect, useState })({
     ...props,
     instance: dialog,
 });
 /**
  * `useDialogic` with `instance` set to `notification`.
  */
-const sharedUseNotification = ({ useEffect, notification, }) => (props) => sharedUseDialogic({ useEffect })({ ...props, instance: notification });
+const sharedUseNotification = ({ useEffect, useState, notification, }) => (props) => sharedUseDialogic({ useEffect, useState })({
+    ...props,
+    instance: notification,
+});
 
 const sharedUseRemaining = ({ useState, useMemo, }) => (props) => {
     const [value, setValue] = useState(undefined);

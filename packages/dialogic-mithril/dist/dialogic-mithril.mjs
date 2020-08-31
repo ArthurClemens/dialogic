@@ -1,7 +1,7 @@
 import m from 'mithril';
 import { selectors, setDomElement, showItem, hideItem, filterCandidates, dialog, notification, states } from 'dialogic';
 export { dialog, notification } from 'dialogic';
-import { useEffect, useMemo, useState } from 'mithril-hooks';
+import { useEffect, useState, useMemo } from 'mithril-hooks';
 import { sharedUseDialogic, sharedUseDialog, sharedUseNotification, sharedUseRemaining } from 'dialogic-hooks';
 
 const handleDispatch = (ns) => (event, fn) => {
@@ -95,10 +95,11 @@ const Dialogical = type => ({
     },
 });
 
-const useDialogic = sharedUseDialogic({ useEffect });
-const useDialog = sharedUseDialog({ useEffect, dialog });
+const useDialogic = sharedUseDialogic({ useEffect, useState });
+const useDialog = sharedUseDialog({ useEffect, useState, dialog });
 const useNotification = sharedUseNotification({
     useEffect,
+    useState,
     notification,
 });
 

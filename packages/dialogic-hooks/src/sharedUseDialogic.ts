@@ -1,9 +1,12 @@
 import { Dialogic } from 'dialogic';
 import { UseDialogicInstanceProps, SharedUseDialogicProps } from '..';
 
-export const sharedUseDialogic = ({ useEffect }: SharedUseDialogicProps) => <T>(
-  allProps: UseDialogicInstanceProps<T>,
-) => {
+let useDialogicCounter = 0;
+
+export const sharedUseDialogic = ({
+  useEffect,
+  useState,
+}: SharedUseDialogicProps) => <T>(allProps: UseDialogicInstanceProps<T>) => {
   const {
     isIgnore,
     isShow,
@@ -13,12 +16,32 @@ export const sharedUseDialogic = ({ useEffect }: SharedUseDialogicProps) => <T>(
     props = {} as T & Dialogic.Options<T>,
   } = allProps;
 
+  // Create an id if not set.
+  // This is useful for pages with multiple dialogs, where we can't expect
+  // to have the user set an explicit id for each.
+  const [id] = useState(useDialogicCounter++);
+  const augProps = {
+    ...props,
+    ...(props.dialogic
+      ? {
+          dialogic: {
+            ...props.dialogic,
+            id: props.dialogic.id || id,
+          },
+        }
+      : {
+          dialogic: {
+            id,
+          },
+        }),
+  };
+
   const showInstance = () => {
-    instance.show<T>(props);
+    instance.show<T>(augProps);
   };
 
   const hideInstance = () => {
-    instance.hide<T>(props);
+    instance.hide<T>(augProps);
   };
 
   // maybe show
@@ -62,11 +85,12 @@ export const sharedUseDialogic = ({ useEffect }: SharedUseDialogicProps) => <T>(
  */
 export const sharedUseDialog = ({
   useEffect,
+  useState,
   dialog,
 }: SharedUseDialogicProps & { dialog: Dialogic.DialogicInstance }) => <T>(
   props: UseDialogicInstanceProps<T>,
 ) =>
-  sharedUseDialogic({ useEffect })<T>({
+  sharedUseDialogic({ useEffect, useState })<T>({
     ...props,
     instance: dialog,
   });
@@ -76,7 +100,12 @@ export const sharedUseDialog = ({
  */
 export const sharedUseNotification = ({
   useEffect,
+  useState,
   notification,
 }: SharedUseDialogicProps & { notification: Dialogic.DialogicInstance }) => <T>(
   props: UseDialogicInstanceProps<T>,
-) => sharedUseDialogic({ useEffect })<T>({ ...props, instance: notification });
+) =>
+  sharedUseDialogic({ useEffect, useState })<T>({
+    ...props,
+    instance: notification,
+  });

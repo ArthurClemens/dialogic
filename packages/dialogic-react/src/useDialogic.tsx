@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { dialog, notification } from 'dialogic';
 import React, { PropsWithChildren } from 'react';
 import {
@@ -9,10 +9,11 @@ import {
   sharedUseNotification,
 } from 'dialogic-hooks';
 
-export const useDialogic = sharedUseDialogic({ useEffect });
-export const useDialog = sharedUseDialog({ useEffect, dialog });
+export const useDialogic = sharedUseDialogic({ useEffect, useState });
+export const useDialog = sharedUseDialog({ useEffect, useState, dialog });
 export const useNotification = sharedUseNotification({
   useEffect,
+  useState,
   notification,
 });
 
