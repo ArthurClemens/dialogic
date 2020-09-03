@@ -24,7 +24,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "src"
   ],
   "svelte": "src/index.js",
   "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
