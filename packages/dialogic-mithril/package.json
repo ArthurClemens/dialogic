@@ -1,6 +1,6 @@
 {
   "name": "dialogic-mithril",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "description": "Logic for dialogs and notifications",
   "main": "dist/dialogic-mithril",
   "module": "dist/dialogic-mithril.mjs",
@@ -21,8 +21,8 @@
     }
   ],
   "dependencies": {
-    "dialogic": "^0.10.2",
-    "dialogic-hooks": "^0.10.2",
+    "dialogic": "^0.10.3",
+    "dialogic-hooks": "^0.10.3",
     "mithril-hooks": "^0.6.2"
   },
   "peerDependencies": {
