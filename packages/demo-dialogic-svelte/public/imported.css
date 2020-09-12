@@ -22,15 +22,14 @@ footer {
 
 .dialog {
   transition: opacity 350ms;
+  opacity: 0;
 }
 .dialog-show-start {
-  opacity: 0;
 }
 .dialog-show-end {
   opacity: 1;
 }
 .dialog-hide-start {
-  opacity: 1;
 }
 .dialog-hide-end {
   opacity: 0;
@@ -38,15 +37,14 @@ footer {
 
 .notification {
   transition: opacity 350ms;
+  opacity: 0;
 }
 .notification-show-start {
-  opacity: 0;
 }
 .notification-show-end {
   opacity: 1;
 }
 .notification-hide-start {
-  opacity: 1;
 }
 .notification-hide-end {
   opacity: 0;

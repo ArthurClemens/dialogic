@@ -6,7 +6,7 @@
   "module": "dist/dialogic-svelte.js",
   "type": "module",
   "scripts": {
-    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu.js -u",
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
     "clean": "rm -rf dist/*",
     "build": "npm run clean && npm run build:svelte && npm run size",
     "build:svelte": "MODULE=1 MODULE_NAME=dialogicSvelte ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.svelte.js",
@@ -32,7 +32,7 @@
   "homepage": "https://github.com/ArthurClemens/dialogic",
   "license": "MIT",
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^4.5.6",
-    "size-limit": "^4.5.6"
+    "@size-limit/preset-small-lib": "^4.6.0",
+    "size-limit": "^4.6.0"
   }
 }

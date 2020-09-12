@@ -5,15 +5,15 @@
   "version": "0.10.3",
   "license": "MIT",
   "scripts": {
-    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu.js -u",
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
     "test": "ava",
     "prettier": "prettier --config ../../.prettierrc.json --write \"./test/*.ts\""
   },
   "dependencies": {
     "@ava/babel": "^1.0.1",
-    "ava": "^3.11.1",
+    "ava": "^3.12.1",
     "browser-env": "^3.3.0",
     "dialogic": "^0.10.3",
-    "ts-node": "^8.10.2"
+    "ts-node": "^9.0.0"
   }
 }

@@ -4,6 +4,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import postcss from 'rollup-plugin-postcss';
+import path from 'path'
 
 import {
   preprocess,
@@ -38,13 +39,13 @@ export default {
   plugins: [
     postcss({
       plugins: [],
-      extract: 'public/imported.css',
+      extract: path.resolve('public/imported.css'),
     }),
 
     svelte({
       // enable run-time checks when not in production
       dev: !production,
-      // we"ll extract any component CSS out into
+      // we'll extract any component CSS out into
       // a separate file — better for performance
       css: css => {
         css.write('public/bundle.css');
@@ -53,8 +54,8 @@ export default {
     }),
 
     // If you have external dependencies installed from
-    // npm, you"ll most likely need these plugins. In
-    // some cases you"ll need additional configuration —
+    // npm, you'll most likely need these plugins. In
+    // some cases you'll need additional configuration —
     // consult the documentation for details:
     // https://github.com/rollup/rollup-plugin-commonjs
     resolve({
@@ -64,7 +65,7 @@ export default {
     commonjs(),
     typescript(),
 
-    // If we"re building for production (npm run build
+    // If we're building for production (npm run build
     // instead of npm run dev), minify
     production && terser(),
   ],

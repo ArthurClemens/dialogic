@@ -5,15 +5,14 @@
   "version": "0.10.3",
   "license": "MIT",
   "scripts": {
-    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu.js -u",
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
     "dev": "npm-run-all --parallel dev:watch dev:serve",
     "dev:serve": "ENTRY=./src/index.tsx ../../node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ../../scripts/webpack.config.dev.js --disableHostCheck true --port 3000 --host 0.0.0.0",
     "dev:watch": "ENTRY=./src/index.tsx ../../node_modules/webpack/bin/webpack.js --watch --config ../../scripts/webpack.config.dev.js",
     "webpack": "ENTRY=./src/index.tsx ../../node_modules/webpack/bin/webpack.js --config ../../scripts/webpack.config.prod.js",
     "build": "npm run clean && npm run webpack",
     "serve": "http-server -c-1 -p 8080 dist",
-    "clean": "rm -rf dist/js/*",
-    "github": "npm run build && node scripts/github.js"
+    "clean": "rm -rf dist/js/*"
   },
   "dependencies": {
     "dialogic-react": "^0.10.3",
@@ -22,7 +21,7 @@
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
-    "@types/react": "^16.9.46",
+    "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
     "dialogic": "^0.10.3",

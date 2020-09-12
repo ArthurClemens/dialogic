@@ -5,7 +5,7 @@
   "version": "0.10.3",
   "license": "MIT",
   "scripts": {
-    "npm-check-updates": "../../node_modules/npm-check-updates/bin/ncu.js -u",
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
     "dev": "npm-run-all --parallel dev:watch dev:serve",
     "dev:serve": "ENTRY=./src/index.tsx ../../node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ../../scripts/webpack.config.dev.js --disableHostCheck true --port 3000 --host 0.0.0.0",
     "dev:watch": "ENTRY=./src/index.tsx ../../node_modules/webpack/bin/webpack.js --watch --config ../../scripts/webpack.config.dev.js",
@@ -28,7 +28,7 @@
     "react-router-dom": "5.2.0"
   },
   "devDependencies": {
-    "@types/react": "^16.9.46",
+    "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
     "http-server": "^0.12.3",
