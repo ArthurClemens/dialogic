@@ -8,6 +8,8 @@ Manage dialogs and notifications.
 - [Usage](#usage)
   - [Dialog](#dialog)
   - [Notification](#notification)
+  - [UseDialog](#usedialog)
+  - [UseNotification](#usenotification)
 - [Size](#size)
 
 
@@ -156,6 +158,72 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
   </div>
 </div>
 ```
+
+
+### UseDialog
+
+It is often desired to automatically show a dialog at a given route, so that it can be accessed by URL, and the browser back button will hide the dialog.
+
+The component `UseDialog` allows for a declarative way of controlling dialogs. It will be shown when a condition is met (such as the current route), and automatically hidden as soon as the condition is no longer met.
+
+This component is functionally equal to React's `UseDialog`. It accepts the same props as [useDialog](https://github.com/ArthurClemens/dialogic/blob/development/README.md#usedialog).
+
+Example:
+
+```html
+<script>
+  import { UseDialog } from 'dialogic-svelte';
+  import { location } from 'svelte-spa-router'; // example routing library, here used to fetch the current route
+
+  const dialogPath = '/profile/edit';
+  const dialogReturnPath = '/profile';
+  $: isMatchDialogPath = $location === dialogPath; // Update the match check whenever the route changes
+
+  const useDialogProps = {
+    dialogic: {
+      component: EditProfileDialog,
+      className: 'dialog',
+    },
+    title: 'Update your e-mail',
+  };
+</script>
+
+<div class="page">
+  <p>Contents</p>
+  <UseDialog
+    props={useDialogProps}
+    isShow={isMatchDialogPath} />
+</div>
+```
+
+To make the dialog content dynamic, make `useDialogProps` a reactive variable.
+
+Assuming that `currentEmail` is reactive:
+
+```js
+$: useDialogProps = {
+  dialogic: {
+    component: EditProfileDialog,
+    className: 'dialog',
+  },
+  title: `Your e-mail: ${$currentEmail}`,
+};
+```
+
+and add the reactive variable to the `deps`:
+
+```html
+<UseDialog
+  props={useDialogProps}
+  isShow={isMatchDialogPath}
+  deps={[$currentEmail]} />
+```
+
+### UseNotification
+
+The component `UseNotification` has the same functionality as `UseDialog`.
+
+
 
 ## Size
 

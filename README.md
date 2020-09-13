@@ -36,7 +36,7 @@
     - [`getRemaining`](#getremaining)
     - [`useRemaining`](#useremaining)
   - [Automatically responding to a variable state, such as a route](#automatically-responding-to-a-variable-state-such-as-a-route)
-  - [`useDialog` (React and Mithril)](#usedialog-react-and-mithril)
+  - [`useDialog`](#usedialog)
     - [Options](#options-1)
     - [Calling show and hide directly](#calling-show-and-hide-directly)
   - [`useDialogicState` (React)](#usedialogicstate-react)
@@ -822,15 +822,21 @@ const dialogPath = `${match.url}/edit`;
 </Route>
 ```
 
+The hooks `useDialogic`, `useDialog` and `useNotification`  allow for a declarative way of controlling elements. The element will be shown when a condition is met (such as the current route), and automatically hidden as soon as the condition is no longer met.
 
-The hooks `useDialogic`, `useDialog` and `useNotification` facilitate showing and hiding based on a condition - such as the current route.
-
-* `useDialogic` - generic hook that accepts `instance` of type `Dialogic.DialogicInstance`.
 * `useDialog` - `useDialogic` with `instance` preset to `dialog`.
+  * For Svelte: use component `UseDialog`
 * `useNotification` - `useDialogic` with `instance` preset to `notification`.
+  * For Svelte: use component `UseNotification` 
+* `useDialogic` - generic hook that accepts `instance` of type `Dialogic.DialogicInstance`.
+  * For Svelte: use component `useDialogic` 
 
 
-### `useDialog` (React and Mithril)
+
+
+### `useDialog`
+
+_For Svelte: use component [UseDialog](./packages/dialogic-svelte/README.md#usedialog)_
 
 This is a hook to automatically show a dialog when a condition is met, for instance on URL location match. The dialog will hide when the condition is no longer met.
 
