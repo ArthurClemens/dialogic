@@ -1,10 +1,40 @@
 .app {
   padding: 20px;
   font-family: sans-serif;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.app h1.title {
+  margin-bottom: 0;
+}
+
+.intro {
+  margin-top: 1em;
+}
+
+.path-control {
+  margin-top: 1em;
+}
+
+.email-control {
+  margin-top: 10px;
+}
+
+.profile-tile {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 20px;
+  padding: 20px;
+}
+
+.profile-tile .button {
+  margin-top: 1em;
 }
 
 .buttons {
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 .dialog {
@@ -22,31 +52,6 @@
   opacity: 0;
 }
 
-.notification {
-  transition: opacity 350ms;
-  opacity: 0;
-}
-.notification-show-start {
-}
-.notification-show-end {
-  opacity: 1;
-}
-.notification-hide-start {
-}
-.notification-hide-end {
-  opacity: 0;
-}
-
-.notification-content {
-  position: relative;
-  z-index: 0;
-  padding: 16px 24px;
-  color: #fff;
-  background: #333;
-  min-width: 80vw;
-  border-radius: 8px 8px 0 0;
-}
-
 /* Cannot use `.notification` as it is used by Bulma */
 .demo-notification {
   position: fixed;
@@ -58,4 +63,14 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
+}
+
+.notification-content {
+  position: relative;
+  z-index: 0;
+  padding: 16px 24px;
+  color: #fff;
+  background: #333;
+  min-width: 960px;
+  border-radius: 8px 8px 0 0;
 }

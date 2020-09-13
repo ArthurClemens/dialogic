@@ -7,7 +7,7 @@ export type TEditProfileDialogProps = {
   pathPrefix?: string;
   onCancel: () => void;
   onSave: (email: string) => void;
-  setCount: React.Dispatch<React.SetStateAction<number>>;
+  increment: () => void;
 };
 
 export const EditProfileDialog: FunctionComponent<TEditProfileDialogProps> = props => {
@@ -49,26 +49,27 @@ export const EditProfileDialog: FunctionComponent<TEditProfileDialogProps> = pro
           >
             Save changes
           </button>
-          <button
-            className="button is-danger is-light"
-            onClick={() => props.onCancel()}
-            data-test-id="btn-cancel"
-          >
-            Cancel
-          </button>
+
           <Link
-            className="button"
+            className="button is-link is-light is-outlined"
             to={props.pathPrefix || '/'}
             data-test-id="btn-home"
           >
             Go to home
           </Link>
           <button
-            className="button"
-            onClick={() => props.setCount(current => current + 1)}
+            className="button is-link is-light is-outlined"
+            onClick={props.increment}
             data-test-id="btn-add-count"
           >
-            Increment count
+            Dynamic title count
+          </button>
+          <button
+            className="button is-danger is-light is-outlined"
+            onClick={() => props.onCancel()}
+            data-test-id="btn-cancel"
+          >
+            Cancel
           </button>
         </footer>
       </div>

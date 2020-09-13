@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CurrentPathBadge } from './CurrentPathBadge';
 import { Route, Link, useRouteMatch, useHistory } from 'react-router-dom';
 import {
@@ -7,18 +7,21 @@ import {
 } from './EditProfileDialog';
 import { notification, UseDialog, useDialog } from 'dialogic-react';
 import { saveConfirmationProps, TSaveConfirmation } from './SaveConfirmation';
+import { TStore } from './store';
 
 type TProps = {
   pathPrefix?: string;
   useDialogComponent?: boolean;
+  store: TStore;
 };
 
 export const ProfilePage = ({
   pathPrefix = '',
   useDialogComponent,
+  store,
 }: TProps) => {
   // Test injecting a dynamic value into the dialog
-  const [count, setCount] = useState(0);
+
   const match = useRouteMatch();
   const history = useHistory();
   const dialogPath = `${match.url}/edit`;
@@ -31,22 +34,25 @@ export const ProfilePage = ({
       className: 'dialog',
     },
     pathPrefix,
-    title: `Update your e-mail ${count}`,
-    email: 'allan@company.com',
-    onSave: (email: string) => {
+    title: `Update your e-mail ${store.count}`,
+    email: store.email,
+    onSave: (newEmail: string) => {
+      if (newEmail !== store.email) {
+        store.setEmail(newEmail);
+        notification.show<TSaveConfirmation>(saveConfirmationProps);
+      }
       history.push(dialogReturnPath);
-      notification.show<TSaveConfirmation>(saveConfirmationProps);
     },
     onCancel: () => {
-      history.push(dialogReturnPath);
+      history.push(dialogReturnPath); // we could also pass dialogReturnPath to the dialog to use it as Link `to`
     },
-    setCount,
+    increment: store.increment,
   };
 
   useDialog<TEditProfileDialogProps>({
     isIgnore: useDialogComponent,
     isShow: matchDialogPath ? matchDialogPath.isExact : false,
-    deps: [count],
+    deps: [store.count], // update the dialog contents whenever count changes
     props: useDialogProps,
   });
 
@@ -54,23 +60,34 @@ export const ProfilePage = ({
     <div data-test-id="profile-page">
       <h1 className="title">Profile</h1>
       <CurrentPathBadge />
-      <div className="buttons">
-        <Link className="button" to={pathPrefix || '/'} data-test-id="btn-home">
-          Go to Home
-        </Link>
+      <div className="profile-tile">
+        <div>
+          <strong>Email</strong>
+        </div>
+        <div data-test-id="current-email">{store.email}</div>
         <Link
           className="button is-link"
           to={dialogPath}
           data-test-id="btn-edit-profile"
         >
-          Edit Profile
+          Edit
+        </Link>
+      </div>
+
+      <div className="buttons">
+        <Link
+          className="button is-link is-light is-outlined"
+          to={pathPrefix || '/'}
+          data-test-id="btn-home"
+        >
+          Go to Home
         </Link>
       </div>
       {useDialogComponent && (
         <Route path={dialogPath}>
           <UseDialog<TEditProfileDialogProps>
             isShow={matchDialogPath ? matchDialogPath.isExact : false}
-            deps={[count]}
+            deps={[store.count]}
             props={useDialogProps}
           />
         </Route>

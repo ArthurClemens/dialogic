@@ -34,5 +34,5 @@ export const saveConfirmationProps = {
       };
     },
   },
-  content: 'E-mail address saved',
+  content: 'E-mail address updated',
 };
