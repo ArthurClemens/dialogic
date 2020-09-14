@@ -2,7 +2,7 @@
   "name": "demo-dialogic-mithril",
   "private": true,
   "description": "Dialogic for Mithril demo",
-  "version": "0.10.3",
+  "version": "0.11.0",
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
@@ -16,12 +16,12 @@
     "github": "npm run build && node scripts/github.js"
   },
   "dependencies": {
-    "dialogic-mithril": "^0.10.3",
+    "dialogic-mithril": "^0.11.0",
     "mithril": "^2.0.4"
   },
   "devDependencies": {
     "@types/mithril": "^2.0.3",
-    "dialogic": "^0.10.3",
+    "dialogic": "^0.11.0",
     "http-server": "^0.12.3",
     "npm-run-all": "^4.1.5",
     "start-server-and-test": "^1.11.3"

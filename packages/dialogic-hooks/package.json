@@ -1,6 +1,6 @@
 {
   "name": "dialogic-hooks",
-  "version": "0.10.3",
+  "version": "0.11.0",
   "description": "Dialogic hooks",
   "main": "dist/dialogic-hooks",
   "module": "dist/dialogic-hooks.mjs",
@@ -25,7 +25,7 @@
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
-    "dialogic": "^0.10.3",
+    "dialogic": "^0.11.0",
     "size-limit": "^4.6.0"
   },
   "files": [
