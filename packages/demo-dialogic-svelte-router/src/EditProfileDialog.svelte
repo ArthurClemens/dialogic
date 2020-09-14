@@ -29,34 +29,36 @@
       </div>
     </section>
     <footer class="modal-card-foot">
-      <button
-        type="submit"
-        class="button is-link"
-        data-test-id="btn-save"
-        on:click={() => onSave(newEmail)}>
-        Save changes
-      </button>
-      <a
-        class="button is-link is-light is-outlined"
-        href="/"
-        use:link
-        data-test-id="btn-home">
-        Go to Home
-      </a>
-      <button
-        type="button"
-        class="button is-link is-light is-outlined"
-        data-test-id="btn-add-count"
-        on:click={increment}>
-        Dynamic title count
-      </button>
-      <button
-        type="button"
-        class="button is-danger is-light is-outlined"
-        data-test-id="btn-cancel"
-        on:click={onCancel}>
-        Cancel
-      </button>
+      <div class="footer-buttons">
+        <button
+          type="submit"
+          class="button is-link"
+          data-test-id="btn-save"
+          on:click={() => onSave(newEmail)}>
+          Save changes
+        </button>
+        <a
+          class="button is-link is-light is-outlined"
+          href="/"
+          use:link
+          data-test-id="btn-home">
+          Go to Home
+        </a>
+        <button
+          type="button"
+          class="button is-link is-light is-outlined"
+          data-test-id="btn-add-count"
+          on:click={increment}>
+          Dynamic title count
+        </button>
+        <button
+          type="button"
+          class="button is-danger is-light is-outlined"
+          data-test-id="btn-cancel"
+          on:click={onCancel}>
+          Cancel
+        </button>
+      </div>
     </footer>
   </form>
 </div>

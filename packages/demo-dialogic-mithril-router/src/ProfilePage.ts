@@ -20,8 +20,6 @@ const ProfilePageFn = (attrs: TProps) => {
   const returnPath = `${pathPrefix}/profile`;
   const isRouteMatch = m.route.get() === dialogPath;
 
-  console.log('store', store);
-
   useDialog<TEditProfileDialogProps>({
     isShow: isRouteMatch,
     deps: [store.count], // update the dialog contents whenever count changes
@@ -41,7 +39,6 @@ const ProfilePageFn = (attrs: TProps) => {
         m.route.set(returnPath);
       },
       onCancel: () => {
-        console.log('onCancel');
         m.route.set(returnPath);
       },
       increment: store.increment,

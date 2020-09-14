@@ -29,7 +29,10 @@ export const EditProfileDialog: m.ClosureComponent<TEditProfileDialogProps> = ({
             'form',
             {
               className: 'modal-card',
-              onsubmit: () => attrs.onSave(localState.email),
+              onsubmit: (e: Event) => {
+                e.preventDefault();
+                attrs.onSave(localState.email);
+              },
             },
             [
               m('header', { className: 'modal-card-head' }, [
@@ -39,6 +42,7 @@ export const EditProfileDialog: m.ClosureComponent<TEditProfileDialogProps> = ({
                   attrs.title,
                 ),
                 m('button', {
+                  type: 'button',
                   className: 'delete',
                   onclick: () => attrs.onCancel(),
                   'data-test-id': 'btn-close',
@@ -65,45 +69,50 @@ export const EditProfileDialog: m.ClosureComponent<TEditProfileDialogProps> = ({
                   ]),
                 ),
               ),
-              m('footer', { className: 'modal-card-foot' }, [
-                m(
-                  'button',
-                  {
-                    type: 'submit',
-                    className: 'button is-link',
-                    onclick: () => attrs.onSave(localState.email),
-                    'data-test-id': 'btn-save',
-                  },
-                  'Save changes',
-                ),
-                m(
-                  m.route.Link,
-                  {
-                    className: 'button is-link is-light is-outlined',
-                    href: attrs.pathPrefix || '/',
-                    'data-test-id': 'btn-home',
-                  },
-                  'Go to home',
-                ),
-                m(
-                  'button',
-                  {
-                    className: 'button is-link is-light is-outlined',
-                    onclick: attrs.increment,
-                    'data-test-id': 'btn-add-count',
-                  },
-                  'Dynamic title count',
-                ),
-                m(
-                  'button',
-                  {
-                    className: 'button is-danger is-light',
-                    onclick: () => attrs.onCancel(),
-                    'data-test-id': 'btn-cancel',
-                  },
-                  'Cancel',
-                ),
-              ]),
+              m(
+                'footer',
+                { className: 'modal-card-foot' },
+                m('footer-buttons', [
+                  m(
+                    'button',
+                    {
+                      type: 'submit',
+                      className: 'button is-link',
+                      'data-test-id': 'btn-save',
+                    },
+                    'Save changes',
+                  ),
+                  m(
+                    m.route.Link,
+                    {
+                      className: 'button is-link is-light is-outlined',
+                      href: attrs.pathPrefix || '/',
+                      'data-test-id': 'btn-home',
+                    },
+                    'Go to home',
+                  ),
+                  m(
+                    'button',
+                    {
+                      type: 'button',
+                      className: 'button is-link is-light is-outlined',
+                      onclick: () => attrs.increment(),
+                      'data-test-id': 'btn-add-count',
+                    },
+                    'Dynamic title count',
+                  ),
+                  m(
+                    'button',
+                    {
+                      type: 'button',
+                      className: 'button is-danger is-light',
+                      onclick: () => attrs.onCancel(),
+                      'data-test-id': 'btn-cancel',
+                    },
+                    'Cancel',
+                  ),
+                ]),
+              ),
             ],
           ),
         ],

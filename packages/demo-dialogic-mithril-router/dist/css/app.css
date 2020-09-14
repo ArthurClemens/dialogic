@@ -9,19 +9,19 @@
   margin-bottom: 0;
 }
 
-.intro {
+.app .intro {
   margin-top: 1em;
 }
 
-.path-control {
+.app .path-control {
   margin-top: 1em;
 }
 
-.email-control {
+.app .email-control {
   margin-top: 10px;
 }
 
-.profile-tile {
+.app .profile-tile {
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -29,11 +29,11 @@
   padding: 20px;
 }
 
-.profile-tile .button {
+.app .profile-tile .button {
   margin-top: 1em;
 }
 
-.buttons {
+.app .buttons {
   margin-top: 50px;
 }
 
@@ -71,8 +71,28 @@
   padding: 16px 24px;
   color: #fff;
   background: #333;
-  min-width: 960px;
+  width: 100%;
+  margin: 0 20px;
   border-radius: 8px 8px 0 0;
+}
+
+/* Override Bulma */
+
+.modal {
+  padding: 20px;
+}
+.modal-card-foot {
+  flex-wrap: wrap;
+}
+
+.footer-buttons {
+  margin: -5px;
+  font-size: 0;
+}
+
+.modal-card-foot a,
+.modal-card-foot .button {
+  margin: 5px !important;
 }
 
 

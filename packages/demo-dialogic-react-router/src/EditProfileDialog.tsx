@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 export type TEditProfileDialogProps = {
@@ -15,12 +15,19 @@ export const EditProfileDialog: FunctionComponent<TEditProfileDialogProps> = pro
   return (
     <div className="modal is-active" data-test-id="edit-profile-dialog">
       <div className="modal-background" />
-      <div className="modal-card">
+      <form
+        className="modal-card"
+        onSubmit={(e: FormEvent) => {
+          e.preventDefault();
+          props.onSave(email);
+        }}
+      >
         <header className="modal-card-head">
           <p className="modal-card-title" data-test-id="title">
             {props.title}
           </p>
           <button
+            type="button"
             className="delete"
             onClick={() => {
               props.onCancel();
@@ -42,37 +49,41 @@ export const EditProfileDialog: FunctionComponent<TEditProfileDialogProps> = pro
           </div>
         </section>
         <footer className="modal-card-foot">
-          <button
-            className="button is-link"
-            onClick={() => props.onSave(email)}
-            data-test-id="btn-save"
-          >
-            Save changes
-          </button>
+          <div className="footer-buttons">
+            <button
+              type="submit"
+              className="button is-link"
+              data-test-id="btn-save"
+            >
+              Save changes
+            </button>
 
-          <Link
-            className="button is-link is-light is-outlined"
-            to={props.pathPrefix || '/'}
-            data-test-id="btn-home"
-          >
-            Go to home
-          </Link>
-          <button
-            className="button is-link is-light is-outlined"
-            onClick={props.increment}
-            data-test-id="btn-add-count"
-          >
-            Dynamic title count
-          </button>
-          <button
-            className="button is-danger is-light is-outlined"
-            onClick={() => props.onCancel()}
-            data-test-id="btn-cancel"
-          >
-            Cancel
-          </button>
+            <Link
+              className="button is-link is-light is-outlined"
+              to={props.pathPrefix || '/'}
+              data-test-id="btn-home"
+            >
+              Go to home
+            </Link>
+            <button
+              type="button"
+              className="button is-link is-light is-outlined"
+              onClick={props.increment}
+              data-test-id="btn-add-count"
+            >
+              Dynamic title count
+            </button>
+            <button
+              type="button"
+              className="button is-danger is-light is-outlined"
+              onClick={() => props.onCancel()}
+              data-test-id="btn-cancel"
+            >
+              Cancel
+            </button>
+          </div>
         </footer>
-      </div>
+      </form>
     </div>
   );
 };

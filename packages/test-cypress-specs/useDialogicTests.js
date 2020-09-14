@@ -54,6 +54,9 @@ export const useDialogicTests = path => {
   });
 
   it('Should show a confirmation after saving', () => {
+    cy.get(
+      '[data-test-id=edit-profile-dialog] [data-test-id=input-email]',
+    ).type(Math.round(Math.random() * 1000).toString());
     cy.get('[data-test-id=edit-profile-dialog] [data-test-id=btn-save]')
       .should('exist')
       .click();
@@ -66,10 +69,13 @@ export const useDialogicTests = path => {
 
   it('Should show the dialog using the browser history', () => {
     cy.go('back');
+    cy.wait(300);
     cy.get('[data-test-id=edit-profile-dialog]').should('exist');
     cy.go('forward');
+    cy.wait(300);
     cy.get('[data-test-id=edit-profile-dialog]').should('not.exist');
     cy.go('back');
+    cy.wait(300);
     cy.get('[data-test-id=edit-profile-dialog]').should('exist');
   });
 };
