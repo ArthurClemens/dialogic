@@ -166,6 +166,8 @@ const NotificationView = {
 
 ### `useDialog`
 
+[Live example](https://codesandbox.io/s/dialogic-for-mithril-route-example-with-usedialog-hook-pdsf8)
+
 See also: `useNotification` and `useDialogic`.
 
 `useDialog` requires `mithril-hooks` to use the React Hook API. The Mithril component is a simple view function without lifecycle hooks.

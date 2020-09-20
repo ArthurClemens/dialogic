@@ -250,7 +250,7 @@ const MyComponent = () => {
 
 Use `react-router` matching for more flexibility on matching routes. This can also be used to match on parametrized routes.
 
-See also CodeSandbox demo: [Route example with useDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-cutrx).
+See also CodeSandbox demo: [Route example with useDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-component-kgq22).
 
 
 ```js
