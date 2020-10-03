@@ -21,7 +21,8 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 
 ## Demo
 
-[Demo page](https://arthurclemens.github.io/dialogic/)
+* [Demo page](https://arthurclemens.github.io/dialogic/)
+* [Live examples](https://codesandbox.io/dashboard/all/Dialogic/Dialogic%20for%20Mithril?workspace=214fe89f-3718-4af2-9611-3b2cb150dcc5)
 
 
 ## Installation

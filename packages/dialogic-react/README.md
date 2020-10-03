@@ -25,8 +25,13 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 ## Demos
 
 * [Demo page](https://arthurclemens.github.io/dialogic/)
-* [Route example with useDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-cutrx)
-* [Route example with UseDialog component](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-component-kgq22)
+
+Live examples:
+
+* [All examples](https://codesandbox.io/dashboard/all/Dialogic/Dialogic%20for%20React?workspace=214fe89f-3718-4af2-9611-3b2cb150dcc5)
+* Listed examples:
+  * [Route example with useDialog hook](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-cutrx)
+  * [Route example with UseDialog component](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-component-kgq22)
 
 
 ## Installation
