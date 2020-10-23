@@ -7,3 +7,6 @@ npm-debug.log*
 index.js.LICENSE*
 screenshots
 .idea
+packages/test-dialogic-mithril/dist/js/*.js*
+packages/test-dialogic-react/dist/js/*.js*
+packages/test-dialogic-svelte/public/*.js*
