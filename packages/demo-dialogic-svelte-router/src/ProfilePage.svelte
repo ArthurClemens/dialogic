@@ -4,7 +4,6 @@
   import { UseDialog, notification } from 'dialogic-svelte';
   import { link } from 'svelte-spa-router';
   import { location, push } from 'svelte-spa-router';
-  import { writable } from 'svelte/store';
   import { email, counter, increment } from './store';
   import SaveConfirmation, {
     createSaveConfirmationProps,
@@ -43,9 +42,7 @@
   <CurrentPathBadge />
 
   <div class="profile-tile">
-    <div>
-      <strong>Email</strong>
-    </div>
+    <div><strong>Email</strong></div>
     <div data-test-id="current-email">{$email}</div>
     <a
       class="button is-link"

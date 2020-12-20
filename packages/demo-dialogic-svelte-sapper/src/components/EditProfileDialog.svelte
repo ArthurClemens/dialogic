@@ -1,11 +1,10 @@
 <script>
-  import { link } from 'svelte-spa-router';
+  import { prevent_default } from 'svelte/internal';
 
   export let title;
   export let email;
   export let onSave;
   export let onCancel;
-  export let increment;
 
   let newEmail = email;
 </script>
@@ -44,20 +43,6 @@
             onSave(newEmail);
           }}>
           Save changes
-        </button>
-        <a
-          class="button is-link is-light is-outlined"
-          href="/"
-          use:link
-          data-test-id="btn-home">
-          Go to Home
-        </a>
-        <button
-          type="button"
-          class="button is-link is-light is-outlined"
-          data-test-id="btn-add-count"
-          on:click={increment}>
-          Dynamic title count
         </button>
         <button
           type="button"

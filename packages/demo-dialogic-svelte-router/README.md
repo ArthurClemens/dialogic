@@ -1,10 +1,6 @@
-# Dialogic for Svelte with Sapper - demo
+# Dialogic for Svelte with a router - demo
 
 [Main documentation](../../README.md)
-
-
-Note that `dialogic-svelte` is included in package.json's "devDependencies" instead of "dependencies".
-
 
 To start local development with live reload:
 
