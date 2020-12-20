@@ -10,3 +10,4 @@ screenshots
 packages/test-dialogic-mithril/dist/js/*.js*
 packages/test-dialogic-react/dist/js/*.js*
 packages/test-dialogic-svelte/public/*.js*
+__sapper__
