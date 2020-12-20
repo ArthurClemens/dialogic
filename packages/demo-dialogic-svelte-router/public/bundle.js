@@ -2592,10 +2592,10 @@ var app = (function () {
     	validate_slots("UseDialogic", slots, []);
     	const id = useDialogicCounter++;
     	let { props } = $$props;
-    	let { isShow } = $$props;
-    	let { isHide } = $$props;
+    	let { isShow = undefined } = $$props;
+    	let { isHide = undefined } = $$props;
+    	let { isIgnore = undefined } = $$props;
     	let { deps } = $$props;
-    	let { isIgnore } = $$props;
     	let { instance } = $$props;
 
     	const showInstance = () => {
@@ -2616,7 +2616,7 @@ var app = (function () {
     		};
     	});
 
-    	const writable_props = ["props", "isShow", "isHide", "deps", "isIgnore", "instance"];
+    	const writable_props = ["props", "isShow", "isHide", "isIgnore", "deps", "instance"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<UseDialogic> was created with unknown prop '${key}'`);
@@ -2626,8 +2626,8 @@ var app = (function () {
     		if ("props" in $$props) $$invalidate(1, props = $$props.props);
     		if ("isShow" in $$props) $$invalidate(2, isShow = $$props.isShow);
     		if ("isHide" in $$props) $$invalidate(3, isHide = $$props.isHide);
-    		if ("deps" in $$props) $$invalidate(4, deps = $$props.deps);
-    		if ("isIgnore" in $$props) $$invalidate(5, isIgnore = $$props.isIgnore);
+    		if ("isIgnore" in $$props) $$invalidate(4, isIgnore = $$props.isIgnore);
+    		if ("deps" in $$props) $$invalidate(5, deps = $$props.deps);
     		if ("instance" in $$props) $$invalidate(6, instance = $$props.instance);
     	};
 
@@ -2639,8 +2639,8 @@ var app = (function () {
     		props,
     		isShow,
     		isHide,
-    		deps,
     		isIgnore,
+    		deps,
     		instance,
     		showInstance,
     		hideInstance,
@@ -2653,8 +2653,8 @@ var app = (function () {
     		if ("props" in $$props) $$invalidate(1, props = $$props.props);
     		if ("isShow" in $$props) $$invalidate(2, isShow = $$props.isShow);
     		if ("isHide" in $$props) $$invalidate(3, isHide = $$props.isHide);
-    		if ("deps" in $$props) $$invalidate(4, deps = $$props.deps);
-    		if ("isIgnore" in $$props) $$invalidate(5, isIgnore = $$props.isIgnore);
+    		if ("isIgnore" in $$props) $$invalidate(4, isIgnore = $$props.isIgnore);
+    		if ("deps" in $$props) $$invalidate(5, deps = $$props.deps);
     		if ("instance" in $$props) $$invalidate(6, instance = $$props.instance);
     		if ("effect" in $$props) $$subscribe_effect($$invalidate(0, effect = $$props.effect));
     		if ("augProps" in $$props) augProps = $$props.augProps;
@@ -2708,7 +2708,7 @@ var app = (function () {
     		if ($$self.$$.dirty & /*$effect*/ 256) ;
     	};
 
-    	return [effect, props, isShow, isHide, deps, isIgnore, instance];
+    	return [effect, props, isShow, isHide, isIgnore, deps, instance];
     }
 
     class UseDialogic extends SvelteComponentDev {
@@ -2719,8 +2719,8 @@ var app = (function () {
     			props: 1,
     			isShow: 2,
     			isHide: 3,
-    			deps: 4,
-    			isIgnore: 5,
+    			isIgnore: 4,
+    			deps: 5,
     			instance: 6
     		});
 
@@ -2738,20 +2738,8 @@ var app = (function () {
     			console.warn("<UseDialogic> was created without expected prop 'props'");
     		}
 
-    		if (/*isShow*/ ctx[2] === undefined && !("isShow" in props)) {
-    			console.warn("<UseDialogic> was created without expected prop 'isShow'");
-    		}
-
-    		if (/*isHide*/ ctx[3] === undefined && !("isHide" in props)) {
-    			console.warn("<UseDialogic> was created without expected prop 'isHide'");
-    		}
-
-    		if (/*deps*/ ctx[4] === undefined && !("deps" in props)) {
+    		if (/*deps*/ ctx[5] === undefined && !("deps" in props)) {
     			console.warn("<UseDialogic> was created without expected prop 'deps'");
-    		}
-
-    		if (/*isIgnore*/ ctx[5] === undefined && !("isIgnore" in props)) {
-    			console.warn("<UseDialogic> was created without expected prop 'isIgnore'");
     		}
 
     		if (/*instance*/ ctx[6] === undefined && !("instance" in props)) {
@@ -2783,19 +2771,19 @@ var app = (function () {
     		throw new Error("<UseDialogic>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
-    	get deps() {
-    		throw new Error("<UseDialogic>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set deps(value) {
-    		throw new Error("<UseDialogic>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
     	get isIgnore() {
     		throw new Error("<UseDialogic>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	set isIgnore(value) {
+    		throw new Error("<UseDialogic>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get deps() {
+    		throw new Error("<UseDialogic>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set deps(value) {
     		throw new Error("<UseDialogic>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
@@ -3900,50 +3888,50 @@ var app = (function () {
     			button3 = element("button");
     			button3.textContent = "Cancel";
     			attr_dev(div0, "class", "modal-background");
-    			add_location(div0, file$3, 13, 2, 265);
+    			add_location(div0, file$3, 15, 2, 321);
     			attr_dev(p, "class", "modal-card-title");
     			attr_dev(p, "data-test-id", "title");
-    			add_location(p, file$3, 16, 6, 404);
+    			add_location(p, file$3, 23, 6, 508);
     			attr_dev(button0, "class", "delete");
     			attr_dev(button0, "data-test-id", "btn-close");
-    			add_location(button0, file$3, 17, 6, 471);
+    			add_location(button0, file$3, 24, 6, 575);
     			attr_dev(header, "class", "modal-card-head");
-    			add_location(header, file$3, 15, 4, 365);
+    			add_location(header, file$3, 22, 4, 469);
     			attr_dev(input, "class", "input");
     			attr_dev(input, "type", "text");
     			attr_dev(input, "data-test-id", "input-email");
-    			add_location(input, file$3, 22, 10, 660);
+    			add_location(input, file$3, 29, 10, 764);
     			attr_dev(div1, "class", "control");
-    			add_location(div1, file$3, 21, 8, 628);
+    			add_location(div1, file$3, 28, 8, 732);
     			attr_dev(div2, "class", "field");
-    			add_location(div2, file$3, 20, 6, 600);
+    			add_location(div2, file$3, 27, 6, 704);
     			attr_dev(section, "class", "modal-card-body");
-    			add_location(section, file$3, 19, 4, 560);
+    			add_location(section, file$3, 26, 4, 664);
     			attr_dev(button1, "type", "submit");
     			attr_dev(button1, "class", "button is-link");
     			attr_dev(button1, "data-test-id", "btn-save");
-    			add_location(button1, file$3, 32, 8, 916);
+    			add_location(button1, file$3, 39, 8, 1020);
     			attr_dev(a, "class", "button is-link is-light is-outlined");
     			attr_dev(a, "href", "/");
     			attr_dev(a, "data-test-id", "btn-home");
-    			add_location(a, file$3, 39, 8, 1109);
+    			add_location(a, file$3, 49, 8, 1271);
     			attr_dev(button2, "type", "button");
     			attr_dev(button2, "class", "button is-link is-light is-outlined");
     			attr_dev(button2, "data-test-id", "btn-add-count");
-    			add_location(button2, file$3, 46, 8, 1281);
+    			add_location(button2, file$3, 56, 8, 1443);
     			attr_dev(button3, "type", "button");
     			attr_dev(button3, "class", "button is-danger is-light is-outlined");
     			attr_dev(button3, "data-test-id", "btn-cancel");
-    			add_location(button3, file$3, 53, 8, 1494);
+    			add_location(button3, file$3, 63, 8, 1656);
     			attr_dev(div3, "class", "footer-buttons");
-    			add_location(div3, file$3, 31, 6, 879);
+    			add_location(div3, file$3, 38, 6, 983);
     			attr_dev(footer, "class", "modal-card-foot");
-    			add_location(footer, file$3, 30, 4, 840);
+    			add_location(footer, file$3, 37, 4, 944);
     			attr_dev(form, "class", "modal-card");
-    			add_location(form, file$3, 14, 2, 300);
+    			add_location(form, file$3, 16, 2, 356);
     			attr_dev(div4, "class", "modal is-active");
     			attr_dev(div4, "data-test-id", "edit-profile-dialog");
-    			add_location(div4, file$3, 12, 0, 198);
+    			add_location(div4, file$3, 14, 0, 254);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -3987,8 +3975,8 @@ var app = (function () {
     						false,
     						false
     					),
-    					listen_dev(input, "input", /*input_input_handler*/ ctx[6]),
-    					listen_dev(button1, "click", /*click_handler*/ ctx[7], false, false, false),
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[8]),
+    					listen_dev(button1, "click", /*click_handler*/ ctx[9], false, false, false),
     					action_destroyer(link_action = link.call(null, a)),
     					listen_dev(
     						button2,
@@ -4010,7 +3998,7 @@ var app = (function () {
     						false,
     						false
     					),
-    					listen_dev(form, "submit", /*submit_handler*/ ctx[8], false, false, false)
+    					listen_dev(form, "submit", /*submit_handler*/ ctx[10], false, false, false)
     				];
 
     				mounted = true;
@@ -4052,6 +4040,8 @@ var app = (function () {
     	let { onSave } = $$props;
     	let { onCancel } = $$props;
     	let { increment } = $$props;
+    	const hide = null;
+    	const show = null;
     	let newEmail = email;
     	const writable_props = ["title", "email", "onSave", "onCancel", "increment"];
 
@@ -4064,8 +4054,15 @@ var app = (function () {
     		$$invalidate(4, newEmail);
     	}
 
-    	const click_handler = () => onSave(newEmail);
-    	const submit_handler = () => onSave(newEmail);
+    	const click_handler = e => {
+    		e.preventDefault();
+    		onSave(newEmail);
+    	};
+
+    	const submit_handler = e => {
+    		e.preventDefault();
+    		onSave(newEmail);
+    	};
 
     	$$self.$$set = $$props => {
     		if ("title" in $$props) $$invalidate(0, title = $$props.title);
@@ -4082,6 +4079,8 @@ var app = (function () {
     		onSave,
     		onCancel,
     		increment,
+    		hide,
+    		show,
     		newEmail
     	});
 
@@ -4105,6 +4104,8 @@ var app = (function () {
     		increment,
     		newEmail,
     		email,
+    		hide,
+    		show,
     		input_input_handler,
     		click_handler,
     		submit_handler
@@ -4120,7 +4121,9 @@ var app = (function () {
     			email: 5,
     			onSave: 1,
     			onCancel: 2,
-    			increment: 3
+    			increment: 3,
+    			hide: 6,
+    			show: 7
     		});
 
     		dispatch_dev("SvelteRegisterComponent", {
@@ -4193,6 +4196,22 @@ var app = (function () {
     	set increment(value) {
     		throw new Error("<EditProfileDialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
+
+    	get hide() {
+    		return this.$$.ctx[6];
+    	}
+
+    	set hide(value) {
+    		throw new Error("<EditProfileDialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get show() {
+    		return this.$$.ctx[7];
+    	}
+
+    	set show(value) {
+    		throw new Error("<EditProfileDialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
     }
 
     const email = writable('allan@company.com');
@@ -4213,7 +4232,7 @@ var app = (function () {
     			t = text(/*content*/ ctx[0]);
     			attr_dev(div, "class", "notification-content");
     			attr_dev(div, "data-test-id", "notification");
-    			add_location(div, file$4, 34, 0, 870);
+    			add_location(div, file$4, 36, 0, 926);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4273,6 +4292,8 @@ var app = (function () {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("SaveConfirmation", slots, []);
     	let { content } = $$props;
+    	const hide = null;
+    	const show = null;
     	const writable_props = ["content"];
 
     	Object.keys($$props).forEach(key => {
@@ -4283,7 +4304,12 @@ var app = (function () {
     		if ("content" in $$props) $$invalidate(0, content = $$props.content);
     	};
 
-    	$$self.$capture_state = () => ({ createSaveConfirmationProps, content });
+    	$$self.$capture_state = () => ({
+    		createSaveConfirmationProps,
+    		content,
+    		hide,
+    		show
+    	});
 
     	$$self.$inject_state = $$props => {
     		if ("content" in $$props) $$invalidate(0, content = $$props.content);
@@ -4293,13 +4319,13 @@ var app = (function () {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [content];
+    	return [content, hide, show];
     }
 
     class SaveConfirmation extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$9, create_fragment$b, safe_not_equal, { content: 0 });
+    		init(this, options, instance$9, create_fragment$b, safe_not_equal, { content: 0, hide: 1, show: 2 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -4321,6 +4347,22 @@ var app = (function () {
     	}
 
     	set content(value) {
+    		throw new Error("<SaveConfirmation>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get hide() {
+    		return this.$$.ctx[1];
+    	}
+
+    	set hide(value) {
+    		throw new Error("<SaveConfirmation>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get show() {
+    		return this.$$.ctx[2];
+    	}
+
+    	set show(value) {
     		throw new Error("<SaveConfirmation>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
@@ -4391,25 +4433,25 @@ var app = (function () {
     			t10 = space();
     			create_component(usedialog.$$.fragment);
     			attr_dev(h1, "class", "title");
-    			add_location(h1, file$5, 41, 2, 1321);
-    			add_location(strong, file$5, 46, 6, 1421);
-    			add_location(div0, file$5, 45, 4, 1409);
+    			add_location(h1, file$5, 40, 2, 1278);
+    			add_location(strong, file$5, 44, 9, 1371);
+    			add_location(div0, file$5, 44, 4, 1366);
     			attr_dev(div1, "data-test-id", "current-email");
-    			add_location(div1, file$5, 48, 4, 1459);
+    			add_location(div1, file$5, 45, 4, 1404);
     			attr_dev(a0, "class", "button is-link");
     			attr_dev(a0, "href", dialogPath);
     			attr_dev(a0, "data-test-id", "btn-edit-profile");
-    			add_location(a0, file$5, 49, 4, 1512);
+    			add_location(a0, file$5, 46, 4, 1457);
     			attr_dev(div2, "class", "profile-tile");
-    			add_location(div2, file$5, 44, 2, 1378);
+    			add_location(div2, file$5, 43, 2, 1335);
     			attr_dev(a1, "class", "button is-link is-light is-outlined");
     			attr_dev(a1, "href", a1_href_value = "/");
     			attr_dev(a1, "data-test-id", "btn-home");
-    			add_location(a1, file$5, 59, 4, 1680);
+    			add_location(a1, file$5, 56, 4, 1625);
     			attr_dev(div3, "class", "buttons");
-    			add_location(div3, file$5, 58, 2, 1654);
+    			add_location(div3, file$5, 55, 2, 1599);
     			attr_dev(div4, "data-test-id", "profile-page");
-    			add_location(div4, file$5, 40, 0, 1285);
+    			add_location(div4, file$5, 39, 0, 1242);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4513,7 +4555,6 @@ var app = (function () {
     		link,
     		location,
     		push,
-    		writable,
     		email,
     		counter,
     		increment,

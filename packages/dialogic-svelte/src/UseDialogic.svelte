@@ -9,10 +9,10 @@
   const id = useDialogicCounter++;
 
   export let props;
-  export let isShow;
-  export let isHide;
+  export let isShow = undefined;
+  export let isHide = undefined;
+  export let isIgnore = undefined;
   export let deps;
-  export let isIgnore;
   export let instance;
 
   // Make augProps reactive
