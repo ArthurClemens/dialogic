@@ -605,10 +605,10 @@ function instance_1$1($$self, $$props, $$invalidate) {
 	$$self.$$.on_destroy.push(() => $$unsubscribe_effect());
 	const id = useDialogicCounter++;
 	let { props } = $$props;
-	let { isShow } = $$props;
-	let { isHide } = $$props;
+	let { isShow = undefined } = $$props;
+	let { isHide = undefined } = $$props;
+	let { isIgnore = undefined } = $$props;
 	let { deps } = $$props;
-	let { isIgnore } = $$props;
 	let { instance } = $$props;
 
 	const showInstance = () => {
@@ -632,8 +632,8 @@ function instance_1$1($$self, $$props, $$invalidate) {
 		if ("props" in $$props) $$invalidate(1, props = $$props.props);
 		if ("isShow" in $$props) $$invalidate(2, isShow = $$props.isShow);
 		if ("isHide" in $$props) $$invalidate(3, isHide = $$props.isHide);
-		if ("deps" in $$props) $$invalidate(4, deps = $$props.deps);
-		if ("isIgnore" in $$props) $$invalidate(5, isIgnore = $$props.isIgnore);
+		if ("isIgnore" in $$props) $$invalidate(4, isIgnore = $$props.isIgnore);
+		if ("deps" in $$props) $$invalidate(5, deps = $$props.deps);
 		if ("instance" in $$props) $$invalidate(6, instance = $$props.instance);
 	};
 
@@ -681,7 +681,7 @@ function instance_1$1($$self, $$props, $$invalidate) {
 		if ($$self.$$.dirty & /*$effect*/ 256) ;
 	};
 
-	return [effect, props, isShow, isHide, deps, isIgnore, instance];
+	return [effect, props, isShow, isHide, isIgnore, deps, instance];
 }
 
 class UseDialogic extends SvelteComponent {
@@ -692,8 +692,8 @@ class UseDialogic extends SvelteComponent {
 			props: 1,
 			isShow: 2,
 			isHide: 3,
-			deps: 4,
-			isIgnore: 5,
+			isIgnore: 4,
+			deps: 5,
 			instance: 6
 		});
 	}
