@@ -99,7 +99,7 @@ The usage of the component varies somewhat per JS library - see library specific
 
 * [Dialogic for React](./packages/dialogic-react/README.md)
 * [Dialogic for Mithril](./packages/dialogic-mithril/README.md)
-* [Dialogic for Svelte](./packages/dialogic-svelte/README.md)
+* [Dialogic for Svelte and Sapper](./packages/dialogic-svelte/README.md)
 
 
 

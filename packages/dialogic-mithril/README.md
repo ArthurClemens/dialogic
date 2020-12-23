@@ -21,9 +21,16 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 
 ## Demo
 
-* [Demo page](https://arthurclemens.github.io/dialogic/)
+* [Online demo](https://arthurclemens.github.io/dialogic/)
+
+Codesandbox examples:
+
 * [Live examples](https://codesandbox.io/dashboard/all/Dialogic/Dialogic%20for%20Mithril?workspace=214fe89f-3718-4af2-9611-3b2cb150dcc5)
 
+Demo code in this repo:
+* `./packages/demo-dialogic-mithril`
+* `./packages/demo-dialogic-mithril-router`
+* 
 
 ## Installation
 

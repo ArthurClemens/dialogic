@@ -1,10 +1,11 @@
-# Dialogic for Svelte
+# Dialogic for Svelte and Sapper
 
 Manage dialogs and notifications.
 
 - [API](#api)
 - [Demo](#demo)
 - [Installation](#installation)
+  - [With Sapper](#with-sapper)
 - [Usage](#usage)
   - [Dialog](#dialog)
   - [Notification](#notification)
@@ -20,19 +21,27 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 
 ## Demo
 
-[Demo page](https://arthurclemens.github.io/dialogic/)
+[Online demo](https://arthurclemens.github.io/dialogic/)
 
+Demo code in this repo:
+  * `./packages/demo-dialogic-svelte`
+  * `./packages/demo-dialogic-svelte-router`
+  * `./packages/demo-dialogic-svelte-sapper`
 
 ## Installation
 
 `npm install dialogic-svelte`
 
 
+### With Sapper
+
+Include `dialogic-svelte` in package.json's "devDependencies" instead of "dependencies".
+
 ## Usage
 
 ### Dialog
 
-```html
+```jsx
 <!-- App.svelte -->
 <script>
   import { dialog, Dialog } from "dialogic-svelte";
@@ -72,7 +81,7 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 </style>
 ```
 
-```html
+```jsx
 <!-- DialogView.svelte -->
 <script>
   import { dialog } from "dialogic-svelte";
@@ -89,7 +98,7 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 
 ### Notification
 
-```html
+```jsx
 <!-- App.svelte -->
 <script>
   import { notification, Notification } from "dialogic-svelte";
@@ -129,7 +138,7 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 </style>
 ```
 
-```html
+```jsx
 <!-- NotificationView.svelte --->
 <script>
   import { notification } from "dialogic-svelte";
@@ -170,7 +179,7 @@ This component is functionally equal to React's `UseDialog`. It accepts the same
 
 Example:
 
-```html
+```jsx
 <script>
   import { UseDialog } from 'dialogic-svelte';
   import { location } from 'svelte-spa-router'; // example routing library, here used to fetch the current route
@@ -212,7 +221,7 @@ $: useDialogProps = {
 
 and add the reactive variable to the `deps`:
 
-```html
+```jsx
 <UseDialog
   props={useDialogProps}
   isShow={isMatchDialogPath}
