@@ -39,7 +39,6 @@
   - [`useDialog`](#usedialog)
     - [Options](#options-1)
     - [Calling show and hide directly](#calling-show-and-hide-directly)
-  - [`useDialogicState` (React)](#usedialogicstate-react)
 - [Shout out](#shout-out)
 - [License](#license)
 
@@ -633,7 +632,7 @@ const exists = dialog.exists({
 exists: (identityOptions?: IdentityOptions) => boolean
 ```
 
-React: requires `useDialogicState`.
+React: requires [useDialogicState](./packages/dialogic-react/README.md#usedialogicstate).
 
 
 ### `getCount`
@@ -658,7 +657,7 @@ const count = notification.getCount({
 getCount: (identityOptions?: IdentityOptions) => number;
 ```
 
-React: requires `useDialogicState`.
+React: requires [useDialogicState](./packages/dialogic-react/README.md#usedialogicstate).
 
 
 ### Timer functions
@@ -751,7 +750,7 @@ notification.isPaused({
 isPaused: (identityOptions?: IdentityOptionsg) => boolean;
 ```
 
-React: requires `useDialogicState`.
+React: requires [useDialogicState](./packages/dialogic-react/README.md#usedialogicstate).
 
 
 #### `getRemaining`
@@ -945,24 +944,6 @@ All options listed above, plus:
 | -------- | --------- | ------------ | ------------------------------------------------------------------------------------------------- | ----------------- |
 | `isHide` | `boolean` | No           | Only for directed use. A boolean value when to hide the dialog. Can be used together with `deps`. | None              |
 
-
-### `useDialogicState` (React)
-
-React only.
-
-To retrieve the current state in a component, add hook `useDialogicState`:
-
-```tsx
-import { dialog, useDialogicState } from "dialogic-react";
-
-const MyComponent = props => {
-  useDialogicState();
-
-  return (
-    <div>{dialog.getCount()}</div>
-  )
-}
-```
 
 
 ## Shout out

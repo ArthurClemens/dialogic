@@ -12,6 +12,7 @@
     - [With React Router](#with-react-router)
   - [`UseDialog` component](#usedialog-component)
     - [Example](#example)
+  - [`useDialogicState`](#usedialogicstate)
   - [`useRemaining`](#useremaining)
 - [Size](#size)
 
@@ -360,6 +361,22 @@ export const MyDialogRoute = () => {
     </Route>
   )
 };
+```
+
+### `useDialogicState` 
+
+To retrieve the current state in a component, add hook `useDialogicState`:
+
+```tsx
+import { dialog, useDialogicState } from "dialogic-react";
+
+const MyComponent = props => {
+  useDialogicState();
+
+  return (
+    <div>{dialog.getCount()}</div>
+  )
+}
 ```
 
 ### `useRemaining`
