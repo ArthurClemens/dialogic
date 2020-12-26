@@ -259,7 +259,7 @@ const appendStartTimer = (state, callback, duration, updateState) => {
     };
     return {
         timeoutFn,
-        promise: new Promise((resolve, reject) => {
+        promise: new Promise(resolve => {
             state.onDone = () => resolve();
             state.onAbort = () => resolve();
         }),
@@ -776,3 +776,4 @@ const remaining = (props) => {
 };
 
 export { actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, remaining, resetAll, resume, selectors, setDomElement, show, showItem, states };
+//# sourceMappingURL=dialogic.mjs.map

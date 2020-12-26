@@ -110,3 +110,4 @@ const Notification = Dialogical(notification);
 states.map(state => m.redraw());
 
 export { Dialog, Dialogical, Notification, useDialog, useDialogic, useNotification, useRemaining };
+//# sourceMappingURL=dialogic-mithril.mjs.map

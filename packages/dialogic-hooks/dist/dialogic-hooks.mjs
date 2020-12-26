@@ -102,3 +102,4 @@ const sharedUseRemaining = ({ useState, useMemo, }) => (props) => {
 };
 
 export { sharedUseDialog, sharedUseDialogic, sharedUseNotification, sharedUseRemaining };
+//# sourceMappingURL=dialogic-hooks.mjs.map

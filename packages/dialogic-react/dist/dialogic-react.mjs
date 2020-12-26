@@ -115,3 +115,4 @@ const Dialog = Dialogical(dialog);
 const Notification = Dialogical(notification);
 
 export { Dialog, Dialogical, Notification, UseDialog, UseDialogic, UseNotification, useDialog, useDialogic, useDialogicState, useNotification, useRemaining };
+//# sourceMappingURL=dialogic-react.mjs.map
