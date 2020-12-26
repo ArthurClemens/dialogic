@@ -77,11 +77,11 @@ const useDialogicState = () => {
     });
 };
 
-const Dialogical = type => props => {
+const Dialogical = instance => props => {
     useDialogicState();
     const identityOptions = {
-        id: props.id || type.defaultId,
-        spawn: props.spawn || type.defaultSpawn,
+        id: props.id || instance.defaultId,
+        spawn: props.spawn || instance.defaultSpawn,
     };
     // Mount
     useEffect(() => {
@@ -89,7 +89,7 @@ const Dialogical = type => props => {
             props.onMount();
         }
     }, []);
-    return React.createElement(Wrapper, { identityOptions: identityOptions, ns: type.ns });
+    return React.createElement(Wrapper, { identityOptions: identityOptions, ns: instance.ns });
 };
 
 const useDialogic = sharedUseDialogic({ useEffect, useState });

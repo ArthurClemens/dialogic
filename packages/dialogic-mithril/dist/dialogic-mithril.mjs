@@ -77,7 +77,7 @@ const Wrapper = {
     },
 };
 
-const Dialogical = type => ({
+const Dialogical = instance => ({
     oncreate: ({ attrs }) => {
         if (typeof attrs.onMount === 'function') {
             attrs.onMount();
@@ -85,12 +85,12 @@ const Dialogical = type => ({
     },
     view: ({ attrs }) => {
         const identityOptions = {
-            id: attrs.id || type.defaultId,
-            spawn: attrs.spawn || type.defaultSpawn,
+            id: attrs.id || instance.defaultId,
+            spawn: attrs.spawn || instance.defaultSpawn,
         };
         return m(Wrapper, {
             identityOptions,
-            ns: type.ns,
+            ns: instance.ns,
         });
     },
 });
