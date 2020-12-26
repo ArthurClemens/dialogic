@@ -7,9 +7,9 @@
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
     "dev": "npm-run-all --parallel dev:watch dev:serve",
-    "dev:serve": "ENTRY=./src/index.ts ../../node_modules/webpack/bin/webpack.js serve --config ../../scripts/webpack.config.dev.js",
-    "dev:watch": "ENTRY=./src/index.ts ../../node_modules/webpack/bin/webpack.js --watch --config ../../scripts/webpack.config.dev.js",
-    "webpack": "ENTRY=./src/index.ts ../../node_modules/webpack/bin/webpack.js --config ../../scripts/webpack.config.prod.js",
+    "dev:serve": "ENTRY=./src/index.ts ../../node_modules/webpack/bin/webpack.js serve --config ../../scripts/webpack.config.dev.ts",
+    "dev:watch": "ENTRY=./src/index.ts ../../node_modules/webpack/bin/webpack.js --watch --config ../../scripts/webpack.config.dev.ts",
+    "webpack": "ENTRY=./src/index.ts ../../node_modules/webpack/bin/webpack.js --config ../../scripts/webpack.config.prod.ts",
     "build": "npm run clean && npm run webpack",
     "serve": "http-server -c-1 -p 8080 dist",
     "clean": "rm -rf dist/js/*",

@@ -1,12 +1,12 @@
 /* global process */
-const path = require('path');
-const config = require('./webpack.config.js');
+import path from 'path';
+import config from './webpack.config';
 
 const baseDir = process.cwd();
 
 config.mode = 'development';
 
-config.devServer = {
+config['devServer'] = {
   contentBase: path.resolve(baseDir, './dist'),
   publicPath: '/dist',
   compress: true,
@@ -20,4 +20,4 @@ config.watchOptions = {
 
 config.output.publicPath = 'http://localhost:3000/';
 
-module.exports = config;
+export default config;

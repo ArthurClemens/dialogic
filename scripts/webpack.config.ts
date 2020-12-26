@@ -1,12 +1,17 @@
 /* global process */
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const WebpackModules = require('webpack-modules');
+import type { Configuration } from 'webpack';
+
+import path from 'path';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import WebpackModules from 'webpack-modules';
 
 const baseDir = process.cwd();
 const env = process.env; // eslint-disable-line no-undef
+const babelConfigFile = env.BABEL_CONFIG
+  ? path.resolve(baseDir, env.BABEL_CONFIG)
+  : '../../babel.config.js';
 
-module.exports = {
+const config: Configuration = {
   context: path.resolve(baseDir, './src'),
 
   entry: {
@@ -38,7 +43,14 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: [{ loader: 'ts-loader' }],
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              configFile: babelConfigFile,
+            },
+          },
+        ],
       },
       {
         test: /\.m?js$/,
@@ -51,7 +63,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              configFile: '../../babel.config.js',
+              configFile: babelConfigFile,
             },
           },
         ],
@@ -77,3 +89,5 @@ module.exports = {
 
   devtool: 'source-map',
 };
+
+export default config;
