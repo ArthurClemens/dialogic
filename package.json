@@ -2,10 +2,16 @@
   "name": "dialogic-repo",
   "private": true,
   "scripts": {
-    "postinstall": "lerna bootstrap",
+    "postinstall": "lerna bootstrap && npm run install:cypress",
+    "install:cypress": "./node_modules/cypress/bin/cypress install",
     "format": "lerna run prettier --stream --no-bail",
     "build": "lerna run build --stream",
-    "deps": "lerna run npm-check-updates --stream"
+    "deps": "lerna run npm-check-updates --stream",
+    "test": "npm-run-all test:*",
+    "test:dialogic": "cd packages/test-dialogic && npm run test",
+    "test:dialogic-mithril": "cd packages/test-dialogic-mithril && npm run test",
+    "test:dialogic-react": "cd packages/test-dialogic-react && npm run test",
+    "test:dialogic-svelte": "cd packages/test-dialogic-svelte && npm run test"
   },
   "devDependencies": {
     "@babel/cli": "^7.11.6",
