@@ -28,6 +28,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true,
     "source.organizeImports": false
-  },
-  "editor.codeActionsOnSaveTimeout": 1000
+  }
 }

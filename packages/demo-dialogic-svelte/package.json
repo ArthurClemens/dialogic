@@ -7,7 +7,7 @@
   "main": "public/demo-dialogic-svelte",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
-    "build": "ENTRY=src/main.ts MODULE=0 MODULE_NAME=demoDialogicSvelte ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.svelte-app.js",
+    "build": "TYPESCRIPT=1 ENTRY=src/main.ts MODULE=0 MODULE_NAME=demoDialogicSvelte ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.svelte-app.js",
     "autobuild": "npm run build -- -w",
     "dev": "run-p start:dev autobuild",
     "start:dev": "sirv public --dev --port 3000",

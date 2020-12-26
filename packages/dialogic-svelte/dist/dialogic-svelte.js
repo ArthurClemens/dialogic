@@ -762,3 +762,4 @@ class UseDialog extends SvelteComponent {
 }
 
 export { Dialog, Dialogical, Notification, UseDialog, UseDialogic, dialog, notification };
+//# sourceMappingURL=dialogic-svelte.js.map

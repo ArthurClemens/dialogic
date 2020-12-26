@@ -1,16 +1,23 @@
-import config, { filename, dirname } from './rollup.config';
-import svelte from 'rollup-plugin-svelte';
-import postcss from 'rollup-plugin-postcss';
-import path from 'path';
-import autoPreprocess from 'svelte-preprocess';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-
 import {
-  preprocess,
   createEnv,
+  preprocess,
   readConfigFile,
 } from '@pyoner/svelte-ts-preprocess';
+import typescript from '@rollup/plugin-typescript';
+import path from 'path';
+import cleanup from 'rollup-plugin-cleanup';
+import commonjs from 'rollup-plugin-commonjs';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import postcss from 'rollup-plugin-postcss';
+import svelte from 'rollup-plugin-svelte';
+import { terser } from 'rollup-plugin-terser';
+import autoPreprocess from 'svelte-preprocess';
+import config, {
+  dirname,
+  filename,
+  isTypeScript,
+  isModule,
+} from './rollup.config';
 
 const env = createEnv();
 const compilerOptions = readConfigFile(env);
@@ -27,31 +34,31 @@ const production = !process.env.ROLLUP_WATCH;
 const dedupe = importee =>
   importee === 'svelte' || importee.startsWith('svelte/');
 
-config.plugins.unshift(commonjs());
+config.plugins = [
+  isTypeScript && typescript(),
 
-config.plugins.unshift(
-  resolve({
-    browser: true,
-    dedupe,
+  svelte({
+    preprocess: autoPreprocess(),
+    preprocess: preprocess(opts),
   }),
-);
 
-config.plugins.unshift(
   postcss({
     plugins: [],
     extract: path.resolve(`${dirname}/${filename}-imported.css`),
   }),
-);
 
-config.plugins.unshift(
-  svelte({
-    compilerOptions: {
-      // enable run-time checks when not in production
-      dev: !production,
-    },
-    preprocess: autoPreprocess(),
-    preprocess: preprocess(opts),
+  nodeResolve({
+    browser: true,
+    dedupe,
   }),
-);
+
+  commonjs(),
+
+  !isModule && terser(),
+
+  cleanup({
+    comments: 'none',
+  }),
+].filter(Boolean);
 
 export default config;
