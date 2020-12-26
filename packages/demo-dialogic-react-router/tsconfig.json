@@ -2,14 +2,15 @@
   "include": ["src/**/*"],
   "exclude": ["node_modules/*"],
   "compilerOptions": {
-    "target": "ESNEXT",                  
-    "module": "ESNEXT",                  
+    "baseUrl": "src",
+    "target": "ESNEXT",
+    "module": "ESNEXT",
     "strict": true,
     "jsx": "react",
-    "noUnusedLocals": true,              
-    "moduleResolution": "node",          
-    "types": [],                         
+    "noUnusedLocals": true,
+    "moduleResolution": "node",
+    "types": [],
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true              
+    "esModuleInterop": true
   }
 }
