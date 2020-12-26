@@ -22,12 +22,12 @@
   ],
   "dependencies": {
     "dialogic": "^0.11.0",
-    "dialogic-hooks": "^0.11.0",
-    "mithril-hooks": "^0.6.2"
+    "dialogic-hooks": "^0.11.0"
   },
   "peerDependencies": {
     "@types/mithril": "2.0.3",
-    "mithril": "^2.0.4"
+    "mithril": "^2.0.4",
+    "mithril-hooks": "^0.6.2"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.6.0",
