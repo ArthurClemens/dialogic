@@ -31,10 +31,7 @@ export default {
     file,
   },
   plugins: [
-    isTypeScript &&
-      typescript({
-        tsconfigOverride: override,
-      }),
+    isTypeScript && typescript(),
 
     !isModule && terser(),
     cleanup({
