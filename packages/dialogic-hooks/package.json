@@ -4,7 +4,6 @@
   "description": "Dialogic hooks",
   "main": "dist/dialogic-hooks",
   "module": "dist/dialogic-hooks.mjs",
-  "type": "module",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
     "clean": "rm -rf dist/*",
@@ -21,12 +20,12 @@
     }
   ],
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^4.6.0",
-    "@types/react": "^16.9.49",
-    "@types/react-dom": "^16.9.8",
-    "@types/react-router-dom": "^5.1.5",
+    "@size-limit/preset-small-lib": "^4.9.1",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-router-dom": "^5.1.6",
     "dialogic": "^0.11.0",
-    "size-limit": "^4.6.0"
+    "size-limit": "^4.9.1"
   },
   "files": [
     "dist",

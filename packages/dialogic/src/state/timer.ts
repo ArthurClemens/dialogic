@@ -28,7 +28,7 @@ const appendStartTimer = (
   };
   return {
     timeoutFn,
-    promise: new Promise((resolve, reject) => {
+    promise: new Promise<void>(resolve => {
       state.onDone = () => resolve();
       state.onAbort = () => resolve();
     }),

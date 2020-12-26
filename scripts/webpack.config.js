@@ -44,6 +44,9 @@ module.exports = {
         test: /\.m?js$/,
         exclude: /node_modules/,
         type: 'javascript/auto',
+        resolve: {
+          fullySpecified: false,
+        },
         use: [
           {
             loader: 'babel-loader',
@@ -58,10 +61,6 @@ module.exports = {
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: {
-              sourceMap: true,
-              localIdentName: '[local]',
-            },
           },
           'css-loader',
         ],

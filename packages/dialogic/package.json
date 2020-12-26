@@ -4,7 +4,6 @@
   "description": "Logic for dialogs and notifications",
   "main": "dist/dialogic",
   "module": "dist/dialogic.mjs",
-  "type": "module",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
     "clean": "rm -rf dist/*",
@@ -24,10 +23,10 @@
     "mithril": "^2.0.4"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^4.6.0",
-    "@types/mithril": "2.0.3",
-    "size-limit": "^4.6.0",
-    "tslib": "^2.0.1"
+    "@size-limit/preset-small-lib": "^4.9.1",
+    "@types/mithril": "2.0.6",
+    "size-limit": "^4.9.1",
+    "tslib": "^2.0.3"
   },
   "files": [
     "dist",

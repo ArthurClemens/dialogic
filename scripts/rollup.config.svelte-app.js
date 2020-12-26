@@ -6,7 +6,7 @@ import {
 import typescript from '@rollup/plugin-typescript';
 import path from 'path';
 import cleanup from 'rollup-plugin-cleanup';
-import commonjs from 'rollup-plugin-commonjs';
+import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import postcss from 'rollup-plugin-postcss';
 import svelte from 'rollup-plugin-svelte';
