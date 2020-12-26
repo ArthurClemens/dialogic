@@ -6,7 +6,7 @@ type DialogicalFn = (
   type: Dialogic.DialogicInstance,
 ) => Component<Dialogic.ComponentOptions>;
 
-export const Dialogical: DialogicalFn = type => ({
+export const Dialogical: DialogicalFn = instance => ({
   oncreate: ({ attrs }) => {
     if (typeof attrs.onMount === 'function') {
       attrs.onMount();
@@ -14,12 +14,12 @@ export const Dialogical: DialogicalFn = type => ({
   },
   view: ({ attrs }) => {
     const identityOptions = {
-      id: attrs.id || type.defaultId,
-      spawn: attrs.spawn || type.defaultSpawn,
+      id: attrs.id || instance.defaultId,
+      spawn: attrs.spawn || instance.defaultSpawn,
     };
     return m(Wrapper, {
       identityOptions,
-      ns: type.ns,
+      ns: instance.ns,
     });
   },
 });

@@ -7,12 +7,12 @@ type DialogicalFn = (
   type: Dialogic.DialogicInstance,
 ) => FunctionComponent<Dialogic.ComponentOptions>;
 
-export const Dialogical: DialogicalFn = type => props => {
+export const Dialogical: DialogicalFn = instance => props => {
   useDialogicState();
 
   const identityOptions = {
-    id: props.id || type.defaultId,
-    spawn: props.spawn || type.defaultSpawn,
+    id: props.id || instance.defaultId,
+    spawn: props.spawn || instance.defaultSpawn,
   };
 
   // Mount
@@ -22,5 +22,5 @@ export const Dialogical: DialogicalFn = type => props => {
     }
   }, []);
 
-  return <Wrapper identityOptions={identityOptions} ns={type.ns} />;
+  return <Wrapper identityOptions={identityOptions} ns={instance.ns} />;
 };
