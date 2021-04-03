@@ -287,7 +287,7 @@ const appendPauseTimer = (state) => {
     return {
         ...appendStopTimeout(state),
         isPaused: true,
-        remaining: getRemaining(state),
+        remaining: getRemaining$1(state),
     };
 };
 const appendResumeTimer = (state, minimumDuration) => {
@@ -302,7 +302,7 @@ const appendResumeTimer = (state, minimumDuration) => {
         timerId: window.setTimeout(state.timeoutFn, remaining),
     };
 };
-const getRemaining = (state) => state.remaining === 0 || state.remaining === undefined
+const getRemaining$1 = (state) => state.remaining === 0 || state.remaining === undefined
     ? state.remaining
     : state.remaining - (new Date().getTime() - (state.startTime || 0));
 const Timer = () => {
@@ -376,7 +376,7 @@ const Timer = () => {
                 },
                 getRemaining: () => {
                     const state = states();
-                    return state.isPaused ? state.remaining : getRemaining(state);
+                    return state.isPaused ? state.remaining : getRemaining$1(state);
                 },
                 getResultPromise: () => {
                     const state = states();
@@ -591,7 +591,7 @@ const getTimerProperty = (timerProp, defaultValue) => (ns) => (defaultDialogicOp
     }
 };
 const isPaused = getTimerProperty('isPaused', false);
-const getRemaining$1 = getTimerProperty('getRemaining', undefined);
+const getRemaining = getTimerProperty('getRemaining', undefined);
 const exists = (ns) => (defaultDialogicOptions) => (identityOptions) => !!getValidItems(ns, identityOptions).length;
 const getValidItems = (ns, identityOptions) => {
     const allItems = selectors.getAll(ns);
@@ -729,7 +729,7 @@ const dialogical = ({ ns, queued, timeout, }) => {
         getCount: getCount(ns),
         // Timer state
         isPaused: isPaused(ns)(defaultDialogicOptions),
-        getRemaining: getRemaining$1(ns)(defaultDialogicOptions),
+        getRemaining: getRemaining(ns)(defaultDialogicOptions),
     };
 };
 
@@ -775,5 +775,5 @@ const remaining = (props) => {
     reqId = window.requestAnimationFrame(update);
 };
 
-export { actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining$1 as getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, remaining, resetAll, resume, selectors, setDomElement, show, showItem, states };
+export { actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, remaining, resetAll, resume, selectors, setDomElement, show, showItem, states };
 //# sourceMappingURL=dialogic.mjs.map

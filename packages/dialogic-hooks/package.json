@@ -20,12 +20,12 @@
     }
   ],
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^4.9.1",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@types/react-router-dom": "^5.1.6",
+    "@size-limit/preset-small-lib": "^4.10.2",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "@types/react-router-dom": "^5.1.7",
     "dialogic": "^0.11.0",
-    "size-limit": "^4.9.1"
+    "size-limit": "^4.10.2"
   },
   "files": [
     "dist",

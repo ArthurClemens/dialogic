@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "compression": "^1.7.4",
-    "polka": "next",
+    "express": "^4.17.1",
     "sirv": "^1.0.10"
   },
   "devDependencies": {
@@ -35,7 +35,7 @@
     "@tsconfig/svelte": "^1.0.10",
     "@types/compression": "^1.7.0",
     "@types/node": "^14.11.1",
-    "@types/polka": "^0.5.1",
+    "@types/express": "^4.17.11",
     "svelte-check": "^1.0.46",
     "svelte-preprocess": "^4.3.0",
     "tslib": "^2.0.1",
