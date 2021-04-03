@@ -1,10 +1,7 @@
-<script context="module">
-  let useDialogicCounter = 0;
-  const useEffect = subscribe => ({ subscribe });
-</script>
-
 <script>
   import { onMount } from 'svelte';
+  let useDialogicCounter = 0;
+  const useEffect = subscribe => ({ subscribe });
 
   const id = useDialogicCounter++;
 

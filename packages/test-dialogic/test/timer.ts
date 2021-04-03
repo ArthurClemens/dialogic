@@ -69,7 +69,7 @@ test.serial('pause and resume, with isPaused and minimumDuration', t => {
     t.is(notification.exists(identityOptions), true);
 
     return showItem(item).then(() => {
-      let remaining1;
+      let remaining1: number;
 
       return new Promise(resolve => {
         setTimeout(() => {

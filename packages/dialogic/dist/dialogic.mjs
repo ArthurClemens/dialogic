@@ -96,7 +96,7 @@ const transition = (props, mode) => {
                 // addEventListener sometimes hangs this function because it never finishes
                 // Using setTimeout instead of addEventListener gives more consistent results
                 const duration = getDuration(domElement);
-                props.__transitionTimeoutId__ = setTimeout(resolve, duration);
+                props.__transitionTimeoutId__ = window.setTimeout(resolve, duration);
             }
         }, 0);
     });

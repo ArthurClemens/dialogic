@@ -12,6 +12,7 @@ const format = isModule ? 'es' : 'umd';
 const file = isModule
   ? `${process.env.DEST || pkg.module}`
   : `${process.env.DEST || pkg.main}.js`;
+const target = isModule ? 'ESNEXT' : 'es2015';
 const ext = path.extname(file);
 const filename = path.basename(file, ext);
 const dirname = path.dirname(file, ext);
@@ -28,7 +29,10 @@ export default {
     sourcemap: true,
   },
   plugins: [
-    isTypeScript && typescript(),
+    isTypeScript &&
+      typescript({
+        target,
+      }),
 
     !isModule && terser(),
 
