@@ -35,6 +35,11 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': ERROR,
+
+    // note you must disable the base rule as it can report incorrect errors
+    'no-shadow': OFF,
+    '@typescript-eslint/no-shadow': [ERROR],
+
     // ESLint rules
     'no-underscore-dangle': OFF,
     'arrow-parens': [ERROR, 'as-needed'],
