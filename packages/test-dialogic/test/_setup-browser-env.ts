@@ -1,2 +1,3 @@
-import * as browserEnv from 'browser-env';
+import browserEnv from '@ikscodes/browser-env';
+
 browserEnv();
