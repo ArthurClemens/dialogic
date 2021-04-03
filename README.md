@@ -498,7 +498,7 @@ dialog.hideAll({
 **Signature**
 
 ```typescript
-hideAll: (dialogicOptions?: DialogicOptions<unknown>) => Promise<Item<unknown>[]>;
+hideAll: (dialogicOptions?: DialogicOptions<unknown>) => Promise<Item<T>[]>;
 ```
 
 
@@ -683,7 +683,7 @@ notification.pause({
 **Signature**
 
 ```typescript
-pause: (identityOptions?: IdentityOptions) => Promise<Item<unknown>[]>;
+pause: (identityOptions?: IdentityOptions) => Promise<Item<T>[]>;
 ```
 
 
@@ -717,7 +717,7 @@ notification.resume({
 **Signature**
 
 ```typescript
-resume: (commandOptions?: CommandOptions) => Promise<Item<unknown>[]>;
+resume: (commandOptions?: CommandOptions) => Promise<Item<T>[]>;
 
 type CommandOptions = IdentityOptions & TimerResumeOptions;
 
