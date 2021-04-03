@@ -1,7 +1,8 @@
 import { dialog, showItem, hideItem } from 'dialogic';
 import test from 'ava';
 
-const getDefaultItemId = name => `${name}-default_${name}-default_${name}`;
+const getDefaultItemId = (name: string) =>
+  `${name}-default_${name}-default_${name}`;
 
 const defaultItemId = getDefaultItemId('dialog');
 

@@ -136,7 +136,7 @@ test.serial('notification stop: should stop the timer', t => {
     t.is(notification.exists(identityOptions), true);
 
     return showItem(item).then(() => {
-      item.timer.actions.stop();
+      item.timer?.actions.stop();
       const remaining = notification.getRemaining(identityOptions);
       t.is(remaining === undefined, true);
 
