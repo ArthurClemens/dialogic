@@ -10,7 +10,7 @@ import {
   getRemaining,
   exists,
 } from './dialogic';
-import { Dialogic } from '../index';
+import { Dialogic } from './index';
 
 export const dialogical = ({
   ns,

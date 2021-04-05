@@ -7,7 +7,9 @@
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
     "clean": "rm -rf dist/*",
-    "build": "npm run clean && npm run build:module && npm run build:umd",
+    "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
+    "build:clean": "rm -rf dist/*",
+    "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json",
     "build:module": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=1 MODULE_NAME=dialogic ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js",
     "build:umd": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=0 MODULE_NAME=dialogic ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js",
     "build:lint": "eslint --fix --ext .d.ts ./dist",
@@ -25,15 +27,15 @@
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.10.2",
-    "@types/mithril": "2.0.7",
+    "@types/mithril": "^2.0.7",
     "size-limit": "^4.10.2",
     "tslib": "^2.1.0"
   },
   "files": [
     "dist",
-    "index.d.ts",
     "README.md"
   ],
+  "types": "dist",
   "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
   "homepage": "https://github.com/ArthurClemens/dialogic",
   "license": "MIT"

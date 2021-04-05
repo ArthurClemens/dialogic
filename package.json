@@ -34,6 +34,8 @@
     "@rollup/plugin-commonjs": "18.0.0",
     "@rollup/plugin-node-resolve": "11.2.1",
     "@rollup/plugin-typescript": "8.2.1",
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-loader": "8.2.2",
     "compression-webpack-plugin": "7.1.2",

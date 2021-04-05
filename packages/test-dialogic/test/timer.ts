@@ -69,7 +69,7 @@ test.serial('pause and resume, with isPaused and minimumDuration', t => {
     t.is(notification.exists(identityOptions), true);
 
     return showItem(item).then(() => {
-      let remaining1: number;
+      let remaining1: number | undefined;
 
       return new Promise(resolve => {
         setTimeout(() => {
@@ -78,8 +78,10 @@ test.serial('pause and resume, with isPaused and minimumDuration', t => {
 
           remaining1 = notification.getRemaining(identityOptions);
           // t.log(`remaining1: ${remaining1}`);
-          t.is(remaining1 <= timeout, true);
-          t.is(remaining1 > 0, true);
+          if (remaining1 !== undefined) {
+            t.is(remaining1 <= timeout, true);
+            t.is(remaining1 > 0, true);
+          }
           notification.resume(identityOptions);
           t.is(notification.isPaused(identityOptions), false);
 
@@ -87,9 +89,13 @@ test.serial('pause and resume, with isPaused and minimumDuration', t => {
             notification.pause(identityOptions);
             const remaining2 = notification.getRemaining(identityOptions);
             // t.log(`remaining2: ${remaining2}`);
-            t.is(remaining2 <= timeout, true);
-            t.is(remaining2 > 0, true);
-            t.is(remaining2 < remaining1, true);
+            if (remaining2 !== undefined) {
+              t.is(remaining2 <= timeout, true);
+              t.is(remaining2 > 0, true);
+              if (remaining1 !== undefined) {
+                t.is(remaining2 < remaining1, true);
+              }
+            }
 
             notification.resume({
               ...identityOptions,
@@ -98,9 +104,13 @@ test.serial('pause and resume, with isPaused and minimumDuration', t => {
             notification.pause(identityOptions);
             const remaining3 = notification.getRemaining(identityOptions);
             // t.log(`remaining3: ${remaining3}`);
-            t.is(remaining3 <= timeout, true);
-            t.is(remaining3 > 0, true);
-            t.is(remaining3 > remaining2, true);
+            if (remaining3 !== undefined) {
+              t.is(remaining3 <= timeout, true);
+              t.is(remaining3 > 0, true);
+              if (remaining2 !== undefined) {
+                t.is(remaining3 > remaining2, true);
+              }
+            }
 
             notification.resume(identityOptions);
             t.is(notification.isPaused(identityOptions), false);

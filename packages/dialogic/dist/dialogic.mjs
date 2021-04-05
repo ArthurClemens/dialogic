@@ -106,12 +106,11 @@ const styleDurationToMs = (durationStr) => {
     return isNaN(parsed) ? 0 : parsed;
 };
 
-const findItem = (id, items) => {
-    return items.find(item => item.id === id);
-};
+/* eslint-disable no-param-reassign */
+const findItem = (id, items) => items.find(item => item.id === id);
 const itemIndex = (id, items) => {
     const item = findItem(id, items);
-    return items.indexOf(item);
+    return item ? items.indexOf(item) : -1;
 };
 const removeItem = (id, items) => {
     const index = itemIndex(id, items);
@@ -125,76 +124,72 @@ const store = {
     initialState: {
         store: {},
     },
-    actions: (update) => {
-        return {
-            /**
-             * Add an item to the end of the list.
-             */
-            add: (ns, item) => {
-                update((state) => {
-                    const items = state.store[ns] || [];
-                    state.store[ns] = [...items, item];
-                    if (item.timer) {
-                        // When the timer state updates, refresh the store so that UI can pick up the change
-                        item.timer.states.map(() => store.actions(update).refresh());
+    actions: (update) => ({
+        /**
+         * Add an item to the end of the list.
+         */
+        add: (ns, item) => {
+            update((state) => {
+                const items = (state.store[ns] || []);
+                state.store[ns] = [...items, item];
+                if (item.timer) {
+                    // When the timer state updates, refresh the store so that UI can pick up the change
+                    item.timer.states.map(() => store.actions(update).refresh());
+                }
+                return state;
+            });
+        },
+        /**
+         * Removes the first item with a match on `id`.
+         */
+        remove: (ns, id) => {
+            update((state) => {
+                const items = state.store[ns] || [];
+                const remaining = removeItem(id, items);
+                state.store[ns] = remaining;
+                return state;
+            });
+        },
+        /**
+         * Replaces the first item with a match on `id` with a newItem.
+         */
+        replace: (ns, id, newItem) => {
+            update((state) => {
+                const items = (state.store[ns] || []);
+                if (items) {
+                    const index = itemIndex(id, items);
+                    if (index !== -1) {
+                        items[index] = newItem;
+                        state.store[ns] = [...items];
                     }
-                    return state;
-                });
-            },
-            /**
-             * Removes the first item with a match on `id`.
-             */
-            remove: (ns, id) => {
-                update((state) => {
-                    const items = state.store[ns] || [];
-                    const remaining = removeItem(id, items);
-                    state.store[ns] = remaining;
-                    return state;
-                });
-            },
-            /**
-             * Replaces the first item with a match on `id` with a newItem.
-             */
-            replace: (ns, id, newItem) => {
-                update((state) => {
-                    const items = state.store[ns] || [];
-                    if (items) {
-                        const index = itemIndex(id, items);
-                        if (index !== -1) {
-                            items[index] = newItem;
-                            state.store[ns] = [...items];
-                        }
-                    }
-                    return state;
-                });
-            },
-            /**
-             * Removes all items within a namespace.
-             */
-            removeAll: (ns) => {
-                update((state) => {
-                    state.store[ns] = [];
-                    return state;
-                });
-            },
-            /**
-             * Replaces all items within a namespace.
-             */
-            store: (ns, newItems) => {
-                update((state) => {
-                    state.store[ns] = [...newItems];
-                    return state;
-                });
-            },
-            refresh: () => {
-                update((state) => {
-                    return {
-                        ...state,
-                    };
-                });
-            },
-        };
-    },
+                }
+                return state;
+            });
+        },
+        /**
+         * Removes all items within a namespace.
+         */
+        removeAll: (ns) => {
+            update((state) => {
+                state.store[ns] = [];
+                return state;
+            });
+        },
+        /**
+         * Replaces all items within a namespace.
+         */
+        store: (ns, newItems) => {
+            update((state) => {
+                state.store[ns] = [...newItems];
+                return state;
+            });
+        },
+        refresh: () => {
+            update((state) => ({
+                ...state,
+            }));
+        },
+    }),
     selectors: (states) => {
         const fns = {
             getStore: () => {
@@ -205,16 +200,16 @@ const store = {
                 const state = states();
                 const items = state.store[ns] || [];
                 const id = createId(identityOptions, ns);
-                const item = items.find((item) => item.id === id);
+                const item = items.find(fitem => fitem.id === id);
                 return item ? { just: item } : { nothing: undefined };
             },
             getAll: (ns, identityOptions) => {
                 const state = states();
-                const items = state.store[ns] || [];
+                const items = (state.store[ns] || []);
                 const spawn = identityOptions !== undefined ? identityOptions.spawn : undefined;
                 const id = identityOptions !== undefined ? identityOptions.id : undefined;
                 const itemsBySpawn = spawn !== undefined
-                    ? items.filter(item => item.identityOptions.spawn === spawn)
+                    ? items.filter(fitem => fitem.identityOptions.spawn === spawn)
                     : items;
                 const itemsById = id !== undefined
                     ? itemsBySpawn.filter(item => item.identityOptions.id === id)
@@ -240,6 +235,7 @@ const selectors = {
 //   console.log(JSON.stringify(state, null, 2))
 // );
 
+/* eslint-disable no-param-reassign */
 const initialState = {
     callback: () => { },
     isPaused: false,
@@ -278,18 +274,14 @@ const appendStopTimeout = (state) => {
         timerId: initialState.timerId,
     };
 };
-const appendStopTimer = (state) => {
-    return {
-        ...appendStopTimeout(state),
-    };
-};
-const appendPauseTimer = (state) => {
-    return {
-        ...appendStopTimeout(state),
-        isPaused: true,
-        remaining: getRemaining$1(state),
-    };
-};
+const appendStopTimer = (state) => ({
+    ...appendStopTimeout(state),
+});
+const appendPauseTimer = (state) => ({
+    ...appendStopTimeout(state),
+    isPaused: true,
+    remaining: getRemaining$1(state),
+});
 const appendResumeTimer = (state, minimumDuration) => {
     window.clearTimeout(state.timerId);
     const remaining = minimumDuration
@@ -308,82 +300,66 @@ const getRemaining$1 = (state) => state.remaining === 0 || state.remaining === u
 const Timer = () => {
     const timer = {
         initialState,
-        actions: (update) => {
-            return {
-                start: (callback, duration) => {
-                    update((state) => {
-                        return {
-                            ...state,
-                            ...appendStopTimeout(state),
-                            ...appendStartTimer(state, callback, duration, () => timer.actions(update).done()),
-                            ...(state.isPaused && appendPauseTimer(state)),
-                        };
-                    });
-                },
-                stop: () => {
-                    update((state) => {
-                        return {
-                            ...state,
-                            ...appendStopTimer(state),
-                            ...initialState,
-                        };
-                    });
-                },
-                pause: () => {
-                    update((state) => {
-                        return {
-                            ...state,
-                            ...(!state.isPaused && appendPauseTimer(state)),
-                        };
-                    });
-                },
-                resume: (minimumDuration) => {
-                    update((state) => {
-                        return {
-                            ...state,
-                            ...(state.isPaused && appendResumeTimer(state, minimumDuration)),
-                        };
-                    });
-                },
-                abort: () => {
-                    update((state) => {
-                        state.onAbort();
-                        return {
-                            ...state,
-                            ...appendStopTimeout(state),
-                        };
-                    });
-                },
-                done: () => {
-                    update((state) => {
-                        return initialState;
-                    });
-                },
-                refresh: () => {
-                    update((state) => {
-                        return {
-                            ...state,
-                        };
-                    });
-                },
-            };
-        },
-        selectors: (states) => {
-            return {
-                isPaused: () => {
-                    const state = states();
-                    return state.isPaused;
-                },
-                getRemaining: () => {
-                    const state = states();
-                    return state.isPaused ? state.remaining : getRemaining$1(state);
-                },
-                getResultPromise: () => {
-                    const state = states();
-                    return state.promise;
-                },
-            };
-        },
+        actions: (update) => ({
+            start: (callback, duration) => {
+                update((state) => ({
+                    ...state,
+                    ...appendStopTimeout(state),
+                    ...appendStartTimer(state, callback, duration, () => timer.actions(update).done()),
+                    ...(state.isPaused && appendPauseTimer(state)),
+                }));
+            },
+            stop: () => {
+                update((state) => ({
+                    ...state,
+                    ...appendStopTimer(state),
+                    ...initialState,
+                }));
+            },
+            pause: () => {
+                update((state) => ({
+                    ...state,
+                    ...(!state.isPaused && appendPauseTimer(state)),
+                }));
+            },
+            resume: (minimumDuration) => {
+                update((state) => ({
+                    ...state,
+                    ...(state.isPaused && appendResumeTimer(state, minimumDuration)),
+                }));
+            },
+            abort: () => {
+                update((state) => {
+                    state.onAbort();
+                    return {
+                        ...state,
+                        ...appendStopTimeout(state),
+                    };
+                });
+            },
+            done: () => {
+                update(() => initialState);
+            },
+            refresh: () => {
+                update((state) => ({
+                    ...state,
+                }));
+            },
+        }),
+        selectors: (states) => ({
+            isPaused: () => {
+                const state = states();
+                return state.isPaused;
+            },
+            getRemaining: () => {
+                const state = states();
+                return state.isPaused ? state.remaining : getRemaining$1(state);
+            },
+            getResultPromise: () => {
+                const state = states();
+                return state.promise;
+            },
+        }),
     };
     const update = Stream();
     const states = Stream.scan((state, patch) => patch(state), {
@@ -407,11 +383,12 @@ const Timer = () => {
 
 let uid = 0;
 const getUid = () => (uid === Number.MAX_VALUE ? 0 : uid++);
-const transitionStates = {
-    default: 0,
-    displaying: 1,
-    hiding: 2,
-};
+var TransitionStates;
+(function (TransitionStates) {
+    TransitionStates[TransitionStates["Default"] = 0] = "Default";
+    TransitionStates[TransitionStates["Displaying"] = 1] = "Displaying";
+    TransitionStates[TransitionStates["Hiding"] = 2] = "Hiding";
+})(TransitionStates || (TransitionStates = {}));
 const getMaybeItem = (ns) => (defaultDialogicOptions) => (identityOptions) => selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
 const filterBySpawn = (identityOptions) => (items) => identityOptions.spawn !== undefined
     ? items.filter(item => item.identityOptions.spawn === identityOptions.spawn)
@@ -507,15 +484,15 @@ const createInstance = (ns) => (defaultDialogicOptions) => (options = {}) => {
             id: createId(identityOptions, ns),
             timer: dialogicOptions.timeout ? Timer() : undefined,
             key: getUid().toString(),
-            transitionState: transitionStates.default,
+            transitionState: TransitionStates.Default,
         };
         const maybeExistingItem = selectors.find(ns, identityOptions);
-        if (maybeExistingItem.just && dialogicOptions.toggle) {
-            const hideResult = hide(ns)(defaultDialogicOptions)(options);
-            return resolve(hideResult);
+        const existingItem = maybeExistingItem.just;
+        if (existingItem && dialogicOptions.toggle) {
+            hide(ns)(defaultDialogicOptions)(options);
+            return resolve(existingItem);
         }
-        if (maybeExistingItem.just && !dialogicOptions.queued) {
-            const existingItem = maybeExistingItem.just;
+        if (existingItem && !dialogicOptions.queued) {
             // Preserve dialogicOptions
             const dialogicOptions = existingItem.dialogicOptions;
             const replacingItem = {
@@ -538,8 +515,8 @@ const show = createInstance;
 const hide = (ns) => (defaultDialogicOptions) => (options) => {
     const { identityOptions, dialogicOptions, passThroughOptions, } = handleOptions(defaultDialogicOptions, options);
     const maybeExistingItem = selectors.find(ns, identityOptions);
-    if (maybeExistingItem.just) {
-        const existingItem = maybeExistingItem.just;
+    const existingItem = maybeExistingItem.just;
+    if (existingItem) {
         const item = {
             ...existingItem,
             dialogicOptions: {
@@ -552,19 +529,26 @@ const hide = (ns) => (defaultDialogicOptions) => (options) => {
             },
         };
         actions.replace(ns, existingItem.id, item);
-        if (item.transitionState !== transitionStates.hiding) {
+        if (item.transitionState !== TransitionStates.Hiding) {
             return hideItem(item);
         }
         else {
             return Promise.resolve(item);
         }
     }
-    return Promise.resolve();
+    return Promise.resolve({
+        ns,
+        id: identityOptions.id,
+    });
 };
 const pause = (ns) => (defaultDialogicOptions) => (identityOptions) => {
-    const items = getValidItems(ns, identityOptions).filter(item => !!item.timer);
-    items.forEach((item) => item.timer && item.timer.actions.pause());
-    return Promise.all(items);
+    const validItems = getValidItems(ns, identityOptions).filter(item => !!item.timer);
+    validItems.forEach((item) => {
+        if (item.timer) {
+            item.timer.actions.pause();
+        }
+    });
+    return Promise.all(validItems);
 };
 const resume = (ns) => (defaultDialogicOptions) => (commandOptions) => {
     const options = commandOptions || {};
@@ -572,9 +556,13 @@ const resume = (ns) => (defaultDialogicOptions) => (commandOptions) => {
         id: options.id,
         spawn: options.spawn,
     };
-    const items = getValidItems(ns, identityOptions).filter(item => !!item.timer);
-    items.forEach((item) => item.timer && item.timer.actions.resume(options.minimumDuration));
-    return Promise.all(items);
+    const validItems = getValidItems(ns, identityOptions).filter(item => !!item.timer);
+    validItems.forEach((item) => {
+        if (item.timer) {
+            item.timer.actions.resume(options.minimumDuration);
+        }
+    });
+    return Promise.all(validItems);
 };
 const getTimerProperty = (timerProp, defaultValue) => (ns) => (defaultDialogicOptions) => (identityOptions) => {
     const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
@@ -590,8 +578,13 @@ const getTimerProperty = (timerProp, defaultValue) => (ns) => (defaultDialogicOp
         return defaultValue;
     }
 };
-const isPaused = getTimerProperty('isPaused', false);
-const getRemaining = getTimerProperty('getRemaining', undefined);
+const getTimerSelectors = (ns, defaultDialogicOptions, identityOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
+    return maybeItem?.just?.timer?.selectors;
+};
+const isPaused = (ns) => (defaultDialogicOptions) => (identityOptions) => getTimerSelectors(ns, defaultDialogicOptions, identityOptions)?.isPaused() ||
+    false;
+const getRemaining = (ns) => (defaultDialogicOptions) => (identityOptions) => getTimerSelectors(ns, defaultDialogicOptions, identityOptions)?.getRemaining() || undefined;
 const exists = (ns) => (defaultDialogicOptions) => (identityOptions) => !!getValidItems(ns, identityOptions).length;
 const getValidItems = (ns, identityOptions) => {
     const allItems = selectors.getAll(ns);
@@ -604,11 +597,15 @@ const getValidItems = (ns, identityOptions) => {
     }
     return validItems;
 };
-const resetAll = (ns) => (defaultDialogicOptions) => (identityOptions) => {
+const resetAll = (ns) => (
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+defaultDialogicOptions) => (identityOptions) => {
     const validItems = getValidItems(ns, identityOptions);
     const items = [];
     validItems.forEach((item) => {
-        item.timer && item.timer.actions.abort();
+        if (item.timer) {
+            item.timer.actions.abort();
+        }
         items.push(item);
     });
     if (identityOptions) {
@@ -635,7 +632,9 @@ const getOverridingTransitionOptions = (item, dialogicOptions) => {
  * Queued items: will trigger `hideItem` only for the first item, then reset the store.
  * Optional `dialogicOptions` may be passed with specific transition options. This comes in handy when all items should hide in the same way.
  */
-const hideAll = (ns) => (defaultDialogicOptions) => (dialogicOptions) => {
+const hideAll = (ns) => (
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+defaultDialogicOptions) => (dialogicOptions) => {
     const options = dialogicOptions || {};
     const identityOptions = {
         id: options.id,
@@ -665,8 +664,8 @@ const showItem = async function (item) {
     if (item.callbacks.willShow) {
         item.callbacks.willShow(item);
     }
-    if (item.transitionState !== transitionStates.displaying) {
-        item.transitionState = transitionStates.displaying;
+    if (item.transitionState !== TransitionStates.Displaying) {
+        item.transitionState = TransitionStates.Displaying;
         await transitionItem(item, MODE.SHOW);
     }
     if (item.callbacks.didShow) {
@@ -677,8 +676,12 @@ const showItem = async function (item) {
     }
     return Promise.resolve(item);
 };
-const hideItem = async function (item) {
-    item.transitionState = transitionStates.hiding;
+/**
+ * Hides an item. Any timer will be stopped. Any callbacks will be called.
+ * @returns A Promise with (a copy of) the data of the removed item.
+ */
+const hideItem = async (item) => {
+    item.transitionState = TransitionStates.Hiding;
     // Stop any running timer
     if (item.timer) {
         item.timer.actions.stop();
@@ -746,7 +749,7 @@ const notification = dialogical({
  * (which is utilized when setting `timeout`).
  */
 const remaining = (props) => {
-    let displayValue = undefined;
+    let displayValue;
     let reqId;
     let isCanceled = false;
     const identity = {
@@ -754,14 +757,14 @@ const remaining = (props) => {
         spawn: props.spawn,
     };
     const update = () => {
-        const remaining = props.instance.getRemaining(identity);
-        if (displayValue !== remaining) {
+        const remainingValue = props.instance.getRemaining(identity);
+        if (displayValue !== remainingValue) {
             displayValue =
-                remaining === undefined
-                    ? remaining
+                remainingValue === undefined
+                    ? remainingValue
                     : props.roundToSeconds
-                        ? Math.round(Math.max(remaining, 0) / 1000)
-                        : Math.max(remaining, 0);
+                        ? Math.round(Math.max(remainingValue, 0) / 1000)
+                        : Math.max(remainingValue, 0);
         }
         props.callback(displayValue);
         if (!props.instance.exists(identity)) {
@@ -775,5 +778,9 @@ const remaining = (props) => {
     reqId = window.requestAnimationFrame(update);
 };
 
-export { actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, remaining, resetAll, resume, selectors, setDomElement, show, showItem, states };
+var types = /*#__PURE__*/Object.freeze({
+    __proto__: null
+});
+
+export { types as Dialogic, actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, remaining, resetAll, resume, selectors, setDomElement, show, showItem, states };
 //# sourceMappingURL=dialogic.mjs.map

@@ -1,5 +1,8 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import Stream from 'mithril/stream';
-import { Dialogic } from '../..';
+
+import { Dialogic } from '../index';
 
 type PatchFn = (state: Dialogic.TimerState) => Dialogic.TimerState;
 
@@ -19,7 +22,7 @@ const appendStartTimer = (
   state: Dialogic.TimerState,
   callback: Dialogic.TimerCallback,
   duration: number,
-  updateState: () => any,
+  updateState: () => unknown,
 ) => {
   const timeoutFn = () => {
     callback();
@@ -49,19 +52,15 @@ const appendStopTimeout = (state: Dialogic.TimerState) => {
   };
 };
 
-const appendStopTimer = (state: Dialogic.TimerState) => {
-  return {
-    ...appendStopTimeout(state),
-  };
-};
+const appendStopTimer = (state: Dialogic.TimerState) => ({
+  ...appendStopTimeout(state),
+});
 
-const appendPauseTimer = (state: Dialogic.TimerState) => {
-  return {
-    ...appendStopTimeout(state),
-    isPaused: true,
-    remaining: getRemaining(state),
-  };
-};
+const appendPauseTimer = (state: Dialogic.TimerState) => ({
+  ...appendStopTimeout(state),
+  isPaused: true,
+  remaining: getRemaining(state),
+});
 
 const appendResumeTimer = (
   state: Dialogic.TimerState,
@@ -87,93 +86,77 @@ const getRemaining = (state: Dialogic.TimerState) =>
 export const Timer = () => {
   const timer = {
     initialState,
-    actions: (update: Stream<PatchFn>) => {
-      return {
-        start: (callback: Dialogic.TimerCallback, duration: number) => {
-          update((state: Dialogic.TimerState) => {
-            return {
-              ...state,
-              ...appendStopTimeout(state),
-              ...appendStartTimer(state, callback, duration, () =>
-                timer.actions(update).done(),
-              ),
-              ...(state.isPaused && appendPauseTimer(state)),
-            };
-          });
-        },
+    actions: (update: Stream<PatchFn>) => ({
+      start: (callback: Dialogic.TimerCallback, duration: number) => {
+        update((state: Dialogic.TimerState) => ({
+          ...state,
+          ...appendStopTimeout(state),
+          ...appendStartTimer(state, callback, duration, () =>
+            timer.actions(update).done(),
+          ),
+          ...(state.isPaused && appendPauseTimer(state)),
+        }));
+      },
 
-        stop: () => {
-          update((state: Dialogic.TimerState) => {
-            return {
-              ...state,
-              ...appendStopTimer(state),
-              ...initialState,
-            };
-          });
-        },
+      stop: () => {
+        update((state: Dialogic.TimerState) => ({
+          ...state,
+          ...appendStopTimer(state),
+          ...initialState,
+        }));
+      },
 
-        pause: () => {
-          update((state: Dialogic.TimerState) => {
-            return {
-              ...state,
-              ...(!state.isPaused && appendPauseTimer(state)),
-            };
-          });
-        },
+      pause: () => {
+        update((state: Dialogic.TimerState) => ({
+          ...state,
+          ...(!state.isPaused && appendPauseTimer(state)),
+        }));
+      },
 
-        resume: (minimumDuration?: number) => {
-          update((state: Dialogic.TimerState) => {
-            return {
-              ...state,
-              ...(state.isPaused && appendResumeTimer(state, minimumDuration)),
-            };
-          });
-        },
+      resume: (minimumDuration?: number) => {
+        update((state: Dialogic.TimerState) => ({
+          ...state,
+          ...(state.isPaused && appendResumeTimer(state, minimumDuration)),
+        }));
+      },
 
-        abort: () => {
-          update((state: Dialogic.TimerState) => {
-            state.onAbort();
-            return {
-              ...state,
-              ...appendStopTimeout(state),
-            };
-          });
-        },
+      abort: () => {
+        update((state: Dialogic.TimerState) => {
+          state.onAbort();
+          return {
+            ...state,
+            ...appendStopTimeout(state),
+          };
+        });
+      },
 
-        done: () => {
-          update((state: Dialogic.TimerState) => {
-            return initialState;
-          });
-        },
+      done: () => {
+        update(() => initialState);
+      },
 
-        refresh: () => {
-          update((state: Dialogic.TimerState) => {
-            return {
-              ...state,
-            };
-          });
-        },
-      };
-    },
+      refresh: () => {
+        update((state: Dialogic.TimerState) => ({
+          ...state,
+        }));
+      },
+    }),
 
-    selectors: (states: Stream<Dialogic.TimerState>) => {
-      return {
-        isPaused: () => {
-          const state = states();
-          return state.isPaused;
-        },
+    selectors: (states: Stream<Dialogic.TimerState>) => ({
+      isPaused: () => {
+        const state = states();
+        return state.isPaused;
+      },
 
-        getRemaining: () => {
-          const state = states();
-          return state.isPaused ? state.remaining : getRemaining(state);
-        },
+      getRemaining: () => {
+        const state = states();
+        return state.isPaused ? state.remaining : getRemaining(state);
+      },
 
-        getResultPromise: () => {
-          const state = states();
-          return state.promise;
-        },
-      };
-    },
+      getResultPromise: () => {
+        const state = states();
+        return state.promise;
+      },
+    }),
   };
 
   const update: Stream<PatchFn> = Stream<PatchFn>();

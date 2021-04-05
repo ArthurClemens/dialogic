@@ -1,19 +1,20 @@
+/* eslint-disable no-param-reassign */
 import Stream from 'mithril/stream';
-import { Dialogic } from '../..';
+
+import { Dialogic } from '../index';
 
 type PatchFn = (state: Dialogic.State) => Dialogic.State;
 
-const findItem = (id: string, items: any[]) => {
-  return items.find(item => item.id === id);
-};
+const findItem = <T = unknown>(id: string, items: Dialogic.Item<T>[]) =>
+  items.find(item => item.id === id);
 
-const itemIndex = (id: string, items: any[]) => {
+const itemIndex = <T = unknown>(id: string, items: Dialogic.Item<T>[]) => {
   const item = findItem(id, items);
-  return items.indexOf(item);
+  return item ? items.indexOf(item) : -1;
 };
 
-const removeItem = (id: string, items: any[]) => {
-  const index = itemIndex(id, items);
+const removeItem = <T = unknown>(id: string, items: Dialogic.Item<T>[]) => {
+  const index = itemIndex<T>(id, items);
   if (index !== -1) {
     items.splice(index, 1);
   }
@@ -30,81 +31,81 @@ const store = {
     store: {},
   },
 
-  actions: (update: Stream<PatchFn>) => {
-    return {
-      /**
-       * Add an item to the end of the list.
-       */
-      add: (ns: string, item: Dialogic.Item<unknown>) => {
-        update((state: Dialogic.State) => {
-          const items = state.store[ns] || [];
-          state.store[ns] = [...items, item as Dialogic.Item<unknown>];
-          if (item.timer) {
-            // When the timer state updates, refresh the store so that UI can pick up the change
-            item.timer.states.map(() => store.actions(update).refresh());
+  actions: (update: Stream<PatchFn>) => ({
+    /**
+     * Add an item to the end of the list.
+     */
+    add: <T>(ns: string, item: Dialogic.Item<T>) => {
+      update((state: Dialogic.State) => {
+        const items = (state.store[ns] || []) as Dialogic.Item<unknown>[];
+        state.store[ns] = [...items, item as Dialogic.Item<unknown>];
+        if (item.timer) {
+          // When the timer state updates, refresh the store so that UI can pick up the change
+          item.timer.states.map(() => store.actions(update).refresh());
+        }
+        return state;
+      });
+    },
+
+    /**
+     * Removes the first item with a match on `id`.
+     */
+    remove: (ns: string, id: string) => {
+      update((state: Dialogic.State) => {
+        const items = state.store[ns] || [];
+        const remaining = removeItem(id, items);
+        state.store[ns] = remaining;
+        return state;
+      });
+    },
+
+    /**
+     * Replaces the first item with a match on `id` with a newItem.
+     */
+    replace: <T = unknown>(
+      ns: string,
+      id: string,
+      newItem: Dialogic.Item<T>,
+    ) => {
+      update((state: Dialogic.State) => {
+        const items = (state.store[ns] || []) as Dialogic.Item<T>[];
+        if (items) {
+          const index = itemIndex<T>(id, items);
+          if (index !== -1) {
+            items[index] = newItem;
+            state.store[ns] = [...items] as Dialogic.Item<unknown>[];
           }
-          return state;
-        });
-      },
+        }
+        return state;
+      });
+    },
 
-      /**
-       * Removes the first item with a match on `id`.
-       */
-      remove: (ns: string, id: string) => {
-        update((state: Dialogic.State) => {
-          const items = state.store[ns] || [];
-          const remaining = removeItem(id, items);
-          state.store[ns] = remaining;
-          return state;
-        });
-      },
+    /**
+     * Removes all items within a namespace.
+     */
+    removeAll: (ns: string) => {
+      update((state: Dialogic.State) => {
+        state.store[ns] = [];
+        return state;
+      });
+    },
 
-      /**
-       * Replaces the first item with a match on `id` with a newItem.
-       */
-      replace: (ns: string, id: string, newItem: Dialogic.Item<unknown>) => {
-        update((state: Dialogic.State) => {
-          const items = state.store[ns] || [];
-          if (items) {
-            const index = itemIndex(id, items);
-            if (index !== -1) {
-              items[index] = newItem;
-              state.store[ns] = [...items];
-            }
-          }
-          return state;
-        });
-      },
+    /**
+     * Replaces all items within a namespace.
+     */
+    store: <T = unknown>(ns: string, newItems: Dialogic.Item<T>[]) => {
+      update((state: Dialogic.State) => {
+        state.store[ns] = [...(newItems as Dialogic.Item[])];
+        return state;
+      });
+    },
 
-      /**
-       * Removes all items within a namespace.
-       */
-      removeAll: (ns: string) => {
-        update((state: Dialogic.State) => {
-          state.store[ns] = [];
-          return state;
-        });
-      },
-
-      /**
-       * Replaces all items within a namespace.
-       */
-      store: (ns: string, newItems: Dialogic.Item<unknown>[]) => {
-        update((state: Dialogic.State) => {
-          state.store[ns] = [...newItems];
-          return state;
-        });
-      },
-
-      refresh: () => {
-        update((state: Dialogic.State) => {
-          return {
-            ...state,
-          };
-        });
-      },
-    };
-  },
+    refresh: () => {
+      update((state: Dialogic.State) => ({
+        ...state,
+      }));
+    },
+  }),
 
   selectors: (states: Stream<Dialogic.State>) => {
     const fns = {
@@ -113,26 +114,30 @@ const store = {
         return state.store;
       },
 
-      find: <T>(ns: string, identityOptions: Dialogic.IdentityOptions) => {
+      find: <T = unknown>(
+        ns: string,
+        identityOptions: Dialogic.IdentityOptions,
+      ) => {
         const state = states();
         const items = state.store[ns] || [];
         const id = createId(identityOptions, ns);
-        const item = items.find(
-          (item: Dialogic.Item<unknown>) => item.id === id,
-        ) as Dialogic.Item<T>;
+        const item = items.find(fitem => fitem.id === id) as Dialogic.Item<T>;
         return item ? { just: item } : { nothing: undefined };
       },
 
-      getAll: (ns: string, identityOptions?: Dialogic.IdentityOptions) => {
+      getAll: <T = unknown>(
+        ns: string,
+        identityOptions?: Dialogic.IdentityOptions,
+      ) => {
         const state = states();
-        const items = state.store[ns] || [];
+        const items = (state.store[ns] || []) as Dialogic.Item<T>[];
         const spawn =
           identityOptions !== undefined ? identityOptions.spawn : undefined;
         const id =
           identityOptions !== undefined ? identityOptions.id : undefined;
         const itemsBySpawn =
           spawn !== undefined
-            ? items.filter(item => item.identityOptions.spawn === spawn)
+            ? items.filter(fitem => fitem.identityOptions.spawn === spawn)
             : items;
         const itemsById =
           id !== undefined
@@ -141,8 +146,10 @@ const store = {
         return itemsById;
       },
 
-      getCount: (ns: string, identityOptions?: Dialogic.IdentityOptions) =>
-        fns.getAll(ns, identityOptions).length,
+      getCount: <T = unknown>(
+        ns: string,
+        identityOptions?: Dialogic.IdentityOptions,
+      ) => fns.getAll<T>(ns, identityOptions).length,
     };
 
     return fns;

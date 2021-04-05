@@ -1,5 +1,5 @@
 import { getStyleValue } from './utils';
-import { Dialogic } from '../index';
+import { Dialogic } from './index';
 
 export const MODE = {
   SHOW: 'show',
