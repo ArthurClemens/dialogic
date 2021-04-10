@@ -2,11 +2,24 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import Stream from 'mithril/stream';
 
-import { Dialogic } from '../index';
+type TimerCallback = () => unknown;
+type TOnFinishFn = () => void;
 
-type PatchFn = (state: Dialogic.TimerState) => Dialogic.TimerState;
+type TimerState = {
+  timerId?: number;
+  startTime?: number;
+  remaining: number | undefined;
+  isPaused: boolean;
+  callback: TimerCallback;
+  timeoutFn: () => void;
+  promise?: Promise<unknown>;
+  onDone: TOnFinishFn;
+  onAbort: TOnFinishFn;
+};
 
-const initialState = {
+type PatchFn = (state: TimerState) => TimerState;
+
+const initialState: TimerState = {
   callback: () => {},
   isPaused: false,
   onAbort: () => {},
@@ -19,8 +32,8 @@ const initialState = {
 };
 
 const appendStartTimer = (
-  state: Dialogic.TimerState,
-  callback: Dialogic.TimerCallback,
+  state: TimerState,
+  callback: TimerCallback,
   duration: number,
   updateState: () => unknown,
 ) => {
@@ -45,27 +58,24 @@ const appendStartTimer = (
   };
 };
 
-const appendStopTimeout = (state: Dialogic.TimerState) => {
+const appendStopTimeout = (state: TimerState) => {
   window.clearTimeout(state.timerId);
   return {
     timerId: initialState.timerId,
   };
 };
 
-const appendStopTimer = (state: Dialogic.TimerState) => ({
+const appendStopTimer = (state: TimerState) => ({
   ...appendStopTimeout(state),
 });
 
-const appendPauseTimer = (state: Dialogic.TimerState) => ({
+const appendPauseTimer = (state: TimerState) => ({
   ...appendStopTimeout(state),
   isPaused: true,
   remaining: getRemaining(state),
 });
 
-const appendResumeTimer = (
-  state: Dialogic.TimerState,
-  minimumDuration?: number,
-) => {
+const appendResumeTimer = (state: TimerState, minimumDuration?: number) => {
   window.clearTimeout(state.timerId);
   const remaining = minimumDuration
     ? Math.max(state.remaining || 0, minimumDuration)
@@ -78,17 +88,22 @@ const appendResumeTimer = (
   };
 };
 
-const getRemaining = (state: Dialogic.TimerState) =>
+const getRemaining = (state: TimerState) =>
   state.remaining === 0 || state.remaining === undefined
     ? state.remaining
     : state.remaining - (new Date().getTime() - (state.startTime || 0));
 
-export const Timer = () => {
+export const TimerStore = () => {
   const timer = {
     initialState,
     actions: (update: Stream<PatchFn>) => ({
-      start: (callback: Dialogic.TimerCallback, duration: number) => {
-        update((state: Dialogic.TimerState) => ({
+      /**
+       * Starts the timer
+       * @param {callback} Function Callback function that is called after completion.
+       * @param {duration} Number Timer duration in milliseconds.
+       */
+      start: (callback: TimerCallback, duration: number) => {
+        update((state: TimerState) => ({
           ...state,
           ...appendStopTimeout(state),
           ...appendStartTimer(state, callback, duration, () =>
@@ -98,30 +113,43 @@ export const Timer = () => {
         }));
       },
 
+      /**
+       * Stops the timer.
+       */
       stop: () => {
-        update((state: Dialogic.TimerState) => ({
+        update((state: TimerState) => ({
           ...state,
           ...appendStopTimer(state),
           ...initialState,
         }));
       },
 
+      /**
+       * Pauses a running timer.
+       */
       pause: () => {
-        update((state: Dialogic.TimerState) => ({
+        update((state: TimerState) => ({
           ...state,
           ...(!state.isPaused && appendPauseTimer(state)),
         }));
       },
 
+      /**
+       * Resumes a paused timer.
+       * @param {minimumDuration} Number Sets the minimum duration.
+       */
       resume: (minimumDuration?: number) => {
-        update((state: Dialogic.TimerState) => ({
+        update((state: TimerState) => ({
           ...state,
           ...(state.isPaused && appendResumeTimer(state, minimumDuration)),
         }));
       },
 
+      /**
+       * Aborts and clears a timer.
+       */
       abort: () => {
-        update((state: Dialogic.TimerState) => {
+        update((state: TimerState) => {
           state.onAbort();
           return {
             ...state,
@@ -130,28 +158,44 @@ export const Timer = () => {
         });
       },
 
-      done: () => {
-        update(() => initialState);
-      },
-
+      /**
+       * Updates the current state. Used to get the state for selectors.getRemaining.
+       */
       refresh: () => {
-        update((state: Dialogic.TimerState) => ({
+        update((state: TimerState) => ({
           ...state,
         }));
       },
+
+      /**
+       * Brings the timer to its initial state.
+       * Used internally.
+       */
+      done: () => {
+        update(() => initialState);
+      },
     }),
 
-    selectors: (states: Stream<Dialogic.TimerState>) => ({
+    selectors: (states: Stream<TimerState>) => ({
+      /**
+       * Returns the paused state.
+       */
       isPaused: () => {
         const state = states();
         return state.isPaused;
       },
 
+      /**
+       * Returns the remaining duration in milliseconds.
+       */
       getRemaining: () => {
         const state = states();
         return state.isPaused ? state.remaining : getRemaining(state);
       },
 
+      /**
+       * The promise that is handled when the timer is done or canceled.
+       */
       getResultPromise: () => {
         const state = states();
         return state.promise;
@@ -161,8 +205,8 @@ export const Timer = () => {
 
   const update: Stream<PatchFn> = Stream<PatchFn>();
 
-  const states: Dialogic.TimerStates = Stream.scan(
-    (state: Dialogic.TimerState, patch: PatchFn) => patch(state),
+  const states = Stream.scan(
+    (state: TimerState, patch: PatchFn) => patch(state),
     {
       ...timer.initialState,
     },
@@ -173,7 +217,7 @@ export const Timer = () => {
     ...timer.actions(update),
   };
 
-  const selectors: Dialogic.TimerStateSelectors = {
+  const selectors = {
     ...timer.selectors(states),
   };
 
@@ -187,3 +231,5 @@ export const Timer = () => {
     selectors,
   };
 };
+
+export type Timer = ReturnType<typeof TimerStore>;

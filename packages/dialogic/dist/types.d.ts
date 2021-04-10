@@ -1,6 +1,7 @@
 import Stream from 'mithril/stream';
 
 import { dialogical } from './dialogical';
+import type { Timer } from './state/timer';
 
 export declare type DialogicInstance = ReturnType<typeof dialogical>;
 declare type ConfirmFn<T> = {
@@ -19,6 +20,9 @@ export declare type IdentityOptions = {
 export declare type ComponentOptions = {
   onMount?: (args?: unknown) => unknown;
 } & IdentityOptions;
+export declare type TimerResumeOptions = {
+  minimumDuration?: number;
+};
 export declare type CommandOptions = IdentityOptions & TimerResumeOptions;
 export declare type DialogicalWrapperOptions = {
   ns: string;
@@ -104,71 +108,6 @@ export declare type State = {
 export declare type InitiateItemTransitionFn = <T>(
   item: Item<T>,
 ) => Promise<Item<T>>;
-export declare type TimerCallback = () => unknown;
-export declare type TOnFinishFn = () => void;
-export declare type TimerStates = Stream<TimerState>;
-export declare type TimerStateSelectors = {
-  /**
-   * Returns the paused state.
-   */
-  isPaused: () => boolean;
-  /**
-   * The promise that is handled when the timer is done or canceled.
-   */
-  getResultPromise: () => Promise<unknown> | undefined;
-  /**
-   * Returns the remaining duration in milliseconds.
-   */
-  getRemaining: () => number | undefined;
-};
-export declare type TimerState = {
-  timerId?: number;
-  startTime?: number;
-  remaining: number | undefined;
-  isPaused: boolean;
-  callback: TimerCallback;
-  timeoutFn: () => void;
-  promise?: Promise<unknown>;
-  onDone: TOnFinishFn;
-  onAbort: TOnFinishFn;
-};
-export declare type TimerResumeOptions = {
-  minimumDuration?: number;
-};
-export declare type TimerActions = {
-  /**
-   * Starts the timer
-   * @param {callback} Function Callback function that is called after completion.
-   * @param {duration} Number Timer duration in milliseconds.
-   */
-  start: (callback: TimerCallback, duration: number) => void;
-  /**
-   * Stops the timer.
-   */
-  stop: () => void;
-  /**
-   * Pauses a running timer.
-   */
-  pause: () => void;
-  /**
-   * Resumes a paused timer.
-   * @param {minimumDuration} Number Sets the minimum duration.
-   */
-  resume: (minimumDuration?: number) => void;
-  /**
-   * Aborts and clears a timer.
-   */
-  abort: () => void;
-  /**
-   * Updates the current state. Used to get the state for selectors.getRemaining.
-   */
-  refresh: () => void;
-};
-export declare type Timer = {
-  states: TimerStates;
-  actions: TimerActions;
-  selectors: TimerStateSelectors;
-};
 export declare type States = Stream<State>;
 export declare type StateSelectors = {
   getStore: () => NamespaceStore;

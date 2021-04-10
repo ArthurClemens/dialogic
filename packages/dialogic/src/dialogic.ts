@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 import { Dialogic } from './index';
 import { actions, createId, selectors } from './state/store';
-import { Timer } from './state/timer';
+import { Timer, TimerStore } from './state/timer';
 import { MODE, transition } from './transition';
 import { pipe } from './utils';
 
@@ -168,7 +168,7 @@ const createInstance = (ns: string) => (
       callbacks,
       passThroughOptions,
       id: createId(identityOptions, ns),
-      timer: dialogicOptions.timeout ? Timer() : undefined, // when timeout is undefined or 0
+      timer: dialogicOptions.timeout ? TimerStore() : undefined, // when timeout is undefined or 0
       key: getUid().toString(), // Uniquely identify each item for keyed display
       transitionState: TransitionStates.Default,
     };
@@ -435,7 +435,7 @@ const transitionItem = <T>(item: Dialogic.Item<T>, mode: string) =>
 
 const deferredHideItem = async <T>(
   item: Dialogic.Item<T>,
-  timer: Dialogic.Timer,
+  timer: Timer,
   timeout: number,
 ) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
