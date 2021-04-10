@@ -1,5 +1,5 @@
-import { dialog, showItem, hideItem } from 'dialogic';
 import test from 'ava';
+import { dialog, hideItem, showItem } from 'dialogic';
 
 const getDefaultItemId = (name: string) =>
   `${name}-default_${name}-default_${name}`;
@@ -166,7 +166,7 @@ test.serial('resetAll (different spawn specified): should remove some', t => {
     t.is(dialog.exists({ id: '2', spawn: 'reset-all-1' }), true);
     t.is(dialog.exists({ spawn: 'reset-all-2' }), true);
 
-    return dialog.resetAll({ spawn: 'reset-all-1' }).then(items => {
+    return dialog.resetAll({ spawn: 'reset-all-1' }).then(() => {
       t.is(dialog.exists(), true);
       t.is(dialog.exists({ id: '1' }), true);
       t.is(dialog.exists({ id: '2', spawn: 'reset-all-1' }), false);
@@ -193,8 +193,8 @@ test.serial('hideAll (no dialogic options specified): should hide all', t => {
     t.is(dialog.exists({ id: '1', spawn }), true);
     t.is(dialog.exists({ id: '2', spawn }), true);
 
-    return dialog.hideAll({ spawn }).then(items => {
-      t.is(items.length, 2);
+    return dialog.hideAll({ spawn }).then(hiddenItems => {
+      t.is(hiddenItems.length, 2);
       t.is(dialog.exists({ id: '1', spawn }), false);
       t.is(dialog.exists({ id: '2', spawn }), false);
     });
@@ -218,8 +218,8 @@ test.serial('hideAll (different spawn specified): should hide some', t => {
     t.is(dialog.exists({ id: '1', spawn: 'hide-all-1' }), true);
     t.is(dialog.exists({ id: '2', spawn: 'hide-all-2' }), true);
 
-    return dialog.hideAll({ spawn: 'hide-all-1' }).then(items => {
-      t.is(items.length, 1);
+    return dialog.hideAll({ spawn: 'hide-all-1' }).then(hiddenItems => {
+      t.is(hiddenItems.length, 1);
       t.is(dialog.exists({ id: '1', spawn: 'hide-all-1' }), false);
       t.is(dialog.exists({ id: '2', spawn: 'hide-all-2' }), true);
     });
@@ -240,12 +240,14 @@ test.serial('callbacks: should call didShow and didHide', t => {
   const options = {
     dialogic: {
       ...identityOptions,
-      didShow: () =>
+      didShow: () => {
         // t.log("didShow"),
-        (results.didShow = true),
-      didHide: () =>
+        results.didShow = true;
+      },
+      didHide: () => {
         // t.log("didHide"),
-        (results.didHide = true),
+        results.didHide = true;
+      },
     },
   };
   return dialog.show(options).then(item => {
@@ -281,9 +283,9 @@ test.serial('promises: show and hide should return promises', t => {
       .hide({
         dialogic: identityOptions,
       })
-      .then(item => {
+      .then(hiddenItem => {
         // t.log("hide promise");
-        t.is(item.id, 'dialog-default_dialog-promises');
+        t.is(hiddenItem.id, 'dialog-default_dialog-promises');
       });
   });
 });

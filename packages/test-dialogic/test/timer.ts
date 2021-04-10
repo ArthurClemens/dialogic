@@ -1,5 +1,5 @@
-import { dialog, notification, showItem } from 'dialogic';
 import test from 'ava';
+import { dialog, notification, showItem } from 'dialogic';
 
 test.serial('notification timeout: should hide after specified time', t => {
   notification.resetAll();
@@ -16,14 +16,15 @@ test.serial('notification timeout: should hide after specified time', t => {
   return notification.show(options).then(item => {
     t.is(notification.exists(identityOptions), true);
 
-    return showItem(item).then(() => {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          t.is(notification.exists(identityOptions), false);
-          resolve();
-        }, timeout + 100);
-      });
-    });
+    return showItem(item).then(
+      () =>
+        new Promise(resolve => {
+          setTimeout(() => {
+            t.is(notification.exists(identityOptions), false);
+            resolve();
+          }, timeout + 100);
+        }),
+    );
   });
 });
 
@@ -42,14 +43,15 @@ test.serial('dialog timeout: should hide after specified time', t => {
   return dialog.show(options).then(item => {
     t.is(dialog.exists(identityOptions), true);
 
-    return showItem(item).then(() => {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          t.is(dialog.exists(identityOptions), false);
-          resolve();
-        }, timeout + 100);
-      });
-    });
+    return showItem(item).then(
+      () =>
+        new Promise(resolve => {
+          setTimeout(() => {
+            t.is(dialog.exists(identityOptions), false);
+            resolve();
+          }, timeout + 100);
+        }),
+    );
   });
 });
 

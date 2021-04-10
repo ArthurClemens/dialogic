@@ -1,5 +1,5 @@
-import { dialog, notification } from 'dialogic';
 import test from 'ava';
+import { dialog, notification } from 'dialogic';
 
 const getDefaultItemId = (name: string) =>
   `${name}-default_${name}-default_${name}`;
@@ -30,6 +30,7 @@ const targets = [
 // identifiers
 
 test('identifiers: should have the correct namespace', t => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   targets.forEach(({ type, name, defaultDialogicOptions, defaultItemId }) => {
     const expected = name;
     const actual = type.ns;
@@ -38,6 +39,7 @@ test('identifiers: should have the correct namespace', t => {
 });
 
 test('identifiers: should have the correct default id', t => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   targets.forEach(({ type, name, defaultDialogicOptions, defaultItemId }) => {
     const expected = `default_${name}`;
     const actual = type.defaultId;
@@ -46,6 +48,7 @@ test('identifiers: should have the correct default id', t => {
 });
 
 test('identifiers: should have the correct default spawn', t => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   targets.forEach(({ type, name, defaultDialogicOptions, defaultItemId }) => {
     const expected = `default_${name}`;
     const actual = type.defaultSpawn;
@@ -56,6 +59,7 @@ test('identifiers: should have the correct default spawn', t => {
 // configuration
 
 test('configuration: should have the correct default configuration', t => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   targets.forEach(({ type, name, defaultDialogicOptions, defaultItemId }) => {
     const expected = defaultDialogicOptions;
     const actual = type.defaultDialogicOptions;

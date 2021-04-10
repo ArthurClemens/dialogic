@@ -1,13 +1,24 @@
-import { transition, MODE } from './transition';
-import { actions, selectors, createId } from './state/store';
-import { Timer } from './state/timer';
+/* eslint-disable no-plusplus */
 import { Dialogic } from './index';
+import { actions, createId, selectors } from './state/store';
+import { Timer } from './state/timer';
+import { MODE, transition } from './transition';
 import { pipe } from './utils';
 
-export { states, actions, selectors } from './state/store';
+export { actions, selectors, states } from './state/store';
 
-let uid = 0;
-const getUid = () => (uid === Number.MAX_VALUE ? 0 : uid++);
+const localState = {
+  uid: 0,
+};
+
+const getUid = () => {
+  if (localState.uid === Number.MAX_VALUE) {
+    localState.uid = 0;
+  } else {
+    localState.uid += 1;
+  }
+  return localState.uid;
+};
 
 enum TransitionStates {
   Default,
@@ -20,6 +31,7 @@ const getMaybeItem = <T>(ns: string) => (
 ) => (identityOptions?: Dialogic.IdentityOptions) =>
   selectors.find<T>(
     ns,
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     getMergedIdentityOptions(defaultDialogicOptions, identityOptions),
   );
 
@@ -58,7 +70,7 @@ export const filterCandidates = (
   identityOptions: Dialogic.IdentityOptions,
 ) => {
   const nsItems = items[ns] || [];
-  if (nsItems.length == 0) {
+  if (nsItems.length === 0) {
     return [];
   }
   return pipe(filterBySpawn(identityOptions), filterFirstInQueue)(nsItems);
@@ -120,6 +132,7 @@ const createInstance = (ns: string) => (
     passThroughOptions,
   } = handleOptions(defaultDialogicOptions, options);
 
+  // eslint-disable-next-line consistent-return
   return new Promise<Dialogic.Item<T>>(resolve => {
     const callbacks: Dialogic.Callbacks<T> = {
       willShow: (item: Dialogic.Item<T>) => {
@@ -168,18 +181,17 @@ const createInstance = (ns: string) => (
     const existingItem = maybeExistingItem.just;
 
     if (existingItem && dialogicOptions.toggle) {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       hide(ns)(defaultDialogicOptions)<T>(options);
       return resolve(existingItem);
     }
 
     if (existingItem && !dialogicOptions.queued) {
-      // Preserve dialogicOptions
-      const dialogicOptions = existingItem.dialogicOptions;
       const replacingItem = {
         ...item,
         key: existingItem.key,
         transitionState: existingItem.transitionState,
-        dialogicOptions,
+        dialogicOptions: existingItem.dialogicOptions, // Preserve dialogicOptions
       };
       actions.replace(ns, existingItem.id, replacingItem as Dialogic.Item<T>);
     } else {
@@ -221,10 +233,10 @@ export const hide = (ns: string) => (
     };
     actions.replace<T>(ns, existingItem.id, item);
     if (item.transitionState !== TransitionStates.Hiding) {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       return hideItem<T>(item);
-    } else {
-      return Promise.resolve(item);
     }
+    return Promise.resolve(item);
   }
   return Promise.resolve({
     ns,
@@ -233,8 +245,10 @@ export const hide = (ns: string) => (
 };
 
 export const pause = (ns: string) => (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
 ) => <T = unknown>(identityOptions?: Dialogic.IdentityOptions) => {
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const validItems = getValidItems<T>(ns, identityOptions).filter(
     item => !!item.timer,
   );
@@ -247,6 +261,7 @@ export const pause = (ns: string) => (
 };
 
 export const resume = (ns: string) => (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
 ) => <T = unknown>(commandOptions?: Dialogic.CommandOptions) => {
   const options = commandOptions || {};
@@ -254,6 +269,7 @@ export const resume = (ns: string) => (
     id: options.id,
     spawn: options.spawn,
   };
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const validItems = getValidItems<T>(ns, identityOptions).filter(
     item => !!item.timer,
   );
@@ -277,12 +293,10 @@ export const getTimerProperty = (
   if (maybeItem.just) {
     if (maybeItem.just && maybeItem.just.timer) {
       return maybeItem.just.timer.selectors[timerProp]();
-    } else {
-      return defaultValue;
     }
-  } else {
     return defaultValue;
   }
+  return defaultValue;
 };
 
 const getTimerSelectors = <T = unknown>(
@@ -312,8 +326,10 @@ export const getRemaining = (ns: string) => (
   )?.getRemaining() || undefined;
 
 export const exists = (ns: string) => (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
 ) => (identityOptions?: Dialogic.IdentityOptions) =>
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   !!getValidItems(ns, identityOptions).length;
 
 const getValidItems = <T = unknown>(
@@ -361,15 +377,13 @@ export const resetAll = (ns: string) => (
 const getOverridingTransitionOptions = <T>(
   item: Dialogic.Item<T>,
   dialogicOptions: Dialogic.DialogicOptions<T>,
-) => {
-  return {
-    ...item,
-    dialogicOptions: {
-      ...item.dialogicOptions,
-      ...dialogicOptions,
-    },
-  };
-};
+) => ({
+  ...item,
+  dialogicOptions: {
+    ...item.dialogicOptions,
+    ...dialogicOptions,
+  },
+});
 
 /**
  * Triggers a `hideItem` for each item in the store.
@@ -396,6 +410,7 @@ export const hideAll = (ns: string) => (
   const items = [];
 
   regularItems.forEach((item: Dialogic.Item<T>) =>
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     items.push(hideItem(getOverridingTransitionOptions<T>(item, options))),
   );
 
@@ -404,6 +419,7 @@ export const hideAll = (ns: string) => (
     // Make sure that any remaining items don't suddenly appear
     actions.store(ns, [current]);
     // Transition the current item
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     items.push(hideItem(getOverridingTransitionOptions<T>(current, options)));
   }
 
@@ -417,22 +433,22 @@ export const getCount = (ns: string) => (
 const transitionItem = <T>(item: Dialogic.Item<T>, mode: string) =>
   transition(item.dialogicOptions, mode);
 
-const deferredHideItem = async function <T>(
+const deferredHideItem = async <T>(
   item: Dialogic.Item<T>,
   timer: Dialogic.Timer,
   timeout: number,
-) {
+) => {
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   timer.actions.start(() => hideItem(item), timeout);
   return getTimerProperty('getResultPromise', undefined);
 };
 
-export const showItem: Dialogic.InitiateItemTransitionFn = async function (
-  item,
-) {
+export const showItem: Dialogic.InitiateItemTransitionFn = async item => {
   if (item.callbacks.willShow) {
     item.callbacks.willShow(item);
   }
   if (item.transitionState !== TransitionStates.Displaying) {
+    // eslint-disable-next-line no-param-reassign
     item.transitionState = TransitionStates.Displaying;
     await transitionItem(item, MODE.SHOW);
   }
@@ -452,6 +468,7 @@ export const showItem: Dialogic.InitiateItemTransitionFn = async function (
 export const hideItem = async <T = unknown>(
   item: Dialogic.Item<T>,
 ): Promise<Dialogic.Item<T>> => {
+  // eslint-disable-next-line no-param-reassign
   item.transitionState = TransitionStates.Hiding;
   // Stop any running timer
   if (item.timer) {
@@ -475,5 +492,6 @@ export const setDomElement = <T = unknown>(
   domElement: HTMLElement,
   item: Dialogic.Item<T>,
 ) => {
+  // eslint-disable-next-line no-param-reassign
   item.dialogicOptions.domElement = domElement;
 };

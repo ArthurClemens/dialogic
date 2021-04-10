@@ -1,5 +1,5 @@
-import { notification, setDomElement, showItem, hideItem } from 'dialogic';
 import test from 'ava';
+import { hideItem, notification, setDomElement, showItem } from 'dialogic';
 
 const getDefaultItemId = (name: string) =>
   `${name}-default_${name}-default_${name}`;
@@ -29,7 +29,7 @@ test.serial(
         timeout: undefined,
       },
     };
-    [1, 2, 3].forEach(n => notification.show(options));
+    [1, 2, 3].forEach(() => notification.show(options));
     t.is(notification.exists(), true);
   },
 );
@@ -145,14 +145,15 @@ test.serial('transition className', t => {
     t.is(notification.exists(identityOptions), true);
     setDomElement(div, item);
 
-    return showItem(item).then(item => {
-      t.is(item.id, 'notification-dom-default_notification');
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    return showItem(item).then(shownItem => {
+      t.is(shownItem.id, 'notification-dom-default_notification');
       t.is(notification.exists(identityOptions), true);
       t.is(div.classList.contains('yyy'), true);
       t.is(div.classList.contains('xxx-show-end'), true);
 
-      return hideItem(item).then(item => {
-        t.is(item.id, 'notification-dom-default_notification');
+      return hideItem(item).then(hiddenItem => {
+        t.is(hiddenItem.id, 'notification-dom-default_notification');
         t.is(notification.exists(identityOptions), false);
         t.is(div.classList.contains('yyy'), true);
         t.is(div.classList.contains('xxx-hide-end'), true);
