@@ -1,6 +1,6 @@
 {
   "name": "dialogic-svelte",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Logic for dialogs and notifications",
   "main": "dist/dialogic-svelte",
   "module": "dist/dialogic-svelte.js",
@@ -19,7 +19,7 @@
     }
   ],
   "dependencies": {
-    "dialogic": "^0.11.0"
+    "dialogic": "^0.12.0"
   },
   "files": [
     "dist",

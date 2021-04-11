@@ -2,7 +2,7 @@
   "name": "test-dialogic",
   "private": true,
   "description": "Test Dialogic",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
@@ -13,7 +13,7 @@
     "@ava/babel": "1.0.1",
     "@ikscodes/browser-env": "1.0.0",
     "ava": "3.15.0",
-    "dialogic": "0.11.0",
+    "dialogic": "^0.12.0",
     "ts-node": "9.1.1"
   }
 }
