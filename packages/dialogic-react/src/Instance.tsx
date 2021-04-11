@@ -54,10 +54,6 @@ export const Instance = (
   }, []);
 
   const passThroughOptions = props.passThroughOptions || {};
-  console.log(
-    'passThroughOptions',
-    JSON.stringify(passThroughOptions, null, 2),
-  );
 
   return (
     <div ref={domElementCb} className={className}>

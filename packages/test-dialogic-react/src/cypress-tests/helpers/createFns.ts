@@ -45,7 +45,6 @@ export const createFns = ({
     id: getRandomId(),
     contentId,
   };
-  console.log('props', props);
 
   const showFn = () =>
     instance.show<TInstance>({
