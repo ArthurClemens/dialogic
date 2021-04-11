@@ -1,11 +1,12 @@
-import React from 'react';
 import './styles.css';
+
+import { Dialog, Notification } from 'dialogic-react';
+import React from 'react';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+
 import { HomePage } from './HomePage';
 import { ProfilePage } from './ProfilePage';
 import { useStore } from './store';
-
-import { Dialog, Notification } from 'dialogic-react';
-import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 
 const AppRoutes = () => {
   const store = useStore();
@@ -26,10 +27,8 @@ const AppRoutes = () => {
   );
 };
 
-export default () => {
-  return (
-    <div className="app">
-      <AppRoutes />
-    </div>
-  );
-};
+export default () => (
+  <div className="app">
+    <AppRoutes />
+  </div>
+);

@@ -1,16 +1,7 @@
 {
+  "extends": "../../tsconfig.json",
   "include": ["src/**/*"],
-  "exclude": ["node_modules/*"],
   "compilerOptions": {
-    "baseUrl": "src",
-    "target": "ESNEXT",
-    "module": "ESNEXT",
-    "strict": true,
-    "jsx": "react",
-    "noUnusedLocals": true,
-    "moduleResolution": "node",
-    "types": [],
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "jsx": "react-jsx"
   }
 }

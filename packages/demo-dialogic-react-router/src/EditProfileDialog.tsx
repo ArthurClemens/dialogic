@@ -1,4 +1,5 @@
-import React, { FunctionComponent, useState, FormEvent } from 'react';
+/* eslint-disable jsx-a11y/control-has-associated-label */
+import React, { FormEvent, FunctionComponent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export type TEditProfileDialogProps = {

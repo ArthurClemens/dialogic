@@ -8,13 +8,13 @@ export declare const useDialogic: <T>(
   hide: () => void;
 };
 export declare const useDialog: <T>(
-  props: UseDialogicInstanceProps<T>,
+  props: T,
 ) => {
   show: () => void;
   hide: () => void;
 };
 export declare const useNotification: <T>(
-  props: UseDialogicInstanceProps<T>,
+  props: T,
 ) => {
   show: () => void;
   hide: () => void;

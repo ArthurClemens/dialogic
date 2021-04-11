@@ -134,7 +134,7 @@ export const sharedUseDialog = ({
   useState,
   dialog,
 }: SharedUseDialogicProps & { dialog: Dialogic.DialogicInstance }) => <T>(
-  props: UseDialogicInstanceProps<T>,
+  props: T,
 ) =>
   sharedUseDialogic({ useEffect, useState })<T>({
     ...props,
@@ -149,7 +149,7 @@ export const sharedUseNotification = ({
   useState,
   notification,
 }: SharedUseDialogicProps & { notification: Dialogic.DialogicInstance }) => <T>(
-  props: UseDialogicInstanceProps<T>,
+  props: T,
 ) =>
   sharedUseDialogic({ useEffect, useState })<T>({
     ...props,

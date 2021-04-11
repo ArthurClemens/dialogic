@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import { CurrentPathBadge } from './CurrentPathBadge';
 
 type TProps = {
@@ -13,7 +14,8 @@ export const HomePage = ({ pathPrefix = '' }: TProps) => (
     <p className="intro">
       This demo shows the <code>useDialog</code> hook that allows for a
       declarative way of controlling dialogs. The Profile dialog responds to the
-      route, and is automatically hidden when using the browser's back button.
+      route, and is automatically hidden when using the browser&apos;s back
+      button.
     </p>
     <div className="buttons">
       <Link

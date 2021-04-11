@@ -1,15 +1,16 @@
+import { notification, UseDialog, useDialog } from 'dialogic-react';
 import React from 'react';
+import { Link, Route, useHistory, useRouteMatch } from 'react-router-dom';
+
 import { CurrentPathBadge } from './CurrentPathBadge';
-import { Route, Link, useRouteMatch, useHistory } from 'react-router-dom';
 import {
   EditProfileDialog,
   TEditProfileDialogProps,
 } from './EditProfileDialog';
-import { notification, UseDialog, useDialog } from 'dialogic-react';
 import { saveConfirmationProps, TSaveConfirmation } from './SaveConfirmation';
 import { TStore } from './store';
 
-type TProps = {
+type Props = {
   pathPrefix?: string;
   useDialogComponent?: boolean;
   store: TStore;
@@ -19,7 +20,7 @@ export const ProfilePage = ({
   pathPrefix = '',
   useDialogComponent,
   store,
-}: TProps) => {
+}: Props) => {
   // Test injecting a dynamic value into the dialog
 
   const match = useRouteMatch();
