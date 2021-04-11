@@ -64,7 +64,6 @@ const Instance = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const passThroughOptions = props.passThroughOptions || {};
-    console.log('passThroughOptions', JSON.stringify(passThroughOptions, null, 2));
     return (jsx("div", Object.assign({ ref: domElementCb, className: className }, { children: jsx(Component, Object.assign({}, passThroughOptions, { show: show, hide: hide }), void 0) }), void 0));
 };
 
