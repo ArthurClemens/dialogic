@@ -2,7 +2,7 @@
   "name": "demo-dialogic-mithril-router",
   "private": true,
   "description": "Dialogic for React demo with React Router",
-  "version": "0.12.2",
+  "version": "0.12.3",
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
@@ -15,7 +15,7 @@
     "clean": "rm -rf dist/js/*"
   },
   "dependencies": {
-    "dialogic-mithril": "^0.12.2",
+    "dialogic-mithril": "^0.12.3",
     "mithril": "^2.0.4",
     "mithril-hooks": "^0.6.3"
   },

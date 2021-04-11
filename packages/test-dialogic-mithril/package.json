@@ -2,7 +2,7 @@
   "name": "tests-dialogic-mithril",
   "private": true,
   "description": "Test Dialogic with Mithril",
-  "version": "0.12.2",
+  "version": "0.12.3",
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "dialogic": "^0.12.2",
-    "dialogic-mithril": "^0.12.2",
+    "dialogic-mithril": "^0.12.3",
     "mithril": "^2.0.4",
     "mithril-hooks": "^0.6.3"
   },
