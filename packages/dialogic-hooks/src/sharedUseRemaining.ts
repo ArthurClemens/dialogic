@@ -1,5 +1,18 @@
-import { remaining } from 'dialogic';
-import { UseRemainingProps, SharedUseRemainingProps } from '..';
+import { Dialogic, remaining } from 'dialogic';
+
+import type { TUseMemo, TUseState } from './types';
+
+type SharedUseRemainingProps = {
+  useMemo: TUseMemo;
+  useState: TUseState;
+};
+
+type UseRemainingProps = {
+  instance: Dialogic.DialogicInstance;
+  id?: string;
+  spawn?: string;
+  roundToSeconds?: boolean;
+};
 
 export const sharedUseRemaining = ({
   useState,
@@ -22,6 +35,7 @@ export const sharedUseRemaining = ({
         },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exists]);
 
   return [value];

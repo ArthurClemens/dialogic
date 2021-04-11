@@ -119,7 +119,7 @@ test.serial(
   'resetAll (no dialogic options specified): should remove all',
   t => {
     dialog.resetAll();
-    const createDialog = (identityOptions?: object) => {
+    const createDialog = (identityOptions?: {}) => {
       const options = {
         dialogic: identityOptions,
       };
@@ -147,7 +147,7 @@ test.serial(
 
 test.serial('resetAll (different spawn specified): should remove some', t => {
   dialog.resetAll();
-  const createDialog = (identityOptions?: object) => {
+  const createDialog = (identityOptions?: {}) => {
     const options = {
       dialogic: identityOptions,
     };

@@ -1,4 +1,4 @@
-/* global cy, describe, before, it */
+/* global cy, expect, describe, beforeEach, it */
 
 describe('Dialog: className', () => {
   beforeEach(() => {
@@ -14,7 +14,8 @@ describe('Dialog: className', () => {
   });
 
   it('clicking show twice should keep the dialog with fresh content', () => {
-    let textBefore, textAfter;
+    let textBefore;
+    let textAfter;
     cy.get('[data-test-id=button-show-default]').should('exist').click();
     cy.get('[data-test-id=content-default] h2')
       .should($header => {

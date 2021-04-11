@@ -38,7 +38,7 @@
 }
 
 .dialog {
-  transition: opacity 350ms;
+  transition: opacity 350ms ease-in-out;
   opacity: 0;
 }
 .dialog-show-start {

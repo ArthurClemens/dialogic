@@ -1,9 +1,9 @@
+import { Dialogic } from 'dialogic';
 import m from 'mithril';
-import { DialogicTests } from '../../..';
 
 type ButtonsProps = {
-  showFn: DialogicTests.showFn;
-  hideFn: DialogicTests.hideFn;
+  showFn: () => Promise<Dialogic.Item>;
+  hideFn: () => Promise<Dialogic.Item>;
   name?: string;
   id?: string;
   spawn?: string;

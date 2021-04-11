@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { useAnimationFrame } from '../useAnimationFrame';
 
 type RemainingProps = {

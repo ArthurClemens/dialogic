@@ -17,7 +17,7 @@ export const saveConfirmationProps = {
     component: SaveConfirmation,
     className: 'demo-notification',
     styles: (domElement: HTMLElement) => {
-      const height = domElement.getBoundingClientRect().height;
+      const { height } = domElement.getBoundingClientRect();
 
       return {
         default: {

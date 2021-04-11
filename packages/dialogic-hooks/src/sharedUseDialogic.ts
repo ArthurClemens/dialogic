@@ -1,7 +1,48 @@
+/* eslint-disable import/no-unresolved */
 import { Dialogic } from 'dialogic';
-import { UseDialogicInstanceProps, SharedUseDialogicProps } from '..';
+
+import type { DependencyList, TUseEffect, TUseState } from './types';
+
+export type UseDialogicProps<T> = {
+  /**
+   * Condition when the instance should be shown.
+   */
+  isShow?: boolean;
+
+  /**
+   * For directed use only. Condition when the instance should be hidden.
+   */
+  isHide?: boolean;
+
+  /**
+   * Props to pass to the instance.
+   */
+  props?: Dialogic.Options<T>;
+
+  /**
+   * Reevaluates condition whenever one of the passed values changes.
+   */
+  deps?: DependencyList;
+
+  /**
+   * If true, no effects are run. Useful for conditionally disabling the hook.
+   */
+  isIgnore?: boolean;
+};
+
+export type UseDialogicInstanceProps<T> = UseDialogicProps<T> & {
+  /**
+   * Instance to show.
+   */
+  instance: Dialogic.DialogicInstance;
+};
 
 let useDialogicCounter = 0;
+
+type SharedUseDialogicProps = {
+  useEffect: TUseEffect;
+  useState: TUseState;
+};
 
 export const sharedUseDialogic = ({
   useEffect,
@@ -19,6 +60,7 @@ export const sharedUseDialogic = ({
   // Create an id if not set.
   // This is useful for pages with multiple dialogs, where we can't expect
   // to have the user set an explicit id for each.
+  // eslint-disable-next-line no-plusplus
   const [id] = useState(useDialogicCounter++);
   const augProps = {
     ...props,
@@ -54,6 +96,7 @@ export const sharedUseDialogic = ({
         hideInstance();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...deps, isShow]);
 
   // maybe hide
@@ -64,14 +107,17 @@ export const sharedUseDialogic = ({
         hideInstance();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...deps, isHide]);
 
   // unmount
   useEffect(() => {
     if (isIgnore) return;
+    // eslint-disable-next-line consistent-return
     return () => {
       hideInstance();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

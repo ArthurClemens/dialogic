@@ -1,4 +1,4 @@
-/* global cy, describe, before, it */
+/* global cy, describe, beforeEach, it, expect */
 
 describe('Notification: timeout', () => {
   beforeEach(() => {

@@ -1,8 +1,9 @@
+import { Dialog, dialog, useDialogicState } from 'dialogic-react';
 import React, { useEffect } from 'react';
-import { createFns } from './helpers/createFns';
+
 import { Default } from '../content/Default';
 import { Buttons } from './helpers/buttons';
-import { dialog, Dialog, useDialogicState } from 'dialogic-react';
+import { createFns } from './helpers/createFns';
 
 export default () => {
   useEffect(() => {

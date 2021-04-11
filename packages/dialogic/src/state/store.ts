@@ -9,7 +9,7 @@ const findItem = <T = unknown>(id: string, items: Dialogic.Item<T>[]) =>
   items.find(item => item.id === id);
 
 const itemIndex = <T = unknown>(id: string, items: Dialogic.Item<T>[]) => {
-  const item = findItem(id, items);
+  const item = findItem<T>(id, items);
   return item ? items.indexOf(item) : -1;
 };
 
@@ -35,9 +35,9 @@ const store = {
     /**
      * Add an item to the end of the list.
      */
-    add: <T>(ns: string, item: Dialogic.Item<T>) => {
+    add: <T extends unknown = unknown>(ns: string, item: Dialogic.Item<T>) => {
       update((state: Dialogic.State) => {
-        const items = (state.store[ns] || []) as Dialogic.Item<unknown>[];
+        const items = state.store[ns] || [];
         state.store[ns] = [...items, item as Dialogic.Item<unknown>];
         if (item.timer) {
           // When the timer state updates, refresh the store so that UI can pick up the change
@@ -68,11 +68,11 @@ const store = {
       newItem: Dialogic.Item<T>,
     ) => {
       update((state: Dialogic.State) => {
-        const items = (state.store[ns] || []) as Dialogic.Item<T>[];
+        const items = state.store[ns] || [];
         if (items) {
-          const index = itemIndex<T>(id, items);
+          const index = itemIndex(id, items);
           if (index !== -1) {
-            items[index] = newItem;
+            items[index] = newItem as Dialogic.Item<unknown>;
             state.store[ns] = [...items] as Dialogic.Item<unknown>[];
           }
         }
@@ -146,10 +146,8 @@ const store = {
         return itemsById;
       },
 
-      getCount: <T = unknown>(
-        ns: string,
-        identityOptions?: Dialogic.IdentityOptions,
-      ) => fns.getAll<T>(ns, identityOptions).length,
+      getCount: (ns: string, identityOptions?: Dialogic.IdentityOptions) =>
+        fns.getAll(ns, identityOptions).length,
     };
 
     return fns;
@@ -170,7 +168,7 @@ export const actions = {
   ...store.actions(update),
 };
 
-export const selectors: Dialogic.StateSelectors = {
+export const selectors = {
   ...store.selectors(states),
 };
 

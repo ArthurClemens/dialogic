@@ -1,24 +1,8 @@
-import m from 'mithril';
 import { selectors, setDomElement, showItem, hideItem, filterCandidates, dialog, notification, states } from 'dialogic';
-export { dialog, notification } from 'dialogic';
-import { useEffect, useState, useMemo } from 'mithril-hooks';
+export { Dialogic, dialog, notification } from 'dialogic';
+import m from 'mithril';
 import { sharedUseDialogic, sharedUseDialog, sharedUseNotification, sharedUseRemaining } from 'dialogic-hooks';
-
-const handleDispatch = (ns) => (event, fn) => {
-    // Update dispatching item:
-    const maybeItem = selectors.find(ns, event.detail.identityOptions);
-    if (maybeItem.just) {
-        setDomElement(event.detail.domElement, maybeItem.just);
-    }
-    // Find item to transition:
-    const maybeTransitioningItem = selectors.find(ns, event.detail.identityOptions);
-    if (maybeTransitioningItem.just) {
-        fn(maybeTransitioningItem.just);
-    }
-};
-const onInstanceMounted = (ns) => (event) => handleDispatch(ns)(event, showItem);
-const onShowInstance = (ns) => (event) => handleDispatch(ns)(event, showItem);
-const onHideInstance = (ns) => (event) => handleDispatch(ns)(event, hideItem);
+import { useEffect, useState, useMemo } from 'mithril-hooks';
 
 const Instance = ({ attrs: componentAttrs }) => {
     let domElement;
@@ -45,18 +29,33 @@ const Instance = ({ attrs: componentAttrs }) => {
             onMount();
         },
         view: ({ attrs }) => {
-            const component = attrs.dialogicOptions.component;
+            const component = attrs.dialogicOptions
+                .component;
             if (!component) {
-                throw 'Component missing in dialogic options.';
+                throw new Error('Component missing in dialogic options.');
             }
-            return m('div', { className: attrs.dialogicOptions.className }, m(component, {
-                ...attrs.passThroughOptions,
-                show,
-                hide,
-            }));
+            const passThroughOptions = attrs.passThroughOptions || {};
+            return m('div', { className: attrs.dialogicOptions.className }, m(component, Object.assign(Object.assign({}, passThroughOptions), { show,
+                hide })));
         },
     };
 };
+
+const handleDispatch = (ns) => (event, fn) => {
+    // Update dispatching item:
+    const maybeItem = selectors.find(ns, event.detail.identityOptions);
+    if (maybeItem.just) {
+        setDomElement(event.detail.domElement, maybeItem.just);
+    }
+    // Find item to transition:
+    const maybeTransitioningItem = selectors.find(ns, event.detail.identityOptions);
+    if (maybeTransitioningItem.just) {
+        fn(maybeTransitioningItem.just);
+    }
+};
+const onInstanceMounted = (ns) => (event) => handleDispatch(ns)(event, showItem);
+const onShowInstance = (ns) => (event) => handleDispatch(ns)(event, showItem);
+const onHideInstance = (ns) => (event) => handleDispatch(ns)(event, hideItem);
 
 const Wrapper = {
     view: ({ attrs }) => {
@@ -107,7 +106,9 @@ const useRemaining = sharedUseRemaining({ useMemo, useState });
 
 const Dialog = Dialogical(dialog);
 const Notification = Dialogical(notification);
-states.map(state => m.redraw());
+states.map(
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+state => m.redraw());
 
 export { Dialog, Dialogical, Notification, useDialog, useDialogic, useNotification, useRemaining };
 //# sourceMappingURL=dialogic-mithril.mjs.map

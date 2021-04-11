@@ -1,18 +1,25 @@
-import { useEffect, useState } from 'react';
 import { dialog, notification } from 'dialogic';
-import React, { PropsWithChildren } from 'react';
 import {
-  UseDialogicProps,
-  UseDialogicInstanceProps,
-  sharedUseDialogic,
   sharedUseDialog,
+  sharedUseDialogic,
   sharedUseNotification,
+  TUseEffect,
+  UseDialogicInstanceProps,
+  UseDialogicProps,
 } from 'dialogic-hooks';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
-export const useDialogic = sharedUseDialogic({ useEffect, useState });
-export const useDialog = sharedUseDialog({ useEffect, useState, dialog });
+export const useDialogic = sharedUseDialogic({
+  useEffect: useEffect as TUseEffect,
+  useState,
+});
+export const useDialog = sharedUseDialog({
+  useEffect: useEffect as TUseEffect,
+  useState,
+  dialog,
+});
 export const useNotification = sharedUseNotification({
-  useEffect,
+  useEffect: useEffect as TUseEffect,
   useState,
   notification,
 });

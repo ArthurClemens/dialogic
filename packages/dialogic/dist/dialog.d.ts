@@ -4,7 +4,7 @@ export declare const dialog: {
   defaultSpawn: string;
   defaultDialogicOptions: import('./types').DefaultDialogicOptions;
   show: <T = unknown>(
-    options?: import('./types').Options<T>,
+    options?: import('./types').Options<T> | undefined,
   ) => Promise<import('./types').Item<T>>;
   hide: <T_1 = unknown>(
     options?: import('./types').Options<T_1> | undefined,
@@ -27,8 +27,10 @@ export declare const dialog: {
   getCount: (
     identityOptions?: import('./types').IdentityOptions | undefined,
   ) => number;
-  isPaused: (identityOptions: import('./types').IdentityOptions) => boolean;
+  isPaused: (
+    identityOptions?: import('./types').IdentityOptions | undefined,
+  ) => boolean;
   getRemaining: (
-    identityOptions: import('./types').IdentityOptions,
+    identityOptions?: import('./types').IdentityOptions | undefined,
   ) => number | undefined;
 };

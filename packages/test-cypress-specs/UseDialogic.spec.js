@@ -1,4 +1,4 @@
-/* global cy, describe, before, it */
+/* global cy, describe, before */
 
 import { useDialogicTests } from './useDialogicTests';
 

@@ -1,7 +1,8 @@
+import { Dialog, dialog, useDialogicState } from 'dialogic-react';
 import React, { useEffect } from 'react';
-import { createFns } from './helpers/createFns';
+
 import { Default } from '../content/Default';
-import { dialog, Dialog, useDialogicState } from 'dialogic-react';
+import { createFns } from './helpers/createFns';
 import { PauseResumeRemaining } from './helpers/PauseResumeRemaining';
 import { RemainingWithAnimationFrame } from './helpers/RemainingWithAnimationFrame';
 

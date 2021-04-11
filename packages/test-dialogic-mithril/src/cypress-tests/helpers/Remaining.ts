@@ -1,6 +1,6 @@
-import m from 'mithril';
 import { Dialogic } from 'dialogic';
 import { useRemaining } from 'dialogic-mithril';
+import m from 'mithril';
 import { withHooks } from 'mithril-hooks';
 
 type RemainingProps = {

@@ -1,13 +1,21 @@
-import { Dialogic } from './index';
-
 export declare const MODE: {
   SHOW: string;
   HIDE: string;
 };
+export declare type TransitionStylesFn = (
+  domElement: HTMLElement,
+) => TransitionStyles;
+export declare type TransitionStyles = {
+  default?: Partial<CSSStyleDeclaration>;
+  showStart?: Partial<CSSStyleDeclaration>;
+  showEnd?: Partial<CSSStyleDeclaration>;
+  hideStart?: Partial<CSSStyleDeclaration>;
+  hideEnd?: Partial<CSSStyleDeclaration>;
+};
 declare type TransitionProps = {
   domElement?: HTMLElement;
   className?: string;
-  styles?: Dialogic.TransitionStyles | Dialogic.TransitionStylesFn;
+  styles?: TransitionStyles | TransitionStylesFn;
   __transitionTimeoutId__?: number;
 };
 export declare const transition: (

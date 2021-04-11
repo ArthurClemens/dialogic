@@ -29,7 +29,9 @@ export const RemainingWithAnimationFrame: RemainingFn = ({ attrs }) => {
   };
 
   return {
-    oncreate: () => (reqId = window.requestAnimationFrame(update)),
+    oncreate: () => {
+      reqId = window.requestAnimationFrame(update);
+    },
     onremove: () => window.cancelAnimationFrame(reqId),
     view: () =>
       m('div', { 'data-test-id': 'remaining' }, [

@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'mithril-hooks';
 import { dialog, notification } from 'dialogic';
-
 import {
-  sharedUseDialogic,
   sharedUseDialog,
+  sharedUseDialogic,
   sharedUseNotification,
 } from 'dialogic-hooks';
+import { useEffect, useState } from 'mithril-hooks';
 
 export const useDialogic = sharedUseDialogic({ useEffect, useState });
 export const useDialog = sharedUseDialog({ useEffect, useState, dialog });

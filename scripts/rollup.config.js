@@ -1,8 +1,8 @@
+import typescript from '@rollup/plugin-typescript';
 import fs from 'fs';
 import path from 'path';
 import cleanup from 'rollup-plugin-cleanup';
 import { terser } from 'rollup-plugin-terser';
-import typescript from '@rollup/plugin-typescript';
 
 const { env } = process;
 const pkg = JSON.parse(fs.readFileSync('./package.json'));
@@ -12,7 +12,7 @@ const format = isModule ? 'es' : 'umd';
 const file = isModule
   ? `${process.env.DEST || pkg.module}`
   : `${process.env.DEST || pkg.main}.js`;
-const target = isModule ? 'ESNEXT' : 'es2015';
+const target = isModule ? 'es2017' : 'es2015';
 const ext = path.extname(file);
 const filename = path.basename(file, ext);
 const dirname = path.dirname(file, ext);
@@ -42,4 +42,4 @@ export default {
   ].filter(Boolean),
 };
 
-export { filename, dirname, isTypeScript, isModule };
+export { dirname, filename, isModule, isTypeScript };

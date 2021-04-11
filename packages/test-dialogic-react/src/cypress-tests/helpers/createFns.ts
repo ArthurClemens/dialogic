@@ -1,14 +1,15 @@
 import { Dialogic } from 'dialogic';
+
 import { getRandomId } from '../utils';
 
 type CreateFnsProps = {
   instance: Dialogic.DialogicInstance;
-  component: any;
+  component: unknown;
   className?: string;
   id?: string;
   spawn?: string;
   title: string;
-  styles?: any;
+  styles?: Dialogic.TransitionStyles | Dialogic.TransitionStylesFn;
   timeout?: number;
   queued?: boolean;
 };
@@ -31,7 +32,7 @@ export const createFns = ({
   const contentId = `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}`;
   const props = {
     dialogic: {
-      component: component,
+      component,
       className,
       styles,
       id,
@@ -44,6 +45,7 @@ export const createFns = ({
     id: getRandomId(),
     contentId,
   };
+  console.log('props', props);
 
   const showFn = () =>
     instance.show<TInstance>({

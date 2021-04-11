@@ -26,7 +26,7 @@ enum TransitionStates {
   Hiding,
 }
 
-const getMaybeItem = <T>(ns: string) => (
+const getMaybeItem = <T = unknown>(ns: string) => (
   defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
 ) => (identityOptions?: Dialogic.IdentityOptions) =>
   selectors.find<T>(
@@ -35,14 +35,14 @@ const getMaybeItem = <T>(ns: string) => (
     getMergedIdentityOptions(defaultDialogicOptions, identityOptions),
   );
 
-const filterBySpawn = <T>(identityOptions: Dialogic.IdentityOptions) => (
-  items: Dialogic.Item<T>[],
-) =>
+const filterBySpawn = <T = unknown>(
+  identityOptions: Dialogic.IdentityOptions,
+) => (items: Dialogic.Item<T>[]) =>
   identityOptions.spawn !== undefined
     ? items.filter(item => item.identityOptions.spawn === identityOptions.spawn)
     : items;
 
-const filterById = <T>(identityOptions: Dialogic.IdentityOptions) => (
+const filterById = <T = unknown>(identityOptions: Dialogic.IdentityOptions) => (
   items: Dialogic.Item<T>[],
 ) =>
   identityOptions.id !== undefined
@@ -53,7 +53,7 @@ const filterById = <T>(identityOptions: Dialogic.IdentityOptions) => (
  * Gets a list of all non-queued items.
  * From the queued items only the first item is listed.
  * */
-const filterFirstInQueue = <T>(nsItems: Dialogic.Item<T>[]) => {
+const filterFirstInQueue = <T = unknown>(nsItems: Dialogic.Item<T>[]) => {
   let queuedCount = 0;
   return nsItems
     .map(item => ({
@@ -68,15 +68,15 @@ export const filterCandidates = (
   ns: string,
   items: Dialogic.NamespaceStore,
   identityOptions: Dialogic.IdentityOptions,
-) => {
-  const nsItems = items[ns] || [];
+): Dialogic.Item[] => {
+  const nsItems = (items[ns] || []) as Dialogic.Item[];
   if (nsItems.length === 0) {
     return [];
   }
   return pipe(filterBySpawn(identityOptions), filterFirstInQueue)(nsItems);
 };
 
-type TGetPassThroughOptions = <T>(options: Dialogic.Options<T>) => T;
+type TGetPassThroughOptions = <T = unknown>(options: Dialogic.Options<T>) => T;
 
 const getPassThroughOptions: TGetPassThroughOptions = options => {
   const copy = {
@@ -95,7 +95,7 @@ const getMergedIdentityOptions = (
     spawn: identityOptions.spawn || defaultDialogicOptions.spawn,
   } as Dialogic.IdentityOptions);
 
-const handleOptions = <T>(
+const handleOptions = <T = unknown>(
   defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
   options: Dialogic.Options<T> = {} as T,
 ) => {
@@ -125,7 +125,7 @@ const handleOptions = <T>(
 
 const createInstance = (ns: string) => (
   defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
-) => <T = unknown>(options: Dialogic.Options<T> = {} as T) => {
+) => <T = unknown>(options?: Dialogic.Options<T>) => {
   const {
     identityOptions,
     dialogicOptions,
@@ -195,7 +195,7 @@ const createInstance = (ns: string) => (
       };
       actions.replace(ns, existingItem.id, replacingItem as Dialogic.Item<T>);
     } else {
-      actions.add(ns, item as Dialogic.Item<T>);
+      actions.add<T>(ns, item);
       // This will instantiate and draw the instance
       // The instance will call `showDialog` in `onMount`
     }
@@ -281,24 +281,6 @@ export const resume = (ns: string) => (
   return Promise.all(validItems);
 };
 
-export const getTimerProperty = (
-  timerProp: 'isPaused' | 'getRemaining' | 'getResultPromise',
-  defaultValue: false | 0 | undefined,
-) => (ns: string) => (
-  defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
-) => (identityOptions?: Dialogic.IdentityOptions) => {
-  const maybeItem: Dialogic.MaybeItem<unknown> = getMaybeItem<unknown>(ns)(
-    defaultDialogicOptions,
-  )(identityOptions);
-  if (maybeItem.just) {
-    if (maybeItem.just && maybeItem.just.timer) {
-      return maybeItem.just.timer.selectors[timerProp]();
-    }
-    return defaultValue;
-  }
-  return defaultValue;
-};
-
 const getTimerSelectors = <T = unknown>(
   ns: string,
   defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
@@ -312,13 +294,13 @@ const getTimerSelectors = <T = unknown>(
 
 export const isPaused = (ns: string) => (
   defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
-) => (identityOptions: Dialogic.IdentityOptions) =>
+) => (identityOptions?: Dialogic.IdentityOptions) =>
   getTimerSelectors(ns, defaultDialogicOptions, identityOptions)?.isPaused() ||
   false;
 
 export const getRemaining = (ns: string) => (
   defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
-) => (identityOptions: Dialogic.IdentityOptions) =>
+) => (identityOptions?: Dialogic.IdentityOptions) =>
   getTimerSelectors(
     ns,
     defaultDialogicOptions,
@@ -374,7 +356,7 @@ export const resetAll = (ns: string) => (
   return Promise.resolve(items);
 };
 
-const getOverridingTransitionOptions = <T>(
+const getOverridingTransitionOptions = <T = unknown>(
   item: Dialogic.Item<T>,
   dialogicOptions: Dialogic.DialogicOptions<T>,
 ) => ({
@@ -430,20 +412,37 @@ export const getCount = (ns: string) => (
   identityOptions?: Dialogic.IdentityOptions,
 ) => selectors.getCount(ns, identityOptions);
 
-const transitionItem = <T>(item: Dialogic.Item<T>, mode: string) =>
+const transitionItem = <T = unknown>(item: Dialogic.Item<T>, mode: string) =>
   transition(item.dialogicOptions, mode);
 
-const deferredHideItem = async <T>(
+const getResultPromise = <T = unknown>() => (ns: string) => (
+  defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
+) => (identityOptions?: Dialogic.IdentityOptions) => {
+  const maybeItem: Dialogic.MaybeItem<T> = getMaybeItem<T>(ns)(
+    defaultDialogicOptions,
+  )(identityOptions);
+  if (maybeItem.just) {
+    if (maybeItem.just && maybeItem.just.timer) {
+      return maybeItem.just.timer.selectors.getResultPromise();
+    }
+    return undefined;
+  }
+  return undefined;
+};
+
+const deferredHideItem = async <T = unknown>(
   item: Dialogic.Item<T>,
   timer: Timer,
   timeout: number,
 ) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   timer.actions.start(() => hideItem(item), timeout);
-  return getTimerProperty('getResultPromise', undefined);
+  return getResultPromise<T>();
 };
 
-export const showItem: Dialogic.InitiateItemTransitionFn = async item => {
+export const showItem: Dialogic.InitiateItemTransitionFn = async <T = unknown>(
+  item: Dialogic.Item<T>,
+) => {
   if (item.callbacks.willShow) {
     item.callbacks.willShow(item);
   }

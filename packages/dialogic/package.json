@@ -14,7 +14,7 @@
     "build:umd": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=0 MODULE_NAME=dialogic ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js",
     "build:lint": "eslint --fix --ext .d.ts ./dist",
     "prettier": "../../node_modules/prettier/bin-prettier.js --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\"",
-    "size": "size-limit",
+    "build:size": "size-limit",
     "size:why": "size-limit --why"
   },
   "size-limit": [

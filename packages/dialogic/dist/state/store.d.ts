@@ -9,7 +9,10 @@ export declare const actions: {
   /**
    * Add an item to the end of the list.
    */
-  add: <T>(ns: string, item: Dialogic.Item<T>) => void;
+  add: <T extends unknown = unknown>(
+    ns: string,
+    item: Dialogic.Item<T>,
+  ) => void;
   /**
    * Removes the first item with a match on `id`.
    */
@@ -32,4 +35,26 @@ export declare const actions: {
   store: <T_2 = unknown>(ns: string, newItems: Dialogic.Item<T_2>[]) => void;
   refresh: () => void;
 };
-export declare const selectors: Dialogic.StateSelectors;
+export declare const selectors: {
+  getStore: () => Dialogic.NamespaceStore;
+  find: <T = unknown>(
+    ns: string,
+    identityOptions: Dialogic.IdentityOptions,
+  ) =>
+    | {
+        just: Dialogic.Item<T>;
+        nothing?: undefined;
+      }
+    | {
+        nothing: undefined;
+        just?: undefined;
+      };
+  getAll: <T_1 = unknown>(
+    ns: string,
+    identityOptions?: Dialogic.IdentityOptions | undefined,
+  ) => Dialogic.Item<T_1>[];
+  getCount: (
+    ns: string,
+    identityOptions?: Dialogic.IdentityOptions | undefined,
+  ) => number;
+};

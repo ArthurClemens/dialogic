@@ -1,8 +1,9 @@
+import { Dialog, dialog, useDialogicState } from 'dialogic-react';
 import React from 'react';
-import { createFns } from './helpers/createFns';
+
 import { Default } from '../content/Default';
 import { Buttons } from './helpers/buttons';
-import { dialog, Dialog, useDialogicState } from 'dialogic-react';
+import { createFns } from './helpers/createFns';
 
 export default () => {
   useDialogicState();
@@ -66,6 +67,7 @@ export default () => {
       <div className="control" data-test-id="hide-all">
         <div className="buttons">
           <button
+            type="button"
             className="button"
             data-test-id="button-hide-all"
             onClick={() => dialog.hideAll()}
@@ -73,6 +75,7 @@ export default () => {
             Hide all
           </button>
           <button
+            type="button"
             className="button"
             data-test-id="button-hide-all-simultaneously"
             onClick={() => dialog.hideAll({ styles: hideAllStyles })}
@@ -80,6 +83,7 @@ export default () => {
             Hide all simultaneously
           </button>
           <button
+            type="button"
             className="button"
             data-test-id="button-hide-all-id"
             onClick={() => dialog.hideAll({ id: '1' })}
@@ -87,6 +91,7 @@ export default () => {
             Hide all with id
           </button>
           <button
+            type="button"
             className="button"
             data-test-id="button-hide-all-spawn"
             onClick={() => dialog.hideAll({ spawn: '1' })}
@@ -94,6 +99,7 @@ export default () => {
             Hide all with spawn
           </button>
           <button
+            type="button"
             className="button"
             data-test-id="button-hide-all-spawn-id"
             onClick={() => dialog.hideAll({ id: '1', spawn: '1' })}

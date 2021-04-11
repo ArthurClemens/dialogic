@@ -1,8 +1,9 @@
+import { Dialog, dialog } from 'dialogic-mithril';
 import m from 'mithril';
-import { createFns } from './helpers/createFns';
+
 import { Default } from '../content/Default';
 import { buttons } from './helpers/buttons';
-import { dialog, Dialog } from 'dialogic-mithril';
+import { createFns } from './helpers/createFns';
 
 export default () => {
   dialog.resetAll();
@@ -14,8 +15,7 @@ export default () => {
   });
 
   return {
-    view: () => {
-      return m('.test', [buttons(fns), m('.spawn.default-spawn', m(Dialog))]);
-    },
+    view: () =>
+      m('.test', [buttons(fns), m('.spawn.default-spawn', m(Dialog))]),
   };
 };

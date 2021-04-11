@@ -1,5 +1,6 @@
-import m, { Component } from 'mithril';
 import { Dialogic } from 'dialogic';
+import m, { Component } from 'mithril';
+
 import { Wrapper } from './Wrapper';
 
 type DialogicalFn = (

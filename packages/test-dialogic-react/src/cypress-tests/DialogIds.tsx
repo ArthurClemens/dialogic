@@ -1,8 +1,9 @@
+import { Dialog, dialog } from 'dialogic-react';
 import React from 'react';
-import { createFns } from './helpers/createFns';
+
 import { Default } from '../content/Default';
 import { Buttons } from './helpers/buttons';
-import { dialog, Dialog } from 'dialogic-react';
+import { createFns } from './helpers/createFns';
 
 export default () => {
   dialog.resetAll();

@@ -1,13 +1,12 @@
+import { Dialogic, filterCandidates, selectors } from 'dialogic';
 import m, { Component } from 'mithril';
-import { filterCandidates, selectors, Dialogic } from 'dialogic';
+
+import { Instance } from './Instance';
 import {
+  onHideInstance,
   onInstanceMounted,
   onShowInstance,
-  onHideInstance,
 } from './instanceEvents';
-import { Instance } from './Instance';
-
-interface Wrapper extends Dialogic.DialogicalWrapperOptions {}
 
 export const Wrapper: Component<Dialogic.DialogicalWrapperOptions> = {
   view: ({ attrs }) => {
@@ -27,9 +26,7 @@ export const Wrapper: Component<Dialogic.DialogicalWrapperOptions> = {
       m(Instance, {
         key: item.key,
         identityOptions: item.identityOptions,
-        dialogicOptions: item.dialogicOptions as Dialogic.DialogicOptions<
-          Dialogic.PassThroughOptions
-        >,
+        dialogicOptions: item.dialogicOptions as Dialogic.DialogicOptions<Dialogic.PassThroughOptions>,
         passThroughOptions: item.passThroughOptions as Dialogic.PassThroughOptions,
         onMount: nsOnInstanceMounted,
         onShow: nsOnShowInstance,

@@ -6,10 +6,10 @@
   "module": "dist/dialogic-svelte.js",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
-    "clean": "rm -rf dist/*",
-    "build": "npm run clean && npm run build:svelte && npm run size",
+    "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
+    "build:clean": "rm -rf dist/*",
     "build:svelte": "MODULE=1 MODULE_NAME=dialogicSvelte ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.svelte.js",
-    "size": "size-limit",
+    "build:size": "size-limit",
     "size:why": "size-limit --why",
     "prettier": "prettier --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\""
   },

@@ -2,10 +2,13 @@ import Stream from 'mithril/stream';
 
 import { dialogical } from './dialogical';
 import type { Timer } from './state/timer';
+import { TransitionStyles, TransitionStylesFn } from './transition';
+
+export type { TransitionStyles, TransitionStylesFn };
 
 export type DialogicInstance = ReturnType<typeof dialogical>;
 
-type ConfirmFn<T> = {
+type ConfirmFn<T = unknown> = {
   (item: Item<T>): void;
 };
 
@@ -33,6 +36,8 @@ export type CommandOptions = IdentityOptions & TimerResumeOptions;
 
 // Components
 
+export type PassThroughOptions = unknown;
+
 export type DialogicalWrapperOptions = {
   ns: string;
   identityOptions: IdentityOptions;
@@ -40,39 +45,16 @@ export type DialogicalWrapperOptions = {
 
 export type DialogicalInstanceDispatchFn = (event: InstanceEvent) => void;
 
-export type PassThroughOptions = {
-  [key: string]: unknown;
-};
-
-export type DialogicalInstanceOptions<T extends PassThroughOptions> = {
+export type DialogicalInstanceOptions<T = unknown> = {
   identityOptions: IdentityOptions;
   dialogicOptions: DialogicOptions<T>;
-  passThroughOptions: T;
+  passThroughOptions?: T;
   onMount: DialogicalInstanceDispatchFn;
   onShow: DialogicalInstanceDispatchFn;
   onHide: DialogicalInstanceDispatchFn;
 };
 
-// TransitionFns
-
-export type TransitionFn = (domElement?: HTMLElement) => unknown;
-
-export type TransitionFns = {
-  show?: TransitionFn;
-  hide?: TransitionFn;
-};
-
-export type TransitionStyles = {
-  default?: Partial<CSSStyleDeclaration>;
-  showStart?: Partial<CSSStyleDeclaration>;
-  showEnd?: Partial<CSSStyleDeclaration>;
-  hideStart?: Partial<CSSStyleDeclaration>;
-  hideEnd?: Partial<CSSStyleDeclaration>;
-};
-
-export type TransitionStylesFn = (domElement: HTMLElement) => TransitionStyles;
-
-export type DialogicOptions<T> = {
+export type DialogicOptions<T = unknown> = {
   className?: string;
   component?: unknown;
   willHide?: ConfirmFn<T>;
@@ -88,16 +70,16 @@ export type DialogicOptions<T> = {
     __transitionTimeoutId__?: number;
   };
 
-export type Options<T> = {
+export type Options<T = unknown> = {
   dialogic?: DialogicOptions<T>;
 } & T;
 
-export type MaybeItem<T> = {
+export type MaybeItem<T = unknown> = {
   just?: Item<T>;
   nothing?: undefined;
 };
 
-export type Callbacks<T> = {
+export type Callbacks<T = unknown> = {
   willHide: ConfirmFn<T>;
   willShow: ConfirmFn<T>;
   didHide: ConfirmFn<T>;
@@ -120,23 +102,14 @@ export type Item<T = unknown> = {
 };
 
 export type NamespaceStore = {
-  [key: string]: Item[];
+  [key: string]: Item<unknown>[];
 };
 
 export type State = {
   store: NamespaceStore;
 };
 
-export type InitiateItemTransitionFn = <T>(item: Item<T>) => Promise<Item<T>>;
-
 export type States = Stream<State>;
-
-export type StateSelectors = {
-  getStore: () => NamespaceStore;
-  find: <T>(ns: string, identityOptions: IdentityOptions) => MaybeItem<T>;
-  getAll: <T>(ns: string, identityOptions?: IdentityOptions) => Item<T>[];
-  getCount: (ns: string, identityOptions?: IdentityOptions) => number;
-};
 
 export type InstanceEvent = {
   detail: {
@@ -145,22 +118,6 @@ export type InstanceEvent = {
   };
 };
 
-export type RemainingProps = {
-  /**
-   * Dialogic instance: notification, dialog, or custom.
-   */
-  instance: DialogicInstance;
-
-  id?: string;
-  spawn?: string;
-
-  /**
-   * Set to true to return seconds instead of milliseconds.
-   */
-  roundToSeconds?: boolean;
-
-  /**
-   * Returns the remaining time as milliseconds. Returns `undefined` when the timer is not running (before and after the timer runs).
-   */
-  callback: (displayValue: number | undefined) => unknown;
-};
+export type InitiateItemTransitionFn = <T = unknown>(
+  item: Item<T>,
+) => Promise<Item<T>>;

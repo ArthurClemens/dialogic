@@ -1,8 +1,9 @@
+import { Notification, notification, useDialogicState } from 'dialogic-react';
 import React from 'react';
-import { createFns } from './helpers/createFns';
+
 import { Default } from '../content/Default';
 import { Buttons } from './helpers/buttons';
-import { notification, Notification, useDialogicState } from 'dialogic-react';
+import { createFns } from './helpers/createFns';
 
 export default () => {
   useDialogicState();
@@ -59,6 +60,7 @@ export default () => {
       <div className="control">
         <div className="buttons">
           <button
+            type="button"
             className="button"
             data-test-id="button-reset"
             onClick={() => notification.resetAll()}

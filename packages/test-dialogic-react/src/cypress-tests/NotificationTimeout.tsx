@@ -1,9 +1,10 @@
+import { Notification, notification, useDialogicState } from 'dialogic-react';
 import React from 'react';
-import { createFns } from './helpers/createFns';
+
 import { Default } from '../content/Default';
-import { notification, Notification, useDialogicState } from 'dialogic-react';
-import { RemainingWithAnimationFrame } from './helpers/RemainingWithAnimationFrame';
 import { Buttons } from './helpers/buttons';
+import { createFns } from './helpers/createFns';
+import { RemainingWithAnimationFrame } from './helpers/RemainingWithAnimationFrame';
 
 export default () => {
   useDialogicState();
@@ -33,6 +34,7 @@ export default () => {
       <div className="control" data-test-id="reset-all">
         <div className="buttons">
           <button
+            type="button"
             className="button"
             data-test-id="button-pause"
             onClick={() => notification.pause()}
@@ -40,6 +42,7 @@ export default () => {
             Pause
           </button>
           <button
+            type="button"
             className="button"
             data-test-id="button-resume"
             onClick={() => notification.resume()}
@@ -47,6 +50,7 @@ export default () => {
             Resume
           </button>
           <button
+            type="button"
             className="button"
             data-test-id="button-reset"
             onClick={() => notification.resetAll()}

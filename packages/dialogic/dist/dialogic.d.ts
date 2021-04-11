@@ -5,12 +5,14 @@ export declare const filterCandidates: (
   ns: string,
   items: Dialogic.NamespaceStore,
   identityOptions: Dialogic.IdentityOptions,
-) => unknown;
+) => Dialogic.Item[];
 export declare const show: (
   ns: string,
 ) => (
   defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
-) => <T = unknown>(options?: Dialogic.Options<T>) => Promise<Dialogic.Item<T>>;
+) => <T = unknown>(
+  options?: Dialogic.Options<T> | undefined,
+) => Promise<Dialogic.Item<T>>;
 export declare const hide: (
   ns: string,
 ) => (
@@ -32,26 +34,18 @@ export declare const resume: (
 ) => <T = unknown>(
   commandOptions?: Dialogic.CommandOptions | undefined,
 ) => Promise<Dialogic.Item<T>[]>;
-export declare const getTimerProperty: (
-  timerProp: 'isPaused' | 'getRemaining' | 'getResultPromise',
-  defaultValue: false | 0 | undefined,
+export declare const isPaused: (
+  ns: string,
 ) => (
+  defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
+) => (identityOptions?: Dialogic.IdentityOptions | undefined) => boolean;
+export declare const getRemaining: (
   ns: string,
 ) => (
   defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
 ) => (
   identityOptions?: Dialogic.IdentityOptions | undefined,
-) => number | boolean | Promise<unknown> | undefined;
-export declare const isPaused: (
-  ns: string,
-) => (
-  defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
-) => (identityOptions: Dialogic.IdentityOptions) => boolean;
-export declare const getRemaining: (
-  ns: string,
-) => (
-  defaultDialogicOptions: Dialogic.DefaultDialogicOptions,
-) => (identityOptions: Dialogic.IdentityOptions) => number | undefined;
+) => number | undefined;
 export declare const exists: (
   ns: string,
 ) => (

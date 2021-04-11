@@ -1,7 +1,8 @@
-import React, { ReactNode } from 'react';
-import { createFns } from './createFns';
-import { Buttons } from './buttons';
 import { Dialogic } from 'dialogic-react';
+import React, { ReactNode } from 'react';
+
+import { Buttons } from './buttons';
+import { createFns } from './createFns';
 
 type TProps = {
   id?: string;
@@ -30,6 +31,7 @@ export const PauseResumeRemaining = ({
       <div className="control" data-test-id="reset-all">
         <div className="buttons">
           <button
+            type="button"
             className="button"
             data-test-id="button-pause"
             onClick={() => instance.pause(identity)}
@@ -37,6 +39,7 @@ export const PauseResumeRemaining = ({
             Pause
           </button>
           <button
+            type="button"
             className="button"
             data-test-id="button-resume"
             onClick={() => instance.resume(identity)}
@@ -44,6 +47,7 @@ export const PauseResumeRemaining = ({
             Resume
           </button>
           <button
+            type="button"
             className="button"
             data-test-id="button-reset"
             onClick={() => instance.resetAll(identity)}

@@ -1,12 +1,10 @@
-/* global process */
-import type { Configuration } from 'webpack';
-
-import path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import path from 'path';
+import type { Configuration } from 'webpack';
 import WebpackModules from 'webpack-modules';
 
 const baseDir = process.cwd();
-const env = process.env; // eslint-disable-line no-undef
+const { env } = process; // eslint-disable-line no-undef
 const babelConfigFile = env.BABEL_CONFIG
   ? path.resolve(baseDir, env.BABEL_CONFIG)
   : '../../babel.config.js';

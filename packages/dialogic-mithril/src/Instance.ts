@@ -1,9 +1,14 @@
-import m, { Component, ClosureComponent } from 'mithril';
 import { Dialogic } from 'dialogic';
+import m, { ClosureComponent, Component } from 'mithril';
 
-export const Instance: ClosureComponent<Dialogic.DialogicalInstanceOptions<
-  Dialogic.PassThroughOptions
->> = ({ attrs: componentAttrs }) => {
+type ComponentProps = Dialogic.PassThroughOptions & {
+  show: () => void;
+  hide: () => void;
+};
+
+export const Instance: ClosureComponent<
+  Dialogic.DialogicalInstanceOptions<Dialogic.PassThroughOptions>
+> = ({ attrs: componentAttrs }) => {
   let domElement: HTMLElement;
 
   const dispatchTransition = (
@@ -35,17 +40,17 @@ export const Instance: ClosureComponent<Dialogic.DialogicalInstanceOptions<
       onMount();
     },
     view: ({ attrs }) => {
-      const component = attrs.dialogicOptions.component as Component<
-        Dialogic.PassThroughOptions
-      >;
+      const component = attrs.dialogicOptions
+        .component as Component<ComponentProps>;
       if (!component) {
-        throw 'Component missing in dialogic options.';
+        throw new Error('Component missing in dialogic options.');
       }
+      const passThroughOptions = (attrs.passThroughOptions as {}) || {};
       return m(
         'div',
         { className: attrs.dialogicOptions.className },
         m(component, {
-          ...attrs.passThroughOptions,
+          ...passThroughOptions,
           show,
           hide,
         }),

@@ -1,27 +1,22 @@
-import React, { FunctionComponent, useCallback, useRef } from 'react';
 import { Dialogic } from 'dialogic';
+// eslint-disable-next-line import/no-unresolved
+import { FunctionComponent, useCallback, useRef } from 'react';
 
-interface Instance
-  extends Dialogic.DialogicalInstanceOptions<Dialogic.PassThroughOptions> {}
+type ComponentProps = Dialogic.PassThroughOptions & {
+  show: () => void;
+  hide: () => void;
+};
 
-export const Instance: FunctionComponent<Dialogic.DialogicalInstanceOptions<
-  Dialogic.PassThroughOptions
->> = props => {
+export const Instance = (
+  props: Dialogic.DialogicalInstanceOptions<Dialogic.PassThroughOptions>,
+) => {
   const domElementRef = useRef();
-  const className = props.dialogicOptions.className;
-  const Component = props.dialogicOptions.component as FunctionComponent<
-    Dialogic.PassThroughOptions
-  >;
+  const { className } = props.dialogicOptions;
+  const Component = props.dialogicOptions
+    .component as FunctionComponent<ComponentProps>;
   if (!Component) {
-    throw 'Component missing in dialogic options.';
+    throw new Error('Component missing in dialogic options.');
   }
-
-  const domElementCb = useCallback(node => {
-    if (node !== null) {
-      domElementRef.current = node;
-      onMount();
-    }
-  }, []);
 
   const dispatchTransition = (
     dispatchFn: Dialogic.DialogicalInstanceDispatchFn,
@@ -50,9 +45,23 @@ export const Instance: FunctionComponent<Dialogic.DialogicalInstanceOptions<
     dispatchTransition(props.onHide);
   };
 
+  const domElementCb = useCallback(node => {
+    if (node !== null) {
+      domElementRef.current = node;
+      onMount();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const passThroughOptions = props.passThroughOptions || {};
+  console.log(
+    'passThroughOptions',
+    JSON.stringify(passThroughOptions, null, 2),
+  );
+
   return (
     <div ref={domElementCb} className={className}>
-      <Component {...props.passThroughOptions} show={show} hide={hide} />
+      <Component {...passThroughOptions} show={show} hide={hide} />
     </div>
   );
 };

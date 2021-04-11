@@ -2,9 +2,11 @@ import Stream from 'mithril/stream';
 
 import { dialogical } from './dialogical';
 import type { Timer } from './state/timer';
+import { TransitionStyles, TransitionStylesFn } from './transition';
 
+export type { TransitionStyles, TransitionStylesFn };
 export declare type DialogicInstance = ReturnType<typeof dialogical>;
-declare type ConfirmFn<T> = {
+declare type ConfirmFn<T = unknown> = {
   (item: Item<T>): void;
 };
 export declare type DefaultDialogicOptions = {
@@ -24,6 +26,7 @@ export declare type TimerResumeOptions = {
   minimumDuration?: number;
 };
 export declare type CommandOptions = IdentityOptions & TimerResumeOptions;
+export declare type PassThroughOptions = unknown;
 export declare type DialogicalWrapperOptions = {
   ns: string;
   identityOptions: IdentityOptions;
@@ -31,33 +34,15 @@ export declare type DialogicalWrapperOptions = {
 export declare type DialogicalInstanceDispatchFn = (
   event: InstanceEvent,
 ) => void;
-export declare type PassThroughOptions = {
-  [key: string]: unknown;
-};
-export declare type DialogicalInstanceOptions<T extends PassThroughOptions> = {
+export declare type DialogicalInstanceOptions<T = unknown> = {
   identityOptions: IdentityOptions;
   dialogicOptions: DialogicOptions<T>;
-  passThroughOptions: T;
+  passThroughOptions?: T;
   onMount: DialogicalInstanceDispatchFn;
   onShow: DialogicalInstanceDispatchFn;
   onHide: DialogicalInstanceDispatchFn;
 };
-export declare type TransitionFn = (domElement?: HTMLElement) => unknown;
-export declare type TransitionFns = {
-  show?: TransitionFn;
-  hide?: TransitionFn;
-};
-export declare type TransitionStyles = {
-  default?: Partial<CSSStyleDeclaration>;
-  showStart?: Partial<CSSStyleDeclaration>;
-  showEnd?: Partial<CSSStyleDeclaration>;
-  hideStart?: Partial<CSSStyleDeclaration>;
-  hideEnd?: Partial<CSSStyleDeclaration>;
-};
-export declare type TransitionStylesFn = (
-  domElement: HTMLElement,
-) => TransitionStyles;
-export declare type DialogicOptions<T> = {
+export declare type DialogicOptions<T = unknown> = {
   className?: string;
   component?: unknown;
   willHide?: ConfirmFn<T>;
@@ -72,14 +57,14 @@ export declare type DialogicOptions<T> = {
 } & IdentityOptions & {
     __transitionTimeoutId__?: number;
   };
-export declare type Options<T> = {
+export declare type Options<T = unknown> = {
   dialogic?: DialogicOptions<T>;
 } & T;
-export declare type MaybeItem<T> = {
+export declare type MaybeItem<T = unknown> = {
   just?: Item<T>;
   nothing?: undefined;
 };
-export declare type Callbacks<T> = {
+export declare type Callbacks<T = unknown> = {
   willHide: ConfirmFn<T>;
   willShow: ConfirmFn<T>;
   didHide: ConfirmFn<T>;
@@ -100,41 +85,18 @@ export declare type Item<T = unknown> = {
   callbacks: Callbacks<T>;
 };
 export declare type NamespaceStore = {
-  [key: string]: Item[];
+  [key: string]: Item<unknown>[];
 };
 export declare type State = {
   store: NamespaceStore;
 };
-export declare type InitiateItemTransitionFn = <T>(
-  item: Item<T>,
-) => Promise<Item<T>>;
 export declare type States = Stream<State>;
-export declare type StateSelectors = {
-  getStore: () => NamespaceStore;
-  find: <T>(ns: string, identityOptions: IdentityOptions) => MaybeItem<T>;
-  getAll: <T>(ns: string, identityOptions?: IdentityOptions) => Item<T>[];
-  getCount: (ns: string, identityOptions?: IdentityOptions) => number;
-};
 export declare type InstanceEvent = {
   detail: {
     identityOptions: IdentityOptions;
     domElement: HTMLElement;
   };
 };
-export declare type RemainingProps = {
-  /**
-   * Dialogic instance: notification, dialog, or custom.
-   */
-  instance: DialogicInstance;
-  id?: string;
-  spawn?: string;
-  /**
-   * Set to true to return seconds instead of milliseconds.
-   */
-  roundToSeconds?: boolean;
-  /**
-   * Returns the remaining time as milliseconds. Returns `undefined` when the timer is not running (before and after the timer runs).
-   */
-  callback: (displayValue: number | undefined) => unknown;
-};
-export {};
+export declare type InitiateItemTransitionFn = <T = unknown>(
+  item: Item<T>,
+) => Promise<Item<T>>;

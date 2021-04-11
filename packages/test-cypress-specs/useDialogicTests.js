@@ -1,4 +1,4 @@
-/* global cy, describe, before, it */
+/* global cy, it */
 
 export const useDialogicTests = path => {
   it('Should show the homepage', () => {

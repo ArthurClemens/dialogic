@@ -1,8 +1,9 @@
+import { Dialog, dialog, useDialogicState } from 'dialogic-react';
 import React from 'react';
-import { createFns } from './helpers/createFns';
+
 import { Default } from '../content/Default';
 import { Buttons } from './helpers/buttons';
-import { dialog, Dialog, useDialogicState } from 'dialogic-react';
+import { createFns } from './helpers/createFns';
 
 export default () => {
   useDialogicState();
@@ -56,6 +57,7 @@ export default () => {
       <div className="control" data-test-id="reset-all">
         <div className="buttons">
           <button
+            type="button"
             className="button"
             data-test-id="button-reset-all"
             onClick={() => dialog.resetAll()}
@@ -63,6 +65,7 @@ export default () => {
             Reset all
           </button>
           <button
+            type="button"
             className="button"
             data-test-id="button-reset-all-id"
             onClick={() => dialog.resetAll({ id: '1' })}
@@ -70,6 +73,7 @@ export default () => {
             Reset all with id
           </button>
           <button
+            type="button"
             className="button"
             data-test-id="button-reset-all-spawn"
             onClick={() => dialog.resetAll({ spawn: '1' })}
@@ -77,6 +81,7 @@ export default () => {
             Reset all with spawn
           </button>
           <button
+            type="button"
             className="button"
             data-test-id="button-reset-all-spawn-id"
             onClick={() => dialog.resetAll({ id: '1', spawn: '1' })}

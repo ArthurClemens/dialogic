@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { DialogicTests } from '../../..';
 
 type ButtonsProps<T> = {
@@ -21,6 +22,7 @@ export const Buttons = <T,>(props: ButtonsProps<T>) => {
     <div className="buttons">
       {props.showFn && (
         <button
+          type="button"
           className="button primary"
           onClick={props.showFn}
           data-test-id={`button-show-${genName}`}
@@ -30,6 +32,7 @@ export const Buttons = <T,>(props: ButtonsProps<T>) => {
       )}
       {props.hideFn && (
         <button
+          type="button"
           className="button"
           onClick={props.hideFn}
           data-test-id={`button-hide-${genName}`}

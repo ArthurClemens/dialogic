@@ -1,111 +1,5 @@
 import Stream from 'mithril/stream';
 
-const pipe = (...fns) => (x) => fns.filter(Boolean).reduce((y, f) => f(y), x);
-const getStyleValue = ({ domElement, prop, }) => {
-    const defaultView = document.defaultView;
-    if (defaultView) {
-        const style = defaultView.getComputedStyle(domElement);
-        if (style) {
-            return style.getPropertyValue(prop);
-        }
-    }
-};
-
-const MODE = {
-    SHOW: 'show',
-    HIDE: 'hide',
-};
-const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(...transitionClassNames.showStart, ...transitionClassNames.showEnd, ...transitionClassNames.hideStart, ...transitionClassNames.hideEnd);
-const applyTransitionStyles = (domElement, step, styles) => {
-    const transitionStyle = styles[step] || {};
-    Object.keys(transitionStyle).forEach((key) => {
-        const value = transitionStyle[key].toString();
-        domElement.style[key] = value;
-        // if (domElement.style[key] !== value) {
-        // 	console.warn(`Invalid style: ${key}: ${value} (${domElement.style[key]})`);
-        // }
-    });
-};
-const applyNoDurationTransitionStyle = (domElement) => (domElement.style.transitionDuration = '0ms');
-const getTransitionStyles = (domElement, styles) => (typeof styles === 'function' ? styles(domElement) : styles) || {};
-const createClassList = (className, step) => className.split(/ /).map((n) => `${n}-${step}`);
-const applyStylesForState = (domElement, props, step, isEnterStep) => {
-    if (props.styles) {
-        const styles = getTransitionStyles(domElement, props.styles);
-        applyTransitionStyles(domElement, 'default', styles);
-        isEnterStep && applyNoDurationTransitionStyle(domElement);
-        applyTransitionStyles(domElement, step, styles);
-    }
-    if (props.className) {
-        const transitionClassNames = {
-            showStart: createClassList(props.className, 'show-start'),
-            showEnd: createClassList(props.className, 'show-end'),
-            hideStart: createClassList(props.className, 'hide-start'),
-            hideEnd: createClassList(props.className, 'hide-end'),
-        };
-        removeTransitionClassNames(domElement, transitionClassNames);
-        transitionClassNames &&
-            domElement.classList.add(...transitionClassNames[step]);
-    }
-    // reflow
-    domElement.scrollTop;
-};
-const getDuration = (domElement) => {
-    const durationStyleValue = getStyleValue({
-        domElement,
-        prop: 'transition-duration',
-    });
-    const durationValue = durationStyleValue !== undefined
-        ? styleDurationToMs(durationStyleValue)
-        : 0;
-    const delayStyleValue = getStyleValue({
-        domElement,
-        prop: 'transition-delay',
-    });
-    const delayValue = delayStyleValue !== undefined ? styleDurationToMs(delayStyleValue) : 0;
-    return durationValue + delayValue;
-};
-const steps = {
-    showStart: {
-        nextStep: 'showEnd',
-    },
-    showEnd: {
-        nextStep: undefined,
-    },
-    hideStart: {
-        nextStep: 'hideEnd',
-    },
-    hideEnd: {
-        nextStep: undefined,
-    },
-};
-const transition = (props, mode) => {
-    const domElement = props.domElement;
-    if (!domElement) {
-        return Promise.resolve('no domElement');
-    }
-    clearTimeout(props.__transitionTimeoutId__);
-    let currentStep = mode === MODE.SHOW ? 'showStart' : 'hideStart';
-    return new Promise(resolve => {
-        applyStylesForState(domElement, props, currentStep, currentStep === 'showStart');
-        setTimeout(() => {
-            const nextStep = steps[currentStep].nextStep;
-            if (nextStep) {
-                currentStep = nextStep;
-                applyStylesForState(domElement, props, currentStep);
-                // addEventListener sometimes hangs this function because it never finishes
-                // Using setTimeout instead of addEventListener gives more consistent results
-                const duration = getDuration(domElement);
-                props.__transitionTimeoutId__ = window.setTimeout(resolve, duration);
-            }
-        }, 0);
-    });
-};
-const styleDurationToMs = (durationStr) => {
-    const parsed = parseFloat(durationStr) * (durationStr.indexOf('ms') === -1 ? 1000 : 1);
-    return isNaN(parsed) ? 0 : parsed;
-};
-
 /* eslint-disable no-param-reassign */
 const findItem = (id, items) => items.find(item => item.id === id);
 const itemIndex = (id, items) => {
@@ -130,7 +24,7 @@ const store = {
          */
         add: (ns, item) => {
             update((state) => {
-                const items = (state.store[ns] || []);
+                const items = state.store[ns] || [];
                 state.store[ns] = [...items, item];
                 if (item.timer) {
                     // When the timer state updates, refresh the store so that UI can pick up the change
@@ -155,7 +49,7 @@ const store = {
          */
         replace: (ns, id, newItem) => {
             update((state) => {
-                const items = (state.store[ns] || []);
+                const items = state.store[ns] || [];
                 if (items) {
                     const index = itemIndex(id, items);
                     if (index !== -1) {
@@ -185,9 +79,7 @@ const store = {
             });
         },
         refresh: () => {
-            update((state) => ({
-                ...state,
-            }));
+            update((state) => (Object.assign({}, state)));
         },
     }),
     selectors: (states) => {
@@ -222,15 +114,9 @@ const store = {
     },
 };
 const update = Stream();
-const states = Stream.scan((state, patch) => patch(state), {
-    ...store.initialState,
-}, update);
-const actions = {
-    ...store.actions(update),
-};
-const selectors = {
-    ...store.selectors(states),
-};
+const states = Stream.scan((state, patch) => patch(state), Object.assign({}, store.initialState), update);
+const actions = Object.assign({}, store.actions(update));
+const selectors = Object.assign({}, store.selectors(states));
 // states.map(state =>
 //   console.log(JSON.stringify(state, null, 2))
 // );
@@ -253,20 +139,16 @@ const appendStartTimer = (state, callback, duration, updateState) => {
         state.onDone();
         updateState();
     };
-    return {
-        timeoutFn,
-        promise: new Promise(resolve => {
+    return Object.assign({ timeoutFn, promise: new Promise(resolve => {
             state.onDone = () => resolve();
             state.onAbort = () => resolve();
-        }),
-        ...(state.isPaused
-            ? {}
-            : {
-                startTime: new Date().getTime(),
-                timerId: window.setTimeout(timeoutFn, duration),
-                remaining: duration,
-            }),
-    };
+        }) }, (state.isPaused
+        ? {}
+        : {
+            startTime: new Date().getTime(),
+            timerId: window.setTimeout(timeoutFn, duration),
+            remaining: duration,
+        }));
 };
 const appendStopTimeout = (state) => {
     window.clearTimeout(state.timerId);
@@ -274,14 +156,8 @@ const appendStopTimeout = (state) => {
         timerId: initialState.timerId,
     };
 };
-const appendStopTimer = (state) => ({
-    ...appendStopTimeout(state),
-});
-const appendPauseTimer = (state) => ({
-    ...appendStopTimeout(state),
-    isPaused: true,
-    remaining: getRemaining$1(state),
-});
+const appendStopTimer = (state) => (Object.assign({}, appendStopTimeout(state)));
+const appendPauseTimer = (state) => (Object.assign(Object.assign({}, appendStopTimeout(state)), { isPaused: true, remaining: getRemaining$1(state) }));
 const appendResumeTimer = (state, minimumDuration) => {
     window.clearTimeout(state.timerId);
     const remaining = minimumDuration
@@ -297,64 +173,78 @@ const appendResumeTimer = (state, minimumDuration) => {
 const getRemaining$1 = (state) => state.remaining === 0 || state.remaining === undefined
     ? state.remaining
     : state.remaining - (new Date().getTime() - (state.startTime || 0));
-const Timer = () => {
+const TimerStore = () => {
     const timer = {
         initialState,
         actions: (update) => ({
+            /**
+             * Starts the timer
+             * @param {callback} Function Callback function that is called after completion.
+             * @param {duration} Number Timer duration in milliseconds.
+             */
             start: (callback, duration) => {
-                update((state) => ({
-                    ...state,
-                    ...appendStopTimeout(state),
-                    ...appendStartTimer(state, callback, duration, () => timer.actions(update).done()),
-                    ...(state.isPaused && appendPauseTimer(state)),
-                }));
+                update((state) => (Object.assign(Object.assign(Object.assign(Object.assign({}, state), appendStopTimeout(state)), appendStartTimer(state, callback, duration, () => timer.actions(update).done())), (state.isPaused && appendPauseTimer(state)))));
             },
+            /**
+             * Stops the timer.
+             */
             stop: () => {
-                update((state) => ({
-                    ...state,
-                    ...appendStopTimer(state),
-                    ...initialState,
-                }));
+                update((state) => (Object.assign(Object.assign(Object.assign({}, state), appendStopTimer(state)), initialState)));
             },
+            /**
+             * Pauses a running timer.
+             */
             pause: () => {
-                update((state) => ({
-                    ...state,
-                    ...(!state.isPaused && appendPauseTimer(state)),
-                }));
+                update((state) => (Object.assign(Object.assign({}, state), (!state.isPaused && appendPauseTimer(state)))));
             },
+            /**
+             * Resumes a paused timer.
+             * @param {minimumDuration} Number Sets the minimum duration.
+             */
             resume: (minimumDuration) => {
-                update((state) => ({
-                    ...state,
-                    ...(state.isPaused && appendResumeTimer(state, minimumDuration)),
-                }));
+                update((state) => (Object.assign(Object.assign({}, state), (state.isPaused && appendResumeTimer(state, minimumDuration)))));
             },
+            /**
+             * Aborts and clears a timer.
+             */
             abort: () => {
                 update((state) => {
                     state.onAbort();
-                    return {
-                        ...state,
-                        ...appendStopTimeout(state),
-                    };
+                    return Object.assign(Object.assign({}, state), appendStopTimeout(state));
                 });
             },
+            /**
+             * Updates the current state. Used to get the state for selectors.getRemaining.
+             */
+            refresh: () => {
+                update((state) => (Object.assign({}, state)));
+            },
+            /**
+             * Brings the timer to its initial state.
+             * Used internally.
+             */
             done: () => {
                 update(() => initialState);
             },
-            refresh: () => {
-                update((state) => ({
-                    ...state,
-                }));
-            },
         }),
         selectors: (states) => ({
+            /**
+             * Returns the paused state.
+             */
             isPaused: () => {
                 const state = states();
                 return state.isPaused;
             },
+            /**
+             * Returns the remaining duration in milliseconds.
+             */
             getRemaining: () => {
                 const state = states();
                 return state.isPaused ? state.remaining : getRemaining$1(state);
             },
+            /**
+             * The promise that is handled when the timer is done or canceled.
+             */
             getResultPromise: () => {
                 const state = states();
                 return state.promise;
@@ -362,15 +252,9 @@ const Timer = () => {
         }),
     };
     const update = Stream();
-    const states = Stream.scan((state, patch) => patch(state), {
-        ...timer.initialState,
-    }, update);
-    const actions = {
-        ...timer.actions(update),
-    };
-    const selectors = {
-        ...timer.selectors(states),
-    };
+    const states = Stream.scan((state, patch) => patch(state), Object.assign({}, timer.initialState), update);
+    const actions = Object.assign({}, timer.actions(update));
+    const selectors = Object.assign({}, timer.selectors(states));
     // states.map(state =>
     //   console.log(JSON.stringify(state, null, 2))
     // );
@@ -381,15 +265,142 @@ const Timer = () => {
     };
 };
 
-let uid = 0;
-const getUid = () => (uid === Number.MAX_VALUE ? 0 : uid++);
+const pipe = (...fns) => (x) => fns.filter(Boolean).reduce((y, f) => f(y), x);
+const getStyleValue = ({ domElement, prop, }) => {
+    const defaultView = document.defaultView;
+    if (defaultView) {
+        const style = defaultView.getComputedStyle(domElement);
+        if (style) {
+            return style.getPropertyValue(prop);
+        }
+    }
+};
+
+const MODE = {
+    SHOW: 'show',
+    HIDE: 'hide',
+};
+const removeTransitionClassNames = (domElement, transitionClassNames) => domElement.classList.remove(...transitionClassNames.showStart, ...transitionClassNames.showEnd, ...transitionClassNames.hideStart, ...transitionClassNames.hideEnd);
+const applyTransitionStyles = (domElement, step, styles) => {
+    const transitionStyle = styles[step];
+    if (transitionStyle) {
+        Object.keys(transitionStyle).forEach((key) => {
+            // Workaround for error "getPropertyValue is not a function"
+            const value = transitionStyle[key];
+            // eslint-disable-next-line no-param-reassign
+            domElement.style[key] = value;
+        });
+    }
+};
+const applyNoDurationTransitionStyle = (domElement) => {
+    // eslint-disable-next-line no-param-reassign
+    domElement.style.transitionDuration = '0ms';
+};
+const getTransitionStyles = (domElement, styles) => (typeof styles === 'function' ? styles(domElement) : styles) || {};
+const createClassList = (className, step) => className.split(/ /).map((n) => `${n}-${step}`);
+const applyStylesForState = (domElement, props, step, isEnterStep) => {
+    if (props.styles) {
+        const styles = getTransitionStyles(domElement, props.styles);
+        applyTransitionStyles(domElement, 'default', styles);
+        if (isEnterStep) {
+            applyNoDurationTransitionStyle(domElement);
+        }
+        applyTransitionStyles(domElement, step, styles);
+    }
+    if (props.className) {
+        const transitionClassNames = {
+            showStart: createClassList(props.className, 'show-start'),
+            showEnd: createClassList(props.className, 'show-end'),
+            hideStart: createClassList(props.className, 'hide-start'),
+            hideEnd: createClassList(props.className, 'hide-end'),
+        };
+        removeTransitionClassNames(domElement, transitionClassNames);
+        if (transitionClassNames) {
+            domElement.classList.add(...transitionClassNames[step]);
+        }
+    }
+    // reflow
+    // eslint-disable-next-line no-unused-expressions
+    domElement.scrollTop;
+};
+const styleDurationToMs = (durationStr) => {
+    const parsed = parseFloat(durationStr) * (durationStr.indexOf('ms') === -1 ? 1000 : 1);
+    return Number.isNaN(parsed) ? 0 : parsed;
+};
+const getDuration = (domElement) => {
+    const durationStyleValue = getStyleValue({
+        domElement,
+        prop: 'transition-duration',
+    });
+    const durationValue = durationStyleValue !== undefined
+        ? styleDurationToMs(durationStyleValue)
+        : 0;
+    const delayStyleValue = getStyleValue({
+        domElement,
+        prop: 'transition-delay',
+    });
+    const delayValue = delayStyleValue !== undefined ? styleDurationToMs(delayStyleValue) : 0;
+    return durationValue + delayValue;
+};
+const steps = {
+    showStart: {
+        nextStep: 'showEnd',
+    },
+    showEnd: {
+        nextStep: undefined,
+    },
+    hideStart: {
+        nextStep: 'hideEnd',
+    },
+    hideEnd: {
+        nextStep: undefined,
+    },
+};
+const transition = (props, mode) => {
+    const { domElement } = props;
+    if (!domElement) {
+        return Promise.resolve('no domElement');
+    }
+    clearTimeout(props.__transitionTimeoutId__);
+    let currentStep = mode === MODE.SHOW ? 'showStart' : 'hideStart';
+    return new Promise(resolve => {
+        applyStylesForState(domElement, props, currentStep, currentStep === 'showStart');
+        setTimeout(() => {
+            const { nextStep } = steps[currentStep];
+            if (nextStep) {
+                currentStep = nextStep;
+                applyStylesForState(domElement, props, currentStep);
+                // addEventListener sometimes hangs this function because it never finishes
+                // Using setTimeout instead of addEventListener gives more consistent results
+                const duration = getDuration(domElement);
+                // eslint-disable-next-line no-param-reassign
+                props.__transitionTimeoutId__ = window.setTimeout(resolve, duration);
+            }
+        }, 0);
+    });
+};
+
+const localState = {
+    uid: 0,
+};
+const getUid = () => {
+    if (localState.uid === Number.MAX_VALUE) {
+        localState.uid = 0;
+    }
+    else {
+        localState.uid += 1;
+    }
+    return localState.uid;
+};
 var TransitionStates;
 (function (TransitionStates) {
     TransitionStates[TransitionStates["Default"] = 0] = "Default";
     TransitionStates[TransitionStates["Displaying"] = 1] = "Displaying";
     TransitionStates[TransitionStates["Hiding"] = 2] = "Hiding";
 })(TransitionStates || (TransitionStates = {}));
-const getMaybeItem = (ns) => (defaultDialogicOptions) => (identityOptions) => selectors.find(ns, getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
+const getMaybeItem = (ns) => (defaultDialogicOptions) => (identityOptions) => selectors.find(ns, 
+// eslint-disable-next-line @typescript-eslint/no-use-before-define
+getMergedIdentityOptions(defaultDialogicOptions, identityOptions));
 const filterBySpawn = (identityOptions) => (items) => identityOptions.spawn !== undefined
     ? items.filter(item => item.identityOptions.spawn === identityOptions.spawn)
     : items;
@@ -411,16 +422,14 @@ const filterFirstInQueue = (nsItems) => {
         .map(({ item }) => item);
 };
 const filterCandidates = (ns, items, identityOptions) => {
-    const nsItems = items[ns] || [];
-    if (nsItems.length == 0) {
+    const nsItems = (items[ns] || []);
+    if (nsItems.length === 0) {
         return [];
     }
     return pipe(filterBySpawn(identityOptions), filterFirstInQueue)(nsItems);
 };
 const getPassThroughOptions = options => {
-    const copy = {
-        ...options,
-    };
+    const copy = Object.assign({}, options);
     delete copy.dialogic;
     return copy;
 };
@@ -434,11 +443,7 @@ const handleOptions = (defaultDialogicOptions, options = {}) => {
         spawn: options.dialogic ? options.dialogic.spawn : undefined,
     };
     const mergedIdentityOptions = getMergedIdentityOptions(defaultDialogicOptions || {}, identityOptions);
-    const dialogicOptions = {
-        ...defaultDialogicOptions,
-        ...options.dialogic,
-        __transitionTimeoutId__: 0,
-    };
+    const dialogicOptions = Object.assign(Object.assign(Object.assign({}, defaultDialogicOptions), options.dialogic), { __transitionTimeoutId__: 0 });
     const passThroughOptions = getPassThroughOptions(options);
     return {
         identityOptions: mergedIdentityOptions,
@@ -446,8 +451,9 @@ const handleOptions = (defaultDialogicOptions, options = {}) => {
         passThroughOptions,
     };
 };
-const createInstance = (ns) => (defaultDialogicOptions) => (options = {}) => {
+const createInstance = (ns) => (defaultDialogicOptions) => (options) => {
     const { identityOptions, dialogicOptions, passThroughOptions, } = handleOptions(defaultDialogicOptions, options);
+    // eslint-disable-next-line consistent-return
     return new Promise(resolve => {
         const callbacks = {
             willShow: (item) => {
@@ -482,25 +488,19 @@ const createInstance = (ns) => (defaultDialogicOptions) => (options = {}) => {
             callbacks,
             passThroughOptions,
             id: createId(identityOptions, ns),
-            timer: dialogicOptions.timeout ? Timer() : undefined,
+            timer: dialogicOptions.timeout ? TimerStore() : undefined,
             key: getUid().toString(),
             transitionState: TransitionStates.Default,
         };
         const maybeExistingItem = selectors.find(ns, identityOptions);
         const existingItem = maybeExistingItem.just;
         if (existingItem && dialogicOptions.toggle) {
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
             hide(ns)(defaultDialogicOptions)(options);
             return resolve(existingItem);
         }
         if (existingItem && !dialogicOptions.queued) {
-            // Preserve dialogicOptions
-            const dialogicOptions = existingItem.dialogicOptions;
-            const replacingItem = {
-                ...item,
-                key: existingItem.key,
-                transitionState: existingItem.transitionState,
-                dialogicOptions,
-            };
+            const replacingItem = Object.assign(Object.assign({}, item), { key: existingItem.key, transitionState: existingItem.transitionState, dialogicOptions: existingItem.dialogicOptions });
             actions.replace(ns, existingItem.id, replacingItem);
         }
         else {
@@ -517,31 +517,23 @@ const hide = (ns) => (defaultDialogicOptions) => (options) => {
     const maybeExistingItem = selectors.find(ns, identityOptions);
     const existingItem = maybeExistingItem.just;
     if (existingItem) {
-        const item = {
-            ...existingItem,
-            dialogicOptions: {
-                ...existingItem.dialogicOptions,
-                ...dialogicOptions,
-            },
-            passThroughOptions: {
-                ...existingItem.passThroughOptions,
-                passThroughOptions,
-            },
-        };
+        const item = Object.assign(Object.assign({}, existingItem), { dialogicOptions: Object.assign(Object.assign({}, existingItem.dialogicOptions), dialogicOptions), passThroughOptions: Object.assign(Object.assign({}, existingItem.passThroughOptions), { passThroughOptions }) });
         actions.replace(ns, existingItem.id, item);
         if (item.transitionState !== TransitionStates.Hiding) {
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
             return hideItem(item);
         }
-        else {
-            return Promise.resolve(item);
-        }
+        return Promise.resolve(item);
     }
     return Promise.resolve({
         ns,
         id: identityOptions.id,
     });
 };
-const pause = (ns) => (defaultDialogicOptions) => (identityOptions) => {
+const pause = (ns) => (
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+defaultDialogicOptions) => (identityOptions) => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const validItems = getValidItems(ns, identityOptions).filter(item => !!item.timer);
     validItems.forEach((item) => {
         if (item.timer) {
@@ -550,12 +542,15 @@ const pause = (ns) => (defaultDialogicOptions) => (identityOptions) => {
     });
     return Promise.all(validItems);
 };
-const resume = (ns) => (defaultDialogicOptions) => (commandOptions) => {
+const resume = (ns) => (
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+defaultDialogicOptions) => (commandOptions) => {
     const options = commandOptions || {};
     const identityOptions = {
         id: options.id,
         spawn: options.spawn,
     };
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const validItems = getValidItems(ns, identityOptions).filter(item => !!item.timer);
     validItems.forEach((item) => {
         if (item.timer) {
@@ -564,28 +559,25 @@ const resume = (ns) => (defaultDialogicOptions) => (commandOptions) => {
     });
     return Promise.all(validItems);
 };
-const getTimerProperty = (timerProp, defaultValue) => (ns) => (defaultDialogicOptions) => (identityOptions) => {
-    const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
-    if (maybeItem.just) {
-        if (maybeItem.just && maybeItem.just.timer) {
-            return maybeItem.just.timer.selectors[timerProp]();
-        }
-        else {
-            return defaultValue;
-        }
-    }
-    else {
-        return defaultValue;
-    }
-};
 const getTimerSelectors = (ns, defaultDialogicOptions, identityOptions) => {
+    var _a, _b;
     const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
-    return maybeItem?.just?.timer?.selectors;
+    return (_b = (_a = maybeItem === null || maybeItem === void 0 ? void 0 : maybeItem.just) === null || _a === void 0 ? void 0 : _a.timer) === null || _b === void 0 ? void 0 : _b.selectors;
 };
-const isPaused = (ns) => (defaultDialogicOptions) => (identityOptions) => getTimerSelectors(ns, defaultDialogicOptions, identityOptions)?.isPaused() ||
-    false;
-const getRemaining = (ns) => (defaultDialogicOptions) => (identityOptions) => getTimerSelectors(ns, defaultDialogicOptions, identityOptions)?.getRemaining() || undefined;
-const exists = (ns) => (defaultDialogicOptions) => (identityOptions) => !!getValidItems(ns, identityOptions).length;
+const isPaused = (ns) => (defaultDialogicOptions) => (identityOptions) => {
+    var _a;
+    return ((_a = getTimerSelectors(ns, defaultDialogicOptions, identityOptions)) === null || _a === void 0 ? void 0 : _a.isPaused()) ||
+        false;
+};
+const getRemaining = (ns) => (defaultDialogicOptions) => (identityOptions) => {
+    var _a;
+    return ((_a = getTimerSelectors(ns, defaultDialogicOptions, identityOptions)) === null || _a === void 0 ? void 0 : _a.getRemaining()) || undefined;
+};
+const exists = (ns) => (
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+defaultDialogicOptions) => (identityOptions) => 
+// eslint-disable-next-line @typescript-eslint/no-use-before-define
+!!getValidItems(ns, identityOptions).length;
 const getValidItems = (ns, identityOptions) => {
     const allItems = selectors.getAll(ns);
     let validItems;
@@ -618,15 +610,7 @@ defaultDialogicOptions) => (identityOptions) => {
     }
     return Promise.resolve(items);
 };
-const getOverridingTransitionOptions = (item, dialogicOptions) => {
-    return {
-        ...item,
-        dialogicOptions: {
-            ...item.dialogicOptions,
-            ...dialogicOptions,
-        },
-    };
-};
+const getOverridingTransitionOptions = (item, dialogicOptions) => (Object.assign(Object.assign({}, item), { dialogicOptions: Object.assign(Object.assign({}, item.dialogicOptions), dialogicOptions) }));
 /**
  * Triggers a `hideItem` for each item in the store.
  * Queued items: will trigger `hideItem` only for the first item, then reset the store.
@@ -644,27 +628,42 @@ defaultDialogicOptions) => (dialogicOptions) => {
     const regularItems = validItems.filter((item) => !options.queued && !item.dialogicOptions.queued);
     const queuedItems = validItems.filter((item) => options.queued || item.dialogicOptions.queued);
     const items = [];
-    regularItems.forEach((item) => items.push(hideItem(getOverridingTransitionOptions(item, options))));
+    regularItems.forEach((item) => 
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    items.push(hideItem(getOverridingTransitionOptions(item, options))));
     if (queuedItems.length > 0) {
         const [current] = queuedItems;
         // Make sure that any remaining items don't suddenly appear
         actions.store(ns, [current]);
         // Transition the current item
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         items.push(hideItem(getOverridingTransitionOptions(current, options)));
     }
     return Promise.all(items);
 };
 const getCount = (ns) => (identityOptions) => selectors.getCount(ns, identityOptions);
 const transitionItem = (item, mode) => transition(item.dialogicOptions, mode);
-const deferredHideItem = async function (item, timer, timeout) {
-    timer.actions.start(() => hideItem(item), timeout);
-    return getTimerProperty('getResultPromise', undefined);
+const getResultPromise = () => (ns) => (defaultDialogicOptions) => (identityOptions) => {
+    const maybeItem = getMaybeItem(ns)(defaultDialogicOptions)(identityOptions);
+    if (maybeItem.just) {
+        if (maybeItem.just && maybeItem.just.timer) {
+            return maybeItem.just.timer.selectors.getResultPromise();
+        }
+        return undefined;
+    }
+    return undefined;
 };
-const showItem = async function (item) {
+const deferredHideItem = async (item, timer, timeout) => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    timer.actions.start(() => hideItem(item), timeout);
+    return getResultPromise();
+};
+const showItem = async (item) => {
     if (item.callbacks.willShow) {
         item.callbacks.willShow(item);
     }
     if (item.transitionState !== TransitionStates.Displaying) {
+        // eslint-disable-next-line no-param-reassign
         item.transitionState = TransitionStates.Displaying;
         await transitionItem(item, MODE.SHOW);
     }
@@ -681,6 +680,7 @@ const showItem = async function (item) {
  * @returns A Promise with (a copy of) the data of the removed item.
  */
 const hideItem = async (item) => {
+    // eslint-disable-next-line no-param-reassign
     item.transitionState = TransitionStates.Hiding;
     // Stop any running timer
     if (item.timer) {
@@ -693,25 +693,19 @@ const hideItem = async (item) => {
     if (item.callbacks.didHide) {
         item.callbacks.didHide(item);
     }
-    const copy = {
-        ...item,
-    };
+    const copy = Object.assign({}, item);
     actions.remove(item.ns, item.id);
     return Promise.resolve(copy);
 };
 const setDomElement = (domElement, item) => {
+    // eslint-disable-next-line no-param-reassign
     item.dialogicOptions.domElement = domElement;
 };
 
 const dialogical = ({ ns, queued, timeout, }) => {
     const defaultId = `default_${ns}`;
     const defaultSpawn = `default_${ns}`;
-    const defaultDialogicOptions = {
-        id: defaultId,
-        spawn: defaultSpawn,
-        ...(queued && { queued }),
-        ...(timeout !== undefined && { timeout }),
-    };
+    const defaultDialogicOptions = Object.assign(Object.assign({ id: defaultId, spawn: defaultSpawn }, (queued && { queued })), (timeout !== undefined && { timeout }));
     return {
         // Identification
         ns,
@@ -782,5 +776,5 @@ var types = /*#__PURE__*/Object.freeze({
     __proto__: null
 });
 
-export { types as Dialogic, actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining, getTimerProperty, hide, hideAll, hideItem, isPaused, notification, pause, remaining, resetAll, resume, selectors, setDomElement, show, showItem, states };
+export { types as Dialogic, actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining, hide, hideAll, hideItem, isPaused, notification, pause, remaining, resetAll, resume, selectors, setDomElement, show, showItem, states };
 //# sourceMappingURL=dialogic.mjs.map

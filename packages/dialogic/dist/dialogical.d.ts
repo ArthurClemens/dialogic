@@ -14,7 +14,7 @@ export declare const dialogical: ({
   defaultSpawn: string;
   defaultDialogicOptions: Dialogic.DefaultDialogicOptions;
   show: <T = unknown>(
-    options?: Dialogic.Options<T>,
+    options?: Dialogic.Options<T> | undefined,
   ) => Promise<Dialogic.Item<T>>;
   hide: <T_1 = unknown>(
     options?: Dialogic.Options<T_1> | undefined,
@@ -33,8 +33,8 @@ export declare const dialogical: ({
   ) => Promise<Dialogic.Item<T_4>[]>;
   exists: (identityOptions?: Dialogic.IdentityOptions | undefined) => boolean;
   getCount: (identityOptions?: Dialogic.IdentityOptions | undefined) => number;
-  isPaused: (identityOptions: Dialogic.IdentityOptions) => boolean;
+  isPaused: (identityOptions?: Dialogic.IdentityOptions | undefined) => boolean;
   getRemaining: (
-    identityOptions: Dialogic.IdentityOptions,
+    identityOptions?: Dialogic.IdentityOptions | undefined,
   ) => number | undefined;
 };

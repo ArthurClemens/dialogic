@@ -1,9 +1,11 @@
+import { Notification, notification, useDialogicState } from 'dialogic-react';
 import React from 'react';
-import { PauseResumeRemaining } from './helpers/PauseResumeRemaining';
-import { notification, useDialogicState, Notification } from 'dialogic-react';
-import { createFns } from './helpers/createFns';
+
 import { Default } from '../content/Default';
+import { createFns } from './helpers/createFns';
+import { PauseResumeRemaining } from './helpers/PauseResumeRemaining';
 import { RemainingWithAnimationFrame } from './helpers/RemainingWithAnimationFrame';
+
 export default () => {
   useDialogicState();
 

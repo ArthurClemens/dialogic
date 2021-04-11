@@ -1,15 +1,13 @@
-import React, { FunctionComponent } from 'react';
-import { filterCandidates, selectors, Dialogic } from 'dialogic';
+import { Dialogic, filterCandidates, selectors } from 'dialogic';
+
+import { Instance } from './Instance';
 import {
+  onHideInstance,
   onInstanceMounted,
   onShowInstance,
-  onHideInstance,
 } from './instanceEvents';
-import { Instance } from './Instance';
 
-interface WrapperProps extends Dialogic.DialogicalWrapperOptions {}
-
-export const Wrapper: FunctionComponent<WrapperProps> = props => {
+export const Wrapper = (props: Dialogic.DialogicalWrapperOptions) => {
   const nsOnInstanceMounted = onInstanceMounted(props.ns);
   const nsOnShowInstance = onShowInstance(props.ns);
   const nsOnHideInstance = onHideInstance(props.ns);
@@ -29,9 +27,7 @@ export const Wrapper: FunctionComponent<WrapperProps> = props => {
           key={item.key}
           identityOptions={item.identityOptions}
           dialogicOptions={
-            item.dialogicOptions as Dialogic.DialogicOptions<
-              Dialogic.PassThroughOptions
-            >
+            item.dialogicOptions as Dialogic.DialogicOptions<Dialogic.PassThroughOptions>
           }
           passThroughOptions={
             item.passThroughOptions as Dialogic.PassThroughOptions

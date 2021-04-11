@@ -1,9 +1,11 @@
+import '../../../demo-dialogic-react-router/src/styles.css';
+
+import { Dialog, Notification } from 'dialogic-react';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+
 import { HomePage } from '../../../demo-dialogic-react-router/src/HomePage';
 import { ProfilePage } from '../../../demo-dialogic-react-router/src/ProfilePage';
-import '../../../demo-dialogic-react-router/src/styles.css';
-import { Dialog, Notification } from 'dialogic-react';
 import { useStore } from '../../../demo-dialogic-react-router/src/store';
 
 const PREFIX = '/UseDialogTest';

@@ -1,5 +1,5 @@
+import { Dialog, dialog } from 'dialogic-react';
 import React from 'react';
-import { dialog, Dialog } from 'dialogic-react';
 
 const DemoContent = () => (
   <div className="mdc-dialog__container">
@@ -57,6 +57,7 @@ export default () => (
     <div className="control" data-test-id="hide-all">
       <div className="buttons">
         <button
+          type="button"
           className="button"
           onClick={() =>
             dialog.show({
@@ -70,6 +71,7 @@ export default () => (
           Show dialog
         </button>
         <button
+          type="button"
           className="button"
           onClick={() =>
             dialog.show({

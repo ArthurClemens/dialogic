@@ -1,9 +1,9 @@
 import {
-  showItem,
+  Dialogic,
   hideItem,
   selectors,
   setDomElement,
-  Dialogic,
+  showItem,
 } from 'dialogic';
 
 export const handleDispatch = (ns: string) => (

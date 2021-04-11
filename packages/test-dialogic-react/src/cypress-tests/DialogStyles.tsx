@@ -1,8 +1,9 @@
+import { Dialog, dialog } from 'dialogic-react';
 import React from 'react';
-import { createFns } from './helpers/createFns';
+
 import { Default } from '../content/Default';
 import { Buttons } from './helpers/buttons';
-import { dialog, Dialog } from 'dialogic-react';
+import { createFns } from './helpers/createFns';
 
 export default () => {
   const fns1 = createFns({
@@ -10,7 +11,7 @@ export default () => {
     component: Default,
     title: 'DialogStyles',
     styles: (domElement: HTMLElement) => {
-      const height = domElement.getBoundingClientRect().height;
+      const { height } = domElement.getBoundingClientRect();
       return {
         default: {
           transition: 'all 350ms ease-in-out',
@@ -37,7 +38,7 @@ export default () => {
     title: 'DialogStyles',
     className: 'dialog',
     styles: (domElement: HTMLElement) => {
-      const height = domElement.getBoundingClientRect().height;
+      const { height } = domElement.getBoundingClientRect();
       return {
         default: {
           transition: 'all 350ms ease-in-out',

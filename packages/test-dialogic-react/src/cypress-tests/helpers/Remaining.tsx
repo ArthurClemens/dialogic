@@ -1,14 +1,14 @@
-import React from 'react';
-import { useRemaining } from 'dialogic-react';
 import { Dialogic } from 'dialogic';
+import { useRemaining } from 'dialogic-react';
+import React from 'react';
 
-type TProps = {
+type Props = {
   instance: Dialogic.DialogicInstance;
   spawn?: string;
   id?: string;
 };
 
-export const Remaining = ({ instance, spawn, id }: TProps) => {
+export const Remaining = ({ instance, spawn, id }: Props) => {
   const [displayValue] = useRemaining({
     instance,
     spawn,

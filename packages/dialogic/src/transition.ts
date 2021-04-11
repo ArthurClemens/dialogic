@@ -1,15 +1,24 @@
 import { getStyleValue } from './utils';
-import { Dialogic } from './index';
 
 export const MODE = {
   SHOW: 'show',
   HIDE: 'hide',
 };
 
+export type TransitionStylesFn = (domElement: HTMLElement) => TransitionStyles;
+
+export type TransitionStyles = {
+  default?: Partial<CSSStyleDeclaration>;
+  showStart?: Partial<CSSStyleDeclaration>;
+  showEnd?: Partial<CSSStyleDeclaration>;
+  hideStart?: Partial<CSSStyleDeclaration>;
+  hideEnd?: Partial<CSSStyleDeclaration>;
+};
+
 type TransitionProps = {
   domElement?: HTMLElement;
   className?: string;
-  styles?: Dialogic.TransitionStyles | Dialogic.TransitionStylesFn;
+  styles?: TransitionStyles | TransitionStylesFn;
   __transitionTimeoutId__?: number;
 };
 
@@ -23,6 +32,8 @@ type TransitionClassNames = {
 
 type TransitionStep = 'showStart' | 'showEnd' | 'hideStart' | 'hideEnd';
 type TransitionStyleState = 'default' | TransitionStep;
+
+type KeyValue = { [key: string]: string };
 
 const removeTransitionClassNames = (
   domElement: HTMLElement,
@@ -38,24 +49,27 @@ const removeTransitionClassNames = (
 const applyTransitionStyles = (
   domElement: HTMLElement,
   step: TransitionStyleState,
-  styles: Dialogic.TransitionStyles,
+  styles: TransitionStyles,
 ) => {
-  const transitionStyle = (styles[step] as CSSStyleDeclaration) || {};
-  Object.keys(transitionStyle).forEach((key: any) => {
-    const value = transitionStyle[key].toString();
-    domElement.style[key] = value;
-    // if (domElement.style[key] !== value) {
-    // 	console.warn(`Invalid style: ${key}: ${value} (${domElement.style[key]})`);
-    // }
-  });
+  const transitionStyle = styles[step] as CSSStyleDeclaration;
+  if (transitionStyle) {
+    Object.keys(transitionStyle).forEach((key: string) => {
+      // Workaround for error "getPropertyValue is not a function"
+      const value = ((transitionStyle as unknown) as KeyValue)[key];
+      // eslint-disable-next-line no-param-reassign
+      ((domElement.style as unknown) as KeyValue)[key] = value;
+    });
+  }
 };
 
-const applyNoDurationTransitionStyle = (domElement: HTMLElement) =>
-  (domElement.style.transitionDuration = '0ms');
+const applyNoDurationTransitionStyle = (domElement: HTMLElement) => {
+  // eslint-disable-next-line no-param-reassign
+  domElement.style.transitionDuration = '0ms';
+};
 
 const getTransitionStyles = (
   domElement: HTMLElement,
-  styles: Dialogic.TransitionStyles | Dialogic.TransitionStylesFn,
+  styles: TransitionStyles | TransitionStylesFn,
 ) => (typeof styles === 'function' ? styles(domElement) : styles) || {};
 
 const createClassList = (className: string, step: string) =>
@@ -70,7 +84,9 @@ const applyStylesForState = (
   if (props.styles) {
     const styles = getTransitionStyles(domElement, props.styles);
     applyTransitionStyles(domElement, 'default', styles);
-    isEnterStep && applyNoDurationTransitionStyle(domElement);
+    if (isEnterStep) {
+      applyNoDurationTransitionStyle(domElement);
+    }
     applyTransitionStyles(domElement, step, styles);
   }
 
@@ -82,12 +98,20 @@ const applyStylesForState = (
       hideEnd: createClassList(props.className, 'hide-end'),
     };
     removeTransitionClassNames(domElement, transitionClassNames);
-    transitionClassNames &&
+    if (transitionClassNames) {
       domElement.classList.add(...transitionClassNames[step]);
+    }
   }
 
   // reflow
+  // eslint-disable-next-line no-unused-expressions
   domElement.scrollTop;
+};
+
+const styleDurationToMs = (durationStr: string) => {
+  const parsed =
+    parseFloat(durationStr) * (durationStr.indexOf('ms') === -1 ? 1000 : 1);
+  return Number.isNaN(parsed) ? 0 : parsed;
 };
 
 const getDuration = (domElement: HTMLElement) => {
@@ -135,7 +159,7 @@ const steps: Steps = {
 };
 
 export const transition = (props: TransitionProps, mode?: string) => {
-  const domElement = props.domElement;
+  const { domElement } = props;
   if (!domElement) {
     return Promise.resolve('no domElement');
   }
@@ -153,21 +177,16 @@ export const transition = (props: TransitionProps, mode?: string) => {
     );
 
     setTimeout(() => {
-      const nextStep = steps[currentStep].nextStep;
+      const { nextStep } = steps[currentStep];
       if (nextStep) {
         currentStep = nextStep;
         applyStylesForState(domElement, props, currentStep);
         // addEventListener sometimes hangs this function because it never finishes
         // Using setTimeout instead of addEventListener gives more consistent results
         const duration = getDuration(domElement);
+        // eslint-disable-next-line no-param-reassign
         props.__transitionTimeoutId__ = window.setTimeout(resolve, duration);
       }
     }, 0);
   });
-};
-
-const styleDurationToMs = (durationStr: string) => {
-  const parsed =
-    parseFloat(durationStr) * (durationStr.indexOf('ms') === -1 ? 1000 : 1);
-  return isNaN(parsed) ? 0 : parsed;
 };

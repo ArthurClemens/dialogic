@@ -1,28 +1,28 @@
+import './app-styles.css';
+import './test-styles.css';
+
 import React, { FunctionComponent } from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { HashRouter as Router, Link, Route, Switch } from 'react-router-dom';
 
 import DialogClassName from './cypress-tests/DialogClassName';
 import DialogClassNameDelay from './cypress-tests/DialogClassNameDelay';
-import DialogStyles from './cypress-tests/DialogStyles';
-import DialogIds from './cypress-tests/DialogIds';
-import DialogExists from './cypress-tests/DialogExists';
 import DialogCount from './cypress-tests/DialogCount';
+import DialogExists from './cypress-tests/DialogExists';
 import DialogHideAll from './cypress-tests/DialogHideAll';
-import DialogResetAll from './cypress-tests/DialogResetAll';
-import DialogTimeout from './cypress-tests/DialogTimeout';
+import DialogIds from './cypress-tests/DialogIds';
 import DialogQueued from './cypress-tests/DialogQueued';
+import DialogResetAll from './cypress-tests/DialogResetAll';
+import DialogStyles from './cypress-tests/DialogStyles';
+import DialogTimeout from './cypress-tests/DialogTimeout';
+import LibBulmaDialog from './cypress-tests/LibBulmaDialog';
+import LibMaterialIODialog from './cypress-tests/LibMaterialIODialog';
 import NotificationCount from './cypress-tests/NotificationCount';
 import NotificationPause from './cypress-tests/NotificationPause';
 import NotificationTimeout from './cypress-tests/NotificationTimeout';
-import LibBulmaDialog from './cypress-tests/LibBulmaDialog';
-import LibMaterialIODialog from './cypress-tests/LibMaterialIODialog';
-import UseRemaining from './cypress-tests/UseRemaining';
 import UseDialogTest from './cypress-tests/UseDialog';
 import UseDialogComponentTest from './cypress-tests/UseDialogComponent';
-
-import './app-styles.css';
-import './test-styles.css';
+import UseRemaining from './cypress-tests/UseRemaining';
 
 type TRoute = {
   path: string;
@@ -48,11 +48,9 @@ const Home = () => (
 const App = () => (
   <Router>
     <Switch>
-      {routes.map(({ path, component, isExact }) => {
-        return (
-          <Route key={path} path={path} exact={isExact} component={component} />
-        );
-      })}
+      {routes.map(({ path, component, isExact }) => (
+        <Route key={path} path={path} exact={isExact} component={component} />
+      ))}
     </Switch>
   </Router>
 );

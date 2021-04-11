@@ -1,13 +1,15 @@
-import React, { FunctionComponent, useEffect } from 'react';
 import { Dialogic } from 'dialogic';
-import { Wrapper } from './Wrapper';
+// eslint-disable-next-line import/no-unresolved
+import { useEffect } from 'react';
+
 import { useDialogicState } from './useDialogicState';
+import { Wrapper } from './Wrapper';
 
-type DialogicalFn = (
-  type: Dialogic.DialogicInstance,
-) => FunctionComponent<Dialogic.ComponentOptions>;
+type Props = {
+  instance: Dialogic.DialogicInstance;
+} & Dialogic.ComponentOptions;
 
-export const Dialogical: DialogicalFn = instance => props => {
+export const Dialogical = ({ instance, ...props }: Props) => {
   useDialogicState();
 
   const identityOptions = {
@@ -20,6 +22,7 @@ export const Dialogical: DialogicalFn = instance => props => {
     if (typeof props.onMount === 'function') {
       props.onMount();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <Wrapper identityOptions={identityOptions} ns={instance.ns} />;
