@@ -5,13 +5,13 @@ export declare const useDialogic: <T>(
   hide: () => void;
 };
 export declare const useDialog: <T>(
-  props: T,
+  props: import('dialogic-hooks').UseDialogicProps<T>,
 ) => {
   show: () => void;
   hide: () => void;
 };
 export declare const useNotification: <T>(
-  props: T,
+  props: import('dialogic-hooks').UseDialogicProps<T>,
 ) => {
   show: () => void;
   hide: () => void;

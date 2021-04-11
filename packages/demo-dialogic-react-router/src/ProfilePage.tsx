@@ -1,5 +1,4 @@
 import { notification, UseDialog, useDialog } from 'dialogic-react';
-import React from 'react';
 import { Link, Route, useHistory, useRouteMatch } from 'react-router-dom';
 
 import { CurrentPathBadge } from './CurrentPathBadge';

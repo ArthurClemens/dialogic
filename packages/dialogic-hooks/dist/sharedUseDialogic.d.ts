@@ -54,7 +54,7 @@ export declare const sharedUseDialog: ({
 }: SharedUseDialogicProps & {
   dialog: Dialogic.DialogicInstance;
 }) => <T>(
-  props: T,
+  props: UseDialogicProps<T>,
 ) => {
   show: () => void;
   hide: () => void;
@@ -69,7 +69,7 @@ export declare const sharedUseNotification: ({
 }: SharedUseDialogicProps & {
   notification: Dialogic.DialogicInstance;
 }) => <T>(
-  props: T,
+  props: UseDialogicProps<T>,
 ) => {
   show: () => void;
   hide: () => void;
