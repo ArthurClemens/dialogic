@@ -2,7 +2,7 @@
   "name": "tests-dialogic-react",
   "private": true,
   "description": "Test Dialogic with React",
-  "version": "0.12.4",
+  "version": "0.12.5",
   "license": "MIT",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
@@ -21,7 +21,7 @@
     "prettier": "prettier --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\""
   },
   "dependencies": {
-    "dialogic": "^0.12.2",
+    "dialogic": "^0.12.5",
     "dialogic-react": "^0.12.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
