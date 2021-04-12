@@ -1,6 +1,6 @@
 {
   "name": "dialogic-react",
-  "version": "0.12.3",
+  "version": "0.12.4",
   "description": "Logic for dialogs and notifications",
   "main": "dist/dialogic-react",
   "module": "dist/dialogic-react.mjs",
@@ -34,7 +34,7 @@
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/react-router-dom": "^5.1.7",
-    "dialogic-hooks": "^0.12.3",
+    "dialogic-hooks": "^0.12.4",
     "size-limit": "^4.10.2"
   },
   "files": [
