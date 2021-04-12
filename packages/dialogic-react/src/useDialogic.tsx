@@ -1,28 +1,38 @@
 import { dialog, notification } from 'dialogic';
 import {
-  sharedUseDialog,
-  sharedUseDialogic,
-  sharedUseNotification,
   TUseEffect,
   UseDialogicInstanceProps,
   UseDialogicProps,
+  useDialogicShared,
 } from 'dialogic-hooks';
 import { PropsWithChildren, useEffect, useState } from 'react';
 
-export const useDialogic = sharedUseDialogic({
-  useEffect: useEffect as TUseEffect,
-  useState,
-});
-export const useDialog = sharedUseDialog({
-  useEffect: useEffect as TUseEffect,
-  useState,
-  dialog,
-});
-export const useNotification = sharedUseNotification({
-  useEffect: useEffect as TUseEffect,
-  useState,
-  notification,
-});
+export const useDialogic = <T,>(props: UseDialogicInstanceProps<T>) =>
+  useDialogicShared<T>({
+    ...props,
+    useEffect: useEffect as TUseEffect,
+    useState,
+  });
+
+export const useDialog = <T,>(
+  props: Omit<UseDialogicInstanceProps<T>, 'instance'>,
+) =>
+  useDialogicShared<T>({
+    ...props,
+    useEffect: useEffect as TUseEffect,
+    useState,
+    instance: dialog,
+  });
+
+export const useNotification = <T,>(
+  props: Omit<UseDialogicInstanceProps<T>, 'instance'>,
+) =>
+  useDialogicShared<T>({
+    ...props,
+    useEffect: useEffect as TUseEffect,
+    useState,
+    instance: notification,
+  });
 
 /**
  * Helper component that wraps `useDialogic` to use with JSX syntax.

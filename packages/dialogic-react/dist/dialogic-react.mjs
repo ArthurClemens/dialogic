@@ -3,7 +3,7 @@ import { states, selectors, setDomElement, showItem, hideItem, filterCandidates,
 export { Dialogic, dialog, notification } from 'dialogic';
 import { useRef, useCallback, useEffect, useState, useMemo } from 'react';
 import { useStream } from 'use-stream';
-import { sharedUseDialogic, sharedUseDialog, sharedUseNotification, sharedUseRemaining } from 'dialogic-hooks';
+import { useDialogicShared, useRemainingShared } from 'dialogic-hooks';
 
 function __rest(s, e) {
     var t = {};
@@ -109,20 +109,9 @@ const Dialogical = (_a) => {
     return jsx(Wrapper, { identityOptions: identityOptions, ns: instance.ns }, void 0);
 };
 
-const useDialogic = sharedUseDialogic({
-    useEffect: useEffect,
-    useState,
-});
-const useDialog = sharedUseDialog({
-    useEffect: useEffect,
-    useState,
-    dialog,
-});
-const useNotification = sharedUseNotification({
-    useEffect: useEffect,
-    useState,
-    notification,
-});
+const useDialogic = (props) => useDialogicShared(Object.assign(Object.assign({}, props), { useEffect: useEffect, useState }));
+const useDialog = (props) => useDialogicShared(Object.assign(Object.assign({}, props), { useEffect: useEffect, useState, instance: dialog }));
+const useNotification = (props) => useDialogicShared(Object.assign(Object.assign({}, props), { useEffect: useEffect, useState, instance: notification }));
 /**
  * Helper component that wraps `useDialogic` to use with JSX syntax.
  */
@@ -133,7 +122,7 @@ const UseDialogic = (props) => {
 const UseDialog = (props) => jsx(UseDialogic, Object.assign({}, props, { instance: dialog }), void 0);
 const UseNotification = (props) => jsx(UseDialogic, Object.assign({}, props, { instance: notification }), void 0);
 
-const useRemaining = sharedUseRemaining({ useState, useMemo });
+const useRemaining = (props) => useRemainingShared(Object.assign({ useState, useMemo }, props));
 
 const Dialog = (props) => (jsx(Dialogical, Object.assign({}, props, { instance: dialog }), void 0));
 const Notification = (props) => (jsx(Dialogical, Object.assign({}, props, { instance: notification }), void 0));

@@ -1,11 +1,9 @@
 import { notification, UseDialog, useDialog } from 'dialogic-react';
+import React from 'react';
 import { Link, Route, useHistory, useRouteMatch } from 'react-router-dom';
 
 import { CurrentPathBadge } from './CurrentPathBadge';
-import {
-  EditProfileDialog,
-  TEditProfileDialogProps,
-} from './EditProfileDialog';
+import { EditProfileDialog, EditProfileDialogProps } from './EditProfileDialog';
 import { saveConfirmationProps, TSaveConfirmation } from './SaveConfirmation';
 import { TStore } from './store';
 
@@ -49,7 +47,7 @@ export const ProfilePage = ({
     increment: store.increment,
   };
 
-  useDialog<TEditProfileDialogProps>({
+  useDialog<EditProfileDialogProps>({
     isIgnore: useDialogComponent,
     isShow: matchDialogPath ? matchDialogPath.isExact : false,
     deps: [store.count], // update the dialog contents whenever count changes
@@ -85,7 +83,7 @@ export const ProfilePage = ({
       </div>
       {useDialogComponent && (
         <Route path={dialogPath}>
-          <UseDialog<TEditProfileDialogProps>
+          <UseDialog<EditProfileDialogProps>
             isShow={matchDialogPath ? matchDialogPath.isExact : false}
             deps={[store.count]}
             props={useDialogProps}

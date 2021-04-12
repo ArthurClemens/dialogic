@@ -1,6 +1,6 @@
 import m from 'mithril';
 
-export type TEditProfileDialogProps = {
+export type EditProfileDialogProps = {
   pathPrefix: string;
   email: string;
   title: string;
@@ -9,7 +9,7 @@ export type TEditProfileDialogProps = {
   increment: () => void;
 };
 
-export const EditProfileDialog: m.ClosureComponent<TEditProfileDialogProps> = ({
+export const EditProfileDialog: m.ClosureComponent<EditProfileDialogProps> = ({
   attrs: initialAttrs,
 }) => {
   const localState = {

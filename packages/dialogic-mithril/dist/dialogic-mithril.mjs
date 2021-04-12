@@ -1,7 +1,7 @@
 import { selectors, setDomElement, showItem, hideItem, filterCandidates, dialog, notification, states } from 'dialogic';
 export { Dialogic, dialog, notification } from 'dialogic';
 import m from 'mithril';
-import { sharedUseDialogic, sharedUseDialog, sharedUseNotification, sharedUseRemaining } from 'dialogic-hooks';
+import { useDialogicShared, useRemainingShared } from 'dialogic-hooks';
 import { useEffect, useState, useMemo } from 'mithril-hooks';
 
 const Instance = ({ attrs: componentAttrs }) => {
@@ -94,15 +94,13 @@ const Dialogical = instance => ({
     },
 });
 
-const useDialogic = sharedUseDialogic({ useEffect, useState });
-const useDialog = sharedUseDialog({ useEffect, useState, dialog });
-const useNotification = sharedUseNotification({
-    useEffect,
-    useState,
-    notification,
-});
+const useDialogic = (props) => useDialogicShared(Object.assign(Object.assign({}, props), { useEffect,
+    useState }));
+const useDialog = (props) => useDialogicShared(Object.assign({ useEffect, useState, instance: dialog }, props));
+const useNotification = (props) => useDialogicShared(Object.assign({ useEffect,
+    useState, instance: notification }, props));
 
-const useRemaining = sharedUseRemaining({ useMemo, useState });
+const useRemaining = (props) => useRemainingShared(Object.assign({ useState, useMemo }, props));
 
 const Dialog = Dialogical(dialog);
 const Notification = Dialogical(notification);

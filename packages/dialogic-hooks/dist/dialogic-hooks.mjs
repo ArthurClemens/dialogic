@@ -1,8 +1,7 @@
 import { remaining } from 'dialogic';
 
 let useDialogicCounter = 0;
-const sharedUseDialogic = ({ useEffect, useState, }) => (allProps) => {
-    const { isIgnore, isShow, isHide, instance, deps = [], props = {}, } = allProps;
+const useDialogicShared = ({ useEffect, useState, isIgnore, isShow, isHide, instance, deps = [], props = {}, }) => {
     // Create an id if not set.
     // This is useful for pages with multiple dialogs, where we can't expect
     // to have the user set an explicit id for each.
@@ -63,25 +62,18 @@ const sharedUseDialogic = ({ useEffect, useState, }) => (allProps) => {
         hide: hideInstance,
     };
 };
-/**
- * `useDialogic` with `instance` set to `dialog`.
- */
-const sharedUseDialog = ({ useEffect, useState, dialog, }) => (props) => sharedUseDialogic({ useEffect, useState })(Object.assign(Object.assign({}, props), { instance: dialog }));
-/**
- * `useDialogic` with `instance` set to `notification`.
- */
-const sharedUseNotification = ({ useEffect, useState, notification, }) => (props) => sharedUseDialogic({ useEffect, useState })(Object.assign(Object.assign({}, props), { instance: notification }));
 
-const sharedUseRemaining = ({ useState, useMemo, }) => (props) => {
+const useRemainingShared = ({ useState, useMemo, instance, id, spawn, roundToSeconds, }) => {
     const [value, setValue] = useState(undefined);
     const identity = {
-        id: props.id,
-        spawn: props.spawn,
+        id,
+        spawn,
     };
-    const exists = !!props.instance.exists(identity);
+    const exists = !!instance.exists(identity);
     useMemo(() => {
         if (exists) {
-            remaining(Object.assign(Object.assign({}, identity), { instance: props.instance, roundToSeconds: props.roundToSeconds, callback: newValue => {
+            remaining(Object.assign(Object.assign({}, identity), { instance,
+                roundToSeconds, callback: newValue => {
                     setValue(newValue);
                 } }));
         }
@@ -90,5 +82,5 @@ const sharedUseRemaining = ({ useState, useMemo, }) => (props) => {
     return [value];
 };
 
-export { sharedUseDialog, sharedUseDialogic, sharedUseNotification, sharedUseRemaining };
+export { useDialogicShared, useRemainingShared };
 //# sourceMappingURL=dialogic-hooks.mjs.map

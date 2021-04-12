@@ -1,10 +1,7 @@
 import m from 'mithril';
 import { CurrentPathBadge } from './CurrentPathBadge';
 import { notification, useDialog } from 'dialogic-mithril';
-import {
-  TEditProfileDialogProps,
-  EditProfileDialog,
-} from './EditProfileDialog';
+import { EditProfileDialogProps, EditProfileDialog } from './EditProfileDialog';
 import { withHooks } from 'mithril-hooks';
 import { saveConfirmationProps, TSaveConfirmation } from './SaveConfirmation';
 import { store } from './store';
@@ -20,7 +17,7 @@ const ProfilePageFn = (attrs: TProps) => {
   const returnPath = `${pathPrefix}/profile`;
   const isRouteMatch = m.route.get() === dialogPath;
 
-  useDialog<TEditProfileDialogProps>({
+  useDialog<EditProfileDialogProps>({
     isShow: isRouteMatch,
     deps: [store.count], // update the dialog contents whenever count changes
     props: {

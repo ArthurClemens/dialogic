@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import { FormEvent, FunctionComponent, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-export type TEditProfileDialogProps = {
+export type EditProfileDialogProps = {
   email: string;
   title: string;
   pathPrefix?: string;
@@ -11,7 +12,7 @@ export type TEditProfileDialogProps = {
   increment: () => void;
 };
 
-export const EditProfileDialog: FunctionComponent<TEditProfileDialogProps> = props => {
+export const EditProfileDialog: FunctionComponent<EditProfileDialogProps> = props => {
   const [email, setEmail] = useState(props.email);
   return (
     <div className="modal is-active" data-test-id="edit-profile-dialog">

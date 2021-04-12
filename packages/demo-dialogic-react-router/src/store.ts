@@ -1,4 +1,4 @@
-import { useReducer, Reducer } from 'react';
+import { Reducer, useReducer } from 'react';
 
 const initialState = { count: 0, email: 'allan@company.com' };
 

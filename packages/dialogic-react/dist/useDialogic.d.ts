@@ -2,19 +2,19 @@ import { UseDialogicInstanceProps, UseDialogicProps } from 'dialogic-hooks';
 import { PropsWithChildren } from 'react';
 
 export declare const useDialogic: <T>(
-  allProps: UseDialogicInstanceProps<T>,
+  props: UseDialogicInstanceProps<T>,
 ) => {
   show: () => void;
   hide: () => void;
 };
 export declare const useDialog: <T>(
-  props: UseDialogicProps<T>,
+  props: Omit<UseDialogicInstanceProps<T>, 'instance'>,
 ) => {
   show: () => void;
   hide: () => void;
 };
 export declare const useNotification: <T>(
-  props: UseDialogicProps<T>,
+  props: Omit<UseDialogicInstanceProps<T>, 'instance'>,
 ) => {
   show: () => void;
   hide: () => void;

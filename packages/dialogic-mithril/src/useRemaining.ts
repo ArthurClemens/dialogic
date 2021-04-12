@@ -1,4 +1,5 @@
-import { sharedUseRemaining } from 'dialogic-hooks';
+import { UseRemainingProps, useRemainingShared } from 'dialogic-hooks';
 import { useMemo, useState } from 'mithril-hooks';
 
-export const useRemaining = sharedUseRemaining({ useMemo, useState });
+export const useRemaining = (props: UseRemainingProps) =>
+  useRemainingShared({ useState, useMemo, ...props });

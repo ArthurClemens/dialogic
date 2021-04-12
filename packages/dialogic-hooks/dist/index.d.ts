@@ -1,3 +1,3 @@
-export * from './sharedUseDialogic';
-export * from './sharedUseRemaining';
 export * from './types';
+export * from './useDialogic';
+export * from './useRemaining';

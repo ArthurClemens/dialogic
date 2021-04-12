@@ -9,7 +9,7 @@ const babelConfigFile = env.BABEL_CONFIG
   ? path.resolve(baseDir, env.BABEL_CONFIG)
   : '../../babel.config.js';
 
-const config: Configuration = {
+export const config: Configuration = {
   context: path.resolve(baseDir, './src'),
 
   entry: {
@@ -87,5 +87,3 @@ const config: Configuration = {
 
   devtool: 'source-map',
 };
-
-export default config;

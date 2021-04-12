@@ -23,7 +23,6 @@
   ],
   "dependencies": {
     "dialogic": "^0.12.2",
-    "dialogic-hooks": "^0.12.3",
     "use-stream": "^0.3.7"
   },
   "peerDependencies": {
@@ -35,7 +34,7 @@
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/react-router-dom": "^5.1.7",
-    "react": "^17.0.2",
+    "dialogic-hooks": "^0.12.3",
     "size-limit": "^4.10.2"
   },
   "files": [

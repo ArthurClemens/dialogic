@@ -1,5 +1,5 @@
-import { sharedUseRemaining } from 'dialogic-hooks';
-// eslint-disable-next-line import/no-unresolved
+import { UseRemainingProps, useRemainingShared } from 'dialogic-hooks';
 import { useMemo, useState } from 'react';
 
-export const useRemaining = sharedUseRemaining({ useState, useMemo });
+export const useRemaining = (props: UseRemainingProps) =>
+  useRemainingShared({ useState, useMemo, ...props });
