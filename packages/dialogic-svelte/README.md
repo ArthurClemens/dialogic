@@ -236,4 +236,4 @@ The component `UseNotification` has the same functionality as `UseDialog`.
 
 ## Size
 
-8.17 KB with all dependencies, minified and gzipped
+8.17 kB with all dependencies, minified and gzipped
