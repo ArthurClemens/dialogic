@@ -26,7 +26,7 @@ export default {
     name: env.MODULE_NAME,
     format,
     file,
-    sourcemap: true,
+    sourcemap: !isModule,
   },
   plugins: [
     isTypeScript &&
