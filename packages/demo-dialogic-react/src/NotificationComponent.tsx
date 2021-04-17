@@ -2,21 +2,10 @@
  * This example uses Material IO
  */
 
-import React, { FunctionComponent } from 'react';
 import { dialog, notification, useRemaining } from 'dialogic-react';
+import React, { FunctionComponent } from 'react';
+
 import { DialogComponent } from './DialogComponent';
-
-export type TNotificationComponentProps = {
-  roundToSeconds: boolean;
-};
-
-export const NotificationComponent: FunctionComponent<TNotificationComponentProps> = props => (
-  <div className="mdc-snackbar mdc-snackbar--open">
-    <div className="mdc-snackbar__surface">
-      <NotificationContent {...props} />
-    </div>
-  </div>
-);
 
 const NotificationContent: FunctionComponent<TNotificationComponentProps> = props => {
   const [remainingSeconds] = useRemaining({
@@ -33,6 +22,7 @@ const NotificationContent: FunctionComponent<TNotificationComponentProps> = prop
       </div>
       <div className="mdc-snackbar__actions">
         <button
+          type="button"
           className="button mdc-button mdc-snackbar__action"
           onClick={() => {
             notification.pause();
@@ -60,3 +50,15 @@ const NotificationContent: FunctionComponent<TNotificationComponentProps> = prop
     </>
   );
 };
+
+export type TNotificationComponentProps = {
+  roundToSeconds: boolean;
+};
+
+export const NotificationComponent: FunctionComponent<TNotificationComponentProps> = props => (
+  <div className="mdc-snackbar mdc-snackbar--open">
+    <div className="mdc-snackbar__surface">
+      <NotificationContent {...props} />
+    </div>
+  </div>
+);

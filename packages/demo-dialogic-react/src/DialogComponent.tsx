@@ -2,8 +2,8 @@
  * This example uses Material IO
  */
 
-import React from 'react';
 import { dialog } from 'dialogic-react';
+import React from 'react';
 
 type DialogContentProps = {
   title: string;
@@ -11,19 +11,6 @@ type DialogContentProps = {
   onAccept: () => void;
   onReject: () => void;
 };
-
-export const DialogComponent = (props: DialogContentProps) => (
-  <div
-    className="mdc-dialog mdc-dialog--open"
-    role="alertdialog"
-    aria-modal="true"
-    aria-labelledby="my-dialog-title"
-    aria-describedby="my-dialog-content"
-  >
-    <DialogContent {...props} />
-    <div className="mdc-dialog__scrim" /> {/* modal, onclick is not used */}
-  </div>
-);
 
 const DialogContent = (props: DialogContentProps) => (
   <div className="mdc-dialog__container">
@@ -34,6 +21,7 @@ const DialogContent = (props: DialogContentProps) => (
         <footer className="mdc-dialog__actions">
           <>
             <button
+              type="button"
               className="mdc-button mdc-dialog__button"
               onClick={() => {
                 dialog.hide();
@@ -43,6 +31,7 @@ const DialogContent = (props: DialogContentProps) => (
               <span className="mdc-button__label">Never mind</span>
             </button>
             <button
+              type="button"
               className="mdc-button mdc-dialog__button"
               onClick={() => {
                 dialog.hide();
@@ -55,5 +44,18 @@ const DialogContent = (props: DialogContentProps) => (
         </footer>
       </>
     </div>
+  </div>
+);
+
+export const DialogComponent = (props: DialogContentProps) => (
+  <div
+    className="mdc-dialog mdc-dialog--open"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="my-dialog-title"
+    aria-describedby="my-dialog-content"
+  >
+    <DialogContent {...props} />
+    <div className="mdc-dialog__scrim" /> {/* modal, onclick is not used */}
   </div>
 );

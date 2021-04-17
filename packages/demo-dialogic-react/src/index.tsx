@@ -1,18 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import './styles.css';
+
 import {
   Dialog,
-  notification,
   Notification,
+  notification,
   useDialogicState,
 } from 'dialogic-react';
-import { RemainingLabel } from './RemainingLabel';
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 import {
   NotificationComponent,
   TNotificationComponentProps,
 } from './NotificationComponent';
-
-import './styles.css';
+import { RemainingLabel } from './RemainingLabel';
 
 const App = () => {
   useDialogicState();
@@ -28,6 +29,7 @@ const App = () => {
           </div>
           <div className="ui message">
             <button
+              type="button"
               className="ui button primary"
               onClick={() => {
                 notification.show<TNotificationComponentProps>({
@@ -43,6 +45,7 @@ const App = () => {
               Add notification
             </button>
             <button
+              type="button"
               className="ui button"
               onClick={() => {
                 notification.pause();
@@ -51,6 +54,7 @@ const App = () => {
               Pause
             </button>
             <button
+              type="button"
               className="ui button"
               onClick={() => {
                 notification.resume();
@@ -59,6 +63,7 @@ const App = () => {
               Resume
             </button>
             <button
+              type="button"
               className="ui button"
               onClick={() => {
                 notification.hideAll();
@@ -67,6 +72,7 @@ const App = () => {
               Hide all
             </button>
             <button
+              type="button"
               className="ui button"
               onClick={() => {
                 notification.resetAll();
