@@ -1,9 +1,8 @@
 import { jsx, Fragment } from 'react/jsx-runtime';
-import { states, selectors, setDomElement, showItem, hideItem, filterCandidates, dialog, notification } from 'dialogic';
+import { states, selectors, setDomElement, showItem, hideItem, filterCandidates, dialog, notification, remaining } from 'dialogic';
 export { Dialogic, dialog, notification } from 'dialogic';
 import { useRef, useCallback, useEffect, useState, useMemo } from 'react';
 import { useStream } from 'use-stream';
-import { useDialogicShared, useRemainingShared } from 'dialogic-hooks';
 
 function __rest(s, e) {
     var t = {};
@@ -109,9 +108,70 @@ const Dialogical = (_a) => {
     return jsx(Wrapper, { identityOptions: identityOptions, ns: instance.ns }, void 0);
 };
 
-const useDialogic = (props) => useDialogicShared(Object.assign(Object.assign({}, props), { useEffect: useEffect, useState }));
-const useDialog = (props) => useDialogicShared(Object.assign(Object.assign({}, props), { useEffect: useEffect, useState, instance: dialog }));
-const useNotification = (props) => useDialogicShared(Object.assign(Object.assign({}, props), { useEffect: useEffect, useState, instance: notification }));
+let useDialogicCounter = 0;
+const useDialogic = ({ isIgnore, isShow, isHide, instance, deps = [], props = {}, }) => {
+    // Create an id if not set.
+    // This is useful for pages with multiple dialogs, where we can't expect
+    // to have the user set an explicit id for each.
+    // eslint-disable-next-line no-plusplus
+    const [id] = useState(useDialogicCounter++);
+    const augProps = Object.assign(Object.assign({}, props), (props.dialogic
+        ? {
+            dialogic: Object.assign(Object.assign({}, props.dialogic), { id: props.dialogic.id || id }),
+        }
+        : {
+            dialogic: {
+                id,
+            },
+        }));
+    const showInstance = () => {
+        instance.show(augProps);
+    };
+    const hideInstance = () => {
+        instance.hide(augProps);
+    };
+    // maybe show
+    useEffect(() => {
+        if (isIgnore)
+            return;
+        if (isShow !== undefined) {
+            if (isShow) {
+                showInstance();
+            }
+            else {
+                hideInstance();
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [...deps, isShow]);
+    // maybe hide
+    useEffect(() => {
+        if (isIgnore)
+            return;
+        if (isHide !== undefined) {
+            if (isHide) {
+                hideInstance();
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [...deps, isHide]);
+    // unmount
+    useEffect(() => {
+        if (isIgnore)
+            return;
+        // eslint-disable-next-line consistent-return
+        return () => {
+            hideInstance();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return {
+        show: showInstance,
+        hide: hideInstance,
+    };
+};
+const useDialog = (props) => useDialogic(Object.assign(Object.assign({}, props), { instance: dialog }));
+const useNotification = (props) => useDialogic(Object.assign(Object.assign({}, props), { instance: notification }));
 /**
  * Helper component that wraps `useDialogic` to use with JSX syntax.
  */
@@ -122,10 +182,26 @@ const UseDialogic = (props) => {
 const UseDialog = (props) => jsx(UseDialogic, Object.assign({}, props, { instance: dialog }), void 0);
 const UseNotification = (props) => jsx(UseDialogic, Object.assign({}, props, { instance: notification }), void 0);
 
-const useRemaining = (props) => useRemainingShared(Object.assign({ useState, useMemo }, props));
+const useRemaining = ({ instance, id, spawn, roundToSeconds, }) => {
+    const [value, setValue] = useState(undefined);
+    const identity = {
+        id,
+        spawn,
+    };
+    const exists = !!instance.exists(identity);
+    useMemo(() => {
+        if (exists) {
+            remaining(Object.assign(Object.assign({}, identity), { instance,
+                roundToSeconds, callback: newValue => {
+                    setValue(newValue);
+                } }));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [exists]);
+    return [value];
+};
 
 const Dialog = (props) => (jsx(Dialogical, Object.assign({}, props, { instance: dialog }), void 0));
 const Notification = (props) => (jsx(Dialogical, Object.assign({}, props, { instance: notification }), void 0));
 
 export { Dialog, Dialogical, Notification, UseDialog, UseDialogic, UseNotification, useDialog, useDialogic, useDialogicState, useNotification, useRemaining };
-//# sourceMappingURL=dialogic-react.mjs.map

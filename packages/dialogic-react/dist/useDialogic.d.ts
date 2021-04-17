@@ -1,9 +1,17 @@
-import { UseDialogicInstanceProps, UseDialogicProps } from 'dialogic-hooks';
+import type {
+  UseDialogicInstanceProps,
+  UseDialogicProps,
+} from 'dialogic-hooks';
 import { PropsWithChildren } from 'react';
 
-export declare const useDialogic: <T>(
-  props: UseDialogicInstanceProps<T>,
-) => {
+export declare const useDialogic: <T>({
+  isIgnore,
+  isShow,
+  isHide,
+  instance,
+  deps,
+  props,
+}: UseDialogicInstanceProps<T>) => {
   show: () => void;
   hide: () => void;
 };

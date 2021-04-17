@@ -777,4 +777,3 @@ var types = /*#__PURE__*/Object.freeze({
 });
 
 export { types as Dialogic, actions, dialog, dialogical, exists, filterCandidates, getCount, getRemaining, hide, hideAll, hideItem, isPaused, notification, pause, remaining, resetAll, resume, selectors, setDomElement, show, showItem, states };
-//# sourceMappingURL=dialogic.mjs.map

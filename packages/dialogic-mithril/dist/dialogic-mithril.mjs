@@ -1,8 +1,7 @@
-import { selectors, setDomElement, showItem, hideItem, filterCandidates, dialog, notification, states } from 'dialogic';
+import { selectors, setDomElement, showItem, hideItem, filterCandidates, dialog, notification, remaining, states } from 'dialogic';
 export { Dialogic, dialog, notification } from 'dialogic';
 import m from 'mithril';
-import { useDialogicShared, useRemainingShared } from 'dialogic-hooks';
-import { useEffect, useState, useMemo } from 'mithril-hooks';
+import { useState, useEffect, useMemo } from 'mithril-hooks';
 
 const Instance = ({ attrs: componentAttrs }) => {
     let domElement;
@@ -94,13 +93,89 @@ const Dialogical = instance => ({
     },
 });
 
-const useDialogic = (props) => useDialogicShared(Object.assign(Object.assign({}, props), { useEffect,
-    useState }));
-const useDialog = (props) => useDialogicShared(Object.assign({ useEffect, useState, instance: dialog }, props));
-const useNotification = (props) => useDialogicShared(Object.assign({ useEffect,
-    useState, instance: notification }, props));
+let useDialogicCounter = 0;
+const useDialogic = ({ isIgnore, isShow, isHide, instance, deps = [], props = {}, }) => {
+    // Create an id if not set.
+    // This is useful for pages with multiple dialogs, where we can't expect
+    // to have the user set an explicit id for each.
+    // eslint-disable-next-line no-plusplus
+    const [id] = useState(useDialogicCounter++);
+    const augProps = Object.assign(Object.assign({}, props), (props.dialogic
+        ? {
+            dialogic: Object.assign(Object.assign({}, props.dialogic), { id: props.dialogic.id || id }),
+        }
+        : {
+            dialogic: {
+                id,
+            },
+        }));
+    const showInstance = () => {
+        instance.show(augProps);
+    };
+    const hideInstance = () => {
+        instance.hide(augProps);
+    };
+    // maybe show
+    useEffect(() => {
+        if (isIgnore)
+            return;
+        if (isShow !== undefined) {
+            if (isShow) {
+                showInstance();
+            }
+            else {
+                hideInstance();
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [...deps, isShow]);
+    // maybe hide
+    useEffect(() => {
+        if (isIgnore)
+            return;
+        if (isHide !== undefined) {
+            if (isHide) {
+                hideInstance();
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [...deps, isHide]);
+    // unmount
+    useEffect(() => {
+        if (isIgnore)
+            return;
+        // eslint-disable-next-line consistent-return
+        return () => {
+            hideInstance();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return {
+        show: showInstance,
+        hide: hideInstance,
+    };
+};
+const useDialog = (props) => useDialogic(Object.assign({ instance: dialog }, props));
+const useNotification = (props) => useDialogic(Object.assign({ instance: notification }, props));
 
-const useRemaining = (props) => useRemainingShared(Object.assign({ useState, useMemo }, props));
+const useRemaining = ({ instance, id, spawn, roundToSeconds, }) => {
+    const [value, setValue] = useState(undefined);
+    const identity = {
+        id,
+        spawn,
+    };
+    const exists = !!instance.exists(identity);
+    useMemo(() => {
+        if (exists) {
+            remaining(Object.assign(Object.assign({}, identity), { instance,
+                roundToSeconds, callback: newValue => {
+                    setValue(newValue);
+                } }));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [exists]);
+    return [value];
+};
 
 const Dialog = Dialogical(dialog);
 const Notification = Dialogical(notification);
@@ -109,4 +184,3 @@ states.map(
 state => m.redraw());
 
 export { Dialog, Dialogical, Notification, useDialog, useDialogic, useNotification, useRemaining };
-//# sourceMappingURL=dialogic-mithril.mjs.map

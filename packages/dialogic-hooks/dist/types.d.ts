@@ -1,14 +1,6 @@
 import { Dialogic } from 'dialogic';
-import type { DependencyList, useEffect, useMemo, useState } from 'react';
+import type { DependencyList } from 'react';
 
-declare type TUseEffect = typeof useEffect;
-declare type TUseMemo = typeof useMemo;
-declare type TUseState = typeof useState;
-export type { DependencyList, TUseEffect, TUseMemo, TUseState };
-export declare type UseDialogicSharedProps = {
-  useEffect: TUseEffect;
-  useState: TUseState;
-};
 export declare type UseDialogicProps<T> = {
   /**
    * Condition when the instance should be shown.
@@ -36,10 +28,6 @@ export declare type UseDialogicInstanceProps<T> = UseDialogicProps<T> & {
    * Instance to show.
    */
   instance: Dialogic.DialogicInstance;
-};
-export declare type SharedUseRemainingProps = {
-  useMemo: TUseMemo;
-  useState: TUseState;
 };
 export declare type UseRemainingProps = {
   instance: Dialogic.DialogicInstance;
