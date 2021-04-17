@@ -18,7 +18,8 @@
   },
   "size-limit": [
     {
-      "path": "dist/dialogic-mithril.js"
+      "path": "dist/dialogic-mithril.js",
+      "webpack": false
     }
   ],
   "dependencies": {
