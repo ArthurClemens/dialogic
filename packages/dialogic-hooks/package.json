@@ -3,7 +3,7 @@
   "version": "0.12.6",
   "description": "Dialogic hooks",
   "main": "dist/dialogic-hooks",
-  "module": "dist/dialogic-hooks.mjs",
+  "module": "dist/dialogic-hooks.module.js",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
     "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",

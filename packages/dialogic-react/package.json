@@ -3,7 +3,7 @@
   "version": "0.12.6",
   "description": "Logic for dialogs and notifications",
   "main": "dist/dialogic-react",
-  "module": "dist/dialogic-react.mjs",
+  "module": "dist/dialogic-react.module.js",
   "scripts": {
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
     "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
@@ -24,7 +24,7 @@
   "dependencies": {
     "dialogic": "^0.12.6",
     "dialogic-hooks": "^0.12.6",
-    "use-stream": "^0.4.0"
+    "use-stream": "^0.4.1"
   },
   "peerDependencies": {
     "react": "^17.0.2",

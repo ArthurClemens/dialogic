@@ -18,7 +18,7 @@
   "dependencies": {
     "dialogic-mithril": "^0.12.6",
     "mithril": "^2.0.4",
-    "mithril-hooks": "^0.7.0"
+    "mithril-hooks": "^0.7.1"
   },
   "devDependencies": {
     "@types/mithril": "^2.0.7",
