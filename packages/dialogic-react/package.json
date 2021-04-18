@@ -1,6 +1,6 @@
 {
   "name": "dialogic-react",
-  "version": "0.12.6",
+  "version": "0.12.7",
   "description": "Logic for dialogs and notifications",
   "main": "dist/dialogic-react",
   "module": "dist/dialogic-react.module.js",
@@ -22,8 +22,8 @@
     }
   ],
   "dependencies": {
-    "dialogic": "^0.12.6",
-    "dialogic-hooks": "^0.12.6",
+    "dialogic": "^0.12.7",
+    "dialogic-hooks": "^0.12.7",
     "use-stream": "^0.4.1"
   },
   "peerDependencies": {
