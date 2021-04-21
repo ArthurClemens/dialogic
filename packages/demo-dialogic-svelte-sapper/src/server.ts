@@ -1,7 +1,7 @@
-import sirv from 'sirv';
-import express from 'express';
-import compression from 'compression';
 import * as sapper from '@sapper/server';
+import compression from 'compression';
+import express from 'express';
+import sirv from 'sirv';
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
