@@ -44,9 +44,9 @@
 
 ## Supported JavaScript libraries
 
-* React - [Dialogic for React documentation](./packages/dialogic-react/README.md)
+* React and NextJS - [Dialogic for React documentation](./packages/dialogic-react/README.md)
 * Mithril - [Dialogic for Mithril documentation](./packages/dialogic-mithril/README.md)
-* Svelte - [Dialogic for Svelte documentation](./packages/dialogic-svelte/README.md)
+* Svelte and Sapper - [Dialogic for Svelte documentation](./packages/dialogic-svelte/README.md)
 
 
 ## Features

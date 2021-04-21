@@ -1,4 +1,4 @@
-# Dialogic for React
+# Dialogic for React and NextJS
 
 
 - [API](#api)
@@ -33,6 +33,7 @@ Codesandbox examples:
 * Listed examples:
   * [Route example with useDialog hook](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-cutrx)
   * [Route example with UseDialog component](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-component-kgq22)
+  * [NextJS example with useDialog hook](https://codesandbox.io/s/dialogic-for-react-nextjs-example-l713v)
 
 Demo code in this repo:
 * `./packages/demo-dialogic-react`
