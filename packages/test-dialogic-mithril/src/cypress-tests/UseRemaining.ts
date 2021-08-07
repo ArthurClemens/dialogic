@@ -121,7 +121,7 @@ export default () => {
             m(Remaining, {
               key: 'NotificationPause',
               instance: notification,
-              spawn: '2'
+              spawn: '2',
             }),
           ),
           m('.content', [buttons({ ...fns2, name: 'spawn' })]),

@@ -19,8 +19,8 @@ export const EditProfileDialog: m.ClosureComponent<EditProfileDialogProps> = ({
     localState.email = newEmail;
   };
   return {
-    view: ({ attrs }) => {
-      return m(
+    view: ({ attrs }) =>
+      m(
         'div',
         { className: 'modal is-active', 'data-test-id': 'edit-profile-dialog' },
         [
@@ -61,7 +61,7 @@ export const EditProfileDialog: m.ClosureComponent<EditProfileDialogProps> = ({
                       value: localState.email,
                       oninput: (e: InputEvent) => {
                         if (e.target) {
-                          setEmail((e.target as HTMLInputElement).value);
+                          setEmail((<HTMLInputElement>e.target).value);
                         }
                       },
                       'data-test-id': 'input-email',
@@ -116,7 +116,6 @@ export const EditProfileDialog: m.ClosureComponent<EditProfileDialogProps> = ({
             ],
           ),
         ],
-      );
-    },
+      ),
   };
 };
