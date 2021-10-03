@@ -19,14 +19,14 @@
 }
 .dialog-delay-show-end {
   opacity: 1;
-  transition: opacity 750ms 1000ms;
+  transition: opacity 750ms 1000ms ease-in-out;
 }
 .dialog-delay-hide-start {
   opacity: 1;
 }
 .dialog-delay-hide-end {
   opacity: 0;
-  transition: opacity 750ms 1000ms;
+  transition: opacity 750ms 1000ms ease-in-out;
 }
 
 .dialog-timings-show-start {
@@ -34,18 +34,18 @@
 }
 .dialog-timings-show-end {
   opacity: 1;
-  transition: opacity 200ms;
+  transition: opacity 200ms ease-in-out;
 }
 .dialog-timings-hide-start {
   opacity: 1;
 }
 .dialog-timings-hide-end {
   opacity: 0;
-  transition: opacity 800ms;
+  transition: opacity 800ms ease-in-out;
 }
 
 .notification {
-  transition: opacity 350ms;
+  transition: opacity 350ms ease-in-out;
 }
 .notification-show-start {
   opacity: 0;
@@ -61,7 +61,7 @@
 }
 
 .demo-notification {
-  transition: opacity 400ms 100ms;
+  transition: opacity 400ms 100ms ease-in-out;
 }
 .demo-notification-show-start {
   opacity: 0;

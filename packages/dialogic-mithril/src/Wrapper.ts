@@ -1,12 +1,12 @@
-import { Dialogic, filterCandidates, selectors } from 'dialogic';
-import m, { Component } from 'mithril';
+import { Dialogic, filterCandidates, selectors } from "dialogic";
+import m, { Component } from "mithril";
 
-import { Instance } from './Instance';
+import { Instance } from "./Instance";
 import {
   onHideInstance,
   onInstanceMounted,
   onShowInstance,
-} from './instanceEvents';
+} from "./instanceEvents";
 
 export const Wrapper: Component<Dialogic.DialogicalWrapperOptions> = {
   view: ({ attrs }) => {
@@ -19,19 +19,21 @@ export const Wrapper: Component<Dialogic.DialogicalWrapperOptions> = {
     const filtered = filterCandidates(
       attrs.ns,
       selectors.getStore(),
-      identityOptions,
+      identityOptions
     );
 
-    return filtered.map(item =>
+    return filtered.map((item) =>
       m(Instance, {
         key: item.key,
         identityOptions: item.identityOptions,
-        dialogicOptions: item.dialogicOptions as Dialogic.DialogicOptions<Dialogic.PassThroughOptions>,
-        passThroughOptions: item.passThroughOptions as Dialogic.PassThroughOptions,
+        dialogicOptions:
+          item.dialogicOptions as Dialogic.DialogicOptions<Dialogic.PassThroughOptions>,
+        passThroughOptions:
+          item.passThroughOptions as Dialogic.PassThroughOptions,
         onMount: nsOnInstanceMounted,
         onShow: nsOnShowInstance,
         onHide: nsOnHideInstance,
-      }),
+      })
     );
   },
 };

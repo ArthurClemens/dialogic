@@ -1,25 +1,23 @@
-import { Dialogic } from 'dialogic';
-// eslint-disable-next-line import/no-unresolved
-import { FunctionComponent, useCallback, useRef } from 'react';
+import { Dialogic } from "dialogic";
+import React, { FunctionComponent, useCallback, useRef } from "react";
 
-type ComponentProps = Dialogic.PassThroughOptions & {
+type ComponentProps<T = unknown> = T & {
   show: () => void;
   hide: () => void;
 };
 
-export const Instance = (
-  props: Dialogic.DialogicalInstanceOptions<Dialogic.PassThroughOptions>,
-) => {
+export const Instance = <T,>(props: Dialogic.DialogicalInstanceOptions<T>) => {
   const domElementRef = useRef();
   const { className } = props.dialogicOptions;
-  const Component = props.dialogicOptions
-    .component as FunctionComponent<ComponentProps>;
+  const Component = props.dialogicOptions.component as FunctionComponent<
+    ComponentProps<T>
+  >;
   if (!Component) {
-    throw new Error('Component missing in dialogic options.');
+    throw new Error("Component missing in dialogic options.");
   }
 
   const dispatchTransition = (
-    dispatchFn: Dialogic.DialogicalInstanceDispatchFn,
+    dispatchFn: Dialogic.DialogicalInstanceDispatchFn
   ) => {
     const domElement = domElementRef.current;
     if (domElement === undefined) {
@@ -45,7 +43,7 @@ export const Instance = (
     dispatchTransition(props.onHide);
   };
 
-  const domElementCb = useCallback(node => {
+  const domElementCb = useCallback((node) => {
     if (node !== null) {
       domElementRef.current = node;
       onMount();
@@ -53,7 +51,7 @@ export const Instance = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const passThroughOptions = props.passThroughOptions || {};
+  const passThroughOptions: T = props.passThroughOptions || ({} as T);
 
   return (
     <div ref={domElementCb} className={className}>

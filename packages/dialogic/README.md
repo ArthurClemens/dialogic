@@ -4,4 +4,4 @@
 
 ## Size
 
-4.23 kB with all dependencies, minified and gzipped
+3.51 KB with all dependencies, minified and gzipped

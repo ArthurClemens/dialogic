@@ -1,0 +1,33 @@
+{
+  "name": "dialogic-svelte-ts",
+  "version": "0.12.7",
+  "description": "Logic for dialogs and notifications",
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "src"
+  ],
+  "main": "./dist/dialogic-svelte-ts.es.js",
+  "module": "./dist/dialogic-svelte-ts.es.js",
+  "svelte": "src/index.js",
+  "scripts": {
+    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "dev": "vite",
+    "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
+    "build:vite": "vite build",
+    "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json"
+  },
+  "dependencies": {
+    "dialogic": "^0.12.7"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.26",
+    "@tsconfig/svelte": "^2.0.1",
+    "svelte": "^3.43.1",
+    "svelte-preprocess": "4.9.8",
+    "vite": "^2.6.2"
+  },
+  "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
+  "homepage": "https://github.com/ArthurClemens/dialogic"
+}

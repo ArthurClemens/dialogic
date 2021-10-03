@@ -1,19 +1,19 @@
-import './styles.css';
+import "./styles.css";
 
 import {
   Dialog,
   Notification,
   notification,
   useDialogicState,
-} from 'dialogic-react';
-import React from 'react';
-import ReactDOM from 'react-dom';
+} from "dialogic-react";
+import ReactDOM from "react-dom";
+import React from "react";
 
 import {
   NotificationComponent,
   TNotificationComponentProps,
-} from './NotificationComponent';
-import { RemainingLabel } from './RemainingLabel';
+} from "./NotificationComponent";
+import { RemainingLabel } from "./RemainingLabel";
 
 const App = () => {
   useDialogicState();
@@ -35,7 +35,7 @@ const App = () => {
                 notification.show<TNotificationComponentProps>({
                   dialogic: {
                     component: NotificationComponent,
-                    className: 'notification',
+                    className: "notification",
                     timeout: 4000,
                   },
                   roundToSeconds: true,
@@ -103,7 +103,7 @@ const App = () => {
           </div>
         </main>
         <footer>
-          Dialogic: manage dialogs and notifications.{' '}
+          Dialogic: manage dialogs and notifications.{" "}
           <a href="https://github.com/ArthurClemens/dialogic">
             Main documentation on GitHub
           </a>
@@ -115,5 +115,5 @@ const App = () => {
   );
 };
 
-const mountNode = document.querySelector('#root');
+const mountNode = document.querySelector("#app");
 ReactDOM.render(<App />, mountNode);

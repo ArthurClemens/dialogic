@@ -2,36 +2,29 @@
   "name": "dialogic-svelte",
   "version": "0.12.7",
   "description": "Logic for dialogs and notifications",
-  "main": "dist/dialogic-svelte",
-  "module": "dist/dialogic-svelte.js",
-  "scripts": {
-    "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
-    "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
-    "build:clean": "rm -rf dist/*",
-    "build:svelte": "MODULE=1 MODULE_NAME=dialogicSvelte ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.svelte.js",
-    "build:size": "size-limit",
-    "size:why": "size-limit --why",
-    "prettier": "prettier --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\""
-  },
-  "size-limit": [
-    {
-      "path": "dist/dialogic-svelte.js"
-    }
-  ],
-  "dependencies": {
-    "dialogic": "^0.12.7"
-  },
+  "type": "module",
   "files": [
     "dist",
     "README.md",
     "src"
   ],
+  "main": "./dist/dialogic-svelte.es.js",
+  "module": "./dist/dialogic-svelte.es.js",
   "svelte": "src/index.js",
-  "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
-  "homepage": "https://github.com/ArthurClemens/dialogic",
-  "license": "MIT",
+  "scripts": {
+    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "dev": "vite",
+    "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
+    "build:vite": "vite build"
+  },
+  "dependencies": {
+    "dialogic": "^0.12.7"
+  },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^4.10.2",
-    "size-limit": "^4.10.2"
-  }
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.26",
+    "svelte": "^3.43.1",
+    "vite": "^2.6.2"
+  },
+  "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
+  "homepage": "https://github.com/ArthurClemens/dialogic"
 }

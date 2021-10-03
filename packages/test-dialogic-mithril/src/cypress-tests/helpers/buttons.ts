@@ -1,7 +1,7 @@
-import { Dialogic } from 'dialogic';
-import m from 'mithril';
+import { Dialogic } from "dialogic";
+import m from "mithril";
 
-type ButtonsProps = {
+export type TButtons = {
   showFn: () => Promise<Dialogic.Item>;
   hideFn: () => Promise<Dialogic.Item>;
   name?: string;
@@ -9,31 +9,31 @@ type ButtonsProps = {
   spawn?: string;
 };
 
-export const buttons = ({ showFn, hideFn, id, spawn, name }: ButtonsProps) => {
+export const buttons = ({ showFn, hideFn, id, spawn, name }: TButtons) => {
   const genName =
     name ||
-    `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}` ||
-    'default';
-  return m('div', { className: 'buttons' }, [
+    `${id ? `id${id}` : ""}${spawn ? `spawn${spawn}` : ""}` ||
+    "default";
+  return m("div", { className: "buttons" }, [
     showFn &&
       m(
-        'button',
+        "button",
         {
-          className: 'button primary',
+          className: "button primary",
           onclick: showFn,
-          'data-test-id': `button-show-${genName}`,
+          "data-test-id": `button-show-${genName}`,
         },
-        `Show ${genName}`,
+        `Show ${genName}`
       ),
     hideFn &&
       m(
-        'button',
+        "button",
         {
-          className: 'button',
+          className: "button",
           onclick: hideFn,
-          'data-test-id': `button-hide-${genName}`,
+          "data-test-id": `button-hide-${genName}`,
         },
-        `Hide ${genName}`,
+        `Hide ${genName}`
       ),
   ]);
 };

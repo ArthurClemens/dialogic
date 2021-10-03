@@ -9,8 +9,8 @@ import {
   isPaused,
   getRemaining,
   exists,
-} from './dialogic';
-import { Dialogic } from './index';
+} from "./dialogic";
+import { Dialogic } from "./index";
 
 export const dialogical = ({
   ns,

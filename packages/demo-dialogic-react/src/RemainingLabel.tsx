@@ -1,5 +1,5 @@
-import { notification, useRemaining } from 'dialogic-react';
-import React from 'react';
+import { notification, useRemaining } from "dialogic-react";
+import React from "react";
 
 export const RemainingLabel = () => {
   const [remainingSeconds] = useRemaining({
@@ -10,11 +10,11 @@ export const RemainingLabel = () => {
   return (
     <span
       style={{
-        minWidth: '3em',
-        textAlign: 'left',
+        minWidth: "3em",
+        textAlign: "left",
       }}
     >
-      {remainingSeconds === undefined ? '0' : remainingSeconds.toString()}
+      {remainingSeconds === undefined ? "0" : remainingSeconds.toString()}
     </span>
   );
 };

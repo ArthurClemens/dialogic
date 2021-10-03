@@ -1,7 +1,7 @@
-import HomePage from './HomePage.svelte';
-import ProfilePage from './ProfilePage.svelte';
+import HomePage from "./pages/HomePage.svelte";
+import ProfilePage from "./pages/ProfilePage.svelte";
 
 export default {
-  '/': HomePage,
-  '/profile/:edit?': ProfilePage,
+  "/": HomePage,
+  "/profile/:edit?": ProfilePage,
 };

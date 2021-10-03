@@ -1,7 +1,10 @@
 <script>
-  import { dialog, notification } from "dialogic-svelte";
-  import DialogComponent from "./DialogComponent.svelte";
   import { remaining } from "dialogic";
+  import {
+    dialog,
+    notification,
+  } from "../../dialogic-svelte-ts/dist/dialogic-svelte.es";
+  import DialogComponent from "./DialogComponent.svelte";
 
   let remainingSeconds;
 
@@ -12,14 +15,13 @@
       remainingSeconds = newValue;
     },
   });
-
 </script>
 
 <div class="mdc-snackbar__label">
   {#if remainingSeconds !== undefined}
-    Can't send photo. Retrying in {remainingSeconds} seconds.
+    Some async process message. Retrying in {remainingSeconds} seconds.
   {:else}
-    Can't send photo.
+    Some async process message.
   {/if}
 </div>
 <div class="mdc-snackbar__actions">
@@ -32,17 +34,18 @@
           component: DialogComponent,
           className: "dialog",
         },
-        title: "Retry sending?",
-        body: "We have noticed a slow internet connection. Even when you retry now, sending may take longer than usual.",
+        title: "About this dialog",
+        body: "The notification is paused, so you can take your time to read this message.",
         onAccept: () => {
           notification.hide();
           notification.resume();
         },
         onReject: () => {
           notification.resume({ minimumDuration: 2000 });
-        }
+        },
       });
-    }}>
-    Retry now
+    }}
+  >
+    Show options
   </button>
 </div>

@@ -1,7 +1,0 @@
-/******/ (() => { // webpackBootstrap
-/*!*******************!*\
-  !*** ./index.tsx ***!
-  \*******************/
-throw new Error("Module build failed (from ../../../node_modules/babel-loader/lib/index.js):\nError: Config file /Users/arthur/code/Github Projects/dialogic/master/packages/demo-dialogic-solid/babel.config.js contains no configuration data\n    at loadConfig (/Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/core/lib/config/files/configuration.js:163:11)\n    at loadConfig.next (<anonymous>)\n    at buildRootChain (/Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/core/lib/config/config-chain.js:82:47)\n    at buildRootChain.next (<anonymous>)\n    at loadPrivatePartialConfig (/Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/core/lib/config/partial.js:101:62)\n    at loadPrivatePartialConfig.next (<anonymous>)\n    at /Users/arthur/code/Github Projects/dialogic/master/node_modules/@babel/core/lib/config/partial.js:140:25\n    at Generator.next (<anonymous>)\n    at step (/Users/arthur/code/Github Projects/dialogic/master/node_modules/gensync/index.js:261:32)\n    at evaluateAsync (/Users/arthur/code/Github Projects/dialogic/master/node_modules/gensync/index.js:291:5)");
-/******/ })()
-;

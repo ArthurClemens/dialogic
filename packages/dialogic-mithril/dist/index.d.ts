@@ -1,10 +1,9 @@
-import { dialog, Dialogic, notification } from 'dialogic';
-import m from 'mithril';
-
-import { Dialogical } from './Dialogical';
-
-declare const Dialog: m.Component<Dialogic.ComponentOptions, {}>;
-declare const Notification: m.Component<Dialogic.ComponentOptions, {}>;
-export { Dialog, dialog, Dialogic, Dialogical, Notification, notification };
-export * from './useDialogic';
-export * from './useRemaining';
+/// <reference types="../../node_modules/@types/mithril" />
+import m from "mithril";
+import { Dialogical } from "./Dialogical";
+declare const Dialog: m.Component<import("dialogic/dist/types").ComponentOptions, {}>;
+declare const Notification: m.Component<import("dialogic/dist/types").ComponentOptions, {}>;
+export { dialog, Dialogic, notification, remaining } from "dialogic";
+export * from "./useDialogic";
+export * from "./useRemaining";
+export { Dialog, Notification, Dialogical };

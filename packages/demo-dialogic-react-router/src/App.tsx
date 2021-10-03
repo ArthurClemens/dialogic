@@ -1,12 +1,11 @@
-import './styles.css';
-
-import { Dialog, Notification } from 'dialogic-react';
-import React from 'react';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-
-import { HomePage } from './HomePage';
-import { ProfilePage } from './ProfilePage';
-import { useStore } from './store';
+import { Dialog, Notification } from "dialogic-react";
+import React from "react";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import "./dialogic.css";
+import "./layout.css";
+import { HomePage } from "./pages/HomePage";
+import { ProfilePage } from "./pages/ProfilePage";
+import { useStore } from "./store";
 
 const AppRoutes = () => {
   const store = useStore();
@@ -21,8 +20,8 @@ const AppRoutes = () => {
           <HomePage />
         </Route>
       </Switch>
-      <Dialog />
       <Notification />
+      <Dialog />
     </Router>
   );
 };

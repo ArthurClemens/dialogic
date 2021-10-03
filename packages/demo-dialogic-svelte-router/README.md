@@ -1,4 +1,4 @@
-# Dialogic for Svelte with a router - demo
+# Dialogic for Svelte - router demo
 
 [Main documentation](../../README.md)
 

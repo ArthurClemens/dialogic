@@ -1,4 +1,4 @@
-# Dialogic for React - demo
+# Dialogic for React - router demo
 
 [Main documentation](../../README.md)
 

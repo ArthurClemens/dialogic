@@ -1,9 +1,10 @@
-import { Dialogic } from 'dialogic';
+import { Dialogic } from "dialogic";
 // eslint-disable-next-line import/no-unresolved
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-import { useDialogicState } from './useDialogicState';
-import { Wrapper } from './Wrapper';
+import { useDialogicState } from "./useDialogicState";
+import { Wrapper } from "./Wrapper";
+import React from "react";
 
 type Props = {
   instance: Dialogic.DialogicInstance;
@@ -19,7 +20,7 @@ export const Dialogical = ({ instance, ...props }: Props) => {
 
   // Mount
   useEffect(() => {
-    if (typeof props.onMount === 'function') {
+    if (typeof props.onMount === "function") {
       props.onMount();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

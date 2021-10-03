@@ -6,16 +6,12 @@
   "license": "MIT",
   "main": "public/tests-dialogic-svelte",
   "scripts": {
-    "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
-    "build": "TYPESCRIPT=1 ENTRY=src/main.ts MODULE=0 MODULE_NAME=testsDialogicSvelte ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.svelte-app.js",
-    "autobuild": "npm run build -- -w",
-    "dev": "run-p start:dev autobuild",
-    "start:dev": "sirv public --dev --port 3000",
-    "clean": "rm -rf dist/js/*",
-    "serve": "http-server -c-1 -p 8080 public",
-    "test": "npm run test:cypress",
-    "test:cypress": "npm run build && start-server-and-test serve 8080 cypress:run",
-    "test:cypress:i": "npm run build && npm-run-all --parallel serve cypress:open",
+    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 3000",
+    "test": "npm run build && start-server-and-test preview 3000 cypress:run",
+    "test:i": "npm-run-all --parallel dev cypress:open",
     "cypress:run": "../../node_modules/cypress/bin/cypress run",
     "cypress:open": "../../node_modules/cypress/bin/cypress open",
     "prettier": "prettier --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\""
@@ -23,14 +19,13 @@
   "dependencies": {
     "dialogic": "^0.12.7",
     "dialogic-svelte": "^0.12.7",
-    "svelte": "^3.37.0",
-    "svelte-spa-router": "^3.1.0"
+    "svelte": "^3.43.1",
+    "svelte-spa-router": "^3.2.0"
   },
   "devDependencies": {
-    "@pyoner/svelte-types": "^3.4.4",
-    "http-server": "^0.12.3",
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.26",
+    "@tsconfig/svelte": "^2.0.1",
     "npm-run-all": "^4.1.5",
-    "sirv-cli": "^1.0.11",
-    "start-server-and-test": "^1.12.1"
+    "start-server-and-test": "^1.14.0"
   }
 }

@@ -1,17 +1,16 @@
-import { dialog, Dialogic, notification, states } from 'dialogic';
-import m from 'mithril';
-
-import { Dialogical } from './Dialogical';
+import { dialog, notification, states } from "dialogic";
+import m from "mithril";
+import { Dialogical } from "./Dialogical";
 
 const Dialog = Dialogical(dialog);
 const Notification = Dialogical(notification);
 
-export { Dialog, dialog, Dialogic, Dialogical, Notification, notification };
-export * from './useDialogic';
-export * from './useRemaining';
+export { dialog, Dialogic, notification, remaining } from "dialogic";
+export * from "./useDialogic";
+export * from "./useRemaining";
+export { Dialog, Notification, Dialogical };
 
-states.map(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  state => m.redraw(),
-  // console.log(JSON.stringify(state, null, 2))
-);
+states.map((_state) => {
+  // console.log(JSON.stringify(_state, null, 2));
+  m.redraw();
+});

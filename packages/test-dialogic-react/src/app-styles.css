@@ -62,7 +62,7 @@
 }
 
 .spawn:before {
-  content: 'Default';
+  content: "Default";
   font-size: small;
   font-weight: bold;
   color: #888;
@@ -82,7 +82,7 @@
 }
 
 .default-spawn:before {
-  content: 'Default spawn';
+  content: "Default spawn";
 }
 
 .custom-spawn {
@@ -91,5 +91,5 @@
 }
 
 .custom-spawn:before {
-  content: 'Custom spawn';
+  content: "Custom spawn";
 }

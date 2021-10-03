@@ -24,13 +24,11 @@ footer {
   transition: opacity 350ms;
   opacity: 0;
 }
-.dialog-show-start {
-}
+/* .dialog-show-start {} */
 .dialog-show-end {
   opacity: 1;
 }
-.dialog-hide-start {
-}
+/* .dialog-hide-start {} */
 .dialog-hide-end {
   opacity: 0;
 }
@@ -39,13 +37,11 @@ footer {
   transition: opacity 350ms;
   opacity: 0;
 }
-.notification-show-start {
-}
+/* .notification-show-start {} */
 .notification-show-end {
   opacity: 1;
 }
-.notification-hide-start {
-}
+/* .notification-hide-start {} */
 .notification-hide-end {
   opacity: 0;
 }

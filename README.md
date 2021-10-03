@@ -46,7 +46,7 @@
 
 * React and NextJS - [Dialogic for React documentation](./packages/dialogic-react/README.md)
 * Mithril - [Dialogic for Mithril documentation](./packages/dialogic-mithril/README.md)
-* Svelte and Sapper - [Dialogic for Svelte documentation](./packages/dialogic-svelte/README.md)
+* Svelte and SvelteKit - [Dialogic for Svelte documentation](./packages/dialogic-svelte/README.md)
 
 
 ## Features
@@ -98,7 +98,7 @@ The usage of the component varies somewhat per JS library - see library specific
 
 * [Dialogic for React](./packages/dialogic-react/README.md)
 * [Dialogic for Mithril](./packages/dialogic-mithril/README.md)
-* [Dialogic for Svelte and Sapper](./packages/dialogic-svelte/README.md)
+* [Dialogic for Svelte and SvelteKit](./packages/dialogic-svelte/README.md)
 
 
 

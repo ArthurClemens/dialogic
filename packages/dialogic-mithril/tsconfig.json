@@ -1,22 +1,7 @@
 {
-  "include": ["src/*", "mithril.d.ts"],
-  "exclude": ["node_modules"],
+  "extends": "../../tsconfig.json",
+  "include": ["./src"],
   "compilerOptions": {
-    "target": "ESNEXT",
-    "module": "ESNEXT",
-    "strict": true,
-    "noUnusedLocals": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "types": [], // to disable automatic inclusion of @types packages
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve"
+    "types": ["../../node_modules/@types/mithril"]
   }
 }

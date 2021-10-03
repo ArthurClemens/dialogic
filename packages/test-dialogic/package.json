@@ -3,17 +3,19 @@
   "private": true,
   "description": "Test Dialogic",
   "version": "0.12.7",
+  "type": "module",
   "license": "MIT",
   "scripts": {
-    "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "build": "true",
     "test": "ava",
     "prettier": "prettier --config ../../.prettierrc.json --write \"./test/*.ts\""
   },
   "devDependencies": {
-    "@ava/babel": "1.0.1",
+    "@ava/babel": "2.0.0",
     "@ikscodes/browser-env": "1.0.0",
     "ava": "3.15.0",
     "dialogic": "^0.12.7",
-    "ts-node": "9.1.1"
+    "ts-node": "10.2.1"
   }
 }

@@ -1,79 +1,79 @@
-import m from 'mithril';
-import { createFns } from './helpers/createFns';
-import { Default } from '../content/Default';
-import { buttons } from './helpers/buttons';
-import { notification, Notification } from 'dialogic-mithril';
-import { RemainingWithAnimationFrame } from './helpers/RemainingWithAnimationFrame';
+import m from "mithril";
+import { createFns } from "./helpers/createFns";
+import { Default, TDefault } from "../content/Default";
+import { buttons, TButtons } from "./helpers/buttons";
+import { notification, Notification } from "dialogic-mithril";
+import { RemainingWithAnimationFrame } from "./helpers/RemainingWithAnimationFrame";
 
 export default () => {
-  const fns1 = createFns({
+  const fns1 = createFns<TDefault>({
     instance: notification,
     component: Default,
-    className: 'notification',
-    title: 'Default',
+    className: "notification",
+    title: "Default",
     timeout: 1000,
-  });
-  const fns2 = createFns({
+  }) as TButtons;
+  const fns2 = createFns<TDefault>({
     instance: notification,
     component: Default,
-    className: 'notification',
-    title: 'Timeout: 0',
+    className: "notification",
+    title: "Timeout: 0",
     timeout: 0,
-  });
+  }) as TButtons;
 
   return {
     view: () => {
-      return m('.test', [
+      return m(".test", [
         m(
-          '.control',
-          { 'data-test-id': 'reset-all' },
-          m('.buttons', [
+          ".control",
+          { "data-test-id": "reset-all" },
+          m(".buttons", [
             m(
-              'button',
+              "button",
               {
-                className: 'button',
+                className: "button",
                 onclick: () => notification.pause(),
-                'data-test-id': 'button-pause',
+                "data-test-id": "button-pause",
               },
-              'Pause',
+              "Pause"
             ),
             m(
-              'button',
+              "button",
               {
-                className: 'button',
+                className: "button",
                 onclick: () => notification.resume(),
-                'data-test-id': 'button-resume',
+                "data-test-id": "button-resume",
               },
-              'Resume',
+              "Resume"
             ),
             m(
-              'button',
+              "button",
               {
-                className: 'button',
+                className: "button",
                 onclick: () => notification.resetAll(),
-                'data-test-id': 'button-reset',
+                "data-test-id": "button-reset",
               },
-              'Reset',
+              "Reset"
             ),
-          ]),
+          ])
         ),
         m(
-          '.control',
-          { 'data-test-id': 'is-paused' },
-          `Is paused: ${notification.isPaused()}`,
+          ".control",
+          { "data-test-id": "is-paused" },
+          `Is paused: ${notification.isPaused()}`
         ),
         m(
-          '.control',
+          ".control",
           m(RemainingWithAnimationFrame, {
-            key: 'NotificationTimeout',
+            key: "NotificationTimeout",
             getRemaining: notification.getRemaining,
-          }),
+          })
         ),
-        m('.content', [
+        m(".content", [
           buttons({ ...fns1 }),
-          buttons({ ...fns2, id: '1', name: 'zero-timeout' }),
+          buttons({ ...fns2, id: "1", name: "zero-timeout" }),
         ]),
-        m('.spawn.default-spawn', m(Notification)),
+        m(".spawn.default-spawn", m(Notification)),
       ]);
     },
   };

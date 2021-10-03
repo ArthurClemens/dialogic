@@ -1,18 +1,20 @@
-# Dialogic for Svelte and Sapper
+# Dialogic for Svelte and SvelteKit
 
 Manage dialogs and notifications.
+
+See also the TypeScript version [dialogic-svelte-ts](../dialogic-svelte-ts/README.md).
+
 
 - [API](#api)
 - [Demo](#demo)
 - [Installation](#installation)
-  - [With Sapper](#with-sapper)
+  - [With SvelteKit](#with-sveltekit)
 - [Usage](#usage)
   - [Dialog](#dialog)
   - [Notification](#notification)
   - [UseDialog](#usedialog)
   - [UseNotification](#usenotification)
 - [Size](#size)
-
 
 ## API
 
@@ -26,14 +28,14 @@ See: [Main documentation](https://github.com/ArthurClemens/dialogic/blob/develop
 Demo code in this repo:
   * `./packages/demo-dialogic-svelte`
   * `./packages/demo-dialogic-svelte-router`
-  * `./packages/demo-dialogic-svelte-sapper`
+  * `./packages/demo-dialogic-sveltekit-router`
 
 ## Installation
 
 `npm install dialogic-svelte`
 
 
-### With Sapper
+### With SvelteKit
 
 Include `dialogic-svelte` in package.json's "devDependencies" instead of "dependencies".
 
@@ -85,7 +87,7 @@ Include `dialogic-svelte` in package.json's "devDependencies" instead of "depend
 <!-- DialogView.svelte -->
 <script>
   import { dialog } from "dialogic-svelte";
-</script>
+</script>$$
 
 <div class="dialog">
   <div class="dialog-background" on:click={() => dialog.hide()}></div>
@@ -236,4 +238,6 @@ The component `UseNotification` has the same functionality as `UseDialog`.
 
 ## Size
 
-8.17 kB with all dependencies, minified and gzipped
+8.62 KB with all dependencies, minified and gzipped
+
+

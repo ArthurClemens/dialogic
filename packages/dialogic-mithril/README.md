@@ -30,7 +30,6 @@ Codesandbox examples:
 Demo code in this repo:
 * `./packages/demo-dialogic-mithril`
 * `./packages/demo-dialogic-mithril-router`
-* 
 
 ## Installation
 
@@ -296,4 +295,4 @@ const MyComponent = (attrs) => {
 
 ## Size
 
-4.87 kB with all dependencies, minified and gzipped
+3.97 KB with all dependencies, minified and gzipped

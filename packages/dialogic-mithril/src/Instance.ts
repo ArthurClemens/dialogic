@@ -1,18 +1,20 @@
-import { Dialogic } from 'dialogic';
-import m, { ClosureComponent, Component } from 'mithril';
+import { Dialogic } from "dialogic";
+import m, { Component } from "mithril";
 
-type ComponentProps = Dialogic.PassThroughOptions & {
+type ComponentProps<T = unknown> = T & {
   show: () => void;
   hide: () => void;
 };
 
-export const Instance: ClosureComponent<
-  Dialogic.DialogicalInstanceOptions<Dialogic.PassThroughOptions>
-> = ({ attrs: componentAttrs }) => {
+export const Instance = <T = unknown>({
+  attrs: componentAttrs,
+}: {
+  attrs: Dialogic.DialogicalInstanceOptions<T>;
+}) => {
   let domElement: HTMLElement;
 
   const dispatchTransition = (
-    dispatchFn: Dialogic.DialogicalInstanceDispatchFn,
+    dispatchFn: Dialogic.DialogicalInstanceDispatchFn
   ) => {
     dispatchFn({
       detail: {
@@ -39,21 +41,22 @@ export const Instance: ClosureComponent<
       domElement = vnode.dom as HTMLElement;
       onMount();
     },
-    view: ({ attrs }) => {
-      const component = attrs.dialogicOptions
-        .component as Component<ComponentProps>;
+    view: ({ attrs }: { attrs: Dialogic.DialogicalInstanceOptions<T> }) => {
+      const component = attrs.dialogicOptions.component as Component<
+        ComponentProps<T>
+      >;
       if (!component) {
-        throw new Error('Component missing in dialogic options.');
+        throw new Error("Component missing in dialogic options.");
       }
-      const passThroughOptions = (attrs.passThroughOptions as {}) || {};
+      const passThroughOptions: T = attrs.passThroughOptions || ({} as T);
       return m(
-        'div',
+        "div",
         { className: attrs.dialogicOptions.className },
         m(component, {
           ...passThroughOptions,
           show,
           hide,
-        }),
+        })
       );
     },
   };

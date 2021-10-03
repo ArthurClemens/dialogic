@@ -1,5 +1,5 @@
 <script>
-  import { dialog, notification } from "dialogic-svelte";
+  import { dialog } from "../../dialogic-svelte-ts/dist/dialogic-svelte.es";
 </script>
 
 <div class="mdc-dialog__container">
@@ -20,7 +20,7 @@
               $$props.onReject();
             }}
           >
-            <span class="mdc-button__label">Never mind</span>
+            <span class="mdc-button__label">Resume</span>
           </button>
           <button
             class="mdc-button mdc-dialog__button"
@@ -29,7 +29,7 @@
               $$props.onAccept();
             }}
           >
-            <span class="mdc-button__label">Yes, retry</span>
+            <span class="mdc-button__label">Hide all</span>
           </button>
         </div>
       </footer>

@@ -2,40 +2,30 @@
   "name": "dialogic",
   "version": "0.12.7",
   "description": "Logic for dialogs and notifications",
-  "main": "dist/dialogic",
-  "module": "dist/dialogic.module.js",
-  "scripts": {
-    "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
-    "clean": "rm -rf dist/*",
-    "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
-    "build:clean": "rm -rf dist/*",
-    "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json",
-    "build:module": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=1 MODULE_NAME=dialogic ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js",
-    "build:umd": "TYPESCRIPT=1 ENTRY=src/index.ts MODULE=0 MODULE_NAME=dialogic ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.js",
-    "build:lint": "eslint --fix --ext .d.ts ./dist",
-    "prettier": "../../node_modules/prettier/bin-prettier.js --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\"",
-    "build:size": "size-limit",
-    "size:why": "size-limit --why"
-  },
-  "size-limit": [
-    {
-      "path": "dist/dialogic.js"
-    }
-  ],
-  "dependencies": {
-    "mithril": "^2.0.4"
-  },
-  "devDependencies": {
-    "@size-limit/preset-small-lib": "^4.10.2",
-    "@types/mithril": "^2.0.7",
-    "size-limit": "^4.10.2",
-    "tslib": "^2.2.0"
-  },
+  "types": "dist",
+  "type": "module",
   "files": [
     "dist",
     "README.md"
   ],
-  "types": "dist",
+  "main": "./dist/dialogic.es.js",
+  "module": "./dist/dialogic.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/dialogic.es.js"
+    }
+  },
+  "scripts": {
+    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
+    "build:vite": "vite build",
+    "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json"
+  },
+  "devDependencies": {
+    "mithril-stream-standalone": "0.1.4",
+    "typescript": "^4.4.3",
+    "vite": "^2.6.2"
+  },
   "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
   "homepage": "https://github.com/ArthurClemens/dialogic",
   "license": "MIT"

@@ -1,5 +1,6 @@
-import { Dialogic } from 'dialogic';
-import type { DependencyList } from 'react';
+import { Dialogic } from "dialogic";
+
+type DependencyList = ReadonlyArray<unknown>;
 
 export type UseDialogicProps<T> = {
   /**

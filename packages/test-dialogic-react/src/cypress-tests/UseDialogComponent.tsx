@@ -1,14 +1,12 @@
-import '../../../demo-dialogic-react-router/src/styles.css';
+import { Dialog, Notification } from "dialogic-react";
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import "../../../demo-dialogic-react-router/src/layout.css";
+import { HomePage } from "../../../demo-dialogic-react-router/src/pages/HomePage";
+import { ProfilePage } from "../../../demo-dialogic-react-router/src/pages/ProfilePage";
+import { useStore } from "../../../demo-dialogic-react-router/src/store";
 
-import { Dialog, Notification } from 'dialogic-react';
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-
-import { HomePage } from '../../../demo-dialogic-react-router/src/HomePage';
-import { ProfilePage } from '../../../demo-dialogic-react-router/src/ProfilePage';
-import { useStore } from '../../../demo-dialogic-react-router/src/store';
-
-const PREFIX = '/UseDialogComponentTest';
+const PREFIX = "/UseDialogComponentTest";
 
 export default () => {
   const store = useStore();

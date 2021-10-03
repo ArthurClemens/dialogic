@@ -1,6 +1,7 @@
-import { remaining } from 'dialogic';
-import type { UseRemainingProps } from 'dialogic-hooks';
-import { useMemo, useState } from 'react';
+import { remaining } from "dialogic";
+import type { UseRemainingProps } from "dialogic-hooks";
+import { useMemo, useState } from "react";
+import useIsMounted from "react-is-mounted-hook";
 
 export const useRemaining = ({
   instance,
@@ -8,19 +9,26 @@ export const useRemaining = ({
   spawn,
   roundToSeconds,
 }: UseRemainingProps) => {
-  const [value, setValue] = useState<number | undefined>(undefined);
+  const isMounted = useIsMounted();
+  const [value, _setValue] = useState<number | undefined>(undefined);
   const identity = {
     id,
     spawn,
   };
   const exists = !!instance.exists(identity);
+  const setValue = (value: number | undefined) => {
+    if (isMounted()) {
+      _setValue(value);
+    }
+  };
+
   useMemo(() => {
     if (exists) {
       remaining({
         ...identity,
         instance,
         roundToSeconds,
-        callback: newValue => {
+        callback: (newValue) => {
           setValue(newValue);
         },
       });

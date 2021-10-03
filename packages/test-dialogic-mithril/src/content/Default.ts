@@ -1,6 +1,6 @@
-import m, { Component } from 'mithril';
+import m, { Component } from "mithril";
 
-type TDefault = {
+export type TDefault = {
   contentId: string;
   title: string;
   className: string;
@@ -10,24 +10,24 @@ type TDefault = {
 export const Default: Component<TDefault> = {
   view: ({ attrs }) =>
     m(
-      'div',
+      "div",
       {
         className: attrs.className,
-        'data-test-id': `content-default${
-          attrs.contentId ? `-${attrs.contentId}` : ''
+        "data-test-id": `content-default${
+          attrs.contentId ? `-${attrs.contentId}` : ""
         }`,
       },
       [
-        m('h2', attrs.title),
+        m("h2", attrs.title),
         m(
-          'button',
+          "button",
           {
-            className: 'button',
+            className: "button",
             onclick: () => attrs.hide(),
-            'data-test-id': 'button-hide-content',
+            "data-test-id": "button-hide-content",
           },
-          'Hide from component',
+          "Hide from component"
         ),
-      ],
+      ]
     ),
 };

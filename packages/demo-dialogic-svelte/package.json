@@ -4,27 +4,22 @@
   "description": "Dialogic for Svelte demo",
   "version": "0.12.7",
   "license": "MIT",
-  "main": "public/demo-dialogic-svelte",
+  "type": "module",
   "scripts": {
-    "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u",
-    "build": "TYPESCRIPT=1 ENTRY=src/main.ts MODULE=0 MODULE_NAME=demoDialogicSvelte ../../node_modules/rollup/dist/bin/rollup -c ../../scripts/rollup.config.svelte-app.js",
-    "autobuild": "npm run build -- -w",
-    "dev": "run-p start:dev autobuild",
-    "start:dev": "sirv public --dev --port 3000",
-    "clean": "rm -rf public/js/*",
-    "serve": "http-server -c-1 -p 8080 public",
-    "github": "npm run build && node scripts/github.js"
+    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "github": "npm run build && node ./scripts/github.js"
   },
   "dependencies": {
-    "dialogic-svelte": "^0.12.7",
-    "svelte": "^3.37.0"
+    "dialogic": "^0.12.7",
+    "dialogic-svelte": "^0.12.7"
   },
   "devDependencies": {
-    "@pyoner/svelte-types": "^3.4.4",
-    "dialogic": "^0.12.7",
-    "http-server": "^0.12.3",
-    "npm-run-all": "^4.1.5",
-    "sirv-cli": "^1.0.11",
-    "start-server-and-test": "^1.12.1"
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.26",
+    "@tsconfig/svelte": "^2.0.1",
+    "svelte": "^3.43.1",
+    "vite": "^2.6.2"
   }
 }

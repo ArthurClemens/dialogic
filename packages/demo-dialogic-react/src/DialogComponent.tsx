@@ -2,8 +2,8 @@
  * This example uses Material IO
  */
 
-import { dialog } from 'dialogic-react';
-import React from 'react';
+import { dialog } from "dialogic-react";
+import React from "react";
 
 type DialogContentProps = {
   title: string;
@@ -28,7 +28,7 @@ const DialogContent = (props: DialogContentProps) => (
                 props.onReject();
               }}
             >
-              <span className="mdc-button__label">Never mind</span>
+              <span className="mdc-button__label">Resume</span>
             </button>
             <button
               type="button"
@@ -38,7 +38,7 @@ const DialogContent = (props: DialogContentProps) => (
                 props.onAccept();
               }}
             >
-              <span className="mdc-button__label">Yes, retry</span>
+              <span className="mdc-button__label">Hide all</span>
             </button>
           </>
         </footer>

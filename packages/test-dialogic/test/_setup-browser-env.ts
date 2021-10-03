@@ -1,3 +1,3 @@
-import browserEnv from '@ikscodes/browser-env';
+import browserEnv from "@ikscodes/browser-env";
 
 browserEnv();

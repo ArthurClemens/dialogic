@@ -1,11 +1,11 @@
-import { Dialogic, filterCandidates, selectors } from 'dialogic';
-
-import { Instance } from './Instance';
+import { Dialogic, filterCandidates, selectors } from "dialogic";
+import React from "react";
+import { Instance } from "./Instance";
 import {
   onHideInstance,
   onInstanceMounted,
   onShowInstance,
-} from './instanceEvents';
+} from "./instanceEvents";
 
 export const Wrapper = (props: Dialogic.DialogicalWrapperOptions) => {
   const nsOnInstanceMounted = onInstanceMounted(props.ns);
@@ -17,12 +17,12 @@ export const Wrapper = (props: Dialogic.DialogicalWrapperOptions) => {
   const filtered = filterCandidates(
     props.ns,
     selectors.getStore(),
-    identityOptions,
+    identityOptions
   );
 
   return (
     <>
-      {filtered.map(item => (
+      {filtered.map((item) => (
         <Instance
           key={item.key}
           identityOptions={item.identityOptions}

@@ -1,10 +1,18 @@
-import { Dialogic } from 'dialogic';
+import { Dialogic } from "dialogic";
+import m from "mithril";
 
-import { getRandomId } from './utils';
+import { getRandomId } from "./utils";
 
-type Props = {
+type ItemProps = {
+  title: string;
+  className: string;
+  id: string;
+  contentId: string;
+};
+
+type Props<T> = {
   instance: Dialogic.DialogicInstance;
-  component: unknown;
+  component: m.Component<T>;
   className?: string;
   id?: string;
   spawn?: string;
@@ -14,7 +22,7 @@ type Props = {
   queued?: boolean;
 };
 
-export const createFns = ({
+export const createFns = <T>({
   instance,
   component,
   className,
@@ -24,8 +32,8 @@ export const createFns = ({
   styles,
   timeout,
   queued,
-}: Props) => {
-  const contentId = `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}`;
+}: Props<T>) => {
+  const contentId = `${id ? `id${id}` : ""}${spawn ? `spawn${spawn}` : ""}`;
   const props = {
     dialogic: {
       component,
@@ -37,18 +45,18 @@ export const createFns = ({
       ...(timeout !== undefined ? { timeout } : undefined),
       ...(queued !== undefined ? { queued } : undefined),
     },
-    className: 'instance-content',
+    className: "instance-content",
     id: getRandomId(),
     contentId,
   };
 
   const showFn = () =>
-    instance.show({
+    instance.show<ItemProps>({
       ...props,
       title: `${title} ${getRandomId()}`,
     });
   const hideFn = () =>
-    instance.hide({
+    instance.hide<ItemProps>({
       ...props,
       title: `${title} ${getRandomId()} hiding`,
     });
