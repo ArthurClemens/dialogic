@@ -2,7 +2,7 @@
   "name": "tests-dialogic-svelte",
   "private": true,
   "description": "Test Dialogic with Svelte",
-  "version": "0.12.7",
+  "version": "0.13.0",
   "license": "MIT",
   "main": "public/tests-dialogic-svelte",
   "scripts": {
@@ -17,8 +17,8 @@
     "prettier": "prettier --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\""
   },
   "dependencies": {
-    "dialogic": "^0.12.7",
-    "dialogic-svelte": "^0.12.7",
+    "dialogic": "0.13.0",
+    "dialogic-svelte": "0.13.0",
     "svelte": "^3.43.1",
     "svelte-spa-router": "^3.2.0"
   },

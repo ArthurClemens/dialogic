@@ -1,6 +1,6 @@
 {
   "name": "dialogic",
-  "version": "0.12.7",
+  "version": "0.13.0",
   "description": "Logic for dialogs and notifications",
   "types": "dist",
   "type": "module",

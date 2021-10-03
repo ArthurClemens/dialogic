@@ -1,6 +1,6 @@
 {
   "name": "demo-dialogic-sveltekit-router",
-  "version": "0.12.7",
+  "version": "0.13.0",
   "private": true,
   "scripts": {
     "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
@@ -31,8 +31,8 @@
   "type": "module",
   "dependencies": {
     "@lukeed/uuid": "^2.0.0",
-    "dialogic": "^0.12.7",
-    "dialogic-svelte-ts": "^0.12.7",
+    "dialogic": "0.13.0",
+    "dialogic-svelte-ts": "0.13.0",
     "cookie": "^0.4.1"
   }
 }

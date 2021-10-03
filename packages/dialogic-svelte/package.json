@@ -1,6 +1,6 @@
 {
   "name": "dialogic-svelte",
-  "version": "0.12.7",
+  "version": "0.13.0",
   "description": "Logic for dialogs and notifications",
   "type": "module",
   "files": [
@@ -18,7 +18,7 @@
     "build:vite": "vite build"
   },
   "dependencies": {
-    "dialogic": "^0.12.7"
+    "dialogic": "0.13.0"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.26",
