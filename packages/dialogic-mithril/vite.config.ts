@@ -1,5 +1,5 @@
-import { defineConfig } from "vite";
 import filesize from "rollup-plugin-filesize";
+import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [filesize()],
@@ -13,7 +13,7 @@ export default defineConfig({
       formats: ["es", "umd"],
     },
     rollupOptions: {
-      external: ["mithril", "mithril-hooks", "mithril-stream-standalone"],
+      external: ["mithril", "mithril-hooks"],
     },
   },
 });

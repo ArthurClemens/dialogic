@@ -295,4 +295,4 @@ const MyComponent = (attrs) => {
 
 ## Size
 
-3.97 KB with all dependencies, minified and gzipped
+4.77 KB with all dependencies, minified and gzipped
