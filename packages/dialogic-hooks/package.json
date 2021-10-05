@@ -1,6 +1,6 @@
 {
   "name": "dialogic-hooks",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "description": "Dialogic hooks",
   "types": "dist",
   "files": [
@@ -21,7 +21,7 @@
     "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json"
   },
   "dependencies": {
-    "dialogic": "0.13.0"
+    "dialogic": "0.13.1"
   },
   "devDependencies": {
     "typescript": "^4.4.3",
