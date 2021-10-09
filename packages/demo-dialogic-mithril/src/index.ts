@@ -1,13 +1,11 @@
-import "./styles.css";
-
 import { Dialog, Notification, notification } from "dialogic-mithril";
 import m from "mithril";
-
 import {
   NotificationComponent,
   TNotificationComponent,
 } from "./NotificationComponent";
 import { RemainingLabel } from "./RemainingLabel";
+import "./styles.css";
 
 const App = {
   view: () => [
@@ -16,7 +14,7 @@ const App = {
         m("h1", "Dialogic for Mithril demo"),
         m(
           ".message",
-          "Add one or more notifications, then click on the Retry button in the message."
+          "Add one or more notifications, then click on the Show Options button in the message."
         ),
         m(".ui.message", [
           m(

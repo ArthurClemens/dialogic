@@ -12,7 +12,7 @@
   <main>
     <h1>Dialogic for Svelte demo</h1>
     <div class="message">
-      Add one or more notifications, then click on the Retry button in the
+      Add one or more notifications, then click on the Show Options button in the
       message.
     </div>
     <div class="ui message">

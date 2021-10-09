@@ -1,19 +1,17 @@
-import "./styles.css";
-
 import {
   Dialog,
   Notification,
   notification,
   useDialogicState,
 } from "dialogic-react";
-import ReactDOM from "react-dom";
 import React from "react";
-
+import ReactDOM from "react-dom";
 import {
   NotificationComponent,
   TNotificationComponentProps,
 } from "./NotificationComponent";
 import { RemainingLabel } from "./RemainingLabel";
+import "./styles.css";
 
 const App = () => {
   useDialogicState();
@@ -24,8 +22,8 @@ const App = () => {
         <main>
           <h1>Dialogic for React demo</h1>
           <div className="message">
-            Add one or more notifications, then click on the Retry button in the
-            message.
+            Add one or more notifications, then click on the Show Options button
+            in the message.
           </div>
           <div className="ui message">
             <button
