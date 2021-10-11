@@ -28,7 +28,8 @@
   ],
   "scripts": {
     "build": "npm run build --workspaces",
-    "deps": "npm run deps --workspaces && npm run install"
+    "deps": "npm run deps --workspaces && npm run install",
+    "prepare:patch": "rimraf node_modules && rimraf package-lock.json && npm version patch && npm version patch --workspaces"
   },
   "devDependencies": {
     "@tsconfig/svelte": "2.0.1",
@@ -44,5 +45,5 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
-  "version": "0.13.2"
+  "version": "0.13.3"
 }

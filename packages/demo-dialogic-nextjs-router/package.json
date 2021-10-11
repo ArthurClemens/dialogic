@@ -1,6 +1,6 @@
 {
   "name": "demo-dialogic-nextjs-router",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "private": true,
   "scripts": {
     "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",

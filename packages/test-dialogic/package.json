@@ -2,7 +2,7 @@
   "name": "test-dialogic",
   "private": true,
   "description": "Test Dialogic",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "type": "module",
   "license": "MIT",
   "scripts": {
@@ -15,7 +15,7 @@
     "@ava/babel": "2.0.0",
     "@ikscodes/browser-env": "1.0.0",
     "ava": "3.15.0",
-    "dialogic": "0.13.2",
+    "dialogic": "0.13.3",
     "ts-node": "10.2.1"
   }
 }
