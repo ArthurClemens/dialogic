@@ -1,5 +1,6 @@
-import { defineConfig } from "vite";
 import filesize from "rollup-plugin-filesize";
+import { defineConfig } from "vite";
+
 export default defineConfig({
   plugins: [filesize()],
   build: {
@@ -8,7 +9,8 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: "./index.ts",
-      formats: ["es"],
+      name: "dialogic",
+      formats: ["es", "umd"],
     },
     rollupOptions: {
       external: ["mithril-stream-standalone"],

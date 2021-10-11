@@ -1,5 +1,6 @@
 import filesize from "rollup-plugin-filesize";
 import { defineConfig } from "vite";
+
 export default defineConfig({
   plugins: [filesize()],
   build: {

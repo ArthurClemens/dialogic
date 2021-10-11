@@ -7,7 +7,7 @@
     "dist",
     "README.md"
   ],
-  "main": "./dist/dialogic-mithril.es.js",
+  "main": "./dist/dialogic-mithril.umd",
   "module": "./dist/dialogic-mithril.es.js",
   "exports": {
     ".": {
