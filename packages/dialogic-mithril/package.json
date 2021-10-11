@@ -1,6 +1,6 @@
 {
   "name": "dialogic-mithril",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "description": "Logic for dialogs and notifications",
   "types": "dist",
   "files": [
@@ -22,12 +22,12 @@
     "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json"
   },
   "dependencies": {
-    "dialogic": "0.13.1",
+    "dialogic": "0.13.2",
     "mithril-hooks": "^0.7.1"
   },
   "devDependencies": {
     "@types/mithril": "2.0.8",
-    "dialogic-hooks": "0.13.1",
+    "dialogic-hooks": "0.13.2",
     "typescript": "^4.4.3",
     "vite": "^2.6.2"
   },
