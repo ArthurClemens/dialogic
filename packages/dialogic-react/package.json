@@ -8,10 +8,10 @@
     "README.md"
   ],
   "main": "./dist/dialogic-react.umd",
-  "module": "./dist/dialogic-react.es.js",
+  "module": "./dist/dialogic-react.module.js",
   "exports": {
     ".": {
-      "import": "./dist/dialogic-react.es.js"
+      "import": "./dist/dialogic-react.module.js"
     }
   },
   "scripts": {

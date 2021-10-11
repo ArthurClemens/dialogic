@@ -9,10 +9,10 @@
     "README.md"
   ],
   "main": "./dist/dialogic.umd",
-  "module": "./dist/dialogic.es.js",
+  "module": "./dist/dialogic.module.js",
   "exports": {
     ".": {
-      "import": "./dist/dialogic.es.js"
+      "import": "./dist/dialogic.module.js"
     }
   },
   "scripts": {

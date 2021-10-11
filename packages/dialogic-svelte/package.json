@@ -8,8 +8,8 @@
     "README.md",
     "src"
   ],
-  "main": "./dist/dialogic-svelte.es.js",
-  "module": "./dist/dialogic-svelte.es.js",
+  "main": "./dist/dialogic-svelte.module.js",
+  "module": "./dist/dialogic-svelte.module.js",
   "svelte": "src/index.js",
   "scripts": {
     "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",

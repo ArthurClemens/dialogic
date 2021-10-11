@@ -8,10 +8,10 @@
     "README.md"
   ],
   "main": "./dist/dialogic-mithril.umd",
-  "module": "./dist/dialogic-mithril.es.js",
+  "module": "./dist/dialogic-mithril.module.js",
   "exports": {
     ".": {
-      "import": "./dist/dialogic-mithril.es.js"
+      "import": "./dist/dialogic-mithril.module.js"
     }
   },
   "scripts": {

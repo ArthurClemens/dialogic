@@ -7,11 +7,11 @@
     "dist",
     "README.md"
   ],
-  "main": "./dist/dialogic-hooks.es.js",
-  "module": "./dist/dialogic-hooks.es.js",
+  "main": "./dist/dialogic-hooks.module.js",
+  "module": "./dist/dialogic-hooks.module.js",
   "exports": {
     ".": {
-      "import": "./dist/dialogic-hooks.es.js"
+      "import": "./dist/dialogic-hooks.module.js"
     }
   },
   "scripts": {
