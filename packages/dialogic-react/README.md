@@ -396,4 +396,5 @@ const MyComponent = props => {
 
 ## Size
 
-5.28 KB with all dependencies, minified and gzipped
+- Module: `6.11 KB` with all dependencies, minified and gzipped
+- UMD: `5.73 KB` with all dependencies, minified and gzipped

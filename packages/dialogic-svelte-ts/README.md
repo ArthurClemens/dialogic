@@ -7,4 +7,4 @@ This is the TypeScript version of [dialogic-svelte](../dialogic-svelte/README.md
 
 ## Size
 
-8.63 KB with all dependencies, minified and gzipped
+- Module: `8.98 KB` with all dependencies, minified and gzipped

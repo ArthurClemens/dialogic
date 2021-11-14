@@ -4,4 +4,5 @@
 
 ## Size
 
-3.51 KB with all dependencies, minified and gzipped
+- Module: `3.81 KB` with all dependencies, minified and gzipped
+- UMD: `3.66 KB` with all dependencies, minified and gzipped

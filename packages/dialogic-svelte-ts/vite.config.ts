@@ -9,7 +9,7 @@ const packageName = process.env.npm_package_name;
 export default defineConfig({
   plugins: [svelte({ preprocess: preprocess() }), filesize()],
   build: {
-    target: "esnext",
+    target: "modules",
     minify: false,
     sourcemap: true,
     lib: {

@@ -295,4 +295,5 @@ const MyComponent = (attrs) => {
 
 ## Size
 
-4.77 KB with all dependencies, minified and gzipped
+- Module: `5.38 KB` with all dependencies, minified and gzipped
+- UMD: `5.13 KB` with all dependencies, minified and gzipped
