@@ -2,7 +2,7 @@
   "name": "demo-dialogic-svelte-router",
   "private": true,
   "description": "Dialogic for Svelte router demo",
-  "version": "0.13.3",
+  "version": "0.13.4",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -12,8 +12,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "dialogic": "0.13.3",
-    "dialogic-svelte": "0.13.3",
+    "dialogic": "0.13.4",
+    "dialogic-svelte": "0.13.4",
     "svelte-spa-router": "3.2.0"
   },
   "devDependencies": {
