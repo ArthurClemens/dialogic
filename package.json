@@ -31,13 +31,14 @@
     "test": "npm run test --workspaces --if-present",
     "deps": "npm run deps --workspaces && npm install",
     "github": "npm run github --workspaces --if-present",
-    "prepare:patch": "rimraf node_modules && rimraf package-lock.json && npm version patch && npm version patch --workspaces"
+    "prepare:patch": "rimraf package-lock.json && rimraf node_modules && npm version patch && npm version patch --workspaces"
   },
   "devDependencies": {
     "@tsconfig/svelte": "2.0.1",
     "cypress": "^9.0.0",
     "npm-check-updates": "^12.0.2",
     "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
     "rollup-plugin-filesize": "^9.1.1",
     "shelljs": "^0.8.4",
     "start-server-and-test": "^1.14.0",
