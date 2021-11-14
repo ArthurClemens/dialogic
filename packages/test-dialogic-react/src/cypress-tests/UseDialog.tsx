@@ -1,6 +1,7 @@
 import { Dialog, Notification } from "dialogic-react";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import "../../../demo-dialogic-react-router/src/dialogic.css";
 import "../../../demo-dialogic-react-router/src/layout.css";
 import { HomePage } from "../../../demo-dialogic-react-router/src/pages/HomePage";
 import { ProfilePage } from "../../../demo-dialogic-react-router/src/pages/ProfilePage";

@@ -28,8 +28,8 @@
   "devDependencies": {
     "@types/mithril": "2.0.8",
     "dialogic-hooks": "0.13.3",
-    "typescript": "^4.4.3",
-    "vite": "^2.6.2"
+    "typescript": "^4.4.4",
+    "vite": "^2.6.14"
   },
   "peerDependencies": {
     "mithril": "^2.0.4"

@@ -16,6 +16,6 @@
     "@ikscodes/browser-env": "1.0.0",
     "ava": "3.15.0",
     "dialogic": "0.13.3",
-    "ts-node": "10.2.1"
+    "ts-node": "10.4.0"
   }
 }

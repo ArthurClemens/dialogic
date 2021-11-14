@@ -18,9 +18,9 @@
     "svelte-spa-router": "3.2.0"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.26",
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
     "@tsconfig/svelte": "^2.0.1",
-    "svelte": "^3.43.1",
-    "vite": "^2.6.2"
+    "svelte": "^3.44.1",
+    "vite": "^2.6.14"
   }
 }

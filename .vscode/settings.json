@@ -27,7 +27,7 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": true,
-    "source.organizeImports": true
+    "source.organizeImports": false
   },
   "typescript.tsdk": "./node_modules/typescript/lib",
   "explorer.decorations.colors": true,

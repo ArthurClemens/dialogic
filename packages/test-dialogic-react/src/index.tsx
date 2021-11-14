@@ -1,10 +1,7 @@
-import "./app-styles.css";
-import "./test-styles.css";
-
 import React, { FunctionComponent } from "react";
 import ReactDOM from "react-dom";
 import { HashRouter as Router, Link, Route, Switch } from "react-router-dom";
-
+import "./app-styles.css";
 import DialogClassName from "./cypress-tests/DialogClassName";
 import DialogClassNameDelay from "./cypress-tests/DialogClassNameDelay";
 import DialogCount from "./cypress-tests/DialogCount";
@@ -23,6 +20,7 @@ import NotificationTimeout from "./cypress-tests/NotificationTimeout";
 import UseDialogTest from "./cypress-tests/UseDialog";
 import UseDialogComponentTest from "./cypress-tests/UseDialogComponent";
 import UseRemaining from "./cypress-tests/UseRemaining";
+import "./test-styles.css";
 
 type TRoute = {
   path: string;
