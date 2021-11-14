@@ -7,8 +7,7 @@
     "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "github": "npm run build && node ./scripts/github.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "dialogic-react": "0.13.3",

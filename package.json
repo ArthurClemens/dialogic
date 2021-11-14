@@ -30,6 +30,7 @@
     "build": "npm run build --workspaces",
     "test": "npm run test --workspaces --if-present",
     "deps": "npm run deps --workspaces && npm install",
+    "github": "npm run github --workspaces --if-present",
     "prepare:patch": "rimraf node_modules && rimraf package-lock.json && npm version patch && npm version patch --workspaces"
   },
   "devDependencies": {
