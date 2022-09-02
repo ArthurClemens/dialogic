@@ -1,6 +1,6 @@
 {
   "name": "dialogic-hooks",
-  "version": "0.13.4",
+  "version": "0.13.5",
   "description": "Dialogic hooks",
   "types": "dist",
   "files": [
@@ -11,7 +11,8 @@
   "module": "./dist/dialogic-hooks.module.js",
   "exports": {
     ".": {
-      "import": "./dist/dialogic-hooks.module.js"
+      "import": "./dist/dialogic-hooks.module.js",
+      "default": "./dist/dialogic-hooks.module.js"
     }
   },
   "scripts": {
@@ -21,7 +22,7 @@
     "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json"
   },
   "dependencies": {
-    "dialogic": "0.13.4"
+    "dialogic": "0.13.5"
   },
   "devDependencies": {
     "typescript": "^4.4.4",

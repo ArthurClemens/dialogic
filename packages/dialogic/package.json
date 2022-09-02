@@ -1,6 +1,6 @@
 {
   "name": "dialogic",
-  "version": "0.13.4",
+  "version": "0.13.5",
   "description": "Logic for dialogs and notifications",
   "types": "dist",
   "type": "module",
@@ -12,7 +12,8 @@
   "module": "./dist/dialogic.module.js",
   "exports": {
     ".": {
-      "import": "./dist/dialogic.module.js"
+      "import": "./dist/dialogic.module.js",
+      "default": "./dist/dialogic.umd"
     }
   },
   "scripts": {
