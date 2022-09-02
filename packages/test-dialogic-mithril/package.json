@@ -2,7 +2,7 @@
   "name": "tests-dialogic-mithril",
   "private": true,
   "description": "Test Dialogic with Mithril",
-  "version": "0.13.5",
+  "version": "0.13.6",
   "license": "MIT",
   "scripts": {
     "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
@@ -16,8 +16,8 @@
     "prettier": "prettier --config ../../.prettierrc.json --write \"./{src,scripts}/**/*.{js,jsx,ts,tsx,ejs}\""
   },
   "dependencies": {
-    "dialogic": "0.13.5",
-    "dialogic-mithril": "0.13.5",
+    "dialogic": "0.13.6",
+    "dialogic-mithril": "0.13.6",
     "mithril": "^2.0.4",
     "mithril-hooks": "^0.7.1"
   },

@@ -1,6 +1,6 @@
 {
   "name": "dialogic-react",
-  "version": "0.13.5",
+  "version": "0.13.6",
   "description": "Logic for dialogs and notifications",
   "types": "dist",
   "files": [
@@ -12,7 +12,7 @@
   "exports": {
     ".": {
       "import": "./dist/dialogic-react.module.js",
-      "default": "./dist/dialogic-react.umd"
+      "default": "./dist/dialogic-react.umd.js"
     }
   },
   "scripts": {
@@ -23,8 +23,8 @@
     "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json"
   },
   "dependencies": {
-    "dialogic": "0.13.5",
-    "dialogic-hooks": "0.13.5",
+    "dialogic": "0.13.6",
+    "dialogic-hooks": "0.13.6",
     "react-is-mounted-hook": "1.1.2",
     "use-stream": "^0.4.2"
   },
