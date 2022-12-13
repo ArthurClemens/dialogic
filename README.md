@@ -48,6 +48,8 @@
 * Mithril - [Dialogic for Mithril documentation](./packages/dialogic-mithril/README.md)
 * Svelte and SvelteKit - [Dialogic for Svelte documentation](./packages/dialogic-svelte/README.md)
 
+For a more basic solution in vanilla JS, check out [dialogic-js](https://github.com/ArthurClemens/dialogic-js).
+
 
 ## Features
 
@@ -132,7 +134,7 @@ With Svelte:
 #### Options
 
 | **Name** | **Type** | **Required** | **Description**                                                                                                                                                   | **Default value** |
-| -------- | -------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+|----------|----------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
 | `spawn`  | `string` | No           | Spawn identifier, useful when using multiple spawn locations. See [Handling multiple items with identity options](#handling-multiple-items-with-identity-options) | "default_spawn"   |
 
 
@@ -199,7 +201,7 @@ type Dialogic.Options<T> = {
 Options passed to `show`, `hide` and `hideAll`. The options are further explained below.
 
 | **Name**              | **Type**                                                                     | **Required** | **Description**                                                                                                                                                         | **Default value**                          |
-| --------------------- | ---------------------------------------------------------------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+|-----------------------|------------------------------------------------------------------------------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
 | `component`           | Function component                                                           | No           | The component to render as an item.                                                                                                                                     |                                            |
 | `className`           | `string`                                                                     | No           | Class added to the wrapper around `component`; also the base name for transition classes (more below).                                                                  |                                            |
 | `styles`              | `TransitionStyles` object or `(domElement: HTMLElement) => TransitionStyles` | No           | Pass transition styles in JS.                                                                                                                                           |                                            |
@@ -256,7 +258,7 @@ Pass the component that will be rendered.
 Create transitions by writing styles using the format `className-suffix` - where suffix is defined by its transition point.
 
 | **Class suffix** | **When is the class set** | **What should the style do**                                               |
-| ---------------- | ------------------------- | -------------------------------------------------------------------------- |
+|------------------|---------------------------|----------------------------------------------------------------------------|
 | `-show-start`    | Start of show transition  | Initial state before the item is shown                                     |
 | `-show-end`      | End of show transition    | State for the shown item, including the transition (properties, duration)  |
 | `-hide-start`    | Start of hide transition  | Initial state before the item is hidden                                    |
@@ -298,7 +300,7 @@ In this example, the dialog will transition towards the end fully visible and wi
 Pass a style object in JavaScript instead of using a CSS file. This allows for more dynamic styling based on the current element state.
 
 | **Property** | **When is the style read**                                                                     | **What should the style do**                                               |
-| ------------ | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+|--------------|------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
 | `default`    | The default style is read at every transition moment and combined with the other styles below. | Anything that saves duplication.                                           |
 | `showStart`  | Start of show transition                                                                       | Initial state before the item is shown                                     |
 | `showEnd`    | End of show transition                                                                         | State for the shown item, including the transition (properties, duration)  |
@@ -893,7 +895,7 @@ useDialog<TDialogProps>({
 #### Options
 
 | **Name** | **Type**               | **Required** | **Description**                                                                                                                                                                                            | **Default value** |
-| -------- | ---------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+|----------|------------------------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
 | `isShow` | `boolean`              | Yes          | A boolean value when to show the dialog.                                                                                                                                                                   | None              |
 | `deps`   | `React.DependencyList` | No           | Update the hook with these deps. Use this when the instance should appear conditionally, for instance only when content exists. Can be omitted when all content is static, so no re-rendering takes place. | `[]`              |
 | `props`  | `object`               | No           | Props to pass to the dialog.                                                                                                                                                                               | None              |
@@ -941,7 +943,7 @@ const MyComponent = () => {
 All options listed above, plus:
 
 | **Name** | **Type**  | **Required** | **Description**                                                                                   | **Default value** |
-| -------- | --------- | ------------ | ------------------------------------------------------------------------------------------------- | ----------------- |
+|----------|-----------|--------------|---------------------------------------------------------------------------------------------------|-------------------|
 | `isHide` | `boolean` | No           | Only for directed use. A boolean value when to hide the dialog. Can be used together with `deps`. | None              |
 
 
