@@ -1,7 +1,7 @@
 import { ModuleFormat } from "rollup";
 import filesize from "rollup-plugin-filesize";
 import { defineConfig } from "vite";
-const packageName = process.env.npm_package_name;
+const packageName = process.env.npm_package_name!;
 
 export default defineConfig({
   plugins: [filesize()],
