@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"

@@ -12,7 +12,7 @@
   "module": "./dist/dialogic-svelte.module.js",
   "svelte": "src/index.js",
   "scripts": {
-    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "dev": "vite",
     "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
     "build:vite": "vite build"

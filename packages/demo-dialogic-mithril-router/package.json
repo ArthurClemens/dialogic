@@ -4,7 +4,7 @@
   "description": "Dialogic for React demo with React Router",
   "version": "0.13.6",
   "scripts": {
-    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"

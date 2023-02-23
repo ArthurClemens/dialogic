@@ -3,7 +3,7 @@
 	"version": "0.13.6",
 	"private": true,
 	"scripts": {
-		"deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+		"deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
 		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",
 		"preview": "svelte-kit preview",

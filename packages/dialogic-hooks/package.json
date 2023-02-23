@@ -16,7 +16,7 @@
     }
   },
   "scripts": {
-    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
     "build:vite": "vite build",
     "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json"
