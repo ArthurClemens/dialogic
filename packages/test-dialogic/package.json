@@ -6,16 +6,20 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
-    "build": "true",
-    "test": "ava",
-    "prettier": "prettier --config ../../.prettierrc.json --write \"./test/*.ts\""
+    "test": "mocha -r jsdom-global/register",
+    "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u"
+  },
+  "dependencies": {
+    "assert": "^2.0.0",
+    "dialogic": "0.13.6"
   },
   "devDependencies": {
-    "@ava/babel": "2.0.0",
-    "@ikscodes/browser-env": "1.0.0",
-    "ava": "3.15.0",
-    "dialogic": "0.13.6",
-    "ts-node": "10.4.0"
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "jsdom": "21.1.0",
+    "jsdom-global": "3.0.2",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.1"
   }
 }

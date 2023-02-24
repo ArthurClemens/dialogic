@@ -1,11 +1,11 @@
-import test from 'ava';
-import { dialog, notification, showItem } from 'dialogic';
+import { deepStrictEqual } from "assert";
+import { dialog, notification, showItem } from "dialogic";
 
-test.serial('notification timeout: should hide after specified time', t => {
+it("notification timeout: should hide after specified time", () => {
   notification.resetAll();
   const timeout = 300;
   const identityOptions = {
-    id: 'timeout',
+    id: "timeout",
   };
   const options = {
     dialogic: {
@@ -13,26 +13,26 @@ test.serial('notification timeout: should hide after specified time', t => {
       timeout,
     },
   };
-  return notification.show(options).then(item => {
-    t.is(notification.exists(identityOptions), true);
+  return notification.show(options).then((item) => {
+    deepStrictEqual(notification.exists(identityOptions), true);
 
     return showItem(item).then(
       () =>
-        new Promise(resolve => {
+        new Promise<void>((resolve) => {
           setTimeout(() => {
-            t.is(notification.exists(identityOptions), false);
+            deepStrictEqual(notification.exists(identityOptions), false);
             resolve();
           }, timeout + 100);
-        }),
+        })
     );
   });
 });
 
-test.serial('dialog timeout: should hide after specified time', t => {
+it("dialog timeout: should hide after specified time", () => {
   dialog.resetAll();
   const timeout = 300;
   const identityOptions = {
-    id: 'timeout',
+    id: "timeout",
   };
   const options = {
     dialogic: {
@@ -40,26 +40,26 @@ test.serial('dialog timeout: should hide after specified time', t => {
       timeout,
     },
   };
-  return dialog.show(options).then(item => {
-    t.is(dialog.exists(identityOptions), true);
+  return dialog.show(options).then((item) => {
+    deepStrictEqual(dialog.exists(identityOptions), true);
 
     return showItem(item).then(
       () =>
-        new Promise(resolve => {
+        new Promise<void>((resolve) => {
           setTimeout(() => {
-            t.is(dialog.exists(identityOptions), false);
+            deepStrictEqual(dialog.exists(identityOptions), false);
             resolve();
           }, timeout + 100);
-        }),
+        })
     );
   });
 });
 
-test.serial('pause and resume, with isPaused and minimumDuration', t => {
+it("pause and resume, with isPaused and minimumDuration", () => {
   notification.resetAll();
   const timeout = 300;
   const identityOptions = {
-    id: 'pause-resume',
+    id: "pause-resume",
   };
   const options = {
     dialogic: {
@@ -67,35 +67,35 @@ test.serial('pause and resume, with isPaused and minimumDuration', t => {
       timeout,
     },
   };
-  return notification.show(options).then(item => {
-    t.is(notification.exists(identityOptions), true);
+  return notification.show(options).then((item) => {
+    deepStrictEqual(notification.exists(identityOptions), true);
 
     return showItem(item).then(() => {
       let remaining1: number | undefined;
 
-      return new Promise(resolve => {
+      return new Promise<void>((resolve) => {
         setTimeout(() => {
           notification.pause(identityOptions);
-          t.is(notification.isPaused(identityOptions), true);
+          deepStrictEqual(notification.isPaused(identityOptions), true);
 
           remaining1 = notification.getRemaining(identityOptions);
           // t.log(`remaining1: ${remaining1}`);
           if (remaining1 !== undefined) {
-            t.is(remaining1 <= timeout, true);
-            t.is(remaining1 > 0, true);
+            deepStrictEqual(remaining1 <= timeout, true);
+            deepStrictEqual(remaining1 > 0, true);
           }
           notification.resume(identityOptions);
-          t.is(notification.isPaused(identityOptions), false);
+          deepStrictEqual(notification.isPaused(identityOptions), false);
 
           setTimeout(() => {
             notification.pause(identityOptions);
             const remaining2 = notification.getRemaining(identityOptions);
             // t.log(`remaining2: ${remaining2}`);
             if (remaining2 !== undefined) {
-              t.is(remaining2 <= timeout, true);
-              t.is(remaining2 > 0, true);
+              deepStrictEqual(remaining2 <= timeout, true);
+              deepStrictEqual(remaining2 > 0, true);
               if (remaining1 !== undefined) {
-                t.is(remaining2 < remaining1, true);
+                deepStrictEqual(remaining2 < remaining1, true);
               }
             }
 
@@ -107,21 +107,21 @@ test.serial('pause and resume, with isPaused and minimumDuration', t => {
             const remaining3 = notification.getRemaining(identityOptions);
             // t.log(`remaining3: ${remaining3}`);
             if (remaining3 !== undefined) {
-              t.is(remaining3 <= timeout, true);
-              t.is(remaining3 > 0, true);
+              deepStrictEqual(remaining3 <= timeout, true);
+              deepStrictEqual(remaining3 > 0, true);
               if (remaining2 !== undefined) {
-                t.is(remaining3 > remaining2, true);
+                deepStrictEqual(remaining3 > remaining2, true);
               }
             }
 
             notification.resume(identityOptions);
-            t.is(notification.isPaused(identityOptions), false);
+            deepStrictEqual(notification.isPaused(identityOptions), false);
 
             setTimeout(() => {
               const remaining4 = notification.getRemaining(identityOptions);
               // t.log(`remaining4: ${remaining4}`);
-              t.is(remaining4 === undefined, true);
-              t.is(notification.exists(identityOptions), false);
+              deepStrictEqual(remaining4 === undefined, true);
+              deepStrictEqual(notification.exists(identityOptions), false);
 
               resolve();
             }, timeout + 10);
@@ -132,11 +132,11 @@ test.serial('pause and resume, with isPaused and minimumDuration', t => {
   });
 });
 
-test.serial('notification stop: should stop the timer', t => {
+it("notification stop: should stop the timer", () => {
   notification.resetAll();
   const timeout = 300;
   const identityOptions = {
-    id: 'stop',
+    id: "stop",
   };
   const options = {
     dialogic: {
@@ -144,18 +144,18 @@ test.serial('notification stop: should stop the timer', t => {
       timeout,
     },
   };
-  return notification.show(options).then(item => {
-    t.is(notification.exists(identityOptions), true);
+  return notification.show(options).then((item) => {
+    deepStrictEqual(notification.exists(identityOptions), true);
 
     return showItem(item).then(() => {
       item.timer?.actions.stop();
       const remaining = notification.getRemaining(identityOptions);
-      t.is(remaining === undefined, true);
+      deepStrictEqual(remaining === undefined, true);
 
-      return new Promise(resolve => {
+      return new Promise<void>((resolve) => {
         setTimeout(() => {
           // should still exist
-          t.is(notification.exists(identityOptions), true);
+          deepStrictEqual(notification.exists(identityOptions), true);
           resolve();
         }, timeout + 100);
       });

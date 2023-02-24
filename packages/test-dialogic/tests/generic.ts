@@ -1,4 +1,4 @@
-import test from "ava";
+import { deepStrictEqual } from "assert";
 import { dialog, notification } from "dialogic";
 
 const getDefaultItemId = (name: string) =>
@@ -29,36 +29,36 @@ const targets = [
 
 // identifiers
 
-test("identifiers: should have the correct namespace", (t) => {
+it("identifiers: should have the correct namespace", () => {
   targets.forEach(({ type, name }) => {
     const expected = name;
     const actual = type.ns;
-    t.is(actual, expected);
+    deepStrictEqual(actual, expected);
   });
 });
 
-test("identifiers: should have the correct default id", (t) => {
+it("identifiers: should have the correct default id", () => {
   targets.forEach(({ type, name }) => {
     const expected = `default_${name}`;
     const actual = type.defaultId;
-    t.is(actual, expected);
+    deepStrictEqual(actual, expected);
   });
 });
 
-test("identifiers: should have the correct default spawn", (t) => {
+it("identifiers: should have the correct default spawn", () => {
   targets.forEach(({ type, name }) => {
     const expected = `default_${name}`;
     const actual = type.defaultSpawn;
-    t.is(actual, expected);
+    deepStrictEqual(actual, expected);
   });
 });
 
 // configuration
 
-test("configuration: should have the correct default configuration", (t) => {
+it("configuration: should have the correct default configuration", () => {
   targets.forEach(({ type, defaultDialogicOptions }) => {
     const expected = defaultDialogicOptions;
     const actual = type.defaultDialogicOptions;
-    t.deepEqual(actual, expected);
+    deepStrictEqual(actual, expected);
   });
 });
