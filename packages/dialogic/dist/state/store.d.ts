@@ -1,4 +1,4 @@
-import { Dialogic } from '../index';
+import type { Dialogic } from '../index';
 export declare const createId: (identityOptions: Dialogic.IdentityOptions, ns: string) => string;
 export declare const states: Dialogic.States;
 export declare const actions: {

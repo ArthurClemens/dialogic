@@ -1,4 +1,4 @@
-import { Dialogic } from './index';
+import type { Dialogic } from './index';
 export declare const dialogical: ({ ns, queued, timeout, }: {
     ns: string;
     queued?: boolean | undefined;

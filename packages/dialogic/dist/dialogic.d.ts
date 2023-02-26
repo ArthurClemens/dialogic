@@ -1,4 +1,4 @@
-import { Dialogic } from './index';
+import type { Dialogic } from './index';
 export { actions, selectors, states } from './state/store';
 export declare const filterCandidates: (ns: string, items: Dialogic.NamespaceStore, identityOptions: Dialogic.IdentityOptions) => Dialogic.Item[];
 export declare const show: (ns: string) => (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) => <T = unknown>(options?: Dialogic.Options<T> | undefined) => Promise<Dialogic.Item<T>>;

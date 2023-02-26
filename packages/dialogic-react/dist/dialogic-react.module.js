@@ -414,12 +414,11 @@ const TimerStore = () => {
     selectors: selectors2
   };
 };
-const pipe = (...fns) => (x) => fns.filter(Boolean).reduce((y, f) => f(y), x);
 const getStyleValue = ({
   domElement,
   prop
 }) => {
-  const defaultView = document.defaultView;
+  const { defaultView } = document;
   if (defaultView) {
     const style = defaultView.getComputedStyle(domElement);
     if (style) {
@@ -563,7 +562,8 @@ const filterCandidates = (ns, items, identityOptions) => {
   if (nsItems.length === 0) {
     return [];
   }
-  return pipe(filterBySpawn(identityOptions), filterFirstInQueue)(nsItems);
+  const filteredBySpawn = filterBySpawn(identityOptions)(nsItems);
+  return filterFirstInQueue(filteredBySpawn);
 };
 const getPassThroughOptions = (options) => {
   const copy = {
@@ -647,7 +647,8 @@ const createInstance = (ns) => (defaultDialogicOptions) => (options) => {
     const existingItem = maybeExistingItem.just;
     if (existingItem && dialogicOptions.toggle) {
       hide(ns)(defaultDialogicOptions)(options);
-      return resolve(existingItem);
+      resolve(existingItem);
+      return;
     }
     if (existingItem && !dialogicOptions.queued) {
       const replacingItem = {
@@ -753,10 +754,8 @@ const getValidItems = (ns, identityOptions) => {
   const allItems = selectors.getAll(ns);
   let validItems;
   if (identityOptions) {
-    validItems = pipe(
-      filterBySpawn(identityOptions),
-      filterById(identityOptions)
-    )(allItems);
+    const filteredBySpawn = filterBySpawn(identityOptions)(allItems);
+    validItems = filterById(identityOptions)(filteredBySpawn);
   } else {
     validItems = allItems;
   }

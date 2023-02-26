@@ -1,5 +1,5 @@
 import type Stream from 'mithril-stream-standalone';
-import { dialogical } from './dialogical';
+import type { dialogical } from './dialogical';
 import type { Timer } from './state/timer';
 import type { TransitionStyles, TransitionStylesFn } from './transition';
 export type { TransitionStyles, TransitionStylesFn };
