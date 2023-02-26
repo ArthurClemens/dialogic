@@ -1,13 +1,13 @@
-.dialog {
-  transition: opacity 350ms;
+.demo-dialog {
+  transition: opacity 350ms ease-in-out;
   opacity: 0;
 }
 /* .dialog-show-start {} */
-.dialog-show-end {
+.demo-dialog-show-end {
   opacity: 1;
 }
 /* .dialog-hide-start {} */
-.dialog-hide-end {
+.demo-dialog-hide-end {
   opacity: 0;
 }
 

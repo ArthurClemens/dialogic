@@ -38,7 +38,7 @@ function useEditProfileDialogProps({
   const useDialogProps = {
     dialogic: {
       component: EditProfileDialog,
-      className: 'dialog',
+      className: 'demo-dialog',
     },
     pathPrefix,
     title: `Update your e-mail ${store.count}`,
