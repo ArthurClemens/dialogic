@@ -1,133 +1,133 @@
-import m from "mithril";
-import { createFns } from "./helpers/createFns";
-import { Default, TDefault } from "../content/Default";
-import { buttons, TButtons } from "./helpers/buttons";
-import { notification, Notification } from "dialogic-mithril";
-import { Remaining } from "./helpers/Remaining";
+import { Notification, notification } from 'dialogic-mithril';
+import m from 'mithril';
+
+import { Default, TDefault } from '../content/Default';
+import { buttons, TButtons } from './helpers/buttons';
+import { createFns } from './helpers/createFns';
+import { Remaining } from './helpers/Remaining';
 
 export default () => {
   const fns1 = createFns<TDefault>({
     instance: notification,
     component: Default,
-    className: "notification",
-    title: "Default",
+    className: 'notification',
+    title: 'Default',
     timeout: 2000,
   }) as TButtons;
   const fns2 = createFns<TDefault>({
     instance: notification,
     component: Default,
-    className: "notification",
-    spawn: "2",
-    title: "Spawn",
+    className: 'notification',
+    spawn: '2',
+    title: 'Spawn',
     timeout: 2000,
   }) as TButtons;
 
   return {
-    view: () => {
-      return m(".test", [
+    view: () =>
+      m('.test', [
         m(
-          ".section",
-          { "data-test-id": "pause-default" },
+          '.section',
+          { 'data-test-id': 'pause-default' },
           m(
-            ".control",
-            { "data-test-id": "pause-default" },
-            m(".buttons", [
+            '.control',
+            { 'data-test-id': 'pause-default' },
+            m('.buttons', [
               m(
-                "button",
+                'button',
                 {
-                  className: "button",
+                  className: 'button',
                   onclick: () => notification.pause(),
-                  "data-test-id": "button-pause",
+                  'data-test-id': 'button-pause',
                 },
-                "Pause"
+                'Pause',
               ),
               m(
-                "button",
+                'button',
                 {
-                  className: "button",
+                  className: 'button',
                   onclick: () => notification.resume(),
-                  "data-test-id": "button-resume",
+                  'data-test-id': 'button-resume',
                 },
-                "Resume"
+                'Resume',
               ),
               m(
-                "button",
+                'button',
                 {
-                  className: "button",
+                  className: 'button',
                   onclick: () => notification.resetAll(),
-                  "data-test-id": "button-reset",
+                  'data-test-id': 'button-reset',
                 },
-                "Reset"
+                'Reset',
               ),
-            ])
+            ]),
           ),
           m(
-            ".control",
-            { "data-test-id": "is-paused" },
-            `Is paused: ${notification.isPaused()}`
+            '.control',
+            { 'data-test-id': 'is-paused' },
+            `Is paused: ${notification.isPaused()}`,
           ),
           m(
-            ".control",
+            '.control',
             m(Remaining, {
-              key: "NotificationPause",
+              key: 'NotificationPause',
               instance: notification,
-            })
+            }),
           ),
-          m(".content", [buttons({ ...fns1 })]),
-          m(".spawn.default-spawn", m(Notification))
+          m('.content', [buttons({ ...fns1 })]),
+          m('.spawn.default-spawn', m(Notification)),
         ),
         m(
-          ".section",
-          { "data-test-id": "pause-id" },
+          '.section',
+          { 'data-test-id': 'pause-id' },
           m(
-            ".control",
-            m(".buttons", [
+            '.control',
+            m('.buttons', [
               m(
-                "button",
+                'button',
                 {
-                  className: "button",
-                  onclick: () => notification.pause({ spawn: "2" }),
-                  "data-test-id": "button-pause",
+                  className: 'button',
+                  onclick: () => notification.pause({ spawn: '2' }),
+                  'data-test-id': 'button-pause',
                 },
-                "Pause"
+                'Pause',
               ),
               m(
-                "button",
+                'button',
                 {
-                  className: "button",
-                  onclick: () => notification.resume({ spawn: "2" }),
-                  "data-test-id": "button-resume",
+                  className: 'button',
+                  onclick: () => notification.resume({ spawn: '2' }),
+                  'data-test-id': 'button-resume',
                 },
-                "Resume"
+                'Resume',
               ),
               m(
-                "button",
+                'button',
                 {
-                  className: "button",
-                  onclick: () => notification.resetAll({ spawn: "2" }),
-                  "data-test-id": "button-reset",
+                  className: 'button',
+                  onclick: () => notification.resetAll({ spawn: '2' }),
+                  'data-test-id': 'button-reset',
                 },
-                "Reset"
+                'Reset',
               ),
-            ])
+            ]),
           ),
           m(
-            ".control",
-            { "data-test-id": "is-paused" },
-            `Is paused: ${notification.isPaused({ spawn: "2" })}`
+            '.control',
+            { 'data-test-id': 'is-paused' },
+            `Is paused: ${notification.isPaused({ spawn: '2' })}`,
           ),
           m(
-            ".control",
+            '.control',
             m(Remaining, {
-              key: "NotificationPause",
+              key: 'NotificationPause',
               instance: notification,
-              spawn: "2",
-            })
+              spawn: '2',
+            }),
           ),
-          m(".content", [buttons({ ...fns2, name: "spawn" })]),
-          m(".spawn.custom-spawn", m(Notification, { spawn: "2" }))
+          m('.content', [buttons({ ...fns2, name: 'spawn' })]),
+          m('.spawn.custom-spawn', m(Notification, { spawn: '2' })),
         ),
-      ]);
-    },
+      ]),
   };
 };

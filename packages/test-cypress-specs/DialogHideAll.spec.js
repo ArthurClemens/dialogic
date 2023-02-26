@@ -1,5 +1,3 @@
-/* global cy, describe, beforeEach, it */
-
 const showAll = () => {
   cy.get('[data-test-id=button-show-default]').should('exist').click();
   cy.get('[data-test-id=button-show-id1]').should('exist').click();

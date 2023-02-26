@@ -6,7 +6,7 @@ import { createFns } from './helpers/createFns';
 import { PauseResumeRemaining } from './helpers/PauseResumeRemaining';
 import { RemainingWithAnimationFrame } from './helpers/RemainingWithAnimationFrame';
 
-export default () => {
+export default function DialogTimeout() {
   useEffect(() => {
     dialog.resetAll();
   }, []);
@@ -21,15 +21,15 @@ export default () => {
   });
 
   return (
-    <div className="test">
+    <div className='test'>
       <PauseResumeRemaining fns={fns} instance={dialog}>
         <RemainingWithAnimationFrame
           getRemainingFn={() => dialog.getRemaining()}
         />
       </PauseResumeRemaining>
-      <div className="section spawn default-spawn">
+      <div className='section spawn default-spawn'>
         <Dialog />
       </div>
     </div>
   );
-};
+}

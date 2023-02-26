@@ -1,5 +1,5 @@
-import { deepStrictEqual } from "assert";
-import { dialog, notification } from "dialogic";
+import { deepStrictEqual } from 'assert';
+import { dialog, notification } from 'dialogic';
 
 const getDefaultItemId = (name: string) =>
   `${name}-default_${name}-default_${name}`;
@@ -7,29 +7,29 @@ const getDefaultItemId = (name: string) =>
 const targets = [
   {
     type: dialog,
-    name: "dialog",
+    name: 'dialog',
     defaultDialogicOptions: {
-      id: "default_dialog",
-      spawn: "default_dialog",
+      id: 'default_dialog',
+      spawn: 'default_dialog',
     },
-    defaultItemId: getDefaultItemId("dialog"),
+    defaultItemId: getDefaultItemId('dialog'),
   },
   {
     type: notification,
-    name: "notification",
+    name: 'notification',
     defaultDialogicOptions: {
-      id: "default_notification",
-      spawn: "default_notification",
+      id: 'default_notification',
+      spawn: 'default_notification',
       queued: true,
       timeout: 3000,
     },
-    defaultItemId: getDefaultItemId("notification"),
+    defaultItemId: getDefaultItemId('notification'),
   },
 ];
 
 // identifiers
 
-it("identifiers: should have the correct namespace", () => {
+it('identifiers: should have the correct namespace', () => {
   targets.forEach(({ type, name }) => {
     const expected = name;
     const actual = type.ns;
@@ -37,7 +37,7 @@ it("identifiers: should have the correct namespace", () => {
   });
 });
 
-it("identifiers: should have the correct default id", () => {
+it('identifiers: should have the correct default id', () => {
   targets.forEach(({ type, name }) => {
     const expected = `default_${name}`;
     const actual = type.defaultId;
@@ -45,7 +45,7 @@ it("identifiers: should have the correct default id", () => {
   });
 });
 
-it("identifiers: should have the correct default spawn", () => {
+it('identifiers: should have the correct default spawn', () => {
   targets.forEach(({ type, name }) => {
     const expected = `default_${name}`;
     const actual = type.defaultSpawn;
@@ -55,7 +55,7 @@ it("identifiers: should have the correct default spawn", () => {
 
 // configuration
 
-it("configuration: should have the correct default configuration", () => {
+it('configuration: should have the correct default configuration', () => {
   targets.forEach(({ type, defaultDialogicOptions }) => {
     const expected = defaultDialogicOptions;
     const actual = type.defaultDialogicOptions;

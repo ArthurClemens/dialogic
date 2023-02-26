@@ -1,5 +1,3 @@
-/* global cy, describe, beforeEach, it, expect */
-
 describe('Notification: useRemaining', () => {
   beforeEach(() => {
     cy.visit('/UseRemaining');
@@ -16,6 +14,7 @@ describe('Notification: useRemaining', () => {
     cy.get('[data-test-id=pause-default] [data-test-id=button-show-default]')
       .should('exist')
       .click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(500);
     cy.get('[data-test-id=pause-default] [data-test-id=button-pause]')
       .should('exist')
@@ -43,6 +42,7 @@ describe('Notification: useRemaining', () => {
       'Is paused: false',
     );
 
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(250);
 
     cy.get(
@@ -58,6 +58,7 @@ describe('Notification: useRemaining', () => {
       expect(remainingValue).to.be.greaterThan(0);
     });
 
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(2000);
     cy.get('[data-test-id=pause-default] [data-test-id=is-paused]').should(
       'contain',

@@ -1,7 +1,7 @@
-import { RouteResolver, ComponentTypes } from 'mithril';
+import { ComponentTypes, RouteResolver } from 'mithril';
 
 export type RouteEntry = {
   path: string;
-  component: ComponentTypes<any, any> | RouteResolver<any, any>;
+  component: ComponentTypes<unknown, unknown> | RouteResolver<unknown, unknown>;
   showInMenu?: boolean;
 };

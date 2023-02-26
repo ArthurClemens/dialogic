@@ -10,7 +10,7 @@ type ButtonsProps<T> = {
   spawn?: string;
 };
 
-export const Buttons = <T,>(props: ButtonsProps<T>) => {
+export function Buttons<T>(props: ButtonsProps<T>) {
   const genName =
     props.name ||
     `${props.id ? `id${props.id}` : ''}${
@@ -19,11 +19,11 @@ export const Buttons = <T,>(props: ButtonsProps<T>) => {
     'default';
 
   return (
-    <div className="buttons">
+    <div className='buttons'>
       {props.showFn && (
         <button
-          type="button"
-          className="button primary"
+          type='button'
+          className='button primary'
           onClick={props.showFn}
           data-test-id={`button-show-${genName}`}
         >
@@ -32,8 +32,8 @@ export const Buttons = <T,>(props: ButtonsProps<T>) => {
       )}
       {props.hideFn && (
         <button
-          type="button"
-          className="button"
+          type='button'
+          className='button'
           onClick={props.hideFn}
           data-test-id={`button-hide-${genName}`}
         >
@@ -42,4 +42,4 @@ export const Buttons = <T,>(props: ButtonsProps<T>) => {
       )}
     </div>
   );
-};
+}

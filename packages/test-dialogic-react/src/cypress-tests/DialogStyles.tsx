@@ -5,7 +5,7 @@ import { Default } from '../content/Default';
 import { Buttons } from './helpers/buttons';
 import { createFns } from './helpers/createFns';
 
-export default () => {
+export default function DialogStyles() {
   const fns1 = createFns({
     instance: dialog,
     component: Default,
@@ -53,12 +53,12 @@ export default () => {
   });
 
   return (
-    <div className="test">
+    <div className='test'>
       <Buttons {...fns1} />
-      <Buttons {...fns2} name="combi" />
-      <div className="spawn default-spawn">
+      <Buttons {...fns2} name='combi' />
+      <div className='spawn default-spawn'>
         <Dialog />
       </div>
     </div>
   );
-};
+}

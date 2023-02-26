@@ -8,7 +8,7 @@ type Props = {
   id?: string;
 };
 
-export const Remaining = ({ instance, spawn, id }: Props) => {
+export function Remaining({ instance, spawn, id }: Props) {
   const [displayValue] = useRemaining({
     instance,
     spawn,
@@ -16,11 +16,11 @@ export const Remaining = ({ instance, spawn, id }: Props) => {
   });
 
   return (
-    <div data-test-id="remaining">
+    <div data-test-id='remaining'>
       <span>Remaining: </span>
-      <span data-test-id="remaining-value">
+      <span data-test-id='remaining-value'>
         {displayValue === undefined ? 'undefined' : displayValue.toString()}
       </span>
     </div>
   );
-};
+}

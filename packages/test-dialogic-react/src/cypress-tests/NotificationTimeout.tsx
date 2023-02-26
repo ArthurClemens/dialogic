@@ -6,7 +6,7 @@ import { Buttons } from './helpers/buttons';
 import { createFns } from './helpers/createFns';
 import { RemainingWithAnimationFrame } from './helpers/RemainingWithAnimationFrame';
 
-export default () => {
+export default function NotificationTimeout() {
   useDialogicState();
 
   const commonProps = {
@@ -30,48 +30,48 @@ export default () => {
   });
 
   return (
-    <div className="test">
-      <div className="control" data-test-id="reset-all">
-        <div className="buttons">
+    <div className='test'>
+      <div className='control' data-test-id='reset-all'>
+        <div className='buttons'>
           <button
-            type="button"
-            className="button"
-            data-test-id="button-pause"
+            type='button'
+            className='button'
+            data-test-id='button-pause'
             onClick={() => notification.pause()}
           >
             Pause
           </button>
           <button
-            type="button"
-            className="button"
-            data-test-id="button-resume"
+            type='button'
+            className='button'
+            data-test-id='button-resume'
             onClick={() => notification.resume()}
           >
             Resume
           </button>
           <button
-            type="button"
-            className="button"
-            data-test-id="button-reset"
+            type='button'
+            className='button'
+            data-test-id='button-reset'
             onClick={() => notification.resetAll()}
           >
             Reset
           </button>
         </div>
       </div>
-      <div className="control" data-test-id="is-paused">
+      <div className='control' data-test-id='is-paused'>
         {`Is paused: ${notification.isPaused()}`}
       </div>
-      <div className="control">
+      <div className='control'>
         <RemainingWithAnimationFrame
           getRemainingFn={notification.getRemaining}
         />
       </div>
-      <div className="content">
+      <div className='content'>
         <Buttons {...fns1} />
-        <Buttons {...fns2} id="1" name="zero-timeout" />
+        <Buttons {...fns2} id='1' name='zero-timeout' />
       </div>
-      <div className="spawn default-spawn">
+      <div className='spawn default-spawn'>
         <Notification />
       </div>
     </div>
@@ -96,4 +96,4 @@ export default () => {
     //   </div>
     // </div>
   );
-};
+}

@@ -1,5 +1,5 @@
+import { Dialog, dialog } from 'dialogic-mithril';
 import m from 'mithril';
-import { dialog, Dialog } from 'dialogic-mithril';
 
 const DialogContent = {
   view: () =>
@@ -45,8 +45,8 @@ const MaterialIODialogComponent = (isModal: boolean = false) => ({
 });
 
 export default {
-  view: () => {
-    return m('.test', [
+  view: () =>
+    m('.test', [
       m('.buttons', [
         m(
           '.button',
@@ -78,6 +78,5 @@ export default {
         ),
       ]),
       m('.materialIO', m(Dialog)),
-    ]);
-  },
+    ]),
 };

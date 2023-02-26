@@ -5,7 +5,7 @@ import { Default } from '../content/Default';
 import { Buttons } from './helpers/buttons';
 import { createFns } from './helpers/createFns';
 
-export default () => {
+export default function DialogQueued() {
   useEffect(() => {
     dialog.resetAll();
   }, []);
@@ -19,17 +19,17 @@ export default () => {
   });
 
   return (
-    <div className="test">
+    <div className='test'>
       <div
-        className="control"
-        data-test-id="count-all"
+        className='control'
+        data-test-id='count-all'
       >{`Count all: ${dialog.getCount()}`}</div>
-      <div className="content">
+      <div className='content'>
         <Buttons {...fns} />
       </div>
-      <div className="spawn default-spawn">
+      <div className='spawn default-spawn'>
         <Dialog />
       </div>
     </div>
   );
-};
+}

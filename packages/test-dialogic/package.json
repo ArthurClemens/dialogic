@@ -6,6 +6,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
+    "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "test": "mocha -r jsdom-global/register",
     "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u"
   },

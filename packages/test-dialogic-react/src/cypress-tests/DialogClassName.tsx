@@ -5,7 +5,7 @@ import { Default } from '../content/Default';
 import { Buttons } from './helpers/buttons';
 import { createFns } from './helpers/createFns';
 
-export default () => {
+export default function DialogClassName() {
   useEffect(() => {
     dialog.resetAll();
   }, []);
@@ -17,11 +17,11 @@ export default () => {
   });
 
   return (
-    <div className="test">
+    <div className='test'>
       <Buttons {...fns} />
-      <div className="spawn default-spawn">
+      <div className='spawn default-spawn'>
         <Dialog />
       </div>
     </div>
   );
-};
+}

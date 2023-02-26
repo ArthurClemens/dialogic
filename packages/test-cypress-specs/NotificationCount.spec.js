@@ -1,5 +1,3 @@
-/* global cy, describe, beforeEach, expect, it */
-
 describe('Notification: count', () => {
   beforeEach(() => {
     cy.visit('/NotificationCount');
@@ -32,6 +30,7 @@ describe('Notification: count', () => {
       'Count spawn, id: 0',
     );
 
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(2500);
 
     cy.get('[data-test-id=count-all]').should('contain', 'Count all: 0');
@@ -66,6 +65,7 @@ describe('Notification: count', () => {
       .then(() => {
         cy.get('[data-test-id=button-show-default]').click();
         cy.get('[data-test-id=count-all]').should('contain', 'Count all: 2');
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(500);
       })
       .then(() => {
@@ -80,6 +80,7 @@ describe('Notification: count', () => {
             cy.get('[data-test-id=button-hide-default]')
               .should('exist')
               .click();
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
             cy.wait(500);
             cy.get('[data-test-id=count-all]').should(
               'contain',
@@ -97,6 +98,7 @@ describe('Notification: count', () => {
                 cy.get('[data-test-id=button-hide-default]')
                   .should('exist')
                   .click();
+                // eslint-disable-next-line cypress/no-unnecessary-waiting
                 cy.wait(5000);
                 cy.get('[data-test-id=count-all]').should(
                   'contain',
@@ -130,6 +132,7 @@ describe('Notification: count', () => {
       'Count spawn, id: 0',
     );
 
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(500);
     cy.get('[data-test-id=content-default]').should('exist');
 
@@ -142,6 +145,7 @@ describe('Notification: count', () => {
 
     cy.get('[data-test-id=button-show-id1spawn1]').should('exist').click();
 
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(50);
     cy.get('[data-test-id=count-all]').should('contain', 'Count all: 10');
     cy.get('[data-test-id=count-id]').should('contain', 'Count id: 4');

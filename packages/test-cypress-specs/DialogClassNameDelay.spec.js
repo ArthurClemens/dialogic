@@ -1,5 +1,3 @@
-/* global cy, describe, beforeEach, it */
-
 describe('Dialog: className delay', () => {
   beforeEach(() => {
     cy.visit('/DialogClassNameDelay');

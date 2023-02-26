@@ -5,7 +5,7 @@ import { Default } from '../content/Default';
 import { Buttons } from './helpers/buttons';
 import { createFns } from './helpers/createFns';
 
-export default () => {
+export default function DialogExists() {
   useDialogicState();
   const fns1 = createFns({
     instance: dialog,
@@ -37,37 +37,35 @@ export default () => {
   });
 
   return (
-    <div className="test">
+    <div className='test'>
+      <div className='control' data-test-id='count-all'>{`Exists any: ${dialog
+        .exists()
+        .toString()}`}</div>
+      <div className='control' data-test-id='count-id'>{`Exists id: ${dialog
+        .exists({ id: '1' })
+        .toString()}`}</div>
       <div
-        className="control"
-        data-test-id="count-all"
-      >{`Exists any: ${dialog.exists().toString()}`}</div>
-      <div
-        className="control"
-        data-test-id="count-id"
-      >{`Exists id: ${dialog.exists({ id: '1' }).toString()}`}</div>
-      <div
-        className="control"
-        data-test-id="count-spawn"
+        className='control'
+        data-test-id='count-spawn'
       >{`Exists spawn: ${dialog.exists({ spawn: '1' }).toString()}`}</div>
       <div
-        className="control"
-        data-test-id="count-spawn-id"
+        className='control'
+        data-test-id='count-spawn-id'
       >{`Exists spawn, id: ${dialog
         .exists({ spawn: '1', id: '1' })
         .toString()}`}</div>
-      <div className="content">
+      <div className='content'>
         <Buttons {...fns1} />
-        <Buttons {...fns2} id="1" />
-        <Buttons {...fns3} spawn="1" />
-        <Buttons {...fns4} spawn="1" id="1" />
+        <Buttons {...fns2} id='1' />
+        <Buttons {...fns3} spawn='1' />
+        <Buttons {...fns4} spawn='1' id='1' />
       </div>
-      <div className="spawn default-spawn">
+      <div className='spawn default-spawn'>
         <Dialog />
       </div>
-      <div className="spawn custom-spawn">
-        <Dialog spawn="1" />
+      <div className='spawn custom-spawn'>
+        <Dialog spawn='1' />
       </div>
     </div>
   );
-};
+}
