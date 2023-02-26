@@ -1,14 +1,13 @@
-import React from "react";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
-export const CurrentPathBadge = () => {
+export function CurrentPathBadge() {
   const router = useRouter();
 
   return (
-    <div className="control path-control">
-      <span className="tag" data-test-id="current-path">
+    <div className='control path-control'>
+      <span className='tag' data-test-id='current-path'>
         {router.asPath}
       </span>
     </div>
   );
-};
+}

@@ -1,18 +1,19 @@
-import { useStoreContext } from "../../utils/store";
-import React from "react";
-import { CurrentPathBadge } from "../../components";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { notification, UseDialog } from "dialogic-react";
+import { notification, UseDialog } from 'dialogic-react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React from 'react';
+
 import {
+  CurrentPathBadge,
   EditProfileDialog,
   EditProfileDialogProps,
   saveConfirmationData,
   SaveConfirmationProps,
-} from "../../components";
-import { useDisplayLogic } from "./util";
+} from '../../components';
+import { useStoreContext } from '../../utils/store';
+import { useDisplayLogic } from './util';
 
-const ProfilePage = () => {
+function ProfilePage() {
   const store = useStoreContext();
   const router = useRouter();
 
@@ -22,7 +23,7 @@ const ProfilePage = () => {
   const useDialogProps = {
     dialogic: {
       component: EditProfileDialog,
-      className: "dialog",
+      className: 'dialog',
     },
     title: `Update your e-mail ${store.count}`,
     email: store.email,
@@ -40,29 +41,32 @@ const ProfilePage = () => {
   };
 
   return (
-    <div data-test-id="profile-page">
-      <h1 className="title">Profile</h1>
+    <div data-test-id='profile-page'>
+      <h1 className='title'>Profile</h1>
       <CurrentPathBadge />
-      <div className="profile-tile">
+      <div className='profile-tile'>
         <div>
           <strong>Email</strong>
         </div>
-        <div data-test-id="current-email">{store.email}</div>
-        <Link href={dialogPath} as={dialogAsPath} shallow>
-          <a data-test-id="btn-edit-profile" className="button is-link">
-            Edit
-          </a>
+        <div data-test-id='current-email'>{store.email}</div>
+        <Link
+          href={dialogPath}
+          as={dialogAsPath}
+          shallow
+          data-test-id='btn-edit-profile'
+          className='button is-link'
+        >
+          Edit
         </Link>
       </div>
 
-      <div className="buttons">
-        <Link href="/">
-          <a
-            className="button is-link is-light is-outlined"
-            data-test-id="btn-home"
-          >
-            Go to Home
-          </a>
+      <div className='buttons'>
+        <Link
+          href='/'
+          className='button is-link is-light is-outlined'
+          data-test-id='btn-home'
+        >
+          Go to Home
         </Link>
       </div>
       <UseDialog<EditProfileDialogProps>
@@ -72,6 +76,6 @@ const ProfilePage = () => {
       />
     </div>
   );
-};
+}
 
 export default ProfilePage;

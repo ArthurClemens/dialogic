@@ -1,5 +1,6 @@
-import m from "mithril";
-import { CurrentPathBadge } from "../components/CurrentPathBadge";
+import m from 'mithril';
+
+import { CurrentPathBadge } from '../components/CurrentPathBadge';
 
 type TProps = {
   /**
@@ -9,27 +10,26 @@ type TProps = {
 };
 
 export const HomePage: m.Component<TProps> = {
-  view: ({ attrs }) => {
-    return m("div", { "data-test-id": "home-page" }, [
-      m("h1.title", "Home"),
+  view: ({ attrs }) =>
+    m('div', { 'data-test-id': 'home-page' }, [
+      m('h1.title', 'Home'),
       m(CurrentPathBadge),
       m(
-        "p.intro",
+        'p.intro',
         m.trust(
-          "This demo shows the <code>useDialog</code> hook that allows for a declarative way of controlling dialogs. The Profile dialog responds to the route, and is automatically hidden when using the browser's back button."
-        )
+          "This demo shows the <code>useDialog</code> hook that allows for a declarative way of controlling dialogs. The Profile dialog responds to the route, and is automatically hidden when using the browser's back button.",
+        ),
       ),
-      m(".buttons", [
+      m('.buttons', [
         m(
           m.route.Link,
           {
-            className: "button is-link",
-            href: `${attrs.pathPrefix || ""}/profile`,
-            "data-test-id": "btn-profile",
+            className: 'button is-link',
+            href: `${attrs.pathPrefix || ''}/profile`,
+            'data-test-id': 'btn-profile',
           },
-          "Go to Profile"
+          'Go to Profile',
         ),
       ]),
-    ]);
-  },
+    ]),
 };

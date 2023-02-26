@@ -2,13 +2,12 @@
  * This example uses Material IO
  */
 
-import { dialog, notification, useRemaining } from "dialogic-react";
-import React, { FunctionComponent } from "react";
-import { DialogComponent } from "./DialogComponent";
+import { dialog, notification, useRemaining } from 'dialogic-react';
+import React from 'react';
 
-const NotificationContent: FunctionComponent<TNotificationComponentProps> = (
-  props
-) => {
+import { DialogComponent } from './DialogComponent';
+
+function NotificationContent(props: TNotificationComponentProps) {
   const [remainingSeconds] = useRemaining({
     instance: notification,
     roundToSeconds: props.roundToSeconds,
@@ -16,24 +15,24 @@ const NotificationContent: FunctionComponent<TNotificationComponentProps> = (
 
   return (
     <>
-      <div className="mdc-snackbar__label">
+      <div className='mdc-snackbar__label'>
         {remainingSeconds !== undefined
           ? `Some async process message. Retrying in ${remainingSeconds} seconds.`
-          : "Some async process message."}
+          : 'Some async process message.'}
       </div>
-      <div className="mdc-snackbar__actions">
+      <div className='mdc-snackbar__actions'>
         <button
-          type="button"
-          className="button mdc-button mdc-snackbar__action"
+          type='button'
+          className='button mdc-button mdc-snackbar__action'
           onClick={() => {
             notification.pause();
             dialog.show({
               dialogic: {
                 component: DialogComponent,
-                className: "dialog",
+                className: 'dialog',
               },
-              title: "About this dialog",
-              body: "The notification is paused, so you can take your time to read this message.",
+              title: 'About this dialog',
+              body: 'The notification is paused, so you can take your time to read this message.',
               onAccept: () => {
                 notification.hide();
                 notification.resume();
@@ -49,17 +48,18 @@ const NotificationContent: FunctionComponent<TNotificationComponentProps> = (
       </div>
     </>
   );
-};
+}
 
 export type TNotificationComponentProps = {
   roundToSeconds: boolean;
 };
 
-export const NotificationComponent: FunctionComponent<TNotificationComponentProps> =
-  (props) => (
-    <div className="mdc-snackbar mdc-snackbar--open">
-      <div className="mdc-snackbar__surface">
+export function NotificationComponent(props: TNotificationComponentProps) {
+  return (
+    <div className='mdc-snackbar mdc-snackbar--open'>
+      <div className='mdc-snackbar__surface'>
         <NotificationContent {...props} />
       </div>
     </div>
   );
+}

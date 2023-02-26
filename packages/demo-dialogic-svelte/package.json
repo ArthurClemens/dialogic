@@ -17,9 +17,9 @@
     "dialogic-svelte": "0.13.6"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
-    "@tsconfig/svelte": "^2.0.1",
-    "svelte": "^3.44.1",
-    "vite": "^2.6.14"
+    "@sveltejs/vite-plugin-svelte": "^2.0.3",
+    "@tsconfig/svelte": "^3.0.0",
+    "svelte": "^3.55.1",
+    "vite": "^4.1.4"
   }
 }

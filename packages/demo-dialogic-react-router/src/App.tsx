@@ -1,33 +1,37 @@
-import { Dialog, Notification } from "dialogic-react";
-import React from "react";
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
-import "./dialogic.css";
-import "./layout.css";
-import { HomePage } from "./pages/HomePage";
-import { ProfilePage } from "./pages/ProfilePage";
-import { useStore } from "./store";
+import './dialogic.css';
+import './layout.css';
 
-const AppRoutes = () => {
+import { Dialog, Notification } from 'dialogic-react';
+import React from 'react';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+
+import { HomePage } from './pages/HomePage';
+import { ProfileRoutes } from './pages/ProfilePage';
+import { useStore } from './store';
+
+function AppRoutes() {
   const store = useStore();
 
   return (
     <Router>
-      <Switch>
-        <Route path="/profile">
-          <ProfilePage store={store} />
-        </Route>
-        <Route path="/">
-          <HomePage />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route
+          path='/profile/*'
+          element={<ProfileRoutes store={store} useDialogComponent />}
+        />
+      </Routes>
+      {/* Placing Notification and Dialog here allows to use Link components inside instances: */}
       <Notification />
       <Dialog />
     </Router>
   );
-};
+}
 
-export default () => (
-  <div className="app">
-    <AppRoutes />
-  </div>
-);
+export default function App() {
+  return (
+    <div className='app'>
+      <AppRoutes />
+    </div>
+  );
+}

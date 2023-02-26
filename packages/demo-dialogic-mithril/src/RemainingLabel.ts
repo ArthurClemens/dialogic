@@ -1,12 +1,12 @@
-import { notification, remaining } from "dialogic-mithril";
-import m from "mithril";
+import { notification, remaining } from 'dialogic-mithril';
+import m from 'mithril';
 
 export const RemainingLabel = () => {
   let remainingSeconds: number | undefined;
   remaining({
     instance: notification,
     roundToSeconds: false,
-    callback: (value) => {
+    callback: value => {
       remainingSeconds = value;
       m.redraw();
     },
@@ -15,14 +15,14 @@ export const RemainingLabel = () => {
   return {
     view: () =>
       m(
-        "span",
+        'span',
         {
           style: {
-            minWidth: "3em",
-            textAlign: "left",
+            minWidth: '3em',
+            textAlign: 'left',
           },
         },
-        remainingSeconds === undefined ? "0" : remainingSeconds.toString()
+        remainingSeconds === undefined ? '0' : remainingSeconds.toString(),
       ),
   };
 };

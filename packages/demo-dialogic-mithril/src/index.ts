@@ -1,93 +1,95 @@
-import { Dialog, Notification, notification } from "dialogic-mithril";
-import m from "mithril";
+import './styles.css';
+
+import { Dialog, Notification, notification } from 'dialogic-mithril';
+import m from 'mithril';
+
 import {
   NotificationComponent,
   TNotificationComponent,
-} from "./NotificationComponent";
-import { RemainingLabel } from "./RemainingLabel";
-import "./styles.css";
+} from './NotificationComponent';
+import { RemainingLabel } from './RemainingLabel';
 
 const App = {
   view: () => [
-    m(".page", [
-      m("main", [
-        m("h1", "Dialogic for Mithril demo"),
+    m('.page', [
+      m('main', [
+        m('h1', 'Dialogic for Mithril demo'),
         m(
-          ".message",
-          "Add one or more notifications, then click on the Show Options button in the message."
+          '.message',
+          'Add one or more notifications, then click on the Show Options button in the message.',
         ),
-        m(".ui.message", [
+        m('.ui.message', [
           m(
-            ".ui.button.primary",
+            '.ui.button.primary',
             {
               onclick: () => {
                 notification.show<TNotificationComponent>({
                   dialogic: {
                     component: NotificationComponent,
-                    className: "notification",
+                    className: 'notification',
                     timeout: 4000,
                   },
                 });
               },
             },
-            "Add notification"
+            'Add notification',
           ),
           m(
-            ".ui.button",
+            '.ui.button',
             {
               onclick: () => {
                 notification.pause();
               },
             },
-            "Pause"
+            'Pause',
           ),
           m(
-            ".ui.button",
+            '.ui.button',
             {
               onclick: () => {
                 notification.resume();
               },
             },
-            "Resume"
+            'Resume',
           ),
           m(
-            ".ui.button",
+            '.ui.button',
             {
               onclick: () => {
                 notification.hideAll();
               },
             },
-            "Hide all"
+            'Hide all',
           ),
           m(
-            ".ui.button",
+            '.ui.button',
             {
               onclick: () => {
                 notification.resetAll();
               },
             },
-            "Reset all"
+            'Reset all',
           ),
         ]),
-        m(".ui.message", [
-          m(".ui.label", [
-            "Notifications",
-            m(".detail", notification.getCount()),
+        m('.ui.message', [
+          m('.ui.label', [
+            'Notifications',
+            m('.detail', notification.getCount()),
           ]),
-          m(".ui.label", [
-            "Is paused",
-            m(".detail", notification.isPaused().toString()),
+          m('.ui.label', [
+            'Is paused',
+            m('.detail', notification.isPaused().toString()),
           ]),
           notification.exists() &&
-            m(".ui.label", ["Remaining", m(".detail", m(RemainingLabel))]),
+            m('.ui.label', ['Remaining', m('.detail', m(RemainingLabel))]),
         ]),
       ]),
-      m("footer", [
+      m('footer', [
         m(
-          "div",
+          'div',
           m.trust(
-            "Dialogic: manage dialogs and notifications. <a href='https://github.com/ArthurClemens/dialogic'>Main documentation on GitHub</a>"
-          )
+            "Dialogic: manage dialogs and notifications. <a href='https://github.com/ArthurClemens/dialogic'>Main documentation on GitHub</a>",
+          ),
         ),
       ]),
     ]),
@@ -96,7 +98,7 @@ const App = {
   ],
 };
 
-const rootElement: HTMLElement | null = document.getElementById("app");
+const rootElement: HTMLElement | null = document.getElementById('app');
 if (rootElement) {
   m.mount(rootElement, App);
 }
