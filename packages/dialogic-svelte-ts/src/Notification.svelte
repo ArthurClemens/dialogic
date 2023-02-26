@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import { notification } from "./notification";
   import Dialogical from "./Dialogical.svelte";
 </script>

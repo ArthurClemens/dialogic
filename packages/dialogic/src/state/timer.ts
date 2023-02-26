@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import Stream from "mithril-stream-standalone";
+import Stream from 'mithril-stream-standalone';
 
 type TimerCallback = () => unknown;
 type TOnFinishFn = () => void;
@@ -35,7 +35,7 @@ const appendStartTimer = (
   state: TimerState,
   callback: TimerCallback,
   duration: number,
-  updateState: () => unknown
+  updateState: () => unknown,
 ) => {
   const timeoutFn = () => {
     callback();
@@ -44,7 +44,7 @@ const appendStartTimer = (
   };
   return {
     timeoutFn,
-    promise: new Promise<void>((resolve) => {
+    promise: new Promise<void>(resolve => {
       state.onDone = () => resolve();
       state.onAbort = () => resolve();
     }),
@@ -107,7 +107,7 @@ export const TimerStore = () => {
           ...state,
           ...appendStopTimeout(state),
           ...appendStartTimer(state, callback, duration, () =>
-            timer.actions(update).done()
+            timer.actions(update).done(),
           ),
           ...(state.isPaused && appendPauseTimer(state)),
         }));
@@ -210,7 +210,7 @@ export const TimerStore = () => {
     {
       ...timer.initialState,
     },
-    update
+    update,
   );
 
   const actions = {

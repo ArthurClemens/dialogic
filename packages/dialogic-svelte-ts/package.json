@@ -8,25 +8,28 @@
     "README.md",
     "src"
   ],
-  "main": "./dist/dialogic-svelte-ts.module.js",
-  "module": "./dist/dialogic-svelte-ts.module.js",
-  "svelte": "src/index.js",
+  "svelte": "src/main.ts",
   "scripts": {
     "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "dev": "vite",
     "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
     "build:vite": "vite build",
-    "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json"
+    "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json",
+    "check": "svelte-check"
   },
   "dependencies": {
     "dialogic": "0.13.6"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
-    "@tsconfig/svelte": "^2.0.1",
-    "svelte": "^3.44.1",
-    "svelte-preprocess": "4.9.8",
-    "vite": "^2.6.14"
+    "@sveltejs/vite-plugin-svelte": "^2.0.3",
+    "@tsconfig/svelte": "^3.0.0",
+    "svelte": "^3.55.1",
+    "svelte-preprocess": "^5.0.0",
+    "vite": "^4.1.4",
+    "svelte-check": "^3.0.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "typescript": "^4.9.0",
+    "tslib": "^2.5.0"
   },
   "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
   "homepage": "https://github.com/ArthurClemens/dialogic"

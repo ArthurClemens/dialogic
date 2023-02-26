@@ -1,8 +1,8 @@
 node_modules
 .DS_Store
-dist
 dist-ssr
 *.local
 .svelte-kit
 .rpt2_cache
 screenshots
+packages/demo-*/dist

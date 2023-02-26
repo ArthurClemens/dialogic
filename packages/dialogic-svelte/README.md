@@ -238,4 +238,13 @@ The component `UseNotification` has the same functionality as `UseDialog`.
 
 ## Size
 
-- Module: `8.98 KB` with all dependencies, minified and gzipped
+```
+┌─────────────────────────────────────────────┐
+│                                             │
+│   Bundle Name:  dialogic-svelte.module.js   │
+│   Bundle Size:  60.42 KB                    │
+│   Minified Size:  28.31 KB                  │
+│   Gzipped Size:  8.7 KB                     │
+│                                             │
+└─────────────────────────────────────────────┘
+```

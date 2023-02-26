@@ -14,7 +14,7 @@
     - [Example](#example)
   - [`useDialogicState`](#usedialogicstate)
   - [`useRemaining`](#useremaining)
-- [Size](#size)
+- [Sizes](#sizes)
 
 
 
@@ -55,7 +55,7 @@ import { dialog, Dialog } from "dialogic-react";
 
 const App = () => (
   <>
-    <button onClick={() => {
+    <button type="button" onClick={() => {
       dialog.show({
         dialogic: {
           component: DialogView, // any component; see example below
@@ -106,7 +106,7 @@ import { notification, Notification, useDialogicState } from "dialogic-react";
 
 const App = () => (
   <>
-    <button onClick={() => {
+    <button type="button" onClick={() => {
       notification.show({
         dialogic: {
           component: NotificationView, // any component; see example below
@@ -131,7 +131,7 @@ const NotificationView = props => {
           <span>Message</span>
           
           {/* Optionally using pause/resume/isPaused: */}
-          <button onClick={() => {
+          <button type="button" onClick={() => {
             notification.isPaused()
               ? notification.resume({ minimumDuration: 2000 })
               : notification.pause()
@@ -231,7 +231,7 @@ In the example below:
 * Component MyDialog receives props `hideDialog` to explicitly hide the dialog
 * `deps` includes the URL location - whenever it changes the dialog is hidden
 
-```ts
+```tsx
 import { useDialog } from 'dialogic-react';
 import { MyDialog } from './MyDialog';
 
@@ -251,7 +251,7 @@ const MyComponent = () => {
   });
 
   return (
-    <button onClick={() => show()}>Show dialog</button>
+    <button type="button" onClick={() => show()}>Show dialog</button>
   )
 };
 ```
@@ -394,7 +394,33 @@ const MyComponent = props => {
 }
 ```
 
-## Size
+## Sizes
 
-- Module: `6.11 KB` with all dependencies, minified and gzipped
-- UMD: `5.73 KB` with all dependencies, minified and gzipped
+```
+┌────────────────────────────────────────────┐
+│                                            │
+│   Bundle Name:  dialogic-react.module.js   │
+│   Bundle Size:  35.01 KB                   │
+│   Minified Size:  17.53 KB                 │
+│   Gzipped Size:  5.65 KB                   │
+│                                            │
+└────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────┐
+│                                         │
+│   Bundle Name:  dialogic-react.umd.js   │
+│   Bundle Size:  38.23 KB                │
+│   Minified Size:  14.92 KB              │
+│   Gzipped Size:  5.24 KB                │
+│                                         │
+└─────────────────────────────────────────┘
+
+┌──────────────────────────────────────┐
+│                                      │
+│   Bundle Name:  dialogic-react.cjs   │
+│   Bundle Size:  35.36 KB             │
+│   Minified Size:  17.89 KB           │
+│   Gzipped Size:  5.69 KB             │
+│                                      │
+└──────────────────────────────────────┘
+```

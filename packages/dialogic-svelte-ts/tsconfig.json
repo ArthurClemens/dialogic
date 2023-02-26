@@ -1,11 +1,7 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
-  "compilerOptions": {
-    "lib": ["DOM", "ES2017", "WebWorker"],
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "strict": true
-  },
+  "compilerOptions": {},
   "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "types": ["node", "svelte"]
 }

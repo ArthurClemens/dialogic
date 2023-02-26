@@ -1,6 +1,6 @@
-import { dialog, Dialogic, notification } from "dialogic";
-import type { UseDialogicInstanceProps } from "dialogic-hooks";
-import { useEffect, useState } from "mithril-hooks";
+import { dialog, Dialogic, notification } from 'dialogic';
+import type { UseDialogicInstanceProps } from 'dialogic-hooks';
+import { useEffect, useState } from 'mithril-hooks';
 
 let useDialogicCounter = 0;
 
@@ -89,11 +89,11 @@ export const useDialogic = <T>({
 };
 
 export const useDialog = <T>(
-  props: Omit<UseDialogicInstanceProps<T>, "instance">
+  props: Omit<UseDialogicInstanceProps<T>, 'instance'>,
 ) => useDialogic<T>({ instance: dialog, ...props });
 
 export const useNotification = <T>(
-  props: Omit<UseDialogicInstanceProps<T>, "instance">
+  props: Omit<UseDialogicInstanceProps<T>, 'instance'>,
 ) =>
   useDialogic<T>({
     instance: notification,

@@ -1,6 +1,6 @@
-import { Dialogic } from "dialogic";
-declare type DependencyList = ReadonlyArray<unknown>;
-export declare type UseDialogicProps<T> = {
+import { Dialogic } from 'dialogic';
+type DependencyList = ReadonlyArray<unknown>;
+export type UseDialogicProps<T> = {
     /**
      * Condition when the instance should be shown.
      */
@@ -22,13 +22,13 @@ export declare type UseDialogicProps<T> = {
      */
     isIgnore?: boolean;
 };
-export declare type UseDialogicInstanceProps<T> = UseDialogicProps<T> & {
+export type UseDialogicInstanceProps<T> = UseDialogicProps<T> & {
     /**
      * Instance to show.
      */
     instance: Dialogic.DialogicInstance;
 };
-export declare type UseRemainingProps = {
+export type UseRemainingProps = {
     instance: Dialogic.DialogicInstance;
     id?: string;
     spawn?: string;

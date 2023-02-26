@@ -3,7 +3,7 @@
  * (which is utilized when setting `timeout`).
  */
 import { DialogicInstance } from './types';
-declare type RemainingProps = {
+type RemainingProps = {
     /**
      * Dialogic instance: notification, dialog, or custom.
      */
