@@ -9,6 +9,8 @@ import { HomePage } from './pages/HomePage';
 import { ProfileRoutes } from './pages/ProfilePage';
 import { useStore } from './store';
 
+const useDialogComponent = true;
+
 function AppRoutes() {
   const store = useStore();
 
@@ -18,7 +20,12 @@ function AppRoutes() {
         <Route path='/' element={<HomePage />} />
         <Route
           path='/profile/*'
-          element={<ProfileRoutes store={store} useDialogComponent />}
+          element={
+            <ProfileRoutes
+              store={store}
+              useDialogComponent={useDialogComponent}
+            />
+          }
         />
       </Routes>
       {/* Placing Notification and Dialog here allows to use Link components inside instances: */}

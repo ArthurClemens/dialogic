@@ -21,21 +21,23 @@ import {
 } from '../components/SaveConfirmation';
 import { TStore } from '../store';
 
-function useEditProfileDialogProps({
+function useGetEditProfileDialogProps({
   store,
+  dialogFragment,
   pathPrefix,
 }: {
   store: TStore;
+  dialogFragment?: string;
   pathPrefix?: string;
 }) {
   const location = useLocation();
   const navigate = useNavigate();
   const url = useResolvedPath('').pathname;
-  const dialogPath = `${url}/edit`;
+  const dialogPath = `${url}/${dialogFragment}`;
   const dialogReturnPath = url;
   const isExactMatch = location.pathname === dialogPath;
 
-  const useDialogProps = {
+  const dialogProps = {
     dialogic: {
       component: EditProfileDialog,
       className: 'demo-dialog',
@@ -59,36 +61,34 @@ function useEditProfileDialogProps({
   return {
     dialogPath,
     isExactMatch,
-    useDialogProps,
+    dialogProps,
   };
 }
 
-type Props = {
+type ProfilePageProps = {
   /**
    * Used for e2e tests.
    */
   pathPrefix?: string;
   useDialogComponent?: boolean;
   store: TStore;
+  profileDialogProps: ReturnType<typeof useGetEditProfileDialogProps>;
 };
 
-export function ProfilePage({
+function ProfilePage({
   pathPrefix = '',
   useDialogComponent,
   store,
-}: Props) {
-  const { isExactMatch, useDialogProps, dialogPath } =
-    useEditProfileDialogProps({
-      pathPrefix,
-      store,
-    });
+  profileDialogProps,
+}: ProfilePageProps) {
+  const { isExactMatch, dialogProps, dialogPath } = profileDialogProps;
 
   // The useDialog function would normally be used when not using React Router
   useDialog<EditProfileDialogProps>({
     isIgnore: useDialogComponent,
     isShow: !!isExactMatch,
     deps: [store.count], // update the dialog contents whenever count changes
-    props: useDialogProps,
+    props: dialogProps,
   });
 
   return (
@@ -125,15 +125,27 @@ export function ProfilePage({
   );
 }
 
+type Props = {
+  /**
+   * Used for e2e tests.
+   */
+  pathPrefix?: string;
+  useDialogComponent?: boolean;
+  store: TStore;
+};
+
 export function ProfileRoutes({
   pathPrefix = '',
   useDialogComponent,
   store,
 }: Props) {
-  const { isExactMatch, useDialogProps } = useEditProfileDialogProps({
+  const dialogFragment = 'edit';
+  const profileDialogProps = useGetEditProfileDialogProps({
     pathPrefix,
     store,
+    dialogFragment,
   });
+  const { isExactMatch, dialogProps } = profileDialogProps;
 
   return (
     <Routes>
@@ -144,18 +156,19 @@ export function ProfileRoutes({
             store={store}
             pathPrefix={pathPrefix}
             useDialogComponent={useDialogComponent}
+            profileDialogProps={profileDialogProps}
           />
         }
       >
         {/* When using React Router, adding UseDialog component is the typical use (instead of the useDialog function) */}
         {useDialogComponent && (
           <Route
-            path='edit'
+            path={dialogFragment}
             element={
               <UseDialog<EditProfileDialogProps>
                 isShow={!!isExactMatch}
                 deps={[store.count]}
-                props={useDialogProps}
+                props={dialogProps}
               />
             }
           />

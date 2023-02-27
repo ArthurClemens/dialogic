@@ -9,9 +9,10 @@
   - [Notification](#notification)
   - [`useDialog`](#usedialog)
     - [Calling show and hide directly](#calling-show-and-hide-directly)
-    - [With React Router](#with-react-router)
+    - [With React Router 5](#with-react-router-5)
   - [`UseDialog` component](#usedialog-component)
-    - [Example](#example)
+    - [UseDialog component with React Router 6](#usedialog-component-with-react-router-6)
+    - [UseDialog component with React Router 5](#usedialog-component-with-react-router-5)
   - [`useDialogicState`](#usedialogicstate)
   - [`useRemaining`](#useremaining)
 - [Sizes](#sizes)
@@ -256,7 +257,9 @@ const MyComponent = () => {
 };
 ```
 
-#### With React Router
+#### With React Router 5
+
+*An example with React Router 6 and UseDialog component is listed further on the page*
 
 Use `react-router` matching for more flexibility on matching routes. This can also be used to match on parametrized routes.
 
@@ -292,8 +295,109 @@ Helper component that wraps `useDialog` to use in JSX syntax, for example togeth
 It accepts the same props as `useDialog`.
 
 
+#### UseDialog component with React Router 6
 
-#### Example
+```tsx
+// ProfilePage.tsx
+import { UseDialog } from 'dialogic-react';
+import {
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+  useResolvedPath,
+} from 'react-router-dom';
+import {
+  EditProfileDialog,
+  EditProfleDialogProps,
+} from '../components/EditProfileDialog';
+
+// Separate function for separation of concerns
+function useEditProfileDialogProps(dialogFragment: string) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const url = useResolvedPath('').pathname;
+  const dialogPath = `${url}/${dialogFragment}`;
+  const dialogReturnPath = url;
+  const isExactMatch = location.pathname === dialogPath;
+
+  const dialogProps = {
+    dialogic: {
+      component: EditProfileDialog,
+      className: 'edit-profile-dialog',
+    },
+    // ... additional props to pass to EditProfileDialog
+  };
+
+  return {
+    dialogPath,
+    isExactMatch,
+    dialogProps,
+  };
+}
+
+function ProfilePage() {
+  return (
+    <div>
+      <h1>Profile</h1>
+      <p>Profile data</p>
+      <Outlet />
+    </div>
+  )
+}
+
+export function ProfileRoutes() {
+  const dialogFragment = 'edit';
+  const { isExactMatch, dialogProps, dialogPath } = useEditProfileDialogProps(dialogFragment);
+
+  return (
+    <Routes>
+      <Route path='*' element={<ProfilePage />}>
+        <Route
+          path={dialogFragment}
+          element={<UseDialog<MyDialogProps> props={dialogProps} />}
+        />
+      </Route>
+    </Routes>
+  );
+}
+
+// App.tsx
+import { Dialog, Notification } from 'dialogic-react';
+import React from 'react';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+
+import { HomePage } from './pages/HomePage';
+import { ProfileRoutes } from './pages/ProfilePage';
+
+function AppRoutes() {
+  return (
+    <Router>
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route
+          path='/profile/*'
+          element={<ProfileRoutes />}
+        />
+      </Routes>
+      {/* Placing Notification and Dialog here allows to use Link components inside instances: */}
+      <Notification />
+      <Dialog />
+    </Router>
+  );
+}
+
+export default function App() {
+  return (
+    <div className='app'>
+      <AppRoutes />
+    </div>
+  );
+}
+```
+
+#### UseDialog component with React Router 5
 
 See also CodeSandbox demo: [Route example with UseDialog](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-component-kgq22)
 
