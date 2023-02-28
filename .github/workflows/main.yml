@@ -33,6 +33,7 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci --ignore-scripts
+
   test_dialogic:
     runs-on: ubuntu-20.04
     needs: dependencies
@@ -58,6 +59,7 @@ jobs:
         with:
           path: './node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - uses: cypress-io/github-action@v5
       - name: Mithril
         working-directory: packages/test-dialogic-mithril
         run: npm run test
@@ -72,6 +74,7 @@ jobs:
         with:
           path: './node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - uses: cypress-io/github-action@v5
       - name: React
         working-directory: packages/test-dialogic-react
         run: npm run test
@@ -86,6 +89,7 @@ jobs:
         with:
           path: './node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - uses: cypress-io/github-action@v5
       - name: Svelte
         working-directory: packages/test-dialogic-svelte
         run: npm run test
