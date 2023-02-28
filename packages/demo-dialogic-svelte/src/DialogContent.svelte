@@ -1,5 +1,5 @@
 <script>
-  import { dialog } from "../../dialogic-svelte";
+  import { dialog } from "dialogic-svelte";
 </script>
 
 <div class="mdc-dialog__container">

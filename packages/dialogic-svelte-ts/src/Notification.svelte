@@ -1,6 +1,10 @@
 <script lang="ts">
+  import type { ComponentType } from 'svelte';
+
   import { notification } from "./notification";
   import Dialogical from "./Dialogical.svelte";
+
+  let component: ComponentType = Dialogical;
 </script>
 
-<Dialogical {...$$props} instance={notification} />
+<svelte:component this={component} {...$$props} instance={notification} />

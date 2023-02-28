@@ -4,16 +4,14 @@
   "description": "Logic for dialogs and notifications",
   "type": "module",
   "files": [
-    "dist",
-    "README.md",
-    "src"
+    "src",
+    "README.md"
   ],
-  "svelte": "src/index.js",
+  "svelte": "./src/index.js",
   "scripts": {
     "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "dev": "vite",
-    "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
-    "build:vite": "vite build"
+    "build": "true"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.3",
