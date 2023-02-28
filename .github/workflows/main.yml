@@ -31,31 +31,31 @@ jobs:
     needs: [dependencies]
     steps:
       - uses: actions/checkout@v3
-      - run: |
-        cd packages/test-dialogic
-        npm run test
+      - name: Dialogic core
+        working-directory: ./packages/test-dialogic
+        run: npm run test
   test_dialogic_mithril:
     runs-on: ubuntu-20.04
     needs: [dependencies]
     steps:
       - uses: actions/checkout@v3
-      - run: |
-        cd packages/test-dialogic-mithril
-        npm run test
+      - name: Mithril
+        working-directory: packages/test-dialogic-mithril
+        run: npm run test
   test_dialogic_react:
     runs-on: ubuntu-20.04
     needs: [dependencies]
     steps:
       - uses: actions/checkout@v3
-      - run: |
-        cd packages/test-dialogic-react
-        npm run test
+      - name: React
+        working-directory: packages/test-dialogic-react
+        run: npm run test
   test_dialogic_svelte:
     runs-on: ubuntu-20.04
     needs: [dependencies]
     steps:
       - uses: actions/checkout@v3
-      - run: |
-        cd packages/test-dialogic-svelte
-        npm run test
+      - name: Svelte
+        working-directory: packages/test-dialogic-svelte
+        run: npm run test
 
