@@ -40,11 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - uses: actions/cache@v3
-        id: npm-cache
-        with:
-          path: './node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - uses: cypress-io/github-action@v5
       - name: Dialogic core
         working-directory: ./packages/test-dialogic
         run: npm run test
@@ -54,11 +50,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - uses: actions/cache@v3
-        id: npm-cache
-        with:
-          path: './node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - uses: cypress-io/github-action@v5
       - name: Mithril
         working-directory: packages/test-dialogic-mithril
@@ -69,11 +60,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - uses: actions/cache@v3
-        id: npm-cache
-        with:
-          path: './node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - uses: cypress-io/github-action@v5
       - name: React
         working-directory: packages/test-dialogic-react
@@ -84,11 +70,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - uses: actions/cache@v3
-        id: npm-cache
-        with:
-          path: './node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - uses: cypress-io/github-action@v5
       - name: Svelte
         working-directory: packages/test-dialogic-svelte
