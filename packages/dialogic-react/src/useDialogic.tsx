@@ -1,9 +1,9 @@
-import { dialog, Dialogic, notification } from "dialogic";
+import { dialog, Dialogic, notification } from 'dialogic';
 import type {
   UseDialogicInstanceProps,
   UseDialogicProps,
-} from "dialogic-hooks";
-import React, { PropsWithChildren, useEffect, useState } from "react";
+} from 'dialogic-hooks';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 
 let useDialogicCounter = 0;
 
@@ -91,7 +91,7 @@ export const useDialogic = <T,>({
 };
 
 export const useDialog = <T,>(
-  props: Omit<UseDialogicInstanceProps<T>, "instance">
+  props: Omit<UseDialogicInstanceProps<T>, 'instance'>,
 ) =>
   useDialogic<T>({
     ...props,
@@ -99,7 +99,7 @@ export const useDialog = <T,>(
   });
 
 export const useNotification = <T,>(
-  props: Omit<UseDialogicInstanceProps<T>, "instance">
+  props: Omit<UseDialogicInstanceProps<T>, 'instance'>,
 ) =>
   useDialogic<T>({
     ...props,
@@ -109,17 +109,19 @@ export const useNotification = <T,>(
 /**
  * Helper component that wraps `useDialogic` to use with JSX syntax.
  */
-export const UseDialogic = <T,>(
-  props: PropsWithChildren<UseDialogicInstanceProps<T>>
-) => {
+export function UseDialogic<T>(
+  props: PropsWithChildren<UseDialogicInstanceProps<T>>,
+) {
   useDialogic<T>(props);
   return null;
-};
+}
 
-export const UseDialog = <T,>(
-  props: PropsWithChildren<UseDialogicProps<T>>
-) => <UseDialogic {...props} instance={dialog} />;
+export function UseDialog<T>(props: PropsWithChildren<UseDialogicProps<T>>) {
+  return <UseDialogic {...props} instance={dialog} />;
+}
 
-export const UseNotification = <T,>(
-  props: PropsWithChildren<UseDialogicProps<T>>
-) => <UseDialogic {...props} instance={notification} />;
+export function UseNotification<T>(
+  props: PropsWithChildren<UseDialogicProps<T>>,
+) {
+  return <UseDialogic {...props} instance={notification} />;
+}

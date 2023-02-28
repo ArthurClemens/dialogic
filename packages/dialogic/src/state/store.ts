@@ -1,12 +1,11 @@
-/* eslint-disable no-param-reassign */
-import Stream from "mithril-stream-standalone";
+import Stream from 'mithril-stream-standalone';
 
-import { Dialogic } from "../index";
+import type { Dialogic } from '../index';
 
 type PatchFn = (state: Dialogic.State) => Dialogic.State;
 
 const findItem = <T = unknown>(id: string, items: Dialogic.Item<T>[]) =>
-  items.find((item) => item.id === id);
+  items.find(item => item.id === id);
 
 const itemIndex = <T = unknown>(id: string, items: Dialogic.Item<T>[]) => {
   const item = findItem<T>(id, items);
@@ -23,8 +22,8 @@ const removeItem = <T = unknown>(id: string, items: Dialogic.Item<T>[]) => {
 
 export const createId = (
   identityOptions: Dialogic.IdentityOptions,
-  ns: string
-) => [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join("-");
+  ns: string,
+) => [ns, identityOptions.id, identityOptions.spawn].filter(Boolean).join('-');
 
 const store = {
   initialState: {
@@ -65,7 +64,7 @@ const store = {
     replace: <T = unknown>(
       ns: string,
       id: string,
-      newItem: Dialogic.Item<T>
+      newItem: Dialogic.Item<T>,
     ) => {
       update((state: Dialogic.State) => {
         const items = state.store[ns] || [];
@@ -116,18 +115,18 @@ const store = {
 
       find: <T = unknown>(
         ns: string,
-        identityOptions: Dialogic.IdentityOptions
+        identityOptions: Dialogic.IdentityOptions,
       ) => {
         const state = states();
         const items = state.store[ns] || [];
         const id = createId(identityOptions, ns);
-        const item = items.find((fitem) => fitem.id === id) as Dialogic.Item<T>;
+        const item = items.find(fitem => fitem.id === id) as Dialogic.Item<T>;
         return item ? { just: item } : { nothing: undefined };
       },
 
       getAll: <T = unknown>(
         ns: string,
-        identityOptions?: Dialogic.IdentityOptions
+        identityOptions?: Dialogic.IdentityOptions,
       ) => {
         const state = states();
         const items = (state.store[ns] || []) as Dialogic.Item<T>[];
@@ -137,11 +136,11 @@ const store = {
           identityOptions !== undefined ? identityOptions.id : undefined;
         const itemsBySpawn =
           spawn !== undefined
-            ? items.filter((fitem) => fitem.identityOptions.spawn === spawn)
+            ? items.filter(fitem => fitem.identityOptions.spawn === spawn)
             : items;
         const itemsById =
           id !== undefined
-            ? itemsBySpawn.filter((item) => item.identityOptions.id === id)
+            ? itemsBySpawn.filter(item => item.identityOptions.id === id)
             : itemsBySpawn;
         return itemsById;
       },
@@ -161,7 +160,7 @@ export const states: Dialogic.States = Stream.scan(
   {
     ...store.initialState,
   },
-  update
+  update,
 );
 
 export const actions = {

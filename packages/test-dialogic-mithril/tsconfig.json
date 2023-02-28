@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "include": ["./src"],
   "compilerOptions": {
-    "types": ["../../node_modules/@types/mithril"]
+    "types": ["@types/mithril"],
+    "baseUrl": "."
   }
 }

@@ -11,7 +11,7 @@ Manage dialogs and notifications.
   - [`useDialog`](#usedialog)
     - [Calling show and hide directly](#calling-show-and-hide-directly)
   - [`useRemaining`](#useremaining)
-- [Size](#size)
+- [Sizes](#sizes)
 
 
 ## API
@@ -293,7 +293,33 @@ const MyComponent = (attrs) => {
 }
 ```
 
-## Size
+## Sizes
 
-- Module: `5.38 KB` with all dependencies, minified and gzipped
-- UMD: `5.13 KB` with all dependencies, minified and gzipped
+```
+┌──────────────────────────────────────────────┐
+│                                              │
+│   Bundle Name:  dialogic-mithril.module.js   │
+│   Bundle Size:  31.25 KB                     │
+│   Minified Size:  15.39 KB                   │
+│   Gzipped Size:  5.02 KB                     │
+│                                              │
+└──────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────┐
+│                                           │
+│   Bundle Name:  dialogic-mithril.umd.js   │
+│   Bundle Size:  34.22 KB                  │
+│   Minified Size:  13.2 KB                 │
+│   Gzipped Size:  4.72 KB                  │
+│                                           │
+└───────────────────────────────────────────┘
+
+┌────────────────────────────────────────┐
+│                                        │
+│   Bundle Name:  dialogic-mithril.cjs   │
+│   Bundle Size:  31.58 KB               │
+│   Minified Size:  15.72 KB             │
+│   Gzipped Size:  5.06 KB               │
+│                                        │
+└────────────────────────────────────────┘
+```

@@ -1,6 +1,6 @@
 /// <reference types="../../node_modules/@types/mithril" />
-import { Dialogic } from "dialogic";
-import m from "mithril";
+import { Dialogic } from 'dialogic';
+import m from 'mithril';
 export declare const Instance: <T = unknown>({ attrs: componentAttrs, }: {
     attrs: Dialogic.DialogicalInstanceOptions<T>;
 }) => {

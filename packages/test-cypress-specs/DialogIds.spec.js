@@ -1,5 +1,3 @@
-/* global cy, describe, beforeEach, it */
-
 describe('Dialog: ids', () => {
   beforeEach(() => {
     cy.visit('/DialogIds');
@@ -36,6 +34,7 @@ describe('Dialog: ids', () => {
     cy.get('[data-test-id=content-default-id2]').should('exist');
 
     cy.get('[data-test-id=button-hide-id2]').should('exist').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(300);
     cy.get('[data-test-id=content-default]').should('not.exist');
     cy.get('[data-test-id=content-default-id1]').should('not.exist');

@@ -4,7 +4,7 @@
   "description": "Dialogic for React demo",
   "version": "0.13.6",
   "scripts": {
-    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
@@ -12,15 +12,16 @@
   },
   "dependencies": {
     "dialogic-react": "0.13.6",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/react": "^17.0.34",
-    "@types/react-dom": "^17.0.11",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
     "dialogic": "0.13.6",
-    "typescript": "^4.4.4",
-    "vite": "^2.6.14"
+    "shelljs": "^0.8.5",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.4"
   },
   "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
   "homepage": "https://github.com/ArthurClemens/dialogic",

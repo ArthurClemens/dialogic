@@ -2,7 +2,6 @@
   "name": "dialogic-hooks",
   "version": "0.13.6",
   "description": "Dialogic hooks",
-  "types": "dist",
   "files": [
     "dist",
     "README.md"
@@ -11,12 +10,13 @@
   "module": "./dist/dialogic-hooks.module.js",
   "exports": {
     ".": {
+      "require": "./dist/dialogic-hooks.cjs",
       "import": "./dist/dialogic-hooks.module.js",
       "default": "./dist/dialogic-hooks.module.js"
     }
   },
   "scripts": {
-    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
     "build:vite": "vite build",
     "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json"
@@ -25,8 +25,8 @@
     "dialogic": "0.13.6"
   },
   "devDependencies": {
-    "typescript": "^4.4.4",
-    "vite": "^2.6.14"
+    "typescript": "^4.9.5",
+    "vite": "^4.1.4"
   },
   "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
   "homepage": "https://github.com/ArthurClemens/dialogic",

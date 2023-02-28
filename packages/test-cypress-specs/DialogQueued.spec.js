@@ -1,5 +1,3 @@
-/* global expect, cy, describe, beforeEach, it */
-
 describe('Dialog: queued', () => {
   beforeEach(() => {
     cy.visit('/DialogQueued');
@@ -24,6 +22,7 @@ describe('Dialog: queued', () => {
       .then(() => {
         cy.get('[data-test-id=button-show-default]').click();
         cy.get('[data-test-id=count-all]').should('contain', 'Count all: 2');
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(500);
       })
       .then(() => {
@@ -38,6 +37,7 @@ describe('Dialog: queued', () => {
             cy.get('[data-test-id=button-hide-default]')
               .should('exist')
               .click();
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
             cy.wait(500);
             cy.get('[data-test-id=count-all]').should(
               'contain',
@@ -55,6 +55,7 @@ describe('Dialog: queued', () => {
                 cy.get('[data-test-id=button-hide-default]')
                   .should('exist')
                   .click();
+                // eslint-disable-next-line cypress/no-unnecessary-waiting
                 cy.wait(500);
                 cy.get('[data-test-id=count-all]').should(
                   'contain',

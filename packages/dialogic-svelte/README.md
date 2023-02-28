@@ -14,7 +14,6 @@ See also the TypeScript version [dialogic-svelte-ts](../dialogic-svelte-ts/READM
   - [Notification](#notification)
   - [UseDialog](#usedialog)
   - [UseNotification](#usenotification)
-- [Size](#size)
 
 ## API
 
@@ -233,9 +232,3 @@ and add the reactive variable to the `deps`:
 ### UseNotification
 
 The component `UseNotification` has the same functionality as `UseDialog`.
-
-
-
-## Size
-
-- Module: `8.98 KB` with all dependencies, minified and gzipped

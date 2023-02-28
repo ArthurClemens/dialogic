@@ -1,8 +1,8 @@
-import type Stream from "mithril-stream-standalone";
+import type Stream from 'mithril-stream-standalone';
 
-import { dialogical } from "./dialogical";
-import type { Timer } from "./state/timer";
-import type { TransitionStyles, TransitionStylesFn } from "./transition";
+import type { dialogical } from './dialogical';
+import type { Timer } from './state/timer';
+import type { TransitionStyles, TransitionStylesFn } from './transition';
 
 export type { TransitionStyles, TransitionStylesFn };
 
@@ -119,5 +119,5 @@ export type InstanceEvent = {
 };
 
 export type InitiateItemTransitionFn = <T = unknown>(
-  item: Item<T>
+  item: Item<T>,
 ) => Promise<Item<T>>;

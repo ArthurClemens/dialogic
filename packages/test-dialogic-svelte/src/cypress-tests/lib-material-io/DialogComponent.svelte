@@ -18,5 +18,6 @@ export let isModal = false;
     <div
       class="mdc-dialog__scrim"
       on:click={() => !isModal && dialog.hide()}
+      on:keyup={() => !isModal && dialog.hide()}
     />
 </div>

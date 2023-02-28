@@ -1,5 +1,3 @@
-/* global cy, describe, beforeEach, it */
-
 describe('Dialog: count', () => {
   beforeEach(() => {
     cy.visit('/DialogCount');
@@ -87,8 +85,10 @@ describe('Dialog: count', () => {
     );
 
     cy.get('[data-test-id=button-show-queued]').should('exist').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(100);
     cy.get('[data-test-id=button-show-queued]').should('exist').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(100);
 
     cy.get('[data-test-id=count-all]').should('contain', 'Count all: 3');

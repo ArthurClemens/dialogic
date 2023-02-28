@@ -1,11 +1,14 @@
-import { Dialog, Notification } from "dialogic-mithril";
-import m, { Component } from "mithril";
-import "../../../demo-dialogic-mithril-router/src/layout.css";
-import { HomePage } from "../../../demo-dialogic-mithril-router/src/pages/HomePage";
-import { ProfilePage } from "../../../demo-dialogic-mithril-router/src/pages/ProfilePage";
-import { RouteEntry } from "../types";
+/* eslint-disable import/no-extraneous-dependencies */
+import 'demo-dialogic-mithril-router/src/layout.css';
 
-const PREFIX = "/UseDialogTest";
+import { HomePage } from 'demo-dialogic-mithril-router/src/pages/HomePage';
+import { ProfilePage } from 'demo-dialogic-mithril-router/src/pages/ProfilePage';
+import { Dialog, Notification } from 'dialogic-mithril';
+import m, { Component } from 'mithril';
+
+import { RouteEntry } from '../types';
+
+const PREFIX = '/UseDialogTest';
 
 type WrapComponent = {
   /**
@@ -15,13 +18,12 @@ type WrapComponent = {
 };
 
 const resolve = (component: Component<WrapComponent>) => ({
-  render: () => {
-    return m(".app", [
+  render: () =>
+    m('.app', [
       m(component, { pathPrefix: PREFIX }),
       m(Dialog),
       m(Notification),
-    ]);
-  },
+    ]),
 });
 
 export const routes = [

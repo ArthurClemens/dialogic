@@ -1,5 +1,3 @@
-/* global cy, expect, describe, beforeEach, it */
-
 describe('Dialog: className', () => {
   beforeEach(() => {
     cy.visit('/DialogClassName');
@@ -23,6 +21,7 @@ describe('Dialog: className', () => {
       })
       .then(() => {
         cy.get('[data-test-id=button-show-default]').click();
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(500);
       })
       .then(() => {

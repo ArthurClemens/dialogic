@@ -1,15 +1,15 @@
-import { Dialogic } from "dialogic";
-import m, { Component } from "mithril";
+import { Dialogic } from 'dialogic';
+import m, { Component } from 'mithril';
 
-import { Wrapper } from "./Wrapper";
+import { Wrapper } from './Wrapper';
 
 type DialogicalFn = (
-  type: Dialogic.DialogicInstance
+  type: Dialogic.DialogicInstance,
 ) => Component<Dialogic.ComponentOptions>;
 
-export const Dialogical: DialogicalFn = (instance) => ({
+export const Dialogical: DialogicalFn = instance => ({
   oncreate: ({ attrs }) => {
-    if (typeof attrs.onMount === "function") {
+    if (typeof attrs.onMount === 'function') {
       attrs.onMount();
     }
   },

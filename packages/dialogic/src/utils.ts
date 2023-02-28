@@ -1,12 +1,5 @@
-export const isClient = typeof document !== "undefined";
+export const isClient = typeof document !== 'undefined';
 export const isServer = !isClient;
-
-type Fn = (args: any) => any;
-
-export const pipe =
-  (...fns: Fn[]) =>
-  (x: any) =>
-    fns.filter(Boolean).reduce((y, f) => f(y), x);
 
 export const getStyleValue = ({
   domElement,
@@ -15,7 +8,7 @@ export const getStyleValue = ({
   domElement: HTMLElement;
   prop: string;
 }) => {
-  const defaultView = document.defaultView;
+  const { defaultView } = document;
   if (defaultView) {
     const style = defaultView.getComputedStyle(domElement);
     if (style) {

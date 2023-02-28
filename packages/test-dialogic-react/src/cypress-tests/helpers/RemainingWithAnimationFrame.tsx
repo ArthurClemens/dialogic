@@ -6,7 +6,7 @@ type RemainingProps = {
   getRemainingFn: () => number | undefined;
 };
 
-export const RemainingWithAnimationFrame = (props: RemainingProps) => {
+export function RemainingWithAnimationFrame(props: RemainingProps) {
   const [displayValue, setDisplayValue] = useState<number>();
 
   useAnimationFrame(() => {
@@ -19,11 +19,11 @@ export const RemainingWithAnimationFrame = (props: RemainingProps) => {
   });
 
   return (
-    <div data-test-id="remaining">
+    <div data-test-id='remaining'>
       <span>Remaining: </span>
-      <span data-test-id="remaining-value">
+      <span data-test-id='remaining-value'>
         {displayValue === undefined ? 'undefined' : displayValue.toString()}
       </span>
     </div>
   );
-};
+}

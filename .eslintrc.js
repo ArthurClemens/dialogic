@@ -6,8 +6,9 @@ module.exports = {
   env: {
     browser: true,
     es6: true,
+    mocha: true,
   },
-  extends: ['airbnb', 'airbnb/hooks', 'prettier'],
+  extends: ['airbnb', 'airbnb/hooks', 'prettier', 'plugin:cypress/recommended'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -50,9 +51,9 @@ module.exports = {
       ERROR,
       {
         devDependencies: true,
-        packageDir: ['.', __dirname],
       },
     ],
+    'no-param-reassign': ['error', { props: false }],
 
     // Sorting rules
     'sort-imports': OFF,

@@ -1,16 +1,17 @@
-import { dialog, Dialogic, notification } from "dialogic";
-import React from "react";
-import { Dialogical } from "./Dialogical";
+import { dialog, Dialogic, notification } from 'dialogic';
+import React from 'react';
 
-const Dialog = (props: Dialogic.ComponentOptions) => (
-  <Dialogical {...props} instance={dialog} />
-);
-const Notification = (props: Dialogic.ComponentOptions) => (
-  <Dialogical {...props} instance={notification} />
-);
+import { Dialogical } from './Dialogical';
 
-export { dialog, Dialogic, notification, remaining } from "dialogic";
-export * from "./useDialogic";
-export * from "./useDialogicState";
-export * from "./useRemaining";
-export { Dialog, Notification, Dialogical };
+function Dialog(props: Dialogic.ComponentOptions) {
+  return <Dialogical {...props} instance={dialog} />;
+}
+function Notification(props: Dialogic.ComponentOptions) {
+  return <Dialogical {...props} instance={notification} />;
+}
+
+export * from './useDialogic';
+export * from './useDialogicState';
+export * from './useRemaining';
+export { dialog, Dialogic, notification, remaining } from 'dialogic';
+export { Dialog, Dialogical, Notification };

@@ -1,4 +1,6 @@
-<script type="ts">
+<script lang="ts">
+  import type { ComponentType } from 'svelte';
+
   import type { Dialogic } from "dialogic";
 
   import { onMount, createEventDispatcher } from "svelte";
@@ -9,8 +11,10 @@
   let domElement: HTMLElement;
 
   export let identityOptions: Dialogic.IdentityOptions;
-  export let passThroughOptions: Dialogic.PassThroughOptions;
-  export let dialogicOptions: Dialogic.DialogicOptions;
+  export let passThroughOptions: Record<string, unknown>;
+  export let dialogicOptions: Omit<Dialogic.DialogicOptions, 'component'> & {
+    component: ComponentType
+  };
 
   const className = dialogicOptions ? dialogicOptions.className : "";
 

@@ -1,16 +1,16 @@
 import {
-  show,
+  exists,
+  getCount,
+  getRemaining,
   hide,
   hideAll,
-  resetAll,
-  getCount,
-  pause,
-  resume,
   isPaused,
-  getRemaining,
-  exists,
-} from "./dialogic";
-import { Dialogic } from "./index";
+  pause,
+  resetAll,
+  resume,
+  show,
+} from './dialogic';
+import type { Dialogic } from './index';
 
 export const dialogical = ({
   ns,

@@ -55,9 +55,9 @@ const applyTransitionStyles = (
   if (transitionStyle) {
     Object.keys(transitionStyle).forEach((key: string) => {
       // Workaround for error "getPropertyValue is not a function"
-      const value = ((transitionStyle as unknown) as KeyValue)[key];
+      const value = (transitionStyle as unknown as KeyValue)[key];
       // eslint-disable-next-line no-param-reassign
-      ((domElement.style as unknown) as KeyValue)[key] = value;
+      (domElement.style as unknown as KeyValue)[key] = value;
     });
   }
 };

@@ -1,8 +1,10 @@
-node_modules
 .DS_Store
-dist
-dist-ssr
-*.local
-.svelte-kit
+.next
 .rpt2_cache
+.svelte-kit
+*.local
+dist-ssr
+node_modules
+packages/demo-*/dist/*
+packages/test-dialogic-*/dist/*
 screenshots

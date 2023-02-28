@@ -2,7 +2,6 @@
   "name": "dialogic",
   "version": "0.13.6",
   "description": "Logic for dialogs and notifications",
-  "types": "dist",
   "type": "module",
   "files": [
     "dist",
@@ -12,20 +11,19 @@
   "module": "./dist/dialogic.module.js",
   "exports": {
     ".": {
+      "require": "./dist/dialogic.cjs",
       "import": "./dist/dialogic.module.js",
       "default": "./dist/dialogic.umd.js"
     }
   },
   "scripts": {
-    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
     "build:vite": "vite build",
     "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json"
   },
-  "devDependencies": {
-    "mithril-stream-standalone": "0.1.4",
-    "typescript": "^4.4.4",
-    "vite": "^2.6.14"
+  "dependencies": {
+    "mithril-stream-standalone": "0.1.6"
   },
   "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
   "homepage": "https://github.com/ArthurClemens/dialogic",

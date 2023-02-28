@@ -5,7 +5,7 @@ import { Default } from '../content/Default';
 import { Buttons } from './helpers/buttons';
 import { createFns } from './helpers/createFns';
 
-export default () => {
+export default function DialogIds() {
   dialog.resetAll();
   const commonProps = {
     instance: dialog,
@@ -29,13 +29,13 @@ export default () => {
   });
 
   return (
-    <div className="test">
+    <div className='test'>
       <Buttons {...fns1} />
-      <Buttons {...fns2} id="1" />
-      <Buttons {...fns3} id="2" />
-      <div className="spawn default-spawn">
+      <Buttons {...fns2} id='1' />
+      <Buttons {...fns3} id='2' />
+      <div className='spawn default-spawn'>
         <Dialog />
       </div>
     </div>
   );
-};
+}

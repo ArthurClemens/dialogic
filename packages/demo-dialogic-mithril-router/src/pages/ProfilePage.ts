@@ -1,16 +1,17 @@
-import { notification, useDialog } from "dialogic-mithril";
-import m from "mithril";
-import { withHooks } from "mithril-hooks";
-import { CurrentPathBadge } from "../components/CurrentPathBadge";
+import { notification, useDialog } from 'dialogic-mithril';
+import m from 'mithril';
+import { withHooks } from 'mithril-hooks';
+
+import { CurrentPathBadge } from '../components/CurrentPathBadge';
 import {
   EditProfileDialog,
   EditProfileDialogProps,
-} from "../components/EditProfileDialog";
+} from '../components/EditProfileDialog';
 import {
   saveConfirmationData,
   SaveConfirmationProps,
-} from "../components/SaveConfirmation";
-import { store } from "../store";
+} from '../components/SaveConfirmation';
+import { store } from '../store';
 
 type TProps = {
   /**
@@ -20,7 +21,7 @@ type TProps = {
 };
 
 const ProfilePageFn = (attrs: TProps) => {
-  const pathPrefix = attrs.pathPrefix || "";
+  const pathPrefix = attrs.pathPrefix || '';
   // Test injecting a dynamic value into the dialog
   const dialogPath = `${pathPrefix}/profile/edit`;
   const returnPath = `${pathPrefix}/profile`;
@@ -32,7 +33,7 @@ const ProfilePageFn = (attrs: TProps) => {
     props: {
       dialogic: {
         component: EditProfileDialog,
-        className: "dialog",
+        className: 'dialog',
       },
       pathPrefix,
       title: `Update your e-mail ${store.count}`,
@@ -51,31 +52,31 @@ const ProfilePageFn = (attrs: TProps) => {
     },
   });
 
-  return m("div", { "data-test-id": "profile-page" }, [
-    m("h1.title", "Profile"),
+  return m('div', { 'data-test-id': 'profile-page' }, [
+    m('h1.title', 'Profile'),
     m(CurrentPathBadge),
-    m("div.profile-tile", [
-      m("div", m("strong", "Email")),
-      m("div", { "data-test-id": "current-email" }, store.email),
+    m('div.profile-tile', [
+      m('div', m('strong', 'Email')),
+      m('div', { 'data-test-id': 'current-email' }, store.email),
       m(
         m.route.Link,
         {
-          className: "button is-link",
+          className: 'button is-link',
           href: dialogPath,
-          "data-test-id": "btn-edit-profile",
+          'data-test-id': 'btn-edit-profile',
         },
-        "Edit"
+        'Edit',
       ),
     ]),
-    m(".buttons", [
+    m('.buttons', [
       m(
         m.route.Link,
         {
-          className: "button is-link is-light is-outlined",
-          href: pathPrefix || "/",
-          "data-test-id": "btn-home",
+          className: 'button is-link is-light is-outlined',
+          href: pathPrefix || '/',
+          'data-test-id': 'btn-home',
         },
-        "Go to home"
+        'Go to home',
       ),
     ]),
   ]);

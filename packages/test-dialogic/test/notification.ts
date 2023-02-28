@@ -1,4 +1,4 @@
-import test from 'ava';
+import { deepStrictEqual } from 'assert';
 import { hideItem, notification, setDomElement, showItem } from 'dialogic';
 
 const getDefaultItemId = (name: string) =>
@@ -6,7 +6,7 @@ const getDefaultItemId = (name: string) =>
 
 const defaultItemId = getDefaultItemId('notification');
 
-test.serial('show: should resolve when no transition options passed', t => {
+it('show: should resolve when no transition options passed', () => {
   notification.resetAll();
   const options = {
     title: 'Test',
@@ -15,68 +15,59 @@ test.serial('show: should resolve when no transition options passed', t => {
     },
   };
   return notification.show(options).then(item => {
-    t.is(item.id, defaultItemId);
+    deepStrictEqual(item.id, defaultItemId);
   });
 });
 
-test.serial(
-  'getCount: even when no dialogic options are specified, the state should contain multiple (queued) items',
-  t => {
-    notification.resetAll();
-    const options = {
-      title: 'Test',
+it('getCount: even when no dialogic options are specified, the state should contain multiple (queued) items', () => {
+  notification.resetAll();
+  const options = {
+    title: 'Test',
+    dialogic: {
+      timeout: undefined,
+    },
+  };
+  [1, 2, 3].forEach(() => notification.show(options));
+  deepStrictEqual(notification.exists(), true);
+});
+
+it('getCount: when dialogic option `id` is specified, the state should contain multiple items', () => {
+  notification.resetAll();
+  [1, 2, 3].forEach(n =>
+    notification.show({
+      title: n,
       dialogic: {
-        timeout: undefined,
+        id: n.toString(),
       },
-    };
-    [1, 2, 3].forEach(() => notification.show(options));
-    t.is(notification.exists(), true);
-  },
-);
+    }),
+  );
+  deepStrictEqual(notification.exists({ id: '1' }), true);
+  deepStrictEqual(notification.exists({ id: '2' }), true);
+  deepStrictEqual(notification.exists({ id: '3' }), true);
+  const expected = 3;
+  const actual = notification.getCount();
+  deepStrictEqual(actual, expected);
+});
 
-test.serial(
-  'getCount: when dialogic option `id` is specified, the state should contain multiple items',
-  t => {
-    notification.resetAll();
-    [1, 2, 3].forEach(n =>
-      notification.show({
-        title: n,
-        dialogic: {
-          id: n.toString(),
-        },
-      }),
-    );
-    t.is(notification.exists({ id: '1' }), true);
-    t.is(notification.exists({ id: '2' }), true);
-    t.is(notification.exists({ id: '3' }), true);
-    const expected = 3;
-    const actual = notification.getCount();
-    t.is(actual, expected);
-  },
-);
+it('getCount: when dialogic option `spawn` is specified, the state should contain multiple items', () => {
+  notification.resetAll();
+  [1, 2, 3].forEach(n =>
+    notification.show({
+      title: n,
+      dialogic: {
+        spawn: n.toString(),
+      },
+    }),
+  );
+  deepStrictEqual(notification.exists({ spawn: '1' }), true);
+  deepStrictEqual(notification.exists({ spawn: '2' }), true);
+  deepStrictEqual(notification.exists({ spawn: '3' }), true);
+  const expected = 3;
+  const actual = notification.getCount();
+  deepStrictEqual(actual, expected);
+});
 
-test.serial(
-  'getCount: when dialogic option `spawn` is specified, the state should contain multiple items',
-  t => {
-    notification.resetAll();
-    [1, 2, 3].forEach(n =>
-      notification.show({
-        title: n,
-        dialogic: {
-          spawn: n.toString(),
-        },
-      }),
-    );
-    t.is(notification.exists({ spawn: '1' }), true);
-    t.is(notification.exists({ spawn: '2' }), true);
-    t.is(notification.exists({ spawn: '3' }), true);
-    const expected = 3;
-    const actual = notification.getCount();
-    t.is(actual, expected);
-  },
-);
-
-test.serial('hide: should hide the item', t => {
+it('hide: should hide the item', () => {
   notification.resetAll();
   const identityOptions = {
     id: 'show-hide',
@@ -88,19 +79,19 @@ test.serial('hide: should hide the item', t => {
     },
   };
   return notification.show(options).then(() => {
-    t.is(notification.exists(identityOptions), true);
+    deepStrictEqual(notification.exists(identityOptions), true);
     return notification
       .hide({
         dialogic: identityOptions,
       })
       .then(item => {
-        t.is(item.id, 'notification-show-hide-default_notification');
-        t.is(notification.exists(identityOptions), false);
+        deepStrictEqual(item.id, 'notification-show-hide-default_notification');
+        deepStrictEqual(notification.exists(identityOptions), false);
       });
   });
 });
 
-test.serial('show, toggle: should show and hide the item', t => {
+it.only('show, toggle: should show and hide the item', () => {
   notification.resetAll();
   const identityOptions = {
     id: 'show-toggle',
@@ -114,20 +105,20 @@ test.serial('show, toggle: should show and hide the item', t => {
   };
 
   return notification.show(options).then(() => {
-    t.is(notification.exists(identityOptions), true);
+    deepStrictEqual(notification.exists(identityOptions), true);
     return notification.show(options).then(item => {
-      t.is(item.id, 'notification-show-toggle-default_notification');
-      t.is(notification.exists(identityOptions), false);
+      deepStrictEqual(item.id, 'notification-show-toggle-default_notification');
+      deepStrictEqual(notification.exists(identityOptions), false);
     });
   });
 });
 
-test.serial('transition className', t => {
+it('transition className', () => {
   const div = document.createElement('div');
   document.body.appendChild(div);
   div.classList.add('yyy');
-  t.is(div.classList.contains('yyy'), true);
-  t.is(document.querySelector('div'), div);
+  deepStrictEqual(div.classList.contains('yyy'), true);
+  deepStrictEqual(document.querySelector('div'), div);
 
   const identityOptions = {
     id: 'dom',
@@ -141,22 +132,22 @@ test.serial('transition className', t => {
   };
 
   return notification.show(options).then(item => {
-    t.is(item.id, 'notification-dom-default_notification');
-    t.is(notification.exists(identityOptions), true);
+    deepStrictEqual(item.id, 'notification-dom-default_notification');
+    deepStrictEqual(notification.exists(identityOptions), true);
     setDomElement(div, item);
 
     // eslint-disable-next-line @typescript-eslint/no-shadow
     return showItem(item).then(shownItem => {
-      t.is(shownItem.id, 'notification-dom-default_notification');
-      t.is(notification.exists(identityOptions), true);
-      t.is(div.classList.contains('yyy'), true);
-      t.is(div.classList.contains('xxx-show-end'), true);
+      deepStrictEqual(shownItem.id, 'notification-dom-default_notification');
+      deepStrictEqual(notification.exists(identityOptions), true);
+      deepStrictEqual(div.classList.contains('yyy'), true);
+      deepStrictEqual(div.classList.contains('xxx-show-end'), true);
 
       return hideItem(item).then(hiddenItem => {
-        t.is(hiddenItem.id, 'notification-dom-default_notification');
-        t.is(notification.exists(identityOptions), false);
-        t.is(div.classList.contains('yyy'), true);
-        t.is(div.classList.contains('xxx-hide-end'), true);
+        deepStrictEqual(hiddenItem.id, 'notification-dom-default_notification');
+        deepStrictEqual(notification.exists(identityOptions), false);
+        deepStrictEqual(div.classList.contains('yyy'), true);
+        deepStrictEqual(div.classList.contains('xxx-hide-end'), true);
       });
     });
   });

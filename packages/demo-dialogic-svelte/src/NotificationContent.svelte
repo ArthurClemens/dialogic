@@ -1,6 +1,6 @@
 <script>
   import { remaining } from "dialogic";
-  import { dialog, notification } from "../../dialogic-svelte";
+  import { dialog, notification } from "dialogic-svelte";
   import DialogComponent from "./DialogComponent.svelte";
 
   let remainingSeconds;

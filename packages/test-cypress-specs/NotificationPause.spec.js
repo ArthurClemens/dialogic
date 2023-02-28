@@ -1,5 +1,3 @@
-/* global cy, describe, beforeEach, it, expect */
-
 describe('Notification: pause', () => {
   beforeEach(() => {
     cy.visit('/NotificationPause');
@@ -16,6 +14,7 @@ describe('Notification: pause', () => {
     cy.get('[data-test-id=pause-default] [data-test-id=button-show-default]')
       .should('exist')
       .click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(500);
     cy.get('[data-test-id=pause-default] [data-test-id=button-pause]')
       .should('exist')
@@ -43,6 +42,7 @@ describe('Notification: pause', () => {
       'Is paused: false',
     );
 
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(250);
 
     cy.get(
@@ -58,6 +58,7 @@ describe('Notification: pause', () => {
       expect(remainingValue).to.be.greaterThan(0);
     });
 
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(2000);
     cy.get('[data-test-id=pause-default] [data-test-id=is-paused]').should(
       'contain',

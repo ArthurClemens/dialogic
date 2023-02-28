@@ -1,4 +1,4 @@
-import test from 'ava';
+import { deepStrictEqual } from 'assert';
 import { dialog, hideItem, showItem } from 'dialogic';
 
 const getDefaultItemId = (name: string) =>
@@ -6,7 +6,7 @@ const getDefaultItemId = (name: string) =>
 
 const defaultItemId = getDefaultItemId('dialog');
 
-test.serial('show: should resolve when no transition options passed', t => {
+it('show: should resolve when no transition options passed', () => {
   dialog.resetAll();
   const options = {
     title: 'Test',
@@ -15,62 +15,53 @@ test.serial('show: should resolve when no transition options passed', t => {
     },
   };
   return dialog.show(options).then(item => {
-    t.is(item.id, defaultItemId);
+    deepStrictEqual(item.id, defaultItemId);
   });
 });
 
-test.serial(
-  'getCount: when no dialogic options are specified, the state should contain 1 item',
-  t => {
-    dialog.resetAll();
-    [1, 2, 3].forEach(n =>
-      dialog.show({
-        title: n,
-      }),
-    );
-    const expected = 1;
-    const actual = dialog.getCount();
-    t.is(actual, expected);
-  },
-);
+it('getCount: when no dialogic options are specified, the state should contain 1 item', () => {
+  dialog.resetAll();
+  [1, 2, 3].forEach(n =>
+    dialog.show({
+      title: n,
+    }),
+  );
+  const expected = 1;
+  const actual = dialog.getCount();
+  deepStrictEqual(actual, expected);
+});
 
-test.serial(
-  'getCount: when dialogic option `id` is specified, the state should contain multiple items',
-  t => {
-    dialog.resetAll();
-    [1, 2, 3].forEach(n =>
-      dialog.show({
-        title: n,
-        dialogic: {
-          id: n.toString(),
-        },
-      }),
-    );
-    const expected = 3;
-    const actual = dialog.getCount();
-    t.is(actual, expected);
-  },
-);
+it('getCount: when dialogic option `id` is specified, the state should contain multiple items', () => {
+  dialog.resetAll();
+  [1, 2, 3].forEach(n =>
+    dialog.show({
+      title: n,
+      dialogic: {
+        id: n.toString(),
+      },
+    }),
+  );
+  const expected = 3;
+  const actual = dialog.getCount();
+  deepStrictEqual(actual, expected);
+});
 
-test.serial(
-  'getCount: when dialogic option `spawn` is specified, the state should contain multiple items',
-  t => {
-    dialog.resetAll();
-    [1, 2, 3].forEach(n =>
-      dialog.show({
-        title: n,
-        dialogic: {
-          spawn: n.toString(),
-        },
-      }),
-    );
-    const expected = 3;
-    const actual = dialog.getCount();
-    t.is(actual, expected);
-  },
-);
+it('getCount: when dialogic option `spawn` is specified, the state should contain multiple items', () => {
+  dialog.resetAll();
+  [1, 2, 3].forEach(n =>
+    dialog.show({
+      title: n,
+      dialogic: {
+        spawn: n.toString(),
+      },
+    }),
+  );
+  const expected = 3;
+  const actual = dialog.getCount();
+  deepStrictEqual(actual, expected);
+});
 
-test.serial('hide: should hide the item', t => {
+it('hide: should hide the item', () => {
   dialog.resetAll();
   const identityOptions = {
     id: 'show-hide',
@@ -82,19 +73,19 @@ test.serial('hide: should hide the item', t => {
     },
   };
   return dialog.show(options).then(() => {
-    t.is(dialog.exists(identityOptions), true);
+    deepStrictEqual(dialog.exists(identityOptions), true);
     return dialog
       .hide({
         dialogic: identityOptions,
       })
       .then(item => {
-        t.is(item.id, 'dialog-show-hide-default_dialog');
-        t.is(dialog.exists(identityOptions), false);
+        deepStrictEqual(item.id, 'dialog-show-hide-default_dialog');
+        deepStrictEqual(dialog.exists(identityOptions), false);
       });
   });
 });
 
-test.serial('toggle: should show and hide the item', t => {
+it('toggle: should show and hide the item', () => {
   dialog.resetAll();
   const identityOptions = {
     id: 'show-toggle',
@@ -107,45 +98,42 @@ test.serial('toggle: should show and hide the item', t => {
   };
 
   return dialog.show(options).then(() => {
-    t.is(dialog.exists(identityOptions), true);
+    deepStrictEqual(dialog.exists(identityOptions), true);
     return dialog.show(options).then(item => {
-      t.is(item.id, 'dialog-show-toggle-default_dialog');
-      t.is(dialog.exists(identityOptions), false);
+      deepStrictEqual(item.id, 'dialog-show-toggle-default_dialog');
+      deepStrictEqual(dialog.exists(identityOptions), false);
     });
   });
 });
 
-test.serial(
-  'resetAll (no dialogic options specified): should remove all',
-  t => {
-    dialog.resetAll();
-    const createDialog = (identityOptions?: {}) => {
-      const options = {
-        dialogic: identityOptions,
-      };
-      return dialog.show(options);
+it('resetAll (no dialogic options specified): should remove all', () => {
+  dialog.resetAll();
+  const createDialog = (identityOptions?: {}) => {
+    const options = {
+      dialogic: identityOptions,
     };
+    return dialog.show(options);
+  };
 
-    return Promise.all([
-      createDialog(),
-      createDialog({ id: '1' }),
-      createDialog({ id: '2', spawn: 'reset-all' }),
-    ]).then(items => {
-      t.is(items.length, 3);
-      t.is(dialog.exists(), true);
-      t.is(dialog.exists({ id: '1' }), true);
-      t.is(dialog.exists({ id: '2', spawn: 'reset-all' }), true);
+  return Promise.all([
+    createDialog(),
+    createDialog({ id: '1' }),
+    createDialog({ id: '2', spawn: 'reset-all' }),
+  ]).then(items => {
+    deepStrictEqual(items.length, 3);
+    deepStrictEqual(dialog.exists(), true);
+    deepStrictEqual(dialog.exists({ id: '1' }), true);
+    deepStrictEqual(dialog.exists({ id: '2', spawn: 'reset-all' }), true);
 
-      return dialog.resetAll().then(() => {
-        t.is(dialog.exists(), false);
-        t.is(dialog.exists({ id: '1' }), false);
-        t.is(dialog.exists({ id: '2', spawn: 'reset-all' }), false);
-      });
+    return dialog.resetAll().then(() => {
+      deepStrictEqual(dialog.exists(), false);
+      deepStrictEqual(dialog.exists({ id: '1' }), false);
+      deepStrictEqual(dialog.exists({ id: '2', spawn: 'reset-all' }), false);
     });
-  },
-);
+  });
+});
 
-test.serial('resetAll (different spawn specified): should remove some', t => {
+it('resetAll (different spawn specified): should remove some', () => {
   dialog.resetAll();
   const createDialog = (identityOptions?: {}) => {
     const options = {
@@ -160,22 +148,22 @@ test.serial('resetAll (different spawn specified): should remove some', t => {
     createDialog({ id: '2', spawn: 'reset-all-1' }),
     createDialog({ spawn: 'reset-all-2' }),
   ]).then(items => {
-    t.is(items.length, 4);
-    t.is(dialog.exists(), true);
-    t.is(dialog.exists({ id: '1' }), true);
-    t.is(dialog.exists({ id: '2', spawn: 'reset-all-1' }), true);
-    t.is(dialog.exists({ spawn: 'reset-all-2' }), true);
+    deepStrictEqual(items.length, 4);
+    deepStrictEqual(dialog.exists(), true);
+    deepStrictEqual(dialog.exists({ id: '1' }), true);
+    deepStrictEqual(dialog.exists({ id: '2', spawn: 'reset-all-1' }), true);
+    deepStrictEqual(dialog.exists({ spawn: 'reset-all-2' }), true);
 
     return dialog.resetAll({ spawn: 'reset-all-1' }).then(() => {
-      t.is(dialog.exists(), true);
-      t.is(dialog.exists({ id: '1' }), true);
-      t.is(dialog.exists({ id: '2', spawn: 'reset-all-1' }), false);
-      t.is(dialog.exists({ spawn: 'reset-all-2' }), true);
+      deepStrictEqual(dialog.exists(), true);
+      deepStrictEqual(dialog.exists({ id: '1' }), true);
+      deepStrictEqual(dialog.exists({ id: '2', spawn: 'reset-all-1' }), false);
+      deepStrictEqual(dialog.exists({ spawn: 'reset-all-2' }), true);
     });
   });
 });
 
-test.serial('hideAll (no dialogic options specified): should hide all', t => {
+it('hideAll (no dialogic options specified): should hide all', () => {
   dialog.resetAll();
   const spawn = 'hide-all';
   const createDialog = (id: string) => {
@@ -189,19 +177,19 @@ test.serial('hideAll (no dialogic options specified): should hide all', t => {
   };
 
   return Promise.all([createDialog('1'), createDialog('2')]).then(items => {
-    t.is(items.length, 2);
-    t.is(dialog.exists({ id: '1', spawn }), true);
-    t.is(dialog.exists({ id: '2', spawn }), true);
+    deepStrictEqual(items.length, 2);
+    deepStrictEqual(dialog.exists({ id: '1', spawn }), true);
+    deepStrictEqual(dialog.exists({ id: '2', spawn }), true);
 
     return dialog.hideAll({ spawn }).then(hiddenItems => {
-      t.is(hiddenItems.length, 2);
-      t.is(dialog.exists({ id: '1', spawn }), false);
-      t.is(dialog.exists({ id: '2', spawn }), false);
+      deepStrictEqual(hiddenItems.length, 2);
+      deepStrictEqual(dialog.exists({ id: '1', spawn }), false);
+      deepStrictEqual(dialog.exists({ id: '2', spawn }), false);
     });
   });
 });
 
-test.serial('hideAll (different spawn specified): should hide some', t => {
+it('hideAll (different spawn specified): should hide some', () => {
   dialog.resetAll();
   const createDialog = (id: string) => {
     const options = {
@@ -214,19 +202,19 @@ test.serial('hideAll (different spawn specified): should hide some', t => {
   };
 
   return Promise.all([createDialog('1'), createDialog('2')]).then(items => {
-    t.is(items.length, 2);
-    t.is(dialog.exists({ id: '1', spawn: 'hide-all-1' }), true);
-    t.is(dialog.exists({ id: '2', spawn: 'hide-all-2' }), true);
+    deepStrictEqual(items.length, 2);
+    deepStrictEqual(dialog.exists({ id: '1', spawn: 'hide-all-1' }), true);
+    deepStrictEqual(dialog.exists({ id: '2', spawn: 'hide-all-2' }), true);
 
     return dialog.hideAll({ spawn: 'hide-all-1' }).then(hiddenItems => {
-      t.is(hiddenItems.length, 1);
-      t.is(dialog.exists({ id: '1', spawn: 'hide-all-1' }), false);
-      t.is(dialog.exists({ id: '2', spawn: 'hide-all-2' }), true);
+      deepStrictEqual(hiddenItems.length, 1);
+      deepStrictEqual(dialog.exists({ id: '1', spawn: 'hide-all-1' }), false);
+      deepStrictEqual(dialog.exists({ id: '2', spawn: 'hide-all-2' }), true);
     });
   });
 });
 
-test.serial('callbacks: should call didShow and didHide', t => {
+it('callbacks: should call didShow and didHide', () => {
   dialog.resetAll();
 
   const results = {
@@ -251,21 +239,21 @@ test.serial('callbacks: should call didShow and didHide', t => {
     },
   };
   return dialog.show(options).then(item => {
-    t.is(dialog.exists(identityOptions), true);
+    deepStrictEqual(dialog.exists(identityOptions), true);
 
     return showItem(item).then(() => {
-      t.is(dialog.exists(identityOptions), true);
-      t.is(results.didShow, true);
+      deepStrictEqual(dialog.exists(identityOptions), true);
+      deepStrictEqual(results.didShow, true);
 
       return hideItem(item).then(() => {
-        t.is(dialog.exists(identityOptions), false);
-        t.is(results.didHide, true);
+        deepStrictEqual(dialog.exists(identityOptions), false);
+        deepStrictEqual(results.didHide, true);
       });
     });
   });
 });
 
-test.serial('promises: show and hide should return promises', t => {
+it('promises: show and hide should return promises', () => {
   dialog.resetAll();
   const identityOptions = {
     spawn: 'promises',
@@ -277,7 +265,7 @@ test.serial('promises: show and hide should return promises', t => {
   };
   return dialog.show(options).then(item => {
     // t.log("show promise");
-    t.is(item.id, 'dialog-default_dialog-promises');
+    deepStrictEqual(item.id, 'dialog-default_dialog-promises');
 
     return dialog
       .hide({
@@ -285,7 +273,7 @@ test.serial('promises: show and hide should return promises', t => {
       })
       .then(hiddenItem => {
         // t.log("hide promise");
-        t.is(hiddenItem.id, 'dialog-default_dialog-promises');
+        deepStrictEqual(hiddenItem.id, 'dialog-default_dialog-promises');
       });
   });
 });

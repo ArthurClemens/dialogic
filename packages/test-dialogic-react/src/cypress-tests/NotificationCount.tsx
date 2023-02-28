@@ -5,7 +5,7 @@ import { Default } from '../content/Default';
 import { Buttons } from './helpers/buttons';
 import { createFns } from './helpers/createFns';
 
-export default () => {
+export default function NotificationCount() {
   useDialogicState();
   const fns1 = createFns({
     instance: notification,
@@ -37,50 +37,50 @@ export default () => {
   });
 
   return (
-    <div className="test">
+    <div className='test'>
       <div
-        className="control"
-        data-test-id="count-all"
+        className='control'
+        data-test-id='count-all'
       >{`Count all: ${notification.getCount()}`}</div>
       <div
-        className="control"
-        data-test-id="count-id"
+        className='control'
+        data-test-id='count-id'
       >{`Count id: ${notification.getCount({ id: '1' })}`}</div>
       <div
-        className="control"
-        data-test-id="count-spawn"
+        className='control'
+        data-test-id='count-spawn'
       >{`Count spawn: ${notification.getCount({ spawn: '1' })}`}</div>
       <div
-        className="control"
-        data-test-id="count-spawn-id"
+        className='control'
+        data-test-id='count-spawn-id'
       >{`Count spawn, id: ${notification.getCount({
         spawn: '1',
         id: '1',
       })}`}</div>
-      <div className="control">
-        <div className="buttons">
+      <div className='control'>
+        <div className='buttons'>
           <button
-            type="button"
-            className="button"
-            data-test-id="button-reset"
+            type='button'
+            className='button'
+            data-test-id='button-reset'
             onClick={() => notification.resetAll()}
           >
             Reset
           </button>
         </div>
       </div>
-      <div className="content">
+      <div className='content'>
         <Buttons {...fns1} />
-        <Buttons {...fns2} id="1" />
-        <Buttons {...fns3} spawn="1" />
-        <Buttons {...fns4} spawn="1" id="1" />
+        <Buttons {...fns2} id='1' />
+        <Buttons {...fns3} spawn='1' />
+        <Buttons {...fns4} spawn='1' id='1' />
       </div>
-      <div className="spawn default-spawn">
+      <div className='spawn default-spawn'>
         <Notification />
       </div>
-      <div className="spawn custom-spawn">
-        <Notification spawn="1" />
+      <div className='spawn custom-spawn'>
+        <Notification spawn='1' />
       </div>
     </div>
   );
-};
+}

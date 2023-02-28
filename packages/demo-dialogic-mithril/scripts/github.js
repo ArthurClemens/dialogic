@@ -1,6 +1,6 @@
-const shell = require("shelljs");
+const shell = require('shelljs');
 
-const githubPath = "../../../gh-pages/mithril";
+const githubPath = '../../../gh-pages/mithril';
 
-shell.rm("-rf", `${githubPath}/*`);
-shell.cp("-R", "dist/*", githubPath);
+shell.rm('-rf', `${githubPath}/*`);
+shell.cp('-R', 'dist/*', githubPath);

@@ -6,7 +6,7 @@ import { createFns } from './helpers/createFns';
 import { PauseResumeRemaining } from './helpers/PauseResumeRemaining';
 import { RemainingWithAnimationFrame } from './helpers/RemainingWithAnimationFrame';
 
-export default () => {
+export default function NotificationPause() {
   useDialogicState();
 
   const commonProps = {
@@ -26,20 +26,20 @@ export default () => {
   });
 
   return (
-    <div className="test">
+    <div className='test'>
       <PauseResumeRemaining fns={fns1} instance={notification}>
         <RemainingWithAnimationFrame
           getRemainingFn={() => notification.getRemaining()}
         />
       </PauseResumeRemaining>
-      <PauseResumeRemaining fns={fns2} instance={notification} id="1">
+      <PauseResumeRemaining fns={fns2} instance={notification} id='1'>
         <RemainingWithAnimationFrame
           getRemainingFn={() => notification.getRemaining({ id: '1' })}
         />
       </PauseResumeRemaining>
-      <div className="section spawn default-spawn">
+      <div className='section spawn default-spawn'>
         <Notification />
       </div>
     </div>
   );
-};
+}

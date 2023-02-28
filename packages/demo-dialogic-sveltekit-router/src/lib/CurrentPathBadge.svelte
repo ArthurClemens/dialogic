@@ -3,5 +3,5 @@
 </script>
 
 <div class="control path-control">
-	<span class="tag" data-test-id="current-path">{$page.path}</span>
+	<span class="tag" data-test-id="current-path">{$page.route.id}</span>
 </div>

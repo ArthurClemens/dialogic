@@ -1,4 +1,4 @@
-import { Dialogic } from "../index";
+import type { Dialogic } from '../index';
 export declare const createId: (identityOptions: Dialogic.IdentityOptions, ns: string) => string;
 export declare const states: Dialogic.States;
 export declare const actions: {
@@ -33,6 +33,6 @@ export declare const selectors: {
         nothing: undefined;
         just?: undefined;
     };
-    getAll: <T_1 = unknown>(ns: string, identityOptions?: Dialogic.IdentityOptions | undefined) => Dialogic.Item<T_1>[];
-    getCount: (ns: string, identityOptions?: Dialogic.IdentityOptions | undefined) => number;
+    getAll: <T_1 = unknown>(ns: string, identityOptions?: Dialogic.IdentityOptions) => Dialogic.Item<T_1>[];
+    getCount: (ns: string, identityOptions?: Dialogic.IdentityOptions) => number;
 };

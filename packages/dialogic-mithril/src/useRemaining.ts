@@ -1,6 +1,6 @@
-import { remaining } from "dialogic";
-import type { UseRemainingProps } from "dialogic-hooks";
-import { useMemo, useState } from "mithril-hooks";
+import { remaining } from 'dialogic';
+import type { UseRemainingProps } from 'dialogic-hooks';
+import { useMemo, useState } from 'mithril-hooks';
 
 export const useRemaining = ({
   instance,
@@ -20,7 +20,7 @@ export const useRemaining = ({
         ...identity,
         instance,
         roundToSeconds,
-        callback: (newValue) => {
+        callback: newValue => {
           setValue(newValue);
         },
       });

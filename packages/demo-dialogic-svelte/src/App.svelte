@@ -1,5 +1,5 @@
 <script>
-  import { Dialog, notification, Notification } from "../../dialogic-svelte";
+  import { Dialog, notification, Notification } from "dialogic-svelte";
   import NotificationComponent from "./NotificationComponent.svelte";
   import RemainingLabel from "./RemainingLabel.svelte";
 

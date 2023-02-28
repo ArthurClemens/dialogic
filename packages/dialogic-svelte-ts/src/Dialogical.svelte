@@ -1,8 +1,12 @@
 <script lang="ts">
+  import type { ComponentType } from 'svelte';
+
   import type { Dialogic } from "dialogic";
 
   import { onMount as svelteOnMount } from "svelte";
   import Wrapper from "./Wrapper.svelte";
+
+  let component: ComponentType = Wrapper;
 
   export let instance: Dialogic.DialogicInstance;
   export let ns: string = instance.ns;
@@ -22,4 +26,4 @@
   });
 </script>
 
-<Wrapper {identityOptions} {ns} />
+<svelte:component this={component} {identityOptions} {ns} />

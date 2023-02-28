@@ -2,7 +2,6 @@
   "name": "dialogic-mithril",
   "version": "0.13.6",
   "description": "Logic for dialogs and notifications",
-  "types": "dist",
   "files": [
     "dist",
     "README.md"
@@ -11,12 +10,13 @@
   "module": "./dist/dialogic-mithril.module.js",
   "exports": {
     ".": {
+      "require": "./dist/dialogic-mithril.cjs",
       "import": "./dist/dialogic-mithril.module.js",
       "default": "./dist/dialogic-mithril.umd.js"
     }
   },
   "scripts": {
-    "deps": "../../node_modules/npm-check-updates/bin/cli.js -u",
+    "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "dev": "vite",
     "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
     "build:vite": "vite build",
@@ -27,10 +27,10 @@
     "mithril-hooks": "^0.7.1"
   },
   "devDependencies": {
-    "@types/mithril": "2.0.8",
+    "@types/mithril": "2.0.12",
     "dialogic-hooks": "0.13.6",
-    "typescript": "^4.4.4",
-    "vite": "^2.6.14"
+    "typescript": "^4.9.5",
+    "vite": "^4.1.4"
   },
   "peerDependencies": {
     "mithril": "^2.0.4"

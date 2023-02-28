@@ -1,5 +1,3 @@
-/* global cy, describe, before */
-
 import { useDialogicTests } from './useDialogicTests';
 
 describe('UseDialogic', () => {

@@ -3,7 +3,7 @@
  * (which is utilized when setting `timeout`).
  */
 
-import { DialogicInstance } from './types';
+import type { DialogicInstance } from './types';
 
 type RemainingProps = {
   /**

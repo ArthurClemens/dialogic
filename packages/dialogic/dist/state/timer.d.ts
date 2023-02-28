@@ -1,6 +1,6 @@
-import Stream from "mithril-stream-standalone";
-declare type TimerCallback = () => unknown;
-declare type TOnFinishFn = () => void;
+import Stream from 'mithril-stream-standalone';
+type TimerCallback = () => unknown;
+type TOnFinishFn = () => void;
 export declare const TimerStore: () => {
     states: Stream<{
         timerId?: number | undefined;
@@ -32,7 +32,7 @@ export declare const TimerStore: () => {
          * Resumes a paused timer.
          * @param {minimumDuration} Number Sets the minimum duration.
          */
-        resume: (minimumDuration?: number | undefined) => void;
+        resume: (minimumDuration?: number) => void;
         /**
          * Aborts and clears a timer.
          */
@@ -62,5 +62,5 @@ export declare const TimerStore: () => {
         getResultPromise: () => Promise<unknown> | undefined;
     };
 };
-export declare type Timer = ReturnType<typeof TimerStore>;
+export type Timer = ReturnType<typeof TimerStore>;
 export {};

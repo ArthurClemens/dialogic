@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-	export const createSaveConfirmationData = (SaveConfirmationComponent) => ({
+	export const createSaveConfirmationData = (SaveConfirmationComponent: typeof SaveConfirmation__SvelteComponent_) => ({
 		dialogic: {
 			component: SaveConfirmationComponent,
 			className: 'demo-notification',

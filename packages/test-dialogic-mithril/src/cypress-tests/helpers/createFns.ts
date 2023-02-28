@@ -1,7 +1,7 @@
-import { Dialogic } from "dialogic";
-import m from "mithril";
+import { Dialogic } from 'dialogic';
+import m from 'mithril';
 
-import { getRandomId } from "./utils";
+import { getRandomId } from './utils';
 
 type ItemProps = {
   title: string;
@@ -33,7 +33,7 @@ export const createFns = <T>({
   timeout,
   queued,
 }: Props<T>) => {
-  const contentId = `${id ? `id${id}` : ""}${spawn ? `spawn${spawn}` : ""}`;
+  const contentId = `${id ? `id${id}` : ''}${spawn ? `spawn${spawn}` : ''}`;
   const props = {
     dialogic: {
       component,
@@ -45,7 +45,7 @@ export const createFns = <T>({
       ...(timeout !== undefined ? { timeout } : undefined),
       ...(queued !== undefined ? { queued } : undefined),
     },
-    className: "instance-content",
+    className: 'instance-content',
     id: getRandomId(),
     contentId,
   };

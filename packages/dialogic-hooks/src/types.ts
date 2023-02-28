@@ -1,4 +1,4 @@
-import { Dialogic } from "dialogic";
+import { Dialogic } from 'dialogic';
 
 type DependencyList = ReadonlyArray<unknown>;
 

@@ -1,5 +1,5 @@
-import { Dialogic } from "dialogic";
-import m, { Component } from "mithril";
+import { Dialogic } from 'dialogic';
+import m, { Component } from 'mithril';
 
 type ComponentProps<T = unknown> = T & {
   show: () => void;
@@ -14,7 +14,7 @@ export const Instance = <T = unknown>({
   let domElement: HTMLElement;
 
   const dispatchTransition = (
-    dispatchFn: Dialogic.DialogicalInstanceDispatchFn
+    dispatchFn: Dialogic.DialogicalInstanceDispatchFn,
   ) => {
     dispatchFn({
       detail: {
@@ -46,17 +46,17 @@ export const Instance = <T = unknown>({
         ComponentProps<T>
       >;
       if (!component) {
-        throw new Error("Component missing in dialogic options.");
+        throw new Error('Component missing in dialogic options.');
       }
       const passThroughOptions: T = attrs.passThroughOptions || ({} as T);
       return m(
-        "div",
+        'div',
         { className: attrs.dialogicOptions.className },
         m(component, {
           ...passThroughOptions,
           show,
           hide,
-        })
+        }),
       );
     },
   };
