@@ -46,7 +46,9 @@ jobs:
       - uses: actions/cache@v3
         id: npm-cache
         with:
-          path: './node_modules'
+          path: |
+            ./node_modules
+            /home/runner/.cache/Cypress
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Dialogic core
         working-directory: ./packages/test-dialogic
@@ -60,7 +62,9 @@ jobs:
       - uses: actions/cache@v3
         id: npm-cache
         with:
-          path: './node_modules'
+          path: |
+            ./node_modules
+            /home/runner/.cache/Cypress
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Mithril
         working-directory: packages/test-dialogic-mithril
@@ -74,7 +78,9 @@ jobs:
       - uses: actions/cache@v3
         id: npm-cache
         with:
-          path: './node_modules'
+          path: |
+            ./node_modules
+            /home/runner/.cache/Cypress
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: React
         working-directory: packages/test-dialogic-react
@@ -88,7 +94,9 @@ jobs:
       - uses: actions/cache@v3
         id: npm-cache
         with:
-          path: './node_modules'
+          path: |
+            ./node_modules
+            /home/runner/.cache/Cypress
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Svelte
         working-directory: packages/test-dialogic-svelte
