@@ -30,6 +30,7 @@ jobs:
           path: |
             ./node_modules
             /home/runner/.cache/Cypress
+            ./packages/test-dialogic-react/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
@@ -49,6 +50,7 @@ jobs:
           path: |
             ./node_modules
             /home/runner/.cache/Cypress
+            ./packages/test-dialogic-react/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Dialogic core
         working-directory: ./packages/test-dialogic
@@ -65,6 +67,7 @@ jobs:
           path: |
             ./node_modules
             /home/runner/.cache/Cypress
+            ./packages/test-dialogic-react/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Mithril
         working-directory: packages/test-dialogic-mithril
@@ -81,6 +84,7 @@ jobs:
           path: |
             ./node_modules
             /home/runner/.cache/Cypress
+            ./packages/test-dialogic-react/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: React
         working-directory: packages/test-dialogic-react
@@ -97,6 +101,7 @@ jobs:
           path: |
             ./node_modules
             /home/runner/.cache/Cypress
+            ./packages/test-dialogic-react/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Svelte
         working-directory: packages/test-dialogic-svelte
