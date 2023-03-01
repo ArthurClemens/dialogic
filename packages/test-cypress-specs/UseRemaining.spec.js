@@ -53,7 +53,7 @@ describe('Notification: useRemaining', () => {
       '[data-test-id=pause-default] [data-test-id=remaining-value]',
     ).should($remainingValue => {
       const text = $remainingValue.text();
-      const remainingValue = parseInt(text, 10);
+      const remainingValue = text === 'undefined' ? 0 : parseInt(text, 10);
       expect(remainingValue).to.be.lessThan(2000);
       expect(remainingValue).to.be.greaterThan(0);
     });
