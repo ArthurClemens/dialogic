@@ -1,12 +1,11 @@
 # GitHub Actions
 # https://help.github.com/en/articles/configuring-a-workflow
-name: Unit tests
+name: Unit test
 
 on: push
 
 jobs:
-  test1:
-    name: Unit test
+  dependencies:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
@@ -24,12 +23,87 @@ jobs:
           npm i -g @bahmutov/print-env
           print-env GITHUB
 
-      # Install dependencies
-      - name: Dependencies
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./node_modules
+            /home/runner/.cache/Cypress
+            ./packages/test-dialogic-react/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          npm install
-      
-      # Run tests
-      - name: Test
-        run: |
-          npm run test
+          npm ci --ignore-scripts
+          ./node_modules/cypress/bin/cypress install
+  test_dialogic:
+    runs-on: ubuntu-20.04
+    needs: dependencies
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: |
+            ./node_modules
+            /home/runner/.cache/Cypress
+            ./packages/test-dialogic-react/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Dialogic core
+        working-directory: ./packages/test-dialogic
+        run: npm run test
+  test_dialogic_mithril:
+    runs-on: ubuntu-20.04
+    needs: dependencies
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: |
+            ./node_modules
+            /home/runner/.cache/Cypress
+            ./packages/test-dialogic-react/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Mithril
+        working-directory: packages/test-dialogic-mithril
+        run: npm run test
+  test_dialogic_react:
+    runs-on: ubuntu-20.04
+    needs: dependencies
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: |
+            ./node_modules
+            /home/runner/.cache/Cypress
+            ./packages/test-dialogic-react/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: React
+        working-directory: packages/test-dialogic-react
+        run: npm run test
+  test_dialogic_svelte:
+    runs-on: ubuntu-20.04
+    needs: dependencies
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: |
+            ./node_modules
+            /home/runner/.cache/Cypress
+            ./packages/test-dialogic-react/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Svelte
+        working-directory: packages/test-dialogic-svelte
+        run: npm run test
+
