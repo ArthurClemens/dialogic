@@ -1,6 +1,6 @@
 # GitHub Actions
 # https://help.github.com/en/articles/configuring-a-workflow
-name: Unit tests
+name: Unit test
 
 on: push
 
