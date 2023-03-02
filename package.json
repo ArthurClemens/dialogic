@@ -44,7 +44,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
-  "version": "0.13.7",
+  "version": "0.13.8",
   "dependencies": {
     "eslint-plugin-cypress": "^2.12.1"
   }
