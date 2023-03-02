@@ -1,5 +1,6 @@
 {
   "name": "dialogic-repo",
+  "version": "0.13.7",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -22,6 +23,7 @@
     "eslint-config-next": "^13.2.1",
     "eslint-config-prettier": "8.6.0",
     "eslint-import-resolver-typescript": "3.5.3",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-jest-dom": "4.0.3",
     "eslint-plugin-json": "3.1.0",
@@ -43,9 +45,5 @@
   "resolutions": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
-  },
-  "version": "0.13.7",
-  "dependencies": {
-    "eslint-plugin-cypress": "^2.12.1"
   }
 }
