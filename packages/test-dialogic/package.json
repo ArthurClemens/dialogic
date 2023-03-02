@@ -8,11 +8,11 @@
   "scripts": {
     "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "test": "mocha -r jsdom-global/register",
-    "npm-check-updates": "../../node_modules/npm-check-updates/bin/cli.js -u"
+    "npm-check-updates": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u"
   },
   "dependencies": {
     "assert": "^2.0.0",
-    "dialogic": "0.13.6"
+    "dialogic": "0.13.7"
   },
   "devDependencies": {
     "@types/chai": "^4.3.4",
