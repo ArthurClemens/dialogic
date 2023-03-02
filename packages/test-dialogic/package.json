@@ -2,7 +2,7 @@
   "name": "test-dialogic",
   "private": true,
   "description": "Test Dialogic",
-  "version": "0.13.6",
+  "version": "0.13.7",
   "type": "module",
   "license": "MIT",
   "scripts": {
