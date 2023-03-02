@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { useDisplayLogic } from './util';
+import { useDisplayLogic } from '../../lib/util';
 
 /**
  * Empty page that just redirects to /profile.

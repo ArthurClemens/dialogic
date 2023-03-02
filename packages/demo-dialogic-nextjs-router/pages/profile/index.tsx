@@ -1,7 +1,6 @@
 import { notification, UseDialog } from 'dialogic-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
 
 import {
   CurrentPathBadge,
@@ -10,8 +9,8 @@ import {
   saveConfirmationData,
   SaveConfirmationProps,
 } from '../../components';
+import { useDisplayLogic } from '../../lib/util';
 import { useStoreContext } from '../../utils/store';
-import { useDisplayLogic } from './util';
 
 function ProfilePage() {
   const store = useStoreContext();
