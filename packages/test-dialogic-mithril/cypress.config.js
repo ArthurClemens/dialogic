@@ -6,5 +6,6 @@ module.exports = defineConfig({
     baseUrl: 'http://localhost:3000/#',
     specPattern: '../test-cypress-specs/**/*.spec.js',
     excludeSpecPattern: ['**/UseDialogicComponent.spec.js'],
+    defaultCommandTimeout: 10000,
   },
 });
