@@ -1,6 +1,6 @@
 {
 	"name": "demo-dialogic-sveltekit-router",
-	"version": "0.13.6",
+	"version": "0.13.7",
 	"private": true,
 	"type": "module",
 	"scripts": {
@@ -20,7 +20,7 @@
 	},
 	"dependencies": {
 		"@lukeed/uuid": "^2.0.0",
-		"dialogic": "0.13.6",
+		"dialogic": "0.13.7",
 		"dialogic-svelte-ts": "0.13.6"
 	}
 }

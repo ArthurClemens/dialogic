@@ -2,7 +2,7 @@
   "name": "demo-dialogic-svelte",
   "private": true,
   "description": "Dialogic for Svelte demo",
-  "version": "0.13.6",
+  "version": "0.13.7",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -13,7 +13,7 @@
     "github": "npm run build && node ./scripts/github.js"
   },
   "dependencies": {
-    "dialogic": "0.13.6",
+    "dialogic": "0.13.7",
     "dialogic-svelte": "0.13.6"
   },
   "devDependencies": {
