@@ -25,7 +25,6 @@
   "dependencies": {
     "dialogic": "0.13.7",
     "dialogic-hooks": "0.13.7",
-    "react-is-mounted-hook": "1.1.2",
     "use-stream": "^0.4.2"
   },
   "devDependencies": {
@@ -36,7 +35,7 @@
     "vite": "^4.1.4"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": "*"
   },
   "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
   "homepage": "https://github.com/ArthurClemens/dialogic",

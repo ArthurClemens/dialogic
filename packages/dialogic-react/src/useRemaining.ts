@@ -1,7 +1,19 @@
 import { remaining } from 'dialogic';
 import type { UseRemainingProps } from 'dialogic-hooks';
-import { useMemo, useState } from 'react';
-import useIsMounted from 'react-is-mounted-hook';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+function useIsMounted(): () => boolean {
+  const ref = useRef(false);
+
+  useEffect(() => {
+    ref.current = true;
+    return () => {
+      ref.current = false;
+    };
+  }, []);
+
+  return useCallback(() => ref.current, [ref]);
+}
 
 export const useRemaining = ({
   instance,
@@ -28,7 +40,7 @@ export const useRemaining = ({
         ...identity,
         instance,
         roundToSeconds,
-        callback: newValue => {
+        callback: (newValue: number | undefined) => {
           setValue(newValue);
         },
       });
