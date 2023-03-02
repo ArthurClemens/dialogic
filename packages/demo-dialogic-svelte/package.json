@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "dialogic": "0.13.7",
-    "dialogic-svelte": "0.13.6"
+    "dialogic-svelte": "0.13.7"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.3",
