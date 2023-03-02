@@ -1201,37 +1201,23 @@ function UseDialog(props) {
 function UseNotification(props) {
   return /* @__PURE__ */ React.createElement(UseDialogic, { ...props, instance: notification });
 }
-var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
-var lib = {};
-var useIsMounted$1 = {};
-Object.defineProperty(useIsMounted$1, "__esModule", { value: true });
-var react_1 = React;
 function useIsMounted() {
-  var ref = react_1.useRef(false);
-  react_1.useEffect(function() {
+  const ref = useRef(false);
+  useEffect(() => {
     ref.current = true;
-    return function() {
+    return () => {
       ref.current = false;
     };
   }, []);
-  return react_1.useCallback(function() {
-    return ref.current;
-  }, [ref]);
+  return useCallback(() => ref.current, [ref]);
 }
-useIsMounted$1.default = useIsMounted;
-var __importDefault = commonjsGlobal && commonjsGlobal.__importDefault || function(mod) {
-  return mod && mod.__esModule ? mod : { "default": mod };
-};
-Object.defineProperty(lib, "__esModule", { value: true });
-var use_is_mounted_1 = __importDefault(useIsMounted$1);
-var _default = lib.default = use_is_mounted_1.default;
 const useRemaining = ({
   instance,
   id,
   spawn,
   roundToSeconds
 }) => {
-  const isMounted = _default();
+  const isMounted = useIsMounted();
   const [value, _setValue] = useState(void 0);
   const identity = {
     id,
