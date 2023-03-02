@@ -43,7 +43,7 @@ describe('Notification: useRemaining', () => {
     );
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(250);
+    cy.wait(100);
 
     cy.get(
       '[data-test-id=pause-default] [data-test-id=remaining-value]',
