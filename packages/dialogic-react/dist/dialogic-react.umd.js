@@ -939,7 +939,15 @@
   const types = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null
   }, Symbol.toStringTag, { value: "Module" }));
-  const useStream = ({ model, onMount, onDestroy, onUpdate, deps = [], defer, debug }) => {
+  const useStream = ({
+    model,
+    onMount,
+    onDestroy,
+    onUpdate,
+    deps = [],
+    defer,
+    debug
+  }) => {
     const [streamValues, setStreamValues] = React.useState({});
     const isInitedRef = React.useRef(false);
     const subsRef = React.useRef([]);
@@ -983,7 +991,9 @@
       subscribe(memo2);
       return memo2;
     };
-    const [memo, setMemo] = React.useState(defer ? { ...model, isDeferred: true } : createMemo);
+    const [memo, setMemo] = React.useState(
+      defer ? { ...model, isDeferred: true } : createMemo
+    );
     React.useEffect(() => {
       if (!isInitedRef.current) {
         return;
