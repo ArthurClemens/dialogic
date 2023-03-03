@@ -1,6 +1,6 @@
-import shell from "shelljs";
+import shell from 'shelljs';
 
-const githubPath = "../../../gh-pages/svelte";
+const githubPath = '../../../gh-pages/svelte';
 
-shell.rm("-rf", `${githubPath}/*`);
-shell.cp("-R", "dist/*", githubPath);
+shell.rm('-rf', `${githubPath}/*`);
+shell.cp('-R', 'dist/*', githubPath);

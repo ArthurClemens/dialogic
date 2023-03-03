@@ -1,8 +1,9 @@
-import App from "./App.svelte";
-import "./dialogic.css";
-import "./layout.css";
+import './dialogic.css';
+import './layout.css';
 
-var app = new App({
+import App from './App.svelte';
+
+const app = new App({
   target: document.body,
 });
 
