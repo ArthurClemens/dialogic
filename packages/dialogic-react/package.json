@@ -2,6 +2,7 @@
   "name": "dialogic-react",
   "version": "0.13.10",
   "description": "Logic for dialogs and notifications",
+  "type": "module",
   "files": [
     "dist",
     "README.md"
