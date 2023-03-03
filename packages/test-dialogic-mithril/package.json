@@ -2,7 +2,7 @@
   "name": "tests-dialogic-mithril",
   "private": true,
   "description": "Test Dialogic with Mithril",
-  "version": ""0.13.10"",
+  "version": "0.13.10",
   "license": "MIT",
   "scripts": {
     "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
@@ -15,8 +15,8 @@
     "cypress:open": "cypress open --e2e"
   },
   "dependencies": {
-    "dialogic": ""0.13.10"",
-    "dialogic-mithril": ""0.13.10"",
+    "dialogic": "0.13.10",
+    "dialogic-mithril": "0.13.10",
     "mithril": "^2.2.2",
     "mithril-hooks": "^0.7.1"
   },
