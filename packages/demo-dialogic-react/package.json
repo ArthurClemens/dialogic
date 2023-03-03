@@ -2,7 +2,7 @@
   "name": "demo-dialogic-react",
   "private": true,
   "description": "Dialogic for React demo",
-  "version": "0.13.7",
+  "version": ""0.13.10"",
   "scripts": {
     "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "dev": "vite",
@@ -11,14 +11,14 @@
     "github": "npm run build && node ./scripts/github.js"
   },
   "dependencies": {
-    "dialogic-react": "0.13.7",
+    "dialogic-react": ""0.13.10"",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
-    "dialogic": "0.13.7",
+    "dialogic": ""0.13.10"",
     "shelljs": "^0.8.5",
     "typescript": "^4.9.5",
     "vite": "^4.1.4"

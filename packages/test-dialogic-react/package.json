@@ -2,7 +2,7 @@
   "name": "tests-dialogic-react",
   "private": true,
   "description": "Test Dialogic with React",
-  "version": "0.13.7",
+  "version": ""0.13.10"",
   "license": "MIT",
   "scripts": {
     "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
@@ -15,8 +15,8 @@
     "cypress:open": "cypress open --e2e"
   },
   "dependencies": {
-    "dialogic": "0.13.7",
-    "dialogic-react": "0.13.7",
+    "dialogic": ""0.13.10"",
+    "dialogic-react": ""0.13.10"",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.8.2"
