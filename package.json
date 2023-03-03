@@ -10,7 +10,6 @@
     "test": "npm run test --workspaces --if-present",
     "deps": "npm run deps --workspaces && npm install",
     "github": "npm run github --workspaces --if-present",
-    "prepare:patch": "npm version patch && npm version patch --workspaces",
     "lint": "eslint --ext .js,.ts,.tsx --fix ."
   },
   "devDependencies": {
