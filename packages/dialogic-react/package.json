@@ -6,6 +6,7 @@
     "dist",
     "README.md"
   ],
+  "types": "dist",
   "main": "./dist/dialogic-react.umd",
   "module": "./dist/dialogic-react.module.js",
   "exports": {

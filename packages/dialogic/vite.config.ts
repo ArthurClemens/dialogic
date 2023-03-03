@@ -1,4 +1,4 @@
-import { ModuleFormat } from 'rollup';
+import type { ModuleFormat } from 'rollup';
 import filesize from 'rollup-plugin-filesize';
 import { defineConfig } from 'vite';
 

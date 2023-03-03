@@ -6,6 +6,7 @@
     "dist",
     "README.md"
   ],
+  "types": "dist",
   "main": "./dist/dialogic-hooks.module.js",
   "module": "./dist/dialogic-hooks.module.js",
   "exports": {
