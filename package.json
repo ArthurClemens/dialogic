@@ -1,6 +1,6 @@
 {
   "name": "dialogic-repo",
-  "version": "0.13.8",
+  "version": "0.13.10",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -10,7 +10,7 @@
     "test": "npm run test --workspaces --if-present",
     "deps": "npm run deps --workspaces && npm install",
     "github": "npm run github --workspaces --if-present",
-    "prepare:patch": "npm version 0.13.10 && npm version 0.13.10 --workspaces",
+    "prepare:patch": "npm version patch && npm version patch --workspaces",
     "lint": "eslint --ext .js,.ts,.tsx --fix ."
   },
   "devDependencies": {

@@ -2,7 +2,7 @@
   "name": "tests-dialogic-svelte",
   "private": true,
   "description": "Test Dialogic with Svelte",
-  "version": "0.13.7",
+  "version": ""0.13.10"",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -16,8 +16,8 @@
     "cypress:open": "cypress open --e2e"
   },
   "dependencies": {
-    "dialogic": "0.13.7",
-    "dialogic-svelte": "0.13.7",
+    "dialogic": ""0.13.10"",
+    "dialogic-svelte": ""0.13.10"",
     "mithril-stream-standalone": "^0.1.6",
     "svelte": "^3.55.1",
     "svelte-spa-router": "^3.3.0"
