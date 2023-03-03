@@ -299,27 +299,27 @@ const MyComponent = (attrs) => {
 ┌──────────────────────────────────────────────┐
 │                                              │
 │   Bundle Name:  dialogic-mithril.module.js   │
-│   Bundle Size:  31.25 KB                     │
-│   Minified Size:  15.39 KB                   │
-│   Gzipped Size:  5.02 KB                     │
+│   Bundle Size:  31.23 KB                     │
+│   Minified Size:  15.34 KB                   │
+│   Gzipped Size:  5 KB                        │
 │                                              │
 └──────────────────────────────────────────────┘
 
 ┌───────────────────────────────────────────┐
 │                                           │
 │   Bundle Name:  dialogic-mithril.umd.js   │
-│   Bundle Size:  34.22 KB                  │
-│   Minified Size:  13.2 KB                 │
-│   Gzipped Size:  4.72 KB                  │
+│   Bundle Size:  34.2 KB                   │
+│   Minified Size:  13.14 KB                │
+│   Gzipped Size:  4.7 KB                   │
 │                                           │
 └───────────────────────────────────────────┘
 
 ┌────────────────────────────────────────┐
 │                                        │
 │   Bundle Name:  dialogic-mithril.cjs   │
-│   Bundle Size:  31.58 KB               │
-│   Minified Size:  15.72 KB             │
-│   Gzipped Size:  5.06 KB               │
+│   Bundle Size:  31.56 KB               │
+│   Minified Size:  15.67 KB             │
+│   Gzipped Size:  5.04 KB               │
 │                                        │
 └────────────────────────────────────────┘
 ```

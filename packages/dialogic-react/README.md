@@ -504,27 +504,27 @@ const MyComponent = props => {
 ┌────────────────────────────────────────────┐
 │                                            │
 │   Bundle Name:  dialogic-react.module.js   │
-│   Bundle Size:  35.01 KB                   │
-│   Minified Size:  17.53 KB                 │
-│   Gzipped Size:  5.65 KB                   │
+│   Bundle Size:  34.29 KB                   │
+│   Minified Size:  16.85 KB                 │
+│   Gzipped Size:  5.44 KB                   │
 │                                            │
 └────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────┐
 │                                         │
 │   Bundle Name:  dialogic-react.umd.js   │
-│   Bundle Size:  38.23 KB                │
-│   Minified Size:  14.92 KB              │
-│   Gzipped Size:  5.24 KB                │
+│   Bundle Size:  37.51 KB                │
+│   Minified Size:  14.43 KB              │
+│   Gzipped Size:  5.1 KB                 │
 │                                         │
 └─────────────────────────────────────────┘
 
 ┌──────────────────────────────────────┐
 │                                      │
 │   Bundle Name:  dialogic-react.cjs   │
-│   Bundle Size:  35.36 KB             │
-│   Minified Size:  17.89 KB           │
-│   Gzipped Size:  5.69 KB             │
+│   Bundle Size:  34.66 KB             │
+│   Minified Size:  17.22 KB           │
+│   Gzipped Size:  5.48 KB             │
 │                                      │
 └──────────────────────────────────────┘
 ```
