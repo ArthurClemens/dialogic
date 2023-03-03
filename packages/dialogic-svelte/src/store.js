@@ -1,10 +1,10 @@
-import { writable, derived } from 'svelte/store';
 import {
-  states,
-  selectors,
-  isPaused as _isPaused,
   exists as _isDisplayed,
+  isPaused as _isPaused,
+  selectors,
+  states,
 } from 'dialogic';
+import { derived, writable } from 'svelte/store';
 
 export const appState = {
   ...writable(states),

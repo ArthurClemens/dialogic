@@ -1,4 +1,4 @@
-import { showItem, hideItem, selectors, setDomElement } from 'dialogic';
+import { hideItem, selectors, setDomElement, showItem } from 'dialogic';
 
 export const handleDispatch = ns => (event, fn) => {
   // Update dispatching item:

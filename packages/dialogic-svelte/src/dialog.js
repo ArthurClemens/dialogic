@@ -1,5 +1,6 @@
 import { dialog as _dialog } from 'dialogic';
-import { getCount, isPaused, exists } from './store'; // Access Svelte's store
+
+import { exists, getCount, isPaused } from './store'; // Access Svelte's store
 
 export const dialog = {
   ..._dialog,

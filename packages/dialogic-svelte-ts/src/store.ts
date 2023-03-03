@@ -1,22 +1,22 @@
-import { writable, derived } from "svelte/store";
+import type { Dialogic } from 'dialogic';
 import {
-  states,
-  selectors,
-  isPaused as _isPaused,
   exists as _isDisplayed,
-} from "dialogic";
-import type { Dialogic } from "dialogic";
+  isPaused as _isPaused,
+  selectors,
+  states,
+} from 'dialogic';
+import { derived, writable } from 'svelte/store';
 
 export const appState = {
   ...writable<Dialogic.State>(),
   ...selectors,
 };
 
-states.map((state) =>
+states.map(state =>
   appState.set({
     ...state,
     ...selectors,
-  })
+  }),
 );
 
 export const getCount =
@@ -28,7 +28,7 @@ export const isPaused =
   (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) =>
   (identityOptions?: Dialogic.IdentityOptions) =>
     derived(appState, () =>
-      _isPaused(ns)(defaultDialogicOptions)(identityOptions)
+      _isPaused(ns)(defaultDialogicOptions)(identityOptions),
     );
 
 export const exists =
@@ -36,5 +36,5 @@ export const exists =
   (defaultDialogicOptions: Dialogic.DefaultDialogicOptions) =>
   (identityOptions?: Dialogic.IdentityOptions) =>
     derived(appState, () =>
-      _isDisplayed(ns)(defaultDialogicOptions)(identityOptions)
+      _isDisplayed(ns)(defaultDialogicOptions)(identityOptions),
     );

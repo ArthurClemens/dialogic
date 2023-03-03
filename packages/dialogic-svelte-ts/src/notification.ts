@@ -1,5 +1,6 @@
-import { Dialogic, notification as _notification } from "dialogic";
-import { getCount, isPaused, exists } from "./store"; // Access Svelte's store
+import { Dialogic, notification as _notification } from 'dialogic';
+
+import { exists, getCount, isPaused } from './store'; // Access Svelte's store
 
 export const notification = {
   ..._notification,
@@ -7,10 +8,10 @@ export const notification = {
     getCount(_notification.ns)(identityOptions) as unknown as number,
   isPaused: (identityOptions?: Dialogic.IdentityOptions) =>
     isPaused(_notification.ns)(_notification.defaultDialogicOptions)(
-      identityOptions
+      identityOptions,
     ) as unknown as boolean,
   exists: (identityOptions?: Dialogic.IdentityOptions) =>
     exists(_notification.ns)(_notification.defaultDialogicOptions)(
-      identityOptions
+      identityOptions,
     ) as unknown as boolean,
 };

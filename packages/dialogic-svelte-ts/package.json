@@ -9,12 +9,10 @@
     "README.md"
   ],
   "svelte": "./src/index.ts",
-  "types": "./types",
   "scripts": {
     "deps": "../../node_modules/npm-check-updates/build/src/bin/cli.js -u",
     "dev": "vite",
-    "build": "node ../../node_modules/npm-run-all/bin/run-s/index.js build:*",
-    "build:types": "../../node_modules/typescript/bin/tsc --p tsconfig.gen.json",
+    "build": "true",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
   },

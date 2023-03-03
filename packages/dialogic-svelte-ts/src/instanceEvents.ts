@@ -1,10 +1,10 @@
 import {
-  showItem,
+  Dialogic,
   hideItem,
   selectors,
   setDomElement,
-  Dialogic,
-} from "dialogic";
+  showItem,
+} from 'dialogic';
 
 export const handleDispatch =
   (ns: string) =>
@@ -17,7 +17,7 @@ export const handleDispatch =
     // Find item to transition:
     const maybeTransitioningItem = selectors.find(
       ns,
-      event.detail.identityOptions
+      event.detail.identityOptions,
     );
     if (maybeTransitioningItem.just) {
       fn(maybeTransitioningItem.just);

@@ -1,5 +1,6 @@
-import { dialog as _dialog, Dialogic } from "dialogic";
-import { getCount, isPaused, exists } from "./store"; // Access Svelte's store
+import { dialog as _dialog, Dialogic } from 'dialogic';
+
+import { exists, getCount, isPaused } from './store'; // Access Svelte's store
 
 export const dialog = {
   ..._dialog,
@@ -7,10 +8,10 @@ export const dialog = {
     getCount(_dialog.ns)(identityOptions) as unknown as number,
   isPaused: (identityOptions?: Dialogic.IdentityOptions) =>
     isPaused(_dialog.ns)(_dialog.defaultDialogicOptions)(
-      identityOptions
+      identityOptions,
     ) as unknown as boolean,
   exists: (identityOptions?: Dialogic.IdentityOptions) =>
     exists(_dialog.ns)(_dialog.defaultDialogicOptions)(
-      identityOptions
+      identityOptions,
     ) as unknown as boolean,
 };
