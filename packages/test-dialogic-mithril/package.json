@@ -11,7 +11,7 @@
     "preview": "vite preview --port 3000",
     "test": "npm run build && start-server-and-test --expect 200 preview http://localhost:3000 cypress:run",
     "test:i": "npm-run-all --parallel dev cypress:open",
-    "cypress:run": "cypress run --e2e",
+    "cypress:run": "cypress run --e2e --browser chrome",
     "cypress:open": "cypress open --e2e"
   },
   "dependencies": {
