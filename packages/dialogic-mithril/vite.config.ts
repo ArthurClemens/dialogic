@@ -11,7 +11,7 @@ export default defineConfig({
     minify: false,
     sourcemap: true,
     lib: {
-      entry: './index.ts',
+      entry: './src/index.ts',
       name: 'dialogicMithril',
       formats: ['es', 'umd', 'cjs'],
       fileName: (format: ModuleFormat) => {
