@@ -2,6 +2,7 @@
   "name": "dialogic-hooks",
   "version": "0.13.10",
   "description": "Dialogic hooks",
+  "type": "module",
   "files": [
     "dist",
     "README.md"
