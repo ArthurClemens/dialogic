@@ -32,8 +32,10 @@ Codesandbox examples:
 
 * [All examples](https://codesandbox.io/dashboard/all/Dialogic/Dialogic%20for%20React?workspace=214fe89f-3718-4af2-9611-3b2cb150dcc5)
 * Listed examples:
-  * [Route example with useDialog hook](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-cutrx)
-  * [Route example with UseDialog component](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-component-kgq22)
+  * [React Router 6 example with useDialog hook](https://codesandbox.io/s/dialogic-for-react-react-router-6-example-with-usedialog-hook-9js32m)
+  * [React Router 6 example with UseDialog component](https://codesandbox.io/s/dialogic-for-react-react-router-6-example-with-usedialog-component-bhwp0q)
+  * [React Router 5 example with useDialog hook](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-cutrx)
+  * [React Router 5 example with UseDialog component](https://codesandbox.io/s/dialogic-for-react-route-example-with-usedialog-component-kgq22)
   * [NextJS example with useDialog hook](https://codesandbox.io/s/dialogic-for-react-nextjs-example-l713v)
 
 Demo code in this repo:
