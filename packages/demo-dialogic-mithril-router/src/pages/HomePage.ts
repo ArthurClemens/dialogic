@@ -17,7 +17,7 @@ export const HomePage: m.Component<TProps> = {
       m(
         'p.intro',
         m.trust(
-          "This demo shows the <code>useDialog</code> hook that allows for an imperative way of controlling dialogs. The Profile dialog responds to the route, and is automatically hidden when using the browser's back button.",
+          "This demo shows the <code>useDialog</code> hook that allows for a declarative way of controlling dialogs. The Profile dialog responds to the route, and is automatically hidden when using the browser's back button.",
         ),
       ),
       m('.buttons', [

@@ -16,8 +16,8 @@ export function HomePage({ pathPrefix = '' }: TProps) {
       <h1 className='title'>Home</h1>
       <CurrentPathBadge />
       <p className='intro'>
-        This demo shows the <code>useDialog</code> hook that allows for an
-        imperative way of controlling dialogs. The Profile dialog responds to
+        This demo shows the <code>useDialog</code> hook that allows for a
+        declarative way of controlling dialogs. The Profile dialog responds to
         the route, and is automatically hidden when using the browser&apos;s
         back button.
       </p>
