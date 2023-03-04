@@ -68,7 +68,8 @@ module.exports = {
     'no-unused-vars': 'off', // disable the native no-unused-vars so that only the TS one is enabled
     '@typescript-eslint/no-unused-vars': OFF,
     '@typescript-eslint/explicit-function-return-type': OFF,
-    '@typescript-eslint/no-explicit-any': [ERROR, { fixToUnknown: true }],
+    '@typescript-eslint/no-explicit-any': OFF,
+    'no-redeclare': OFF,
 
     // React rules
     'react/require-default-props': OFF,
