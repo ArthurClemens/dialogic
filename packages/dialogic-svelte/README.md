@@ -174,9 +174,9 @@ Include `dialogic-svelte` in package.json's "devDependencies" instead of "depend
 
 It is often desired to automatically show a dialog at a given route, so that it can be accessed by URL, and the browser back button will hide the dialog.
 
-The component `UseDialog` allows for a declarative way of controlling dialogs. It will be shown when a condition is met (such as the current route), and automatically hidden as soon as the condition is no longer met.
+The `UseDialog` component allows for a declarative way of controlling dialogs. It will be shown when a condition is met (such as the current route), and automatically hidden as soon as the condition is no longer met.
 
-This component is functionally equal to React's `UseDialog`. It accepts the same props as [useDialog](https://github.com/ArthurClemens/dialogic/blob/development/README.md#usedialog).
+This component is functionally equal to React's `UseDialog` component. It accepts the same props as [useDialog](https://github.com/ArthurClemens/dialogic/blob/development/README.md#usedialog).
 
 Example:
 

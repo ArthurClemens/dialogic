@@ -823,7 +823,7 @@ const dialogPath = `${match.url}/edit`;
 </Route>
 ```
 
-The hooks `useDialogic`, `useDialog` and `useNotification`  allow for a declarative way of controlling elements. The element will be shown when a condition is met (such as the current route), and automatically hidden as soon as the condition is no longer met.
+The hooks `useDialogic`, `useDialog` and `useNotification`  allow for an imperative way of controlling elements. The element will be shown when a condition is met (such as the current route), and automatically hidden as soon as the condition is no longer met.
 
 * `useDialog` - `useDialogic` with `instance` preset to `dialog`.
   * For Svelte: use component `UseDialog`
