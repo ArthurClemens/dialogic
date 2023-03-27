@@ -13,7 +13,7 @@
     "lint": "eslint --ext .js,.ts,.tsx --fix ."
   },
   "devDependencies": {
-    "@tsconfig/svelte": "3.0.0",
+    "@tsconfig/svelte": "4.0.0",
     "@types/rollup": "^0.54.0",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
