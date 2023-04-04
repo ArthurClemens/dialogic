@@ -18,7 +18,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
     "@next/env": "^13.2.3",
-    "@swc/helpers": "^0.4.14",
+    "@swc/helpers": "^0.5.0",
     "@types/react": "18.0.33",
     "eslint-config-prettier": "8.8.0",
     "eslint-import-resolver-typescript": "3.5.4",
