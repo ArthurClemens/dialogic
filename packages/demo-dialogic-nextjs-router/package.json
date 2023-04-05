@@ -21,7 +21,7 @@
     "@swc/helpers": "^0.5.0",
     "@types/react": "18.0.33",
     "eslint-config-prettier": "8.8.0",
-    "eslint-import-resolver-typescript": "3.5.4",
+    "eslint-import-resolver-typescript": "3.5.5",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-json": "3.1.0",
     "eslint-plugin-prettier": "4.2.1",
