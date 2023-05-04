@@ -19,7 +19,7 @@
     "@babel/eslint-parser": "^7.19.1",
     "@next/env": "^13.2.3",
     "@swc/helpers": "^0.5.0",
-    "@types/react": "18.2.4",
+    "@types/react": "18.2.5",
     "eslint-config-prettier": "8.8.0",
     "eslint-import-resolver-typescript": "3.5.5",
     "eslint-plugin-import": "2.27.5",
