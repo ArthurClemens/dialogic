@@ -19,7 +19,7 @@
     "dialogic": "0.13.10",
     "dialogic-svelte": "0.13.10",
     "mithril-stream-standalone": "^0.1.6",
-    "svelte": "^3.55.1",
+    "svelte": "^4.0.0",
     "svelte-spa-router": "^3.3.0"
   },
   "devDependencies": {
