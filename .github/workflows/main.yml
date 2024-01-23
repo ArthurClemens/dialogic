@@ -13,7 +13,7 @@ jobs:
       # install a specific version of Node using
       # https://github.com/actions/setup-node
       - name: Use Node.js v18
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -43,7 +43,7 @@ jobs:
     needs: dependencies
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
       - uses: actions/cache@v3
         id: npm-cache
         with:
@@ -60,7 +60,7 @@ jobs:
     needs: dependencies
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
       - uses: actions/cache@v3
         id: npm-cache
         with:
@@ -77,7 +77,7 @@ jobs:
     needs: dependencies
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
       - uses: actions/cache@v3
         id: npm-cache
         with:
@@ -94,7 +94,7 @@ jobs:
     needs: dependencies
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
       - uses: actions/cache@v3
         id: npm-cache
         with:
