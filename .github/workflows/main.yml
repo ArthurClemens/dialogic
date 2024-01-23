@@ -8,7 +8,7 @@ jobs:
   dependencies:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # install a specific version of Node using
       # https://github.com/actions/setup-node
@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: dependencies
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
       - uses: actions/cache@v3
         id: npm-cache
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: dependencies
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
       - uses: actions/cache@v3
         id: npm-cache
@@ -76,7 +76,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: dependencies
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
       - uses: actions/cache@v3
         id: npm-cache
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: dependencies
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
       - uses: actions/cache@v3
         id: npm-cache
