@@ -6,7 +6,7 @@ on: push
 
 jobs:
   dependencies:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
 
@@ -39,7 +39,7 @@ jobs:
           npm ci --ignore-scripts
           ./node_modules/cypress/bin/cypress install
   test_dialogic:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: dependencies
     steps:
       - uses: actions/checkout@v3
@@ -56,7 +56,7 @@ jobs:
         working-directory: ./packages/test-dialogic
         run: npm run test
   test_dialogic_mithril:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: dependencies
     steps:
       - uses: actions/checkout@v3
@@ -73,7 +73,7 @@ jobs:
         working-directory: packages/test-dialogic-mithril
         run: npm run test
   test_dialogic_react:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: dependencies
     steps:
       - uses: actions/checkout@v3
@@ -90,7 +90,7 @@ jobs:
         working-directory: packages/test-dialogic-react
         run: npm run test
   test_dialogic_svelte:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: dependencies
     steps:
       - uses: actions/checkout@v3
