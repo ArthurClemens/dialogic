@@ -21,7 +21,7 @@
     "dialogic": "0.13.10",
     "shelljs": "^0.8.5",
     "typescript": "^5.0.0",
-    "vite": "^4.1.4"
+    "vite": "^5.0.0"
   },
   "author": "Arthur Clemens <arthurclemens@gmail.com> (http://arthurclemens.com)",
   "homepage": "https://github.com/ArthurClemens/dialogic",
